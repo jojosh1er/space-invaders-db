@@ -1,4 +1,13 @@
 {
-  "changes": [],
-  "last_check": "2026-02-07T07:20:54.920108"
+  "changes": [
+    {
+      "invader_id": "PA_1431",
+      "field": "status",
+      "old_value": "hidden",
+      "new_value": "OK",
+      "detected_at": "2026-02-07T19:07:26.917039",
+      "source": "invader-spotter.art"
+    }
+  ],
+  "last_check": "2026-02-07T19:07:26.917043"
 }
