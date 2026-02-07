@@ -1,0 +1,97 @@
+name: 🛸 Weekly Invaders Update
+
+on:
+  # Chaque dimanche à 6h UTC
+  schedule:
+    - cron: '0 6 * * 0'
+  
+  # Déclenchement manuel possible
+  workflow_dispatch:
+    inputs:
+      city:
+        description: 'Ville spécifique à scraper (vide = toutes)'
+        required: false
+        default: ''
+      verbose:
+        description: 'Mode verbeux'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120  # 2h max (scraping de toutes les villes)
+    
+    permissions:
+      contents: write  # Nécessaire pour push
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+      
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: 📦 Install dependencies
+        run: |
+          pip install -r scripts/requirements.txt
+          playwright install chromium
+          playwright install-deps
+      
+      - name: 🔍 Scrape invader-spotter.art
+        run: |
+          ARGS="--headless"
+          
+          # Ville spécifique si demandée
+          if [ -n "${{ github.event.inputs.city }}" ]; then
+            ARGS="$ARGS --city ${{ github.event.inputs.city }}"
+          fi
+          
+          # Mode verbeux
+          if [ "${{ github.event.inputs.verbose }}" = "true" ]; then
+            ARGS="$ARGS --verbose"
+          fi
+          
+          python scripts/update_from_spotter.py $ARGS
+      
+      - name: 📊 Afficher les stats
+        run: |
+          python3 -c "
+          import json
+          with open('data/metadata.json') as f:
+              m = json.load(f)
+          print(f\"Total: {m['total_invaders']} invaders, {m['total_cities']} villes\")
+          print(f\"Statuts: {m['status_counts']}\")
+          "
+      
+      - name: 📤 Commit & Push
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "Space Invaders Bot 🛸"
+          
+          # Vérifier s'il y a des changements
+          if git diff --quiet data/; then
+            echo "✅ Aucun changement détecté"
+            exit 0
+          fi
+          
+          # Stats pour le message de commit
+          TOTAL=$(python3 -c "import json; print(json.load(open('data/metadata.json'))['total_invaders'])")
+          CHANGES=$(python3 -c "
+          import json
+          cl = json.load(open('data/invaders_changelog.json'))
+          # Compter les changements récents (dernière heure)
+          from datetime import datetime, timedelta
+          cutoff = (datetime.now() - timedelta(hours=1)).isoformat()
+          recent = [c for c in cl.get('changes',[]) if c.get('detected_at','') > cutoff]
+          print(len(recent))
+          ")
+          
+          DATE=$(date +"%Y-%m-%d")
+          
+          git add data/
+          git commit -m "🔄 Auto-update ${DATE} - ${TOTAL} invaders, ${CHANGES} changements"
+          git push

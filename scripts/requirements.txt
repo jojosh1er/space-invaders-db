@@ -1,0 +1,5 @@
+playwright>=1.40.0
+requests>=2.28.0
+
+# Optionnels (pour geolocate_missing.py - fallbacks EXIF/OCR)
+# pip install Pillow pytesseract opencv-python numpy
