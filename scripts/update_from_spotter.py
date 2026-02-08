@@ -1636,6 +1636,8 @@ def extract_statuses_from_html(html_content, city_code):
         status_match = re.search(r'(?:Last\s+known\s+state|Dernier\s+[ée]tat\s+connu)\s*:\s*(.+?)(?=Date|Instagram|$)', context, re.IGNORECASE)
         if status_match:
             raw_status = status_match.group(1).strip()
+            # Nettoyer les balises HTML (ex: <img src="nav/spot_invader_unknown.png"...> Inconnu<br>)
+            raw_status = re.sub(r'<[^>]+>', '', raw_status).strip()
             raw_status_lower = raw_status.lower()
             
             # Normaliser le statut (FR + EN)
@@ -1669,6 +1671,8 @@ def extract_statuses_from_html(html_content, city_code):
                     status = 'damaged'
             elif 'spot_invader_neutre' in context_lower or 'spot_invader_hidden' in context_lower or 'masqué' in context_lower or 'caché' in context_lower:
                 status = 'hidden'
+            elif 'spot_invader_unknown' in context_lower or 'inconnu' in context_lower:
+                status = 'unknown'
         
         # ============================================
         # V4: Extraction de la date et source du statut
@@ -1769,7 +1773,7 @@ def extract_statuses_from_html(html_content, city_code):
         status = 'OK'
         status_match = re.search(r'(?:Last\s+known\s+state|Dernier\s+[ée]tat\s+connu)\s*:\s*(.+?)(?=Date|Instagram|$)', context, re.IGNORECASE)
         if status_match:
-            raw_status = status_match.group(1).strip().lower()
+            raw_status = re.sub(r'<[^>]+>', '', status_match.group(1)).strip().lower()
             if 'very degraded' in raw_status or 'très dégradé' in raw_status:
                 status = 'destroyed'
             elif 'a little degraded' in raw_status or 'peu dégradé' in raw_status or 'légèrement dégradé' in raw_status:
@@ -1794,6 +1798,8 @@ def extract_statuses_from_html(html_content, city_code):
                     status = 'damaged'
             elif 'spot_invader_neutre' in context_lower or 'masqué' in context_lower or 'caché' in context_lower:
                 status = 'hidden'
+            elif 'spot_invader_unknown' in context_lower or 'inconnu' in context_lower:
+                status = 'unknown'
         
         status_date = None
         status_source = None
