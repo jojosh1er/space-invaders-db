@@ -1649,6 +1649,8 @@ def extract_statuses_from_html(html_content, city_code):
                 status = 'destroyed'
             elif 'hidden' in raw_status_lower or 'not visible' in raw_status_lower or 'non visible' in raw_status_lower or 'masked' in raw_status_lower or 'masqué' in raw_status_lower or 'caché' in raw_status_lower:
                 status = 'hidden'
+            elif 'unknown' in raw_status_lower or 'inconnu' in raw_status_lower:
+                status = 'unknown'
             elif 'ok' in raw_status_lower:
                 status = 'OK'
             else:
@@ -1778,6 +1780,8 @@ def extract_statuses_from_html(html_content, city_code):
                 status = 'destroyed'
             elif 'hidden' in raw_status or 'masked' in raw_status or 'masqué' in raw_status or 'caché' in raw_status:
                 status = 'hidden'
+            elif 'unknown' in raw_status or 'inconnu' in raw_status:
+                status = 'unknown'
         else:
             if 'spot_invader_destroyed' in context_lower or 'détruit' in context_lower:
                 status = 'destroyed'
@@ -2005,6 +2009,7 @@ ISSUE_STATUS_MAP = {
     'destroyed': 'destroyed', 'gone': 'destroyed', 'détruit': 'destroyed', 'disparu': 'destroyed',
     'hidden': 'hidden', 'covered': 'hidden', 'caché': 'hidden', 'masqué': 'hidden',
     'a little damaged': 'a little damaged', 'slightly damaged': 'a little damaged',
+    'unknown': 'unknown', 'inconnu': 'unknown',
 }
 
 
