@@ -1995,6 +1995,386 @@ async def scrape_all_cities(github_db, cities_filter=None, headless=True, verbos
 
 
 # ============================================================================
+# TRAITEMENT DES ISSUES GITHUB
+# ============================================================================
+
+# Mapping des statuts depuis les issues
+ISSUE_STATUS_MAP = {
+    'ok': 'OK', 'good': 'OK', 'good condition': 'OK',
+    'damaged': 'damaged', 'degraded': 'damaged', 'abîmé': 'damaged', 'dégradé': 'damaged',
+    'destroyed': 'destroyed', 'gone': 'destroyed', 'détruit': 'destroyed', 'disparu': 'destroyed',
+    'hidden': 'hidden', 'covered': 'hidden', 'caché': 'hidden', 'masqué': 'hidden',
+    'a little damaged': 'a little damaged', 'slightly damaged': 'a little damaged',
+}
+
+
+def fetch_github_issues(repo, token=None, labels=None):
+    """
+    Récupère les issues ouvertes du repo GitHub.
+    
+    Args:
+        repo: 'user/repo'
+        token: GitHub Personal Access Token (optionnel mais recommandé)
+        labels: Liste de labels à récupérer (OR logic — fait plusieurs appels)
+                Défaut: ['status-update', 'new-invader']
+    
+    Returns:
+        Liste d'issues parsées avec données extraites
+    """
+    if labels is None:
+        labels = ['status-update', 'new-invader']
+    elif isinstance(labels, str):
+        labels = [labels]
+    
+    headers = {
+        'User-Agent': 'SpaceInvadersDB/1.0',
+        'Accept': 'application/vnd.github.v3+json',
+    }
+    if token:
+        headers['Authorization'] = f'token {token}'
+    
+    print(f"\n📋 Récupération des issues GitHub ({repo})...")
+    
+    all_issues_raw = []
+    seen_ids = set()
+    
+    for label in labels:
+        url = f"https://api.github.com/repos/{repo}/issues?state=open&labels={label}&per_page=100"
+        try:
+            req = Request(url, headers=headers)
+            with urlopen(req, timeout=30) as response:
+                issues_raw = json.loads(response.read().decode())
+            for issue in issues_raw:
+                if issue['id'] not in seen_ids:
+                    all_issues_raw.append(issue)
+                    seen_ids.add(issue['id'])
+        except Exception as e:
+            print(f"   ⚠️ Erreur API GitHub (label={label}): {e}")
+    
+    if not all_issues_raw:
+        print(f"   ✅ Aucune issue ouverte")
+        return []
+    
+    print(f"   📥 {len(all_issues_raw)} issues ouvertes trouvées")
+    
+    parsed_issues = []
+    for issue in all_issues_raw:
+        parsed = parse_github_issue(issue)
+        if parsed:
+            parsed_issues.append(parsed)
+    
+    print(f"   ✅ {len(parsed_issues)} issues parsées avec succès")
+    return parsed_issues
+
+
+def parse_github_issue(issue):
+    """
+    Parse le body d'une issue GitHub pour extraire les données structurées.
+    
+    Retourne un dict avec:
+        - issue_number, issue_url, issue_date
+        - invader_id, city
+        - new_status
+        - lat, lng, accuracy (si géolocalisation)
+        - image_invader, image_lieu (si photos)
+        - notes
+    """
+    body = issue.get('body', '') or ''
+    title = issue.get('title', '') or ''
+    issue_number = issue.get('number')
+    issue_url = issue.get('html_url', '')
+    issue_date = issue.get('created_at', '')  # ISO 8601
+    
+    result = {
+        'issue_number': issue_number,
+        'issue_url': issue_url,
+        'issue_date': issue_date,
+        'invader_id': None,
+        'city': None,
+        'new_status': None,
+        'points': None,
+        'is_new_invader': False,
+        'lat': None,
+        'lng': None,
+        'accuracy': None,
+        'image_invader': None,
+        'image_lieu': None,
+        'notes': None,
+        'labels': [l.get('name', '') for l in issue.get('labels', [])],
+    }
+    
+    # Détecter si c'est un nouvel invader
+    result['is_new_invader'] = 'new-invader' in result['labels'] or '[New Invader]' in title
+    
+    # Extraire l'invader ID depuis le title ou le body
+    # Title format: "[Status Update] PA_1529: OK → Destroyed"
+    title_match = re.search(r'\]\s*([A-Z]+[-_]\d+)', title, re.IGNORECASE)
+    if title_match:
+        result['invader_id'] = title_match.group(1).upper().replace('-', '_')
+    
+    # Body format: **Invader:** `PA_1529`
+    body_match = re.search(r'\*\*Invader:\*\*\s*`?([A-Z]+[-_]\d+)`?', body, re.IGNORECASE)
+    if body_match:
+        result['invader_id'] = body_match.group(1).upper().replace('-', '_')
+    
+    if not result['invader_id']:
+        return None  # Pas un report d'invader valide
+    
+    # Extraire la ville
+    city_match = re.search(r'\*\*City:\*\*\s*(.+)', body)
+    if city_match:
+        result['city'] = city_match.group(1).strip()
+    
+    # Extraire le nouveau statut
+    # Format table: | New observed status | **Destroyed** |
+    status_match = re.search(r'New observed status\s*\|\s*\*?\*?([^|*\n]+)', body, re.IGNORECASE)
+    if status_match:
+        raw_status = status_match.group(1).strip()
+        # Nettoyer les emojis et espaces
+        raw_status = re.sub(r'[✅⚠️💀👁🔨]', '', raw_status).strip()
+        result['new_status'] = ISSUE_STATUS_MAP.get(raw_status.lower(), raw_status)
+    
+    # Format new-invader: **Status:** OK
+    if not result['new_status']:
+        simple_status = re.search(r'\*\*Status:\*\*\s*(.+)', body)
+        if simple_status:
+            raw = simple_status.group(1).strip()
+            raw = re.sub(r'[✅⚠️💀👁🔨]', '', raw).strip()
+            result['new_status'] = ISSUE_STATUS_MAP.get(raw.lower(), raw)
+    
+    # Aussi chercher dans le titre: "OK → Destroyed"
+    if not result['new_status']:
+        arrow_match = re.search(r'→\s*(\w+)', title)
+        if arrow_match:
+            raw = arrow_match.group(1).strip()
+            result['new_status'] = ISSUE_STATUS_MAP.get(raw.lower(), raw)
+    
+    # Extraire les points (new-invader)
+    points_match = re.search(r'\*\*Points:\*\*\s*(\d+)', body)
+    if points_match:
+        result['points'] = int(points_match.group(1))
+    
+    # Extraire les coordonnées GPS
+    lat_match = re.search(r'\*\*Latitude:\*\*\s*([-\d.]+)', body)
+    lng_match = re.search(r'\*\*Longitude:\*\*\s*([-\d.]+)', body)
+    if lat_match and lng_match:
+        try:
+            result['lat'] = float(lat_match.group(1))
+            result['lng'] = float(lng_match.group(1))
+        except ValueError:
+            pass
+    
+    acc_match = re.search(r'\*\*GPS Accuracy:\*\*\s*±(\d+)', body)
+    if acc_match:
+        result['accuracy'] = int(acc_match.group(1))
+    
+    # Extraire les images
+    img_inv_match = re.search(r'\*\*Image invader:\*\*\s*(https?://\S+)', body)
+    if img_inv_match:
+        result['image_invader'] = img_inv_match.group(1)
+    
+    img_lieu_match = re.search(r'\*\*Image location:\*\*\s*(https?://\S+)', body)
+    if img_lieu_match:
+        result['image_lieu'] = img_lieu_match.group(1)
+    
+    # Extraire les notes
+    notes_match = re.search(r'### Notes\s*\n(.+?)(?:\n###|\n---|\Z)', body, re.DOTALL)
+    if notes_match:
+        notes = notes_match.group(1).strip()
+        if notes and notes != '_No additional notes_':
+            result['notes'] = notes
+    
+    return result
+
+
+def close_github_issue(repo, issue_number, token, comment=None):
+    """Ferme une issue GitHub avec un commentaire optionnel."""
+    if not token:
+        print(f"   ⚠️ Pas de token GitHub, issue #{issue_number} non fermée")
+        return False
+    
+    headers = {
+        'User-Agent': 'SpaceInvadersDB/1.0',
+        'Accept': 'application/vnd.github.v3+json',
+        'Authorization': f'token {token}',
+        'Content-Type': 'application/json',
+    }
+    
+    # Ajouter un commentaire
+    if comment:
+        comment_url = f"https://api.github.com/repos/{repo}/issues/{issue_number}/comments"
+        comment_data = json.dumps({'body': comment}).encode()
+        try:
+            req = Request(comment_url, data=comment_data, headers=headers, method='POST')
+            urlopen(req, timeout=15)
+        except Exception as e:
+            print(f"   ⚠️ Erreur commentaire issue #{issue_number}: {e}")
+    
+    # Fermer l'issue
+    close_url = f"https://api.github.com/repos/{repo}/issues/{issue_number}"
+    close_data = json.dumps({'state': 'closed'}).encode()
+    try:
+        req = Request(close_url, data=close_data, headers=headers, method='PATCH')
+        urlopen(req, timeout=15)
+        return True
+    except Exception as e:
+        print(f"   ⚠️ Erreur fermeture issue #{issue_number}: {e}")
+        return False
+
+
+def apply_github_issues(master_db, issues, repo=None, token=None, verbose=False, dry_run=False):
+    """
+    Applique les issues GitHub au master.
+    
+    Pour chaque issue:
+    - Met à jour le statut si renseigné
+    - Met à jour les coordonnées si fournies
+    - Met à jour les images si fournies
+    - Marque status_source='community_issue' et status_updated avec la date de l'issue
+    - Ferme l'issue après traitement
+    
+    Returns:
+        (master_db modifié, liste des changements appliqués)
+    """
+    if not issues:
+        return master_db, []
+    
+    print(f"\n🐙 Application de {len(issues)} issues GitHub...")
+    
+    # Indexer le master par ID
+    master_index = {}
+    for i, inv in enumerate(master_db):
+        inv_id = inv.get('id', inv.get('name', '')).upper().replace('-', '_')
+        master_index[inv_id] = i
+    
+    changes = []
+    applied = 0
+    new_invaders = 0
+    
+    for issue in issues:
+        inv_id = issue['invader_id']
+        if not inv_id:
+            continue
+        
+        if verbose:
+            print(f"\n   📋 Issue #{issue['issue_number']}: {inv_id}")
+        
+        if inv_id in master_index:
+            idx = master_index[inv_id]
+            inv = master_db[idx]
+            
+            # Mettre à jour le statut
+            if issue['new_status']:
+                old_status = inv.get('status', 'OK')
+                new_status = issue['new_status']
+                
+                if old_status.lower() != new_status.lower():
+                    # Sauvegarder l'historique
+                    inv['previous_status'] = old_status
+                    if inv.get('status_date'):
+                        inv['previous_status_date'] = inv['status_date']
+                    
+                    inv['status'] = new_status
+                    inv['status_source'] = 'community_issue'
+                    inv['status_updated'] = issue['issue_date']
+                    inv['status_issue'] = issue['issue_number']
+                    
+                    changes.append({
+                        'name': inv_id,
+                        'old_status': old_status,
+                        'new_status': new_status,
+                        'source': f"issue #{issue['issue_number']}",
+                        'date': issue['issue_date'],
+                    })
+                    if verbose:
+                        print(f"      🔄 Statut: {old_status} → {new_status}")
+            
+            # Mettre à jour les coordonnées
+            if issue['lat'] is not None and issue['lng'] is not None:
+                old_lat = inv.get('lat', 0)
+                old_lng = inv.get('lng', 0)
+                inv['lat'] = issue['lat']
+                inv['lng'] = issue['lng']
+                inv['geo_source'] = 'community_issue'
+                inv['geo_confidence'] = 'high' if (issue.get('accuracy', 999) < 50) else 'medium'
+                inv['location_unknown'] = False
+                if verbose:
+                    print(f"      📍 GPS: ({old_lat:.4f},{old_lng:.4f}) → ({issue['lat']:.6f},{issue['lng']:.6f})")
+            
+            # Mettre à jour les images
+            if issue.get('image_invader'):
+                inv['image_invader'] = issue['image_invader']
+                if verbose:
+                    print(f"      📸 Image invader ajoutée")
+            if issue.get('image_lieu'):
+                inv['image_lieu'] = issue['image_lieu']
+                if verbose:
+                    print(f"      📸 Image lieu ajoutée")
+            
+            master_db[idx] = inv
+            applied += 1
+            
+        else:
+            # Invader inconnu — l'ajouter comme nouveau
+            city_match = re.match(r'^([A-Z]+)[-_]', inv_id)
+            city_code = city_match.group(1) if city_match else None
+            
+            new_inv = {
+                'id': inv_id,
+                'status': issue.get('new_status', 'OK'),
+                'city': city_code,
+                'points': issue.get('points', 0),
+                'lat': issue.get('lat', 0),
+                'lng': issue.get('lng', 0),
+                'status_source': 'community_issue',
+                'status_updated': issue['issue_date'],
+                'status_issue': issue['issue_number'],
+                'missing_from_github': True,
+                'added_date': datetime.now().isoformat(),
+            }
+            if issue.get('image_invader'):
+                new_inv['image_invader'] = issue['image_invader']
+            if issue.get('image_lieu'):
+                new_inv['image_lieu'] = issue['image_lieu']
+            if issue.get('lat') is not None:
+                new_inv['geo_source'] = 'community_issue'
+                new_inv['geo_confidence'] = 'high' if (issue.get('accuracy', 999) < 50) else 'medium'
+                new_inv['location_unknown'] = False
+            else:
+                new_inv['location_unknown'] = True
+            
+            master_db.append(new_inv)
+            master_index[inv_id] = len(master_db) - 1
+            new_invaders += 1
+            applied += 1
+            
+            if verbose:
+                print(f"      ➕ Nouvel invader ajouté")
+        
+        # Fermer l'issue
+        if not dry_run and repo and token:
+            comment = f"✅ **Applied to database**\n\n"
+            if issue['new_status']:
+                comment += f"- Status updated to: **{issue['new_status']}**\n"
+            if issue.get('lat') is not None:
+                comment += f"- Location updated: ({issue['lat']:.6f}, {issue['lng']:.6f})\n"
+            if issue.get('image_invader') or issue.get('image_lieu'):
+                comment += f"- Images updated\n"
+            comment += f"\n_Processed by update_from_spotter.py on {datetime.now().strftime('%Y-%m-%d %H:%M')} UTC_"
+            
+            if close_github_issue(repo, issue['issue_number'], token, comment):
+                if verbose:
+                    print(f"      ✅ Issue #{issue['issue_number']} fermée")
+    
+    print(f"\n   📊 Résumé issues:")
+    print(f"      ✅ {applied} issues appliquées")
+    print(f"      🔄 {len(changes)} changements de statut")
+    print(f"      ➕ {new_invaders} nouveaux invaders")
+    
+    return master_db, changes
+
+
+# ============================================================================
 # FUSION
 # ============================================================================
 
@@ -2075,8 +2455,11 @@ def merge_databases(github_db, spotter_statuses, community_reports=None, previou
         norm_name = updated_inv['id']
         if norm_name in previous_by_name:
             prev_inv = previous_by_name[norm_name]
-            for v4_field in ['landing_date', 'status_date', 'status_source', 'previous_status', 'previous_status_date']:
-                if prev_inv.get(v4_field):
+            for v4_field in ['landing_date', 'status_date', 'status_source', 'status_updated', 'status_issue',
+                            'previous_status', 'previous_status_date',
+                            'geo_source', 'geo_confidence', 'location_unknown', 'address',
+                            'image_invader', 'image_lieu']:
+                if prev_inv.get(v4_field) and not updated_inv.get(v4_field):
                     updated_inv[v4_field] = prev_inv[v4_field]
         
         if not updated_inv.get('city'):
@@ -2105,8 +2488,28 @@ def merge_databases(github_db, spotter_statuses, community_reports=None, previou
             old_status_lower = old_status.lower()
             new_status_lower = new_status.lower()
             
+            # V5: Vérifier si le statut actuel vient d'une issue communautaire récente
+            # Si oui, ne PAS écraser avec le statut Spotter (l'issue est plus fiable/récente)
+            skip_status_update = False
+            if norm_name in previous_by_name:
+                prev = previous_by_name[norm_name]
+                if prev.get('status_source') == 'community_issue' and prev.get('status_updated'):
+                    try:
+                        issue_date = datetime.fromisoformat(prev['status_updated'].replace('Z', '+00:00'))
+                        # L'issue a moins de 90 jours → on la respecte
+                        days_since_issue = (datetime.now(issue_date.tzinfo) - issue_date).days if issue_date.tzinfo else (datetime.now() - issue_date).days
+                        if days_since_issue < 90:
+                            skip_status_update = True
+                            # Conserver le statut de l'issue
+                            updated_inv['status'] = prev['status']
+                            updated_inv['status_source'] = prev.get('status_source')
+                            updated_inv['status_updated'] = prev.get('status_updated')
+                            updated_inv['status_issue'] = prev.get('status_issue')
+                    except (ValueError, TypeError):
+                        pass
+            
             # V4: Le parsing textuel est fiable, on fait confiance au nouveau statut
-            if new_status_lower != old_status_lower:
+            if not skip_status_update and new_status_lower != old_status_lower:
                 # ============================================
                 # V4: Sauvegarder l'historique du statut
                 # ============================================
@@ -3423,6 +3826,8 @@ async def main_async():
     merge_geolocated_file = None
     max_retries, pause_ms = 3, 1000
     limit = None
+    github_repo = os.environ.get('GITHUB_REPO', None)
+    github_token = os.environ.get('GITHUB_TOKEN', os.environ.get('PAT_TOKEN', None))
     
     i = 0
     while i < len(args):
@@ -3450,6 +3855,8 @@ async def main_async():
         elif a == '--max-retries' and i+1 < len(args): max_retries = int(args[i+1]); i += 1
         elif a == '--pause' and i+1 < len(args): pause_ms = int(args[i+1]); i += 1
         elif a == '--limit' and i+1 < len(args): limit = int(args[i+1]); i += 1
+        elif a == '--github-repo' and i+1 < len(args): github_repo = args[i+1]; i += 1
+        elif a == '--github-token' and i+1 < len(args): github_token = args[i+1]; i += 1
         elif a in ['--help', '-h']: print(__doc__); return
         i += 1
     
@@ -3751,6 +4158,20 @@ async def main_async():
         if unknown_count > 0:
             print(f"   ⚠️ {unknown_count} avec localisation inconnue (centre ville)")
     
+    # =========================================================================
+    # Traitement des issues GitHub
+    # =========================================================================
+    issue_changes = []
+    if github_repo:
+        issues = fetch_github_issues(github_repo, github_token)
+        if issues:
+            updated_db, issue_changes = apply_github_issues(
+                updated_db, issues,
+                repo=github_repo, token=github_token,
+                verbose=verbose, dry_run=dry_run
+            )
+            changes.extend(issue_changes)
+    
     save_files(updated_db, scraped_statuses, changes, not_in_github, geolocated, geo_audits, backup, dry_run)
     
     # Mettre à jour metadata.json
@@ -3787,13 +4208,20 @@ async def main_async():
                     changelog = json.load(f)
             
             for c in changes:
+                source = c.get('source', 'invader-spotter.art')
+                # Normaliser la source pour le changelog
+                if source.startswith('issue'):
+                    changelog_source = f"github-{source}"
+                else:
+                    changelog_source = 'invader-spotter.art'
+                
                 changelog['changes'].append({
                     "invader_id": c.get('name', ''),
                     "field": "status",
                     "old_value": c.get('old_status', ''),
                     "new_value": c.get('new_status', ''),
-                    "detected_at": datetime.now().isoformat(),
-                    "source": "invader-spotter.art"
+                    "detected_at": c.get('date', datetime.now().isoformat()),
+                    "source": changelog_source
                 })
             changelog['last_check'] = datetime.now().isoformat()
             
