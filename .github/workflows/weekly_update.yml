@@ -45,7 +45,7 @@ jobs:
       - name: 🔍 Scrape & process issues
         env:
           GITHUB_REPO: ${{ github.repository }}
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || github.token }}
         run: |
           ARGS="--headless --add-missing"
           
