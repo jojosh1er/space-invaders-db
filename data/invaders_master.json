@@ -41021,11 +41021,11 @@
     "city": "PA",
     "landing_date": "28/10/2001",
     "status_date": "juillet 2020",
-    "status_source": "community_issue",
-    "previous_status": "OK",
-    "previous_status_date": "juillet 2020",
+    "status_source": "report",
     "status_updated": "2026-02-08T06:50:31Z",
-    "status_issue": 1
+    "status_issue": 1,
+    "previous_status": "OK",
+    "previous_status_date": "juillet 2020"
   },
   {
     "id": "PA_449",
