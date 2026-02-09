@@ -130,5 +130,14 @@ jobs:
           
           git add data/
           git commit -m "🔄 Auto-update ${DATE} - ${TOTAL} invaders, ${CHANGES} changements"
-          git pull --rebase origin main
+          
+          # Récupérer les éventuels commits distants
+          # En cas de conflit, on garde la version du workflow (la plus fraîche)
+          git pull --rebase origin main -X theirs || {
+            echo "⚠️ Conflit détecté, résolution automatique..."
+            git checkout --theirs .
+            git add .
+            git rebase --continue
+          }
+          
           git push
