@@ -1,0 +1,134 @@
+name: 🛸 Weekly Invaders Update
+
+on:
+  # Chaque dimanche à 6h UTC
+  schedule:
+    - cron: '0 6 * * 0'
+  
+  # Déclenchement manuel possible
+  workflow_dispatch:
+    inputs:
+      city:
+        description: 'Ville spécifique à scraper (vide = toutes)'
+        required: false
+        default: ''
+      verbose:
+        description: 'Mode verbeux'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120  # 2h max (scraping de toutes les villes)
+    
+    permissions:
+      contents: write  # Nécessaire pour push
+      issues: write    # Nécessaire pour fermer les issues
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+      
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: 📦 Install dependencies
+        run: |
+          pip install -r scripts/requirements.txt
+          playwright install chromium
+          playwright install-deps
+      
+      - name: 🔍 Scrape & process issues
+        env:
+          GITHUB_REPO: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          ARGS="--headless --add-missing"
+          
+          # Ville spécifique si demandée
+          if [ -n "${{ github.event.inputs.city }}" ]; then
+            ARGS="$ARGS --city ${{ github.event.inputs.city }}"
+          fi
+          
+          # Mode verbeux
+          if [ "${{ github.event.inputs.verbose }}" = "true" ]; then
+            ARGS="$ARGS --verbose"
+          fi
+          
+          python scripts/update_from_spotter.py $ARGS
+      
+      - name: 📊 Afficher les stats
+        run: |
+          python3 -c "
+          import json
+          with open('data/metadata.json') as f:
+              m = json.load(f)
+          print(f\"Total: {m['total_invaders']} invaders, {m['total_cities']} villes\")
+          print(f\"Statuts: {m['status_counts']}\")
+          "
+      
+      - name: 📤 Commit & Push
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "Space Invaders Bot 🛸"
+          
+          # Vérifier s'il y a des changements
+          if git diff --quiet data/; then
+            echo "✅ Aucun changement détecté" >> $GITHUB_STEP_SUMMARY
+            exit 0
+          fi
+          
+          # Stats
+          TOTAL=$(python3 -c "import json; print(json.load(open('data/metadata.json'))['total_invaders'])")
+          
+          # Générer le résumé
+          python3 -c "
+          import json
+          from datetime import datetime, timedelta
+          cl = json.load(open('data/invaders_changelog.json'))
+          cutoff = (datetime.now() - timedelta(hours=2)).isoformat()
+          recent = [c for c in cl.get('changes',[]) if c.get('detected_at','') > cutoff]
+          m = json.load(open('data/metadata.json'))
+          
+          lines = []
+          lines.append('## 🛸 Rapport de mise à jour')
+          lines.append('')
+          lines.append(f'| | |')
+          lines.append(f'|---|---|')
+          lines.append(f'| **Total invaders** | {m[\"total_invaders\"]} |')
+          lines.append(f'| **Villes** | {m[\"total_cities\"]} |')
+          lines.append(f'| **Avec coordonnées** | {m.get(\"with_coordinates\", \"?\")} |')
+          lines.append(f'| **Changements** | {len(recent)} |')
+          lines.append('')
+          
+          if recent:
+              lines.append('### Détail des changements')
+              lines.append('')
+              lines.append('| Invader | Ancien statut | Nouveau statut | Source |')
+              lines.append('|---------|--------------|----------------|--------|')
+              for c in recent[:100]:
+                  src = c.get('source', 'spotter')
+                  lines.append(f'| {c.get(\"invader_id\",\"?\")} | {c.get(\"old_value\",\"?\")} | {c.get(\"new_value\",\"?\")} | {src} |')
+              if len(recent) > 100:
+                  lines.append(f'| ... | | {len(recent)-100} autres | |')
+          else:
+              lines.append('_Aucun changement de statut détecté._')
+          
+          with open('summary.md', 'w') as f:
+              f.write('\n'.join(lines))
+          print(len(recent))
+          " > /tmp/change_count.txt
+          
+          CHANGES=$(cat /tmp/change_count.txt)
+          cat summary.md >> $GITHUB_STEP_SUMMARY
+          
+          DATE=$(date +"%Y-%m-%d")
+          
+          git add data/
+          git commit -m "🔄 Auto-update ${DATE} - ${TOTAL} invaders, ${CHANGES} changements"
+          git pull --rebase origin main
+          git push

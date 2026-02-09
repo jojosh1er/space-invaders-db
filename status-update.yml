@@ -1,0 +1,90 @@
+name: 🔄 Status Update
+description: Report a status change for an existing invader
+title: "[Status Update] {INVADER_ID}"
+labels: ["status-update"]
+body:
+  - type: input
+    id: invader_id
+    attributes:
+      label: Invader ID
+      description: "The invader identifier (e.g. PA_1529, LDN_42)"
+      placeholder: "PA_1529"
+    validations:
+      required: true
+
+  - type: input
+    id: city
+    attributes:
+      label: City
+      description: "City code"
+      placeholder: "PA"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: new_status
+    attributes:
+      label: New observed status
+      options:
+        - OK
+        - Damaged
+        - A little damaged
+        - Destroyed
+        - Hidden
+        - Unknown
+    validations:
+      required: true
+
+  - type: input
+    id: latitude
+    attributes:
+      label: Latitude
+      description: "GPS latitude (optional, for location correction)"
+      placeholder: "48.856614"
+    validations:
+      required: false
+
+  - type: input
+    id: longitude
+    attributes:
+      label: Longitude
+      description: "GPS longitude (optional, for location correction)"
+      placeholder: "2.352222"
+    validations:
+      required: false
+
+  - type: input
+    id: accuracy
+    attributes:
+      label: GPS Accuracy
+      description: "GPS accuracy in meters (optional)"
+      placeholder: "±10"
+    validations:
+      required: false
+
+  - type: input
+    id: image_invader
+    attributes:
+      label: Image invader
+      description: "URL of the invader photo (optional)"
+      placeholder: "https://..."
+    validations:
+      required: false
+
+  - type: input
+    id: image_location
+    attributes:
+      label: Image location
+      description: "URL of the location/street photo (optional)"
+      placeholder: "https://..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: "Any additional information"
+      placeholder: "Observed on 2025-01-15, partially covered by a pipe"
+    validations:
+      required: false
