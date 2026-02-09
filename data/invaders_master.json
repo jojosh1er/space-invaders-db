@@ -41391,11 +41391,11 @@
     "city": "PA",
     "landing_date": "01/04/2002",
     "status_date": "octobre 2022",
-    "status_source": "community_issue",
-    "previous_status": "OK",
-    "previous_status_date": "octobre 2022",
+    "status_source": "report",
     "status_updated": "2026-02-09T17:25:18Z",
-    "status_issue": 4
+    "status_issue": 4,
+    "previous_status": "OK",
+    "previous_status_date": "octobre 2022"
   },
   {
     "id": "PA_474",
