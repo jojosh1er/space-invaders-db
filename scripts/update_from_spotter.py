@@ -135,7 +135,7 @@ import os
 import time
 import math
 import asyncio
-from datetime import datetime
+from datetime import datetime, timedelta
 from collections import defaultdict
 from urllib.request import urlopen, Request
 from urllib.parse import quote, unquote
@@ -2585,6 +2585,10 @@ def merge_databases(github_db, spotter_statuses, community_reports=None, previou
     Version v4 : Gestion de l'historique des statuts
     - Quand un statut change, sauvegarde previous_status et previous_status_date
     - Copie les nouveaux champs v4 : landing_date, status_date, status_source
+    
+    Version v5 : Protection des statuts communautaires
+    - Les statuts mis à jour via issue GitHub (< 90 jours) ne sont PAS écrasés par le scraping
+    - Double vérification : master (status_source) + changelog (source github-*)
     """
     print("\n🔀 Fusion des données...")
     
@@ -2609,6 +2613,36 @@ def merge_databases(github_db, spotter_statuses, community_reports=None, previou
         for inv in previous_db:
             name = inv.get('id', inv.get('name', '')).upper().replace('-', '_')
             previous_by_name[name] = inv
+    
+    # V5: Charger le changelog pour détecter les mises à jour communautaires récentes
+    # C'est une deuxième source de vérité en cas de perte du marqueur dans le master
+    community_issue_from_changelog = {}
+    if CHANGELOG_FILE.exists():
+        try:
+            with open(_p(CHANGELOG_FILE), 'r', encoding='utf-8') as f:
+                changelog = json.load(f)
+            cutoff_date = datetime.now() - timedelta(days=90)
+            for entry in changelog.get('changes', []):
+                source = entry.get('source', '')
+                if source.startswith('github-'):
+                    try:
+                        entry_date = datetime.fromisoformat(entry['detected_at'].replace('Z', '+00:00'))
+                        if entry_date.tzinfo:
+                            entry_date = entry_date.replace(tzinfo=None)
+                        if entry_date > cutoff_date:
+                            inv_id = entry.get('invader_id', '').upper().replace('-', '_')
+                            if inv_id:
+                                community_issue_from_changelog[inv_id] = {
+                                    'status': entry.get('new_value', ''),
+                                    'date': entry['detected_at'],
+                                    'source': source,
+                                }
+                    except (ValueError, TypeError):
+                        pass
+            if community_issue_from_changelog:
+                print(f"   🛡️ {len(community_issue_from_changelog)} statuts communautaires protégés (changelog)")
+        except:
+            pass
     
     # Construire l'ensemble des noms GitHub (toutes variantes)
     github_names = set()
@@ -2690,14 +2724,18 @@ def merge_databases(github_db, spotter_statuses, community_reports=None, previou
             
             # V5: Vérifier si le statut actuel vient d'une issue communautaire récente
             # Si oui, ne PAS écraser avec le statut Spotter (l'issue est plus fiable/récente)
+            # Double vérification : 1) master (status_source) 2) changelog (source github-*)
             skip_status_update = False
+            
+            # Source 1: marqueur dans le master (previous_db)
             if norm_name in previous_by_name:
                 prev = previous_by_name[norm_name]
                 if prev.get('status_source') == 'community_issue' and prev.get('status_updated'):
                     try:
                         issue_date = datetime.fromisoformat(prev['status_updated'].replace('Z', '+00:00'))
-                        # L'issue a moins de 90 jours → on la respecte
-                        days_since_issue = (datetime.now(issue_date.tzinfo) - issue_date).days if issue_date.tzinfo else (datetime.now() - issue_date).days
+                        if issue_date.tzinfo:
+                            issue_date = issue_date.replace(tzinfo=None)
+                        days_since_issue = (datetime.now() - issue_date).days
                         if days_since_issue < 90:
                             skip_status_update = True
                             # Conserver le statut de l'issue
@@ -2705,8 +2743,23 @@ def merge_databases(github_db, spotter_statuses, community_reports=None, previou
                             updated_inv['status_source'] = prev.get('status_source')
                             updated_inv['status_updated'] = prev.get('status_updated')
                             updated_inv['status_issue'] = prev.get('status_issue')
+                            preserved_count += 1
                     except (ValueError, TypeError):
                         pass
+            
+            # Source 2: changelog (filet de sécurité si le master a perdu le marqueur)
+            if not skip_status_update and norm_name in community_issue_from_changelog:
+                cl_entry = community_issue_from_changelog[norm_name]
+                cl_status = cl_entry.get('status', '').lower()
+                # Le changelog dit que cet invader a été mis à jour par une issue récente
+                # et le scraping veut remettre un statut différent → on bloque
+                if cl_status and cl_status != new_status_lower:
+                    skip_status_update = True
+                    updated_inv['status'] = cl_entry['status']
+                    updated_inv['status_source'] = 'community_issue'
+                    updated_inv['status_updated'] = cl_entry['date']
+                    preserved_count += 1
+                    print(f"   🛡️ {norm_name}: statut '{cl_entry['status']}' préservé (changelog, {cl_entry['source']})")
             
             # V4: Le parsing textuel est fiable, on fait confiance au nouveau statut
             if not skip_status_update and new_status_lower != old_status_lower:
