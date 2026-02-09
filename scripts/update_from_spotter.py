@@ -4225,7 +4225,7 @@ async def main_async():
                     "field": "status",
                     "old_value": c.get('old_status', ''),
                     "new_value": c.get('new_status', ''),
-                    "detected_at": c.get('date', datetime.now().isoformat()),
+                    "detected_at": datetime.now().isoformat(),
                     "source": f"github-{c.get('source', 'issue')}"
                 })
             changelog['last_check'] = datetime.now().isoformat()
@@ -4521,7 +4521,7 @@ async def main_async():
                     "field": "status",
                     "old_value": c.get('old_status', ''),
                     "new_value": c.get('new_status', ''),
-                    "detected_at": c.get('date', datetime.now().isoformat()),
+                    "detected_at": datetime.now().isoformat(),
                     "source": changelog_source
                 })
             changelog['last_check'] = datetime.now().isoformat()
