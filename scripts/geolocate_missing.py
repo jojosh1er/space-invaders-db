@@ -18,17 +18,21 @@ Sources (par ordre de priorité):
 Modes d'utilisation:
 
 1. Mode classique (fichier invaders avec coords existantes):
-   python invader_location_search_v2.py invaders_updated.json --city AMI --limit 10 --visible
+   python geolocate_missing.py invaders_master.json --city AMI --limit 10 --visible
 
 2. Mode invaders manquants (depuis invaders_missing_from_github.json):
-   python invader_location_search_v2.py --from-missing invaders_missing_from_github.json --city ORLN --limit 5 --visible
+   python geolocate_missing.py --from-missing invaders_missing_from_github.json --city ORLN --limit 5 --visible
 
-3. Fusion des résultats avec invaders_updated.json:
-   python invader_location_search_v2.py --merge invaders_geolocated.json --backup
+3. Mode master (invaders sans coords ou au centre-ville):
+   python geolocate_missing.py --from-master --city PA --limit 20 --visible
+
+4. Fusion des résultats avec invaders_master.json:
+   python geolocate_missing.py --merge invaders_relocalized.json --backup
 
 Options:
     --from-missing FILE   Utiliser ce fichier comme source (format missing_from_github)
-    --merge FILE          Fusionner FILE avec invaders_updated.json
+    --from-master         Scanner le master et géolocaliser les invaders mal localisés
+    --merge FILE          Fusionner FILE avec invaders_master.json
     --city PA             Filtrer par ville
     --limit 100           Limiter le nombre d'invaders
     --verbose             Mode verbeux
@@ -109,28 +113,23 @@ CITY_NAMES = {
 
 # Centres des villes (fallback si aucune géolocalisation trouvée)
 CITY_CENTERS = {
+    # France
     'PA': {'lat': 48.8566, 'lng': 2.3522, 'name': 'Paris'},
     'LY': {'lat': 45.7640, 'lng': 4.8357, 'name': 'Lyon'},
     'MARS': {'lat': 43.2965, 'lng': 5.3698, 'name': 'Marseille'},
-    'LDN': {'lat': 51.5074, 'lng': -0.1278, 'name': 'London'},
-    'NY': {'lat': 40.7128, 'lng': -74.0060, 'name': 'New York'},
-    'LA': {'lat': 34.0522, 'lng': -118.2437, 'name': 'Los Angeles'},
-    'TK': {'lat': 35.6762, 'lng': 139.6503, 'name': 'Tokyo'},
-    'ROM': {'lat': 41.9028, 'lng': 12.4964, 'name': 'Rome'},
-    'BCN': {'lat': 41.3851, 'lng': 2.1734, 'name': 'Barcelona'},
-    'BKK': {'lat': 13.7563, 'lng': 100.5018, 'name': 'Bangkok'},
-    'HK': {'lat': 22.3193, 'lng': 114.1694, 'name': 'Hong Kong'},
-    'MIA': {'lat': 25.7617, 'lng': -80.1918, 'name': 'Miami'},
-    'SD': {'lat': 32.7157, 'lng': -117.1611, 'name': 'San Diego'},
-    'AMS': {'lat': 52.3676, 'lng': 4.9041, 'name': 'Amsterdam'},
     'TLS': {'lat': 43.6047, 'lng': 1.4442, 'name': 'Toulouse'},
     'BDX': {'lat': 44.8378, 'lng': -0.5792, 'name': 'Bordeaux'},
     'NA': {'lat': 47.2184, 'lng': -1.5536, 'name': 'Nantes'},
+    'NTE': {'lat': 47.2184, 'lng': -1.5536, 'name': 'Nantes'},
     'LIL': {'lat': 50.6292, 'lng': 3.0573, 'name': 'Lille'},
+    'LILE': {'lat': 50.6292, 'lng': 3.0573, 'name': 'Lille'},
+    'LILL': {'lat': 50.6292, 'lng': 3.0573, 'name': 'Lille'},
     'STR': {'lat': 48.5734, 'lng': 7.7521, 'name': 'Strasbourg'},
+    'STRG': {'lat': 48.5734, 'lng': 7.7521, 'name': 'Strasbourg'},
     'MTP': {'lat': 43.6108, 'lng': 3.8767, 'name': 'Montpellier'},
     'MPL': {'lat': 43.6108, 'lng': 3.8767, 'name': 'Montpellier'},
     'NICE': {'lat': 43.7102, 'lng': 7.2620, 'name': 'Nice'},
+    'NP': {'lat': 43.7102, 'lng': 7.2620, 'name': 'Nice'},
     'AMI': {'lat': 49.8941, 'lng': 2.2958, 'name': 'Amiens'},
     'ORLN': {'lat': 47.9029, 'lng': 1.9039, 'name': 'Orléans'},
     'DIJ': {'lat': 47.3220, 'lng': 5.0415, 'name': 'Dijon'},
@@ -140,15 +139,132 @@ CITY_CENTERS = {
     'NIM': {'lat': 43.8367, 'lng': 4.3601, 'name': 'Nîmes'},
     'CLR': {'lat': 45.7772, 'lng': 3.0870, 'name': 'Clermont-Ferrand'},
     'RN': {'lat': 48.1173, 'lng': -1.6778, 'name': 'Rennes'},
+    'RNS': {'lat': 48.1173, 'lng': -1.6778, 'name': 'Rennes'},
+    'VRS': {'lat': 48.8014, 'lng': 2.1301, 'name': 'Versailles'},
+    'VER': {'lat': 48.8014, 'lng': 2.1301, 'name': 'Versailles'},
+    'REIM': {'lat': 49.2583, 'lng': 4.0317, 'name': 'Reims'},
+    'BAB': {'lat': 43.4832, 'lng': -1.5586, 'name': 'Bayonne-Anglet-Biarritz'},
+    'FTBL': {'lat': 48.4010, 'lng': 2.7024, 'name': 'Fontainebleau'},
+    'PAU': {'lat': 43.2965, 'lng': -0.3708, 'name': 'Pau'},
+    'PRP': {'lat': 42.6988, 'lng': 2.8948, 'name': 'Perpignan'},
+    'MTB': {'lat': 44.0171, 'lng': 1.3527, 'name': 'Montauban'},
+    'CAPF': {'lat': 44.6357, 'lng': -1.2479, 'name': 'Cap Ferret'},
+    'CAZ': {'lat': 43.2141, 'lng': 5.5378, 'name': 'Cassis'},
+    'LCT': {'lat': 43.1748, 'lng': 5.6095, 'name': 'La Ciotat'},
+    'LBR': {'lat': 43.8324, 'lng': 5.3658, 'name': 'Luberon'},
+    'FRQ': {'lat': 43.9600, 'lng': 5.7810, 'name': 'Forcalquier'},
+    'MEN': {'lat': 43.7764, 'lng': 7.5048, 'name': 'Menton'},
+    'CON': {'lat': 44.0900, 'lng': -1.3150, 'name': 'Contis'},
+    'VLMO': {'lat': 45.4553, 'lng': 6.4506, 'name': 'Valmorel'},
+    'REUN': {'lat': -21.1151, 'lng': 55.5364, 'name': 'La Réunion'},
+    # UK
+    'LDN': {'lat': 51.5074, 'lng': -0.1278, 'name': 'London'},
+    'MAN': {'lat': 53.4808, 'lng': -2.2426, 'name': 'Manchester'},
+    'NCL': {'lat': 54.9783, 'lng': -1.6178, 'name': 'Newcastle'},
+    # Europe
+    'BCN': {'lat': 41.3851, 'lng': 2.1734, 'name': 'Barcelona'},
+    'BRC': {'lat': 41.3851, 'lng': 2.1734, 'name': 'Barcelona'},
+    'ROM': {'lat': 41.9028, 'lng': 12.4964, 'name': 'Rome'},
+    'RAV': {'lat': 44.4184, 'lng': 12.2035, 'name': 'Ravenna'},
+    'RA': {'lat': 44.4184, 'lng': 12.2035, 'name': 'Ravenna'},
+    'FLRN': {'lat': 43.7696, 'lng': 11.2558, 'name': 'Florence'},
+    'MLN': {'lat': 45.4642, 'lng': 9.1900, 'name': 'Milan'},
+    'VRN': {'lat': 25.2854, 'lng': 82.9990, 'name': 'Varanasi'},
+    'MLGA': {'lat': 36.7213, 'lng': -4.4214, 'name': 'Malaga'},
+    'BBO': {'lat': 43.2630, 'lng': -2.9350, 'name': 'Bilbao'},
+    'AMS': {'lat': 52.3676, 'lng': 4.9041, 'name': 'Amsterdam'},
+    'RTD': {'lat': 51.9225, 'lng': 4.4792, 'name': 'Rotterdam'},
+    'NOO': {'lat': 52.2361, 'lng': 4.4303, 'name': 'Noordwijk'},
     'BRL': {'lat': 52.5200, 'lng': 13.4050, 'name': 'Berlin'},
     'MUN': {'lat': 48.1351, 'lng': 11.5820, 'name': 'Munich'},
+    'KLN': {'lat': 50.9375, 'lng': 6.9603, 'name': 'Cologne'},
+    'FKF': {'lat': 50.1109, 'lng': 8.6821, 'name': 'Frankfurt'},
     'WN': {'lat': 48.2082, 'lng': 16.3738, 'name': 'Vienna'},
     'BXL': {'lat': 50.8503, 'lng': 4.3517, 'name': 'Brussels'},
-    'VRS': {'lat': 48.8014, 'lng': 2.1301, 'name': 'Versailles'},
-    'RAV': {'lat': 44.4184, 'lng': 12.2035, 'name': 'Ravenna'},
-    'BBO': {'lat': 43.2630, 'lng': -2.9350, 'name': 'Bilbao'},
-    'MAN': {'lat': 53.4808, 'lng': -2.2426, 'name': 'Manchester'},
+    'CHAR': {'lat': 50.4108, 'lng': 4.4446, 'name': 'Charleroi'},
+    'ANVR': {'lat': 51.2194, 'lng': 4.4025, 'name': 'Antwerp'},
+    'BRN': {'lat': 46.9480, 'lng': 7.4474, 'name': 'Bern'},
+    'BSL': {'lat': 47.5596, 'lng': 7.5886, 'name': 'Basel'},
+    'GNV': {'lat': 46.2044, 'lng': 6.1432, 'name': 'Geneva'},
+    'LSN': {'lat': 46.5197, 'lng': 6.6323, 'name': 'Lausanne'},
+    'ANZR': {'lat': 46.3100, 'lng': 7.3870, 'name': 'Anzère'},
+    'LJU': {'lat': 46.0569, 'lng': 14.5058, 'name': 'Ljubljana'},
+    'PRT': {'lat': -31.9505, 'lng': 115.8605, 'name': 'Perth'},
+    'FAO': {'lat': 37.0194, 'lng': -7.9322, 'name': 'Faro'},
+    'LSN': {'lat': 46.5197, 'lng': 6.6323, 'name': 'Lausanne'},
     'IST': {'lat': 41.0082, 'lng': 28.9784, 'name': 'Istanbul'},
+    'RVK': {'lat': 64.1466, 'lng': -21.9426, 'name': 'Reykjavik'},
+    'HALM': {'lat': 56.6745, 'lng': 12.8578, 'name': 'Halmstad'},
+    'VSB': {'lat': 57.6349, 'lng': 18.2948, 'name': 'Visby'},
+    'GRU': {'lat': 43.2615, 'lng': 17.0186, 'name': 'Gruž'},
+    # Africa
+    'MRAK': {'lat': 31.6295, 'lng': -7.9811, 'name': 'Marrakech'},
+    'RBA': {'lat': 34.0209, 'lng': -6.8416, 'name': 'Rabat'},
+    'DJBA': {'lat': 33.8076, 'lng': 10.8451, 'name': 'Djerba'},
+    'MBSA': {'lat': -4.0435, 'lng': 39.6682, 'name': 'Mombasa'},
+    # Asia
+    'TK': {'lat': 35.6762, 'lng': 139.6503, 'name': 'Tokyo'},
+    'HK': {'lat': 22.3193, 'lng': 114.1694, 'name': 'Hong Kong'},
+    'BKK': {'lat': 13.7563, 'lng': 100.5018, 'name': 'Bangkok'},
+    'BGK': {'lat': 13.7563, 'lng': 100.5018, 'name': 'Bangkok'},
+    'KAT': {'lat': 27.7172, 'lng': 85.3240, 'name': 'Kathmandu'},
+    'DHK': {'lat': 23.8103, 'lng': 90.4125, 'name': 'Dhaka'},
+    'DJN': {'lat': 36.3504, 'lng': 127.3845, 'name': 'Daejeon'},
+    'SL': {'lat': 37.5665, 'lng': 126.9780, 'name': 'Seoul'},
+    'BT': {'lat': 27.4712, 'lng': 89.6339, 'name': 'Bhutan'},
+    'CCU': {'lat': 21.1619, 'lng': -86.8515, 'name': 'Cancún'},
+    # Americas
+    'NY': {'lat': 40.7128, 'lng': -74.0060, 'name': 'New York'},
+    'LA': {'lat': 34.0522, 'lng': -118.2437, 'name': 'Los Angeles'},
+    'MIA': {'lat': 25.7617, 'lng': -80.1918, 'name': 'Miami'},
+    'SD': {'lat': 32.7157, 'lng': -117.1611, 'name': 'San Diego'},
+    'SP': {'lat': -23.5505, 'lng': -46.6333, 'name': 'São Paulo'},
+    'POTI': {'lat': -19.5836, 'lng': -65.7531, 'name': 'Potosí'},
+    # Oceania
+    'MLB': {'lat': -37.8136, 'lng': 144.9631, 'name': 'Melbourne'},
+    # Corse / Méditerranée
+    'BTA': {'lat': 42.6973, 'lng': 9.4510, 'name': 'Bastia'},
+    # Autres / Spéciaux
+    'ELT': {'lat': 29.5577, 'lng': 34.9519, 'name': 'Eilat'},
+    'GRTI': {'lat': 29.0333, 'lng': -13.6333, 'name': 'Graciosa'},
+    'RDU': {'lat': 50.3543, 'lng': 5.4563, 'name': 'Durbuy'},
+    'SPACE': {'lat': 0.0, 'lng': 0.0, 'name': 'Space (ISS)'},
+    # Alias supplémentaires Flask
+    'NCE': {'lat': 43.7102, 'lng': 7.2620, 'name': 'Nice'},
+    'FLR': {'lat': 43.7696, 'lng': 11.2558, 'name': 'Florence'},
+    'MIL': {'lat': 45.4642, 'lng': 9.1900, 'name': 'Milan'},
+    'SF': {'lat': 37.7749, 'lng': -122.4194, 'name': 'San Francisco'},
+    'SIN': {'lat': 1.3521, 'lng': 103.8198, 'name': 'Singapore'},
+    'MAD': {'lat': 40.4168, 'lng': -3.7038, 'name': 'Madrid'},
+    'PRG': {'lat': 50.0755, 'lng': 14.4378, 'name': 'Prague'},
+    'WAR': {'lat': 52.2297, 'lng': 21.0122, 'name': 'Warsaw'},
+    'SYD': {'lat': -33.8688, 'lng': 151.2093, 'name': 'Sydney'},
+    'BHM': {'lat': 52.4862, 'lng': -1.8904, 'name': 'Birmingham'},
+    'CF': {'lat': 44.6357, 'lng': -1.2479, 'name': 'Cap Ferret'},
+    'CFT': {'lat': 44.6357, 'lng': -1.2479, 'name': 'Cap Ferret'},
+    'CFRT': {'lat': 44.6357, 'lng': -1.2479, 'name': 'Cap Ferret'},
+    'CAP': {'lat': 48.6815, 'lng': -2.3182, 'name': 'Cap Fréhel'},
+    'ARN': {'lat': 44.6608, 'lng': -1.1680, 'name': 'Arcachon'},
+    'ARC': {'lat': 44.6608, 'lng': -1.1680, 'name': 'Arcachon'},
+    'RON': {'lat': 45.6222, 'lng': -1.0284, 'name': 'Royan'},
+    'ROY': {'lat': 45.6222, 'lng': -1.0284, 'name': 'Royan'},
+    'LROC': {'lat': 46.1603, 'lng': -1.1511, 'name': 'La Rochelle'},
+    'LRC': {'lat': 46.1603, 'lng': -1.1511, 'name': 'La Rochelle'},
+    'BRG': {'lat': 51.2093, 'lng': 3.2247, 'name': 'Bruges'},
+    'BRUG': {'lat': 51.2093, 'lng': 3.2247, 'name': 'Bruges'},
+    'LIS': {'lat': 38.7223, 'lng': -9.1393, 'name': 'Lisbonne'},
+    'LX': {'lat': 38.7223, 'lng': -9.1393, 'name': 'Lisbonne'},
+    'LSB': {'lat': 38.7223, 'lng': -9.1393, 'name': 'Lisbonne'},
+    'GEN': {'lat': 44.4056, 'lng': 8.9463, 'name': 'Gênes'},
+    'GNS': {'lat': 44.4056, 'lng': 8.9463, 'name': 'Gênes'},
+    'NPL': {'lat': 40.8518, 'lng': 14.2681, 'name': 'Naples'},
+    'NAP': {'lat': 40.8518, 'lng': 14.2681, 'name': 'Naples'},
+    'VEN': {'lat': 45.4408, 'lng': 12.3155, 'name': 'Venise'},
+    'VCE': {'lat': 45.4408, 'lng': 12.3155, 'name': 'Venise'},
+    'TUN': {'lat': 36.8065, 'lng': 10.1815, 'name': 'Tunis'},
+    'TN': {'lat': 36.8065, 'lng': 10.1815, 'name': 'Tunis'},
+    'LEGE': {'lat': 44.6357, 'lng': -1.2479, 'name': 'Lège-Cap-Ferret'},
+    'LGF': {'lat': 44.6357, 'lng': -1.2479, 'name': 'Lège-Cap-Ferret'},
 }
 
 
@@ -2249,6 +2365,91 @@ def interactive_google_lens(inv_id, image_url, city_name, searcher):
         return None
 
 
+def interactive_manual_address(inv_id, city_name):
+    """
+    Mode interactif sans image: demander une adresse à l'utilisateur.
+    Si l'utilisateur ne saisit rien, retourne None (fallback au centre-ville).
+    
+    Returns:
+        dict: {'found': bool, 'lat': float, 'lng': float, 'address': str} ou None si skip
+    """
+    print(f"\n   📝 SAISIE MANUELLE pour {inv_id}")
+    print(f"   ┌─────────────────────────────────────────────────────────────")
+    print(f"   │ 🏙️ Ville: {city_name}")
+    print(f"   │ Pas d'image disponible pour Google Lens")
+    print(f"   └─────────────────────────────────────────────────────────────")
+    print(f"   Entrez l'adresse (ou Entrée pour centre-ville, 'skip', 'quit'):")
+    
+    try:
+        user_input = input("   >>> ").strip()
+    except (KeyboardInterrupt, EOFError):
+        print("\n   ⏹️  Mode interactif interrompu")
+        return None
+    
+    if not user_input or user_input.lower() == 'skip':
+        print(f"   ⏭️  Fallback centre-ville")
+        return None
+    
+    if user_input.lower() == 'quit':
+        print(f"   ⏹️  Arrêt du mode interactif")
+        raise KeyboardInterrupt("User quit")
+    
+    # Ajouter la ville si pas déjà présente
+    address = user_input
+    if city_name and city_name.lower() not in address.lower():
+        address = f"{user_input}, {city_name}"
+    
+    # Géocoder l'adresse via Nominatim
+    print(f"   🗺️  Géocodage de: {address}...")
+    
+    try:
+        url = "https://nominatim.openstreetmap.org/search"
+        params = {
+            'q': address,
+            'format': 'json',
+            'limit': 1
+        }
+        response = requests.get(url, params=params, headers={
+            'User-Agent': 'InvaderHunter/2.0'
+        }, timeout=10)
+        
+        if response.status_code == 200:
+            results = response.json()
+            if results:
+                lat = float(results[0]['lat'])
+                lng = float(results[0]['lon'])
+                display_name = results[0].get('display_name', '')
+                
+                if abs(lat) < 0.01 and abs(lng) < 0.01:
+                    print(f"   ❌ Coordonnées invalides (0,0)")
+                    return None
+                
+                print(f"   ✅ Trouvé: {lat:.6f}, {lng:.6f}")
+                print(f"      📍 {display_name[:60]}...")
+                
+                return {
+                    'found': True,
+                    'lat': lat,
+                    'lng': lng,
+                    'address': user_input,
+                    'address_geocoded': display_name
+                }
+            else:
+                print(f"   ❌ Adresse non trouvée par Nominatim")
+                print(f"   Réessayer avec une autre adresse? (ou 'skip'):")
+                retry = input("   >>> ").strip()
+                if retry and retry.lower() != 'skip':
+                    return interactive_manual_address(inv_id, city_name)
+                return None
+        else:
+            print(f"   ❌ Erreur HTTP {response.status_code}")
+            return None
+            
+    except Exception as e:
+        print(f"   ❌ Erreur: {e}")
+        return None
+
+
 def process_missing_invaders(missing_file, output_file, searcher, city_filter=None, limit=None, pause=1.0, interactive=False):
     """
     Traite les invaders depuis invaders_missing_from_github.json
@@ -2397,10 +2598,14 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
             
             # Fallback interactif: proposer Google Lens si mode interactif activé
             found_via_fallback = (exif_result and exif_result.get('found')) or (ocr_result and ocr_result.get('found'))
-            if not found_via_fallback and interactive and image_lieu_url:
-                interactive_result = interactive_google_lens(
-                    inv_id, image_lieu_url, city_name, searcher
-                )
+            if not found_via_fallback and interactive:
+                if image_lieu_url:
+                    interactive_result = interactive_google_lens(
+                        inv_id, image_lieu_url, city_name, searcher
+                    )
+                else:
+                    # Pas d'image: proposer la saisie manuelle d'adresse
+                    interactive_result = interactive_manual_address(inv_id, city_name)
                 if interactive_result and interactive_result.get('found'):
                     new_inv['lat'] = interactive_result['lat']
                     new_inv['lng'] = interactive_result['lng']
@@ -2595,6 +2800,7 @@ def main():
     
     parser.add_argument('invaders_file', nargs='?', help='Fichier JSON des invaders (mode classique, défaut: data/invaders_master.json)')
     parser.add_argument('--from-missing', dest='missing_file', help='Fichier invaders_missing_from_github.json (défaut: data/)')
+    parser.add_argument('--from-master', action='store_true', help='Géolocaliser les invaders du master sans coordonnées ou au centre-ville')
     parser.add_argument('--merge', dest='merge_file', help='Fusionner ce fichier avec invaders_master.json')
     parser.add_argument('--city', '-c', help='Filtrer par code ville (ex: AMI)')
     parser.add_argument('--limit', '-l', type=int, help='Nombre max d\'invaders')
@@ -2619,6 +2825,152 @@ def main():
             dry_run=args.dry_run,
             verbose=args.verbose
         )
+        return
+    
+    # =========================================================================
+    # Mode --from-master: géolocaliser les invaders mal localisés du master
+    # =========================================================================
+    if args.from_master:
+        if not MASTER_FILE.exists():
+            print(f"❌ Fichier master non trouvé: {MASTER_FILE}")
+            return
+        
+        print(f"📂 Chargement du master: {MASTER_FILE.name}...")
+        with open(_p(MASTER_FILE), 'r', encoding='utf-8') as f:
+            master_db = json.load(f)
+        print(f"   {len(master_db)} invaders chargés")
+        
+        # Centres des villes connus (utilise le dictionnaire global CITY_CENTERS)
+        city_centers_coords = {code: (info['lat'], info['lng']) for code, info in CITY_CENTERS.items()}
+        
+        def is_poorly_located(inv):
+            """Détermine si un invader a besoin d'être re-géolocalisé."""
+            lat = inv.get('lat')
+            lng = inv.get('lng')
+            
+            # Pas de coordonnées
+            if lat is None or lng is None:
+                return True, 'no_coords'
+            if lat == '' or lng == '':
+                return True, 'no_coords'
+            
+            try:
+                lat, lng = float(lat), float(lng)
+            except (ValueError, TypeError):
+                return True, 'invalid_coords'
+            
+            # Coordonnées à zéro
+            if lat == 0 and lng == 0:
+                return True, 'zero_coords'
+            if abs(lat) < 0.001 and abs(lng) < 0.001:
+                return True, 'near_zero'
+            
+            # Marqué explicitement comme inconnu
+            if inv.get('location_unknown') is True:
+                return True, 'location_unknown'
+            
+            # Source = city_center
+            if inv.get('geo_source') == 'city_center':
+                return True, 'city_center_tag'
+            
+            # Confiance très basse
+            if inv.get('geo_confidence') == 'very_low':
+                return True, 'very_low_confidence'
+            
+            # Coordonnées = centre-ville connu
+            # On ne flagge que les invaders dont les coords correspondent EXACTEMENT
+            # aux valeurs de notre dictionnaire CITY_CENTERS (4 décimales),
+            # car c'est notre script qui les a placés là en fallback.
+            city = inv.get('city', '').upper()
+            if city in city_centers_coords:
+                c_lat, c_lng = city_centers_coords[city]
+                if round(lat, 4) == round(c_lat, 4) and round(lng, 4) == round(c_lng, 4):
+                    return True, 'at_city_center'
+            
+            return False, None
+        
+        # Filtrer par ville
+        candidates = master_db
+        if args.city:
+            candidates = [inv for inv in candidates if inv.get('city', '').upper() == args.city.upper()]
+            print(f"   {len(candidates)} invaders pour {args.city}")
+        
+        # Identifier les mal localisés
+        poorly_located = []
+        reasons_count = {}
+        for inv in candidates:
+            needs_geo, reason = is_poorly_located(inv)
+            if needs_geo:
+                poorly_located.append(inv)
+                reasons_count[reason] = reasons_count.get(reason, 0) + 1
+        
+        print(f"\n📊 {len(poorly_located)} invaders à re-géolocaliser sur {len(candidates)}:")
+        for reason, count in sorted(reasons_count.items(), key=lambda x: -x[1]):
+            labels = {
+                'no_coords': '📭 Pas de coordonnées',
+                'invalid_coords': '❌ Coordonnées invalides',
+                'zero_coords': '0️⃣ Coordonnées à zéro',
+                'near_zero': '0️⃣ Coordonnées proches de zéro',
+                'location_unknown': '❓ Marqué location_unknown',
+                'city_center_tag': '🏙️ Source = city_center',
+                'very_low_confidence': '🔴 Confiance very_low',
+                'at_city_center': '📍 Au centre-ville exact',
+            }
+            print(f"   {labels.get(reason, reason)}: {count}")
+        
+        if not poorly_located:
+            print("✅ Tous les invaders ont des coordonnées valides!")
+            return
+        
+        # Limiter
+        if args.limit:
+            poorly_located = poorly_located[:args.limit]
+            print(f"   Limité à {len(poorly_located)} invaders")
+        
+        # Convertir au format attendu par process_missing_invaders
+        tmp_file = _p(DATA_DIR / '_tmp_poorly_located.json')
+        missing_format = []
+        for inv in poorly_located:
+            missing_format.append({
+                'name': inv.get('id', inv.get('name', '')),
+                'city': inv.get('city', ''),
+                'status': inv.get('status', 'OK'),
+                'points': inv.get('points', 0),
+                'image_invader': inv.get('image_invader'),
+                'image_lieu': inv.get('image_lieu'),
+                'landing_date': inv.get('landing_date'),
+                'status_date': inv.get('status_date'),
+            })
+        
+        with open(tmp_file, 'w', encoding='utf-8') as f:
+            json.dump(missing_format, f, indent=2, ensure_ascii=False)
+        
+        # Lancer le searcher
+        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose)
+        try:
+            searcher.start()
+            print("🌐 Navigateur démarré")
+            
+            output_file = args.output if args.output else _p(DATA_DIR / 'invaders_relocalized.json')
+            
+            process_missing_invaders(
+                missing_file=tmp_file,
+                output_file=output_file,
+                searcher=searcher,
+                city_filter=None,  # Déjà filtré
+                limit=None,        # Déjà limité
+                pause=args.pause,
+                interactive=args.interactive
+            )
+            
+            print(f"\n📋 Pour fusionner avec le master:")
+            print(f"   python geolocate_missing.py --merge {output_file} --backup")
+        finally:
+            searcher.stop()
+            # Nettoyer le fichier temporaire
+            if os.path.exists(tmp_file):
+                os.remove(tmp_file)
+            print("\n🌐 Navigateur fermé")
         return
     
     # =========================================================================
