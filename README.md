@@ -60,7 +60,7 @@ scripts/
 
 ```bash
 # 1. Cloner le repo
-git clone https://github.com/TON_USER/space-invaders-db.git
+git clone https://github.com/jojosh1er/space-invaders-db.git
 cd space-invaders-db
 
 # 2. Installer les dépendances
@@ -138,7 +138,7 @@ Une GitHub Action tourne chaque dimanche à 6h UTC. Elle :
 L'application de chasse pointe directement sur le raw du master :
 
 ```python
-INVADERS_DB_URL = "https://raw.githubusercontent.com/TON_USER/space-invaders-db/main/data/invaders_master.json"
+INVADERS_DB_URL = "https://raw.githubusercontent.com/jojosh1er/space-invaders-db/main/data/invaders_master.json"
 ```
 
 ## 📝 Licence
