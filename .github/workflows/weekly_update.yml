@@ -78,24 +78,57 @@ jobs:
           
           # Vérifier s'il y a des changements
           if git diff --quiet data/; then
-            echo "✅ Aucun changement détecté"
+            echo "✅ Aucun changement détecté" >> $GITHUB_STEP_SUMMARY
             exit 0
           fi
           
-          # Stats pour le message de commit
+          # Stats
           TOTAL=$(python3 -c "import json; print(json.load(open('data/metadata.json'))['total_invaders'])")
-          CHANGES=$(python3 -c "
+          
+          # Générer le résumé
+          python3 -c "
           import json
-          cl = json.load(open('data/invaders_changelog.json'))
-          # Compter les changements récents (dernière heure)
           from datetime import datetime, timedelta
-          cutoff = (datetime.now() - timedelta(hours=1)).isoformat()
+          cl = json.load(open('data/invaders_changelog.json'))
+          cutoff = (datetime.now() - timedelta(hours=2)).isoformat()
           recent = [c for c in cl.get('changes',[]) if c.get('detected_at','') > cutoff]
+          m = json.load(open('data/metadata.json'))
+          
+          lines = []
+          lines.append('## 🛸 Rapport de mise à jour')
+          lines.append('')
+          lines.append(f'| | |')
+          lines.append(f'|---|---|')
+          lines.append(f'| **Total invaders** | {m[\"total_invaders\"]} |')
+          lines.append(f'| **Villes** | {m[\"total_cities\"]} |')
+          lines.append(f'| **Avec coordonnées** | {m.get(\"with_coordinates\", \"?\")} |')
+          lines.append(f'| **Changements** | {len(recent)} |')
+          lines.append('')
+          
+          if recent:
+              lines.append('### Détail des changements')
+              lines.append('')
+              lines.append('| Invader | Ancien statut | Nouveau statut | Source |')
+              lines.append('|---------|--------------|----------------|--------|')
+              for c in recent[:100]:
+                  src = c.get('source', 'spotter')
+                  lines.append(f'| {c.get(\"invader_id\",\"?\")} | {c.get(\"old_value\",\"?\")} | {c.get(\"new_value\",\"?\")} | {src} |')
+              if len(recent) > 100:
+                  lines.append(f'| ... | | {len(recent)-100} autres | |')
+          else:
+              lines.append('_Aucun changement de statut détecté._')
+          
+          with open('summary.md', 'w') as f:
+              f.write('\n'.join(lines))
           print(len(recent))
-          ")
+          " > /tmp/change_count.txt
+          
+          CHANGES=$(cat /tmp/change_count.txt)
+          cat summary.md >> $GITHUB_STEP_SUMMARY
           
           DATE=$(date +"%Y-%m-%d")
           
           git add data/
           git commit -m "🔄 Auto-update ${DATE} - ${TOTAL} invaders, ${CHANGES} changements"
+          git pull --rebase origin main
           git push
