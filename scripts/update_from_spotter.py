@@ -2751,15 +2751,17 @@ def merge_databases(github_db, spotter_statuses, community_reports=None, previou
             if not skip_status_update and norm_name in community_issue_from_changelog:
                 cl_entry = community_issue_from_changelog[norm_name]
                 cl_status = cl_entry.get('status', '').lower()
-                # Le changelog dit que cet invader a été mis à jour par une issue récente
-                # et le scraping veut remettre un statut différent → on bloque
-                if cl_status and cl_status != new_status_lower:
-                    skip_status_update = True
-                    updated_inv['status'] = cl_entry['status']
+                if cl_status:
+                    if cl_status != new_status_lower:
+                        # Conflit : le scraping veut un statut différent → on bloque
+                        skip_status_update = True
+                        updated_inv['status'] = cl_entry['status']
+                        preserved_count += 1
+                        print(f"   🛡️ {norm_name}: statut '{cl_entry['status']}' préservé (changelog, {cl_entry['source']})")
+                    # Dans tous les cas, préserver le marqueur community_issue
+                    # pour que la protection Source 1 fonctionne aux prochains runs
                     updated_inv['status_source'] = 'community_issue'
                     updated_inv['status_updated'] = cl_entry['date']
-                    preserved_count += 1
-                    print(f"   🛡️ {norm_name}: statut '{cl_entry['status']}' préservé (changelog, {cl_entry['source']})")
             
             # V4: Le parsing textuel est fiable, on fait confiance au nouveau statut
             if not skip_status_update and new_status_lower != old_status_lower:
