@@ -25,6 +25,7 @@ jobs:
     
     permissions:
       contents: write  # Nécessaire pour push
+      issues: write    # Nécessaire pour fermer les issues
     
     steps:
       - name: 📥 Checkout
@@ -41,9 +42,12 @@ jobs:
           playwright install chromium
           playwright install-deps
       
-      - name: 🔍 Scrape invader-spotter.art
+      - name: 🔍 Scrape & process issues
+        env:
+          GITHUB_REPO: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
-          ARGS="--headless"
+          ARGS="--headless --add-missing"
           
           # Ville spécifique si demandée
           if [ -n "${{ github.event.inputs.city }}" ]; then
