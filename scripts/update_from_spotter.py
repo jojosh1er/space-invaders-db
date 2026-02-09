@@ -36,6 +36,9 @@ Options:
     --merge-geolocated F Fusionner un fichier d'invaders géolocalisés avec invaders_updated.json
     --limit N           Nombre max d'invaders à traiter (pour --geolocate-missing)
     --addresses-file F  Fichier CSV/RTF avec adresses manuelles (prioritaire)
+    --process-issues    Traiter uniquement les issues GitHub (standalone, sans scraping)
+    --github-repo R     Repo GitHub (défaut: jojosh1er/space-invaders-db ou GITHUB_REPO)
+    --github-token T    Token GitHub (défaut: GITHUB_TOKEN ou PAT_TOKEN)
     --max-retries N     Nombre max de tentatives par ville (défaut: 3)
     --pause N           Pause entre villes en ms (défaut: 1000)
     --existing FILE     Charger un JSON existant pour comparer les statuts (historique)
@@ -167,6 +170,7 @@ def _p(path):
 
 # Configuration
 GITHUB_DB_URL = "https://raw.githubusercontent.com/goguelnikov/SpaceInvaders/main/world_space_invaders_V05.json"
+DEFAULT_GITHUB_REPO = "jojosh1er/space-invaders-db"
 INVADER_SPOTTER_BASE = "https://www.invader-spotter.art"
 
 # Centres des villes (pour fallback si aucune géolocalisation trouvée)
@@ -665,31 +669,120 @@ def geocode_manual_addresses(manual_addresses, verbose=False):
     
     # Centres des villes pour les adresses inconnues
     city_centers = {
+        # France
         'PA': {'lat': 48.8566, 'lng': 2.3522, 'name': 'Paris'},
         'LY': {'lat': 45.7640, 'lng': 4.8357, 'name': 'Lyon'},
         'MARS': {'lat': 43.2965, 'lng': 5.3698, 'name': 'Marseille'},
-        'LDN': {'lat': 51.5074, 'lng': -0.1278, 'name': 'London'},
-        'NY': {'lat': 40.7128, 'lng': -74.0060, 'name': 'New York'},
-        'LA': {'lat': 34.0522, 'lng': -118.2437, 'name': 'Los Angeles'},
-        'TK': {'lat': 35.6762, 'lng': 139.6503, 'name': 'Tokyo'},
-        'ROM': {'lat': 41.9028, 'lng': 12.4964, 'name': 'Rome'},
-        'BCN': {'lat': 41.3851, 'lng': 2.1734, 'name': 'Barcelona'},
-        'BKK': {'lat': 13.7563, 'lng': 100.5018, 'name': 'Bangkok'},
-        'HK': {'lat': 22.3193, 'lng': 114.1694, 'name': 'Hong Kong'},
-        'MIA': {'lat': 25.7617, 'lng': -80.1918, 'name': 'Miami'},
-        'SD': {'lat': 32.7157, 'lng': -117.1611, 'name': 'San Diego'},
-        'RAV': {'lat': 44.4184, 'lng': 12.2035, 'name': 'Ravenna'},
-        'BIL': {'lat': 43.2630, 'lng': -2.9350, 'name': 'Bilbao'},
-        'AMS': {'lat': 52.3676, 'lng': 4.9041, 'name': 'Amsterdam'},
         'TLS': {'lat': 43.6047, 'lng': 1.4442, 'name': 'Toulouse'},
         'BDX': {'lat': 44.8378, 'lng': -0.5792, 'name': 'Bordeaux'},
         'NTE': {'lat': 47.2184, 'lng': -1.5536, 'name': 'Nantes'},
+        'NA': {'lat': 47.2184, 'lng': -1.5536, 'name': 'Nantes'},
         'LILE': {'lat': 50.6292, 'lng': 3.0573, 'name': 'Lille'},
+        'LIL': {'lat': 50.6292, 'lng': 3.0573, 'name': 'Lille'},
+        'LILL': {'lat': 50.6292, 'lng': 3.0573, 'name': 'Lille'},
         'STR': {'lat': 48.5734, 'lng': 7.7521, 'name': 'Strasbourg'},
+        'STRG': {'lat': 48.5734, 'lng': 7.7521, 'name': 'Strasbourg'},
         'MTP': {'lat': 43.6108, 'lng': 3.8767, 'name': 'Montpellier'},
+        'MPL': {'lat': 43.6108, 'lng': 3.8767, 'name': 'Montpellier'},
         'NICE': {'lat': 43.7102, 'lng': 7.2620, 'name': 'Nice'},
+        'NP': {'lat': 43.7102, 'lng': 7.2620, 'name': 'Nice'},
+        'AMI': {'lat': 49.8941, 'lng': 2.2958, 'name': 'Amiens'},
+        'ORLN': {'lat': 47.9029, 'lng': 1.9039, 'name': 'Orléans'},
+        'DIJ': {'lat': 47.3220, 'lng': 5.0415, 'name': 'Dijon'},
+        'GRN': {'lat': 45.1885, 'lng': 5.7245, 'name': 'Grenoble'},
+        'AIX': {'lat': 43.5297, 'lng': 5.4474, 'name': 'Aix-en-Provence'},
+        'AVI': {'lat': 43.9493, 'lng': 4.8055, 'name': 'Avignon'},
+        'NIM': {'lat': 43.8367, 'lng': 4.3601, 'name': 'Nîmes'},
+        'CLR': {'lat': 45.7772, 'lng': 3.0870, 'name': 'Clermont-Ferrand'},
+        'RN': {'lat': 48.1173, 'lng': -1.6778, 'name': 'Rennes'},
+        'RNS': {'lat': 48.1173, 'lng': -1.6778, 'name': 'Rennes'},
         'REIM': {'lat': 49.2583, 'lng': 4.0317, 'name': 'Reims'},
         'VER': {'lat': 48.8014, 'lng': 2.1301, 'name': 'Versailles'},
+        'VRS': {'lat': 48.8014, 'lng': 2.1301, 'name': 'Versailles'},
+        'BAB': {'lat': 43.4832, 'lng': -1.5586, 'name': 'Bayonne-Anglet-Biarritz'},
+        'FTBL': {'lat': 48.4010, 'lng': 2.7024, 'name': 'Fontainebleau'},
+        'PAU': {'lat': 43.2965, 'lng': -0.3708, 'name': 'Pau'},
+        'PRP': {'lat': 42.6988, 'lng': 2.8948, 'name': 'Perpignan'},
+        'MTB': {'lat': 44.0171, 'lng': 1.3527, 'name': 'Montauban'},
+        'CAPF': {'lat': 44.6357, 'lng': -1.2479, 'name': 'Cap Ferret'},
+        'CAZ': {'lat': 43.2141, 'lng': 5.5378, 'name': 'Cassis'},
+        'LCT': {'lat': 43.1748, 'lng': 5.6095, 'name': 'La Ciotat'},
+        'LBR': {'lat': 43.8324, 'lng': 5.3658, 'name': 'Luberon'},
+        'FRQ': {'lat': 43.9600, 'lng': 5.7810, 'name': 'Forcalquier'},
+        'MEN': {'lat': 43.7764, 'lng': 7.5048, 'name': 'Menton'},
+        'CON': {'lat': 44.0900, 'lng': -1.3150, 'name': 'Contis'},
+        'VLMO': {'lat': 45.4553, 'lng': 6.4506, 'name': 'Valmorel'},
+        'REUN': {'lat': -21.1151, 'lng': 55.5364, 'name': 'La Réunion'},
+        'BTA': {'lat': 42.6973, 'lng': 9.4510, 'name': 'Bastia'},
+        # UK
+        'LDN': {'lat': 51.5074, 'lng': -0.1278, 'name': 'London'},
+        'MAN': {'lat': 53.4808, 'lng': -2.2426, 'name': 'Manchester'},
+        'NCL': {'lat': 54.9783, 'lng': -1.6178, 'name': 'Newcastle'},
+        # Europe
+        'BCN': {'lat': 41.3851, 'lng': 2.1734, 'name': 'Barcelona'},
+        'BRC': {'lat': 41.3851, 'lng': 2.1734, 'name': 'Barcelona'},
+        'ROM': {'lat': 41.9028, 'lng': 12.4964, 'name': 'Rome'},
+        'RAV': {'lat': 44.4184, 'lng': 12.2035, 'name': 'Ravenna'},
+        'RA': {'lat': 44.4184, 'lng': 12.2035, 'name': 'Ravenna'},
+        'FLRN': {'lat': 43.7696, 'lng': 11.2558, 'name': 'Florence'},
+        'MLN': {'lat': 45.4642, 'lng': 9.1900, 'name': 'Milan'},
+        'VRN': {'lat': 25.2854, 'lng': 82.9990, 'name': 'Varanasi'},
+        'MLGA': {'lat': 36.7213, 'lng': -4.4214, 'name': 'Malaga'},
+        'BIL': {'lat': 43.2630, 'lng': -2.9350, 'name': 'Bilbao'},
+        'BBO': {'lat': 43.2630, 'lng': -2.9350, 'name': 'Bilbao'},
+        'AMS': {'lat': 52.3676, 'lng': 4.9041, 'name': 'Amsterdam'},
+        'RTD': {'lat': 51.9225, 'lng': 4.4792, 'name': 'Rotterdam'},
+        'NOO': {'lat': 52.2361, 'lng': 4.4303, 'name': 'Noordwijk'},
+        'BRL': {'lat': 52.5200, 'lng': 13.4050, 'name': 'Berlin'},
+        'MUN': {'lat': 48.1351, 'lng': 11.5820, 'name': 'Munich'},
+        'KLN': {'lat': 50.9375, 'lng': 6.9603, 'name': 'Cologne'},
+        'FKF': {'lat': 50.1109, 'lng': 8.6821, 'name': 'Frankfurt'},
+        'WN': {'lat': 48.2082, 'lng': 16.3738, 'name': 'Vienna'},
+        'BXL': {'lat': 50.8503, 'lng': 4.3517, 'name': 'Brussels'},
+        'CHAR': {'lat': 50.4108, 'lng': 4.4446, 'name': 'Charleroi'},
+        'ANVR': {'lat': 51.2194, 'lng': 4.4025, 'name': 'Antwerp'},
+        'BRN': {'lat': 46.9480, 'lng': 7.4474, 'name': 'Bern'},
+        'BSL': {'lat': 47.5596, 'lng': 7.5886, 'name': 'Basel'},
+        'GNV': {'lat': 46.2044, 'lng': 6.1432, 'name': 'Geneva'},
+        'LSN': {'lat': 46.5197, 'lng': 6.6323, 'name': 'Lausanne'},
+        'ANZR': {'lat': 46.3100, 'lng': 7.3870, 'name': 'Anzère'},
+        'LJU': {'lat': 46.0569, 'lng': 14.5058, 'name': 'Ljubljana'},
+        'FAO': {'lat': 37.0194, 'lng': -7.9322, 'name': 'Faro'},
+        'IST': {'lat': 41.0082, 'lng': 28.9784, 'name': 'Istanbul'},
+        'RVK': {'lat': 64.1466, 'lng': -21.9426, 'name': 'Reykjavik'},
+        'HALM': {'lat': 56.6745, 'lng': 12.8578, 'name': 'Halmstad'},
+        'VSB': {'lat': 57.6349, 'lng': 18.2948, 'name': 'Visby'},
+        'GRU': {'lat': 43.2615, 'lng': 17.0186, 'name': 'Gruž'},
+        # Africa
+        'MRAK': {'lat': 31.6295, 'lng': -7.9811, 'name': 'Marrakech'},
+        'RBA': {'lat': 34.0209, 'lng': -6.8416, 'name': 'Rabat'},
+        'DJBA': {'lat': 33.8076, 'lng': 10.8451, 'name': 'Djerba'},
+        'MBSA': {'lat': -4.0435, 'lng': 39.6682, 'name': 'Mombasa'},
+        # Asia
+        'TK': {'lat': 35.6762, 'lng': 139.6503, 'name': 'Tokyo'},
+        'HK': {'lat': 22.3193, 'lng': 114.1694, 'name': 'Hong Kong'},
+        'BKK': {'lat': 13.7563, 'lng': 100.5018, 'name': 'Bangkok'},
+        'BGK': {'lat': 13.7563, 'lng': 100.5018, 'name': 'Bangkok'},
+        'KAT': {'lat': 27.7172, 'lng': 85.3240, 'name': 'Kathmandu'},
+        'DHK': {'lat': 23.8103, 'lng': 90.4125, 'name': 'Dhaka'},
+        'DJN': {'lat': 36.3504, 'lng': 127.3845, 'name': 'Daejeon'},
+        'SL': {'lat': 37.5665, 'lng': 126.9780, 'name': 'Seoul'},
+        'BT': {'lat': 27.4712, 'lng': 89.6339, 'name': 'Bhutan'},
+        'CCU': {'lat': 21.1619, 'lng': -86.8515, 'name': 'Cancún'},
+        # Americas
+        'NY': {'lat': 40.7128, 'lng': -74.0060, 'name': 'New York'},
+        'LA': {'lat': 34.0522, 'lng': -118.2437, 'name': 'Los Angeles'},
+        'MIA': {'lat': 25.7617, 'lng': -80.1918, 'name': 'Miami'},
+        'SD': {'lat': 32.7157, 'lng': -117.1611, 'name': 'San Diego'},
+        'SP': {'lat': -23.5505, 'lng': -46.6333, 'name': 'São Paulo'},
+        'POTI': {'lat': -19.5836, 'lng': -65.7531, 'name': 'Potosí'},
+        # Oceania
+        'PRT': {'lat': -31.9505, 'lng': 115.8605, 'name': 'Perth'},
+        'MLB': {'lat': -37.8136, 'lng': 144.9631, 'name': 'Melbourne'},
+        # Autres
+        'ELT': {'lat': 29.5577, 'lng': 34.9519, 'name': 'Eilat'},
+        'GRTI': {'lat': 29.0333, 'lng': -13.6333, 'name': 'Graciosa'},
+        'RDU': {'lat': 50.3543, 'lng': 5.4563, 'name': 'Durbuy'},
     }
     
     results = {}
@@ -2028,6 +2121,7 @@ def fetch_github_issues(repo, token=None, labels=None):
         token: GitHub Personal Access Token (optionnel mais recommandé)
         labels: Liste de labels à récupérer (OR logic — fait plusieurs appels)
                 Défaut: ['status-update', 'new-invader']
+                Si aucune issue trouvée avec labels, fallback sur toutes les issues ouvertes.
     
     Returns:
         Liste d'issues parsées avec données extraites
@@ -2049,6 +2143,7 @@ def fetch_github_issues(repo, token=None, labels=None):
     all_issues_raw = []
     seen_ids = set()
     
+    # 1. Chercher par labels
     for label in labels:
         url = f"https://api.github.com/repos/{repo}/issues?state=open&labels={label}&per_page=100"
         try:
@@ -2061,6 +2156,23 @@ def fetch_github_issues(repo, token=None, labels=None):
                     seen_ids.add(issue['id'])
         except Exception as e:
             print(f"   ⚠️ Erreur API GitHub (label={label}): {e}")
+    
+    # 2. Fallback: si rien trouvé par labels, récupérer TOUTES les issues ouvertes
+    #    (les labels peuvent ne pas exister dans le repo → issues créées sans labels)
+    if not all_issues_raw:
+        print(f"   ℹ️ Aucune issue avec labels {labels}, tentative sans filtre...")
+        url = f"https://api.github.com/repos/{repo}/issues?state=open&per_page=100"
+        try:
+            req = Request(url, headers=headers)
+            with urlopen(req, timeout=30) as response:
+                issues_raw = json.loads(response.read().decode())
+            # Filtrer les pull requests (l'API GitHub inclut les PRs dans /issues)
+            for issue in issues_raw:
+                if 'pull_request' not in issue and issue['id'] not in seen_ids:
+                    all_issues_raw.append(issue)
+                    seen_ids.add(issue['id'])
+        except Exception as e:
+            print(f"   ⚠️ Erreur API GitHub (sans filtre): {e}")
     
     if not all_issues_raw:
         print(f"   ✅ Aucune issue ouverte")
@@ -2078,9 +2190,24 @@ def fetch_github_issues(repo, token=None, labels=None):
     return parsed_issues
 
 
+def _extract_form_field(body, field_name):
+    """Extrait une valeur d'un champ de formulaire GitHub (### Label\\n\\nValue)."""
+    pattern = rf'###\s*{re.escape(field_name)}\s*\n+(.+?)(?=\n###|\n---|\Z)'
+    match = re.search(pattern, body, re.DOTALL | re.IGNORECASE)
+    if match:
+        value = match.group(1).strip()
+        if value and value.lower() not in ('_no response_', 'none', '_no additional notes_'):
+            return value
+    return None
+
+
 def parse_github_issue(issue):
     """
     Parse le body d'une issue GitHub pour extraire les données structurées.
+    
+    Supporte deux formats:
+    - Formulaire GitHub (### Label\\nValue)
+    - Markdown structuré (**Label:** value)
     
     Retourne un dict avec:
         - issue_number, issue_url, issue_date
@@ -2117,55 +2244,94 @@ def parse_github_issue(issue):
     # Détecter si c'est un nouvel invader
     result['is_new_invader'] = 'new-invader' in result['labels'] or '[New Invader]' in title
     
-    # Extraire l'invader ID depuis le title ou le body
-    # Title format: "[Status Update] PA_1529: OK → Destroyed"
+    # --- Extraire l'invader ID ---
+    # 1. Title: "[Status Update] PA_1529: OK → Destroyed"
     title_match = re.search(r'\]\s*([A-Z]+[-_]\d+)', title, re.IGNORECASE)
     if title_match:
         result['invader_id'] = title_match.group(1).upper().replace('-', '_')
-    
-    # Body format: **Invader:** `PA_1529`
+    # 2. Formulaire: ### Invader ID\nPA_1529
+    form_id = _extract_form_field(body, 'Invader ID')
+    if form_id:
+        id_match = re.search(r'([A-Z]+[-_]\d+)', form_id, re.IGNORECASE)
+        if id_match:
+            result['invader_id'] = id_match.group(1).upper().replace('-', '_')
+    # 3. Markdown: **Invader:** `PA_1529`
     body_match = re.search(r'\*\*Invader:\*\*\s*`?([A-Z]+[-_]\d+)`?', body, re.IGNORECASE)
     if body_match:
         result['invader_id'] = body_match.group(1).upper().replace('-', '_')
     
     if not result['invader_id']:
+        # Dernier essai: chercher un ID dans le titre brut
+        raw_match = re.search(r'([A-Z]{2,6}[-_]\d{1,4})', title, re.IGNORECASE)
+        if raw_match:
+            result['invader_id'] = raw_match.group(1).upper().replace('-', '_')
+    
+    if not result['invader_id']:
         return None  # Pas un report d'invader valide
     
-    # Extraire la ville
+    # --- Extraire la ville ---
+    form_city = _extract_form_field(body, 'City')
+    if form_city:
+        result['city'] = form_city.strip()
     city_match = re.search(r'\*\*City:\*\*\s*(.+)', body)
     if city_match:
         result['city'] = city_match.group(1).strip()
+    # Déduire de l'ID si pas trouvé
+    if not result['city'] and result['invader_id']:
+        city_from_id = re.match(r'^([A-Z]+)[-_]', result['invader_id'])
+        if city_from_id:
+            result['city'] = city_from_id.group(1)
     
-    # Extraire le nouveau statut
-    # Format table: | New observed status | **Destroyed** |
-    status_match = re.search(r'New observed status\s*\|\s*\*?\*?([^|*\n]+)', body, re.IGNORECASE)
-    if status_match:
-        raw_status = status_match.group(1).strip()
-        # Nettoyer les emojis et espaces
-        raw_status = re.sub(r'[✅⚠️💀👁🔨]', '', raw_status).strip()
-        result['new_status'] = ISSUE_STATUS_MAP.get(raw_status.lower(), raw_status)
-    
-    # Format new-invader: **Status:** OK
+    # --- Extraire le statut ---
+    # 1. Formulaire: ### New observed status\nDestroyed
+    form_status = _extract_form_field(body, 'New observed status')
+    if form_status:
+        raw = re.sub(r'[✅⚠️💀👁🔨]', '', form_status).strip()
+        result['new_status'] = ISSUE_STATUS_MAP.get(raw.lower(), raw)
+    # 2. Format table: | New observed status | **Destroyed** |
+    if not result['new_status']:
+        status_match = re.search(r'New observed status\s*\|\s*\*?\*?([^|*\n]+)', body, re.IGNORECASE)
+        if status_match:
+            raw = re.sub(r'[✅⚠️💀👁🔨]', '', status_match.group(1)).strip()
+            result['new_status'] = ISSUE_STATUS_MAP.get(raw.lower(), raw)
+    # 3. Markdown: **Status:** OK
     if not result['new_status']:
         simple_status = re.search(r'\*\*Status:\*\*\s*(.+)', body)
         if simple_status:
-            raw = simple_status.group(1).strip()
-            raw = re.sub(r'[✅⚠️💀👁🔨]', '', raw).strip()
+            raw = re.sub(r'[✅⚠️💀👁🔨]', '', simple_status.group(1)).strip()
             result['new_status'] = ISSUE_STATUS_MAP.get(raw.lower(), raw)
-    
-    # Aussi chercher dans le titre: "OK → Destroyed"
+    # 4. Formulaire: ### Status\nOK (pour new-invader)
     if not result['new_status']:
-        arrow_match = re.search(r'→\s*(\w+)', title)
+        form_status2 = _extract_form_field(body, 'Status')
+        if form_status2:
+            raw = re.sub(r'[✅⚠️💀👁🔨]', '', form_status2).strip()
+            result['new_status'] = ISSUE_STATUS_MAP.get(raw.lower(), raw)
+    # 5. Titre: "OK → Destroyed"
+    if not result['new_status']:
+        arrow_match = re.search(r'→\s*(\w[\w\s]*)', title)
         if arrow_match:
             raw = arrow_match.group(1).strip()
             result['new_status'] = ISSUE_STATUS_MAP.get(raw.lower(), raw)
     
-    # Extraire les points (new-invader)
+    # --- Extraire les points ---
+    form_points = _extract_form_field(body, 'Points')
+    if form_points and form_points.isdigit():
+        result['points'] = int(form_points)
     points_match = re.search(r'\*\*Points:\*\*\s*(\d+)', body)
     if points_match:
         result['points'] = int(points_match.group(1))
     
-    # Extraire les coordonnées GPS
+    # --- Extraire les coordonnées GPS ---
+    # Formulaire
+    form_lat = _extract_form_field(body, 'Latitude')
+    form_lng = _extract_form_field(body, 'Longitude')
+    if form_lat and form_lng:
+        try:
+            result['lat'] = float(form_lat)
+            result['lng'] = float(form_lng)
+        except ValueError:
+            pass
+    # Markdown
     lat_match = re.search(r'\*\*Latitude:\*\*\s*([-\d.]+)', body)
     lng_match = re.search(r'\*\*Longitude:\*\*\s*([-\d.]+)', body)
     if lat_match and lng_match:
@@ -2175,24 +2341,44 @@ def parse_github_issue(issue):
         except ValueError:
             pass
     
-    acc_match = re.search(r'\*\*GPS Accuracy:\*\*\s*±(\d+)', body)
+    # Accuracy
+    form_acc = _extract_form_field(body, 'GPS Accuracy')
+    if form_acc:
+        acc_num = re.search(r'(\d+)', form_acc)
+        if acc_num:
+            result['accuracy'] = int(acc_num.group(1))
+    acc_match = re.search(r'\*\*GPS Accuracy:\*\*\s*±?(\d+)', body)
     if acc_match:
         result['accuracy'] = int(acc_match.group(1))
     
-    # Extraire les images
+    # --- Extraire les images ---
+    # Formulaire
+    form_img_inv = _extract_form_field(body, 'Image invader')
+    if form_img_inv:
+        url_match = re.search(r'(https?://\S+)', form_img_inv)
+        if url_match:
+            result['image_invader'] = url_match.group(1)
+    form_img_loc = _extract_form_field(body, 'Image location')
+    if form_img_loc:
+        url_match = re.search(r'(https?://\S+)', form_img_loc)
+        if url_match:
+            result['image_lieu'] = url_match.group(1)
+    # Markdown
     img_inv_match = re.search(r'\*\*Image invader:\*\*\s*(https?://\S+)', body)
     if img_inv_match:
         result['image_invader'] = img_inv_match.group(1)
-    
     img_lieu_match = re.search(r'\*\*Image location:\*\*\s*(https?://\S+)', body)
     if img_lieu_match:
         result['image_lieu'] = img_lieu_match.group(1)
     
-    # Extraire les notes
+    # --- Extraire les notes ---
+    form_notes = _extract_form_field(body, 'Notes')
+    if form_notes:
+        result['notes'] = form_notes
     notes_match = re.search(r'### Notes\s*\n(.+?)(?:\n###|\n---|\Z)', body, re.DOTALL)
     if notes_match:
         notes = notes_match.group(1).strip()
-        if notes and notes != '_No additional notes_':
+        if notes and notes not in ('_No additional notes_', '_No response_'):
             result['notes'] = notes
     
     return result
@@ -3831,14 +4017,14 @@ async def main_async():
     args = sys.argv[1:]
     cities_filter = None
     headless, verbose, merge_only, apply_reports, backup, dry_run = True, False, False, False, False, False
-    geolocate, add_missing, discover_new, geolocate_missing = False, False, False, False
+    geolocate, add_missing, discover_new, geolocate_missing, process_issues = False, False, False, False, False
     addresses_file = None
     missing_file = _p(MISSING_FILE)
     merge_geolocated_file = None
     max_retries, pause_ms = 3, 1000
     limit = None
-    github_repo = os.environ.get('GITHUB_REPO', None)
-    github_token = os.environ.get('GITHUB_TOKEN', os.environ.get('PAT_TOKEN', None))
+    github_repo = os.environ.get('GITHUB_REPO', '').strip() or DEFAULT_GITHUB_REPO
+    github_token = os.environ.get('GITHUB_TOKEN', '').strip() or os.environ.get('PAT_TOKEN', '').strip() or None
     
     i = 0
     while i < len(args):
@@ -3857,6 +4043,7 @@ async def main_async():
         elif a == '--add-missing': add_missing = True
         elif a == '--discover-new': discover_new = True
         elif a == '--geolocate-missing': geolocate_missing = True
+        elif a == '--process-issues': process_issues = True
         elif a == '--merge-geolocated' and i+1 < len(args):
             merge_geolocated_file = args[i+1]; i += 1
         elif a == '--missing-file' and i+1 < len(args):
@@ -3984,6 +4171,70 @@ async def main_async():
         print(f"   python update_from_spotter.py --merge-geolocated {output_file}")
         return
     
+    # Mode spécial: traiter uniquement les issues GitHub
+    if process_issues:
+        print("="*60 + "\n🐙 Traitement des issues GitHub\n" + "="*60)
+        
+        if not github_repo:
+            print("❌ Pas de repo GitHub configuré (--github-repo ou GITHUB_REPO)")
+            return
+        
+        print(f"   Repo: {github_repo}")
+        print(f"   Token: {'✅ configuré' if github_token else '⚠️ absent (lecture seule, issues non fermées)'}")
+        
+        # Charger le master
+        if not MASTER_FILE.exists():
+            print(f"❌ {MASTER_FILE} non trouvé")
+            return
+        
+        with open(_p(MASTER_FILE), 'r', encoding='utf-8') as f:
+            updated_db = json.load(f)
+        print(f"   📂 {len(updated_db)} invaders dans le master")
+        
+        # Récupérer et appliquer les issues
+        issues = fetch_github_issues(github_repo, github_token)
+        if not issues:
+            print("\n✅ Aucune issue à traiter")
+            return
+        
+        updated_db, issue_changes = apply_github_issues(
+            updated_db, issues,
+            repo=github_repo, token=github_token,
+            verbose=True, dry_run=dry_run
+        )
+        
+        # Sauvegarder
+        if not dry_run and issue_changes:
+            with open(_p(MASTER_FILE), 'w', encoding='utf-8') as f:
+                json.dump(updated_db, f, indent=2, ensure_ascii=False)
+            print(f"\n💾 {MASTER_FILE.name} sauvegardé ({len(updated_db)} invaders)")
+            
+            # Mettre à jour changelog
+            if CHANGELOG_FILE.exists():
+                with open(_p(CHANGELOG_FILE), 'r', encoding='utf-8') as f:
+                    changelog = json.load(f)
+            else:
+                changelog = {"changes": [], "last_check": ""}
+            
+            for c in issue_changes:
+                changelog['changes'].append({
+                    "invader_id": c.get('name', ''),
+                    "field": "status",
+                    "old_value": c.get('old_status', ''),
+                    "new_value": c.get('new_status', ''),
+                    "detected_at": c.get('date', datetime.now().isoformat()),
+                    "source": f"github-{c.get('source', 'issue')}"
+                })
+            changelog['last_check'] = datetime.now().isoformat()
+            
+            with open(_p(CHANGELOG_FILE), 'w', encoding='utf-8') as f:
+                json.dump(changelog, f, indent=2, ensure_ascii=False)
+            print(f"📝 {CHANGELOG_FILE.name} mis à jour ({len(issue_changes)} changements)")
+        elif dry_run:
+            print("\n🏃 Mode dry-run: aucune modification sauvegardée")
+        
+        return
+    
     print("="*60 + "\n🔄 Total Invaders Search - Mise à jour v4\n" + "="*60)
     
     github_db = load_master_file()
@@ -4040,7 +4291,41 @@ async def main_async():
             'ROM': {'lat': 41.9028, 'lng': 12.4964, 'name': 'Rome'},
             'BCN': {'lat': 41.3851, 'lng': 2.1734, 'name': 'Barcelona'},
             'BKK': {'lat': 13.7563, 'lng': 100.5018, 'name': 'Bangkok'},
+            'BGK': {'lat': 13.7563, 'lng': 100.5018, 'name': 'Bangkok'},
             'HK': {'lat': 22.3193, 'lng': 114.1694, 'name': 'Hong Kong'},
+            'MIA': {'lat': 25.7617, 'lng': -80.1918, 'name': 'Miami'},
+            'SD': {'lat': 32.7157, 'lng': -117.1611, 'name': 'San Diego'},
+            'SP': {'lat': -23.5505, 'lng': -46.6333, 'name': 'São Paulo'},
+            'POTI': {'lat': -19.5836, 'lng': -65.7531, 'name': 'Potosí'},
+            'AMS': {'lat': 52.3676, 'lng': 4.9041, 'name': 'Amsterdam'},
+            'RTD': {'lat': 51.9225, 'lng': 4.4792, 'name': 'Rotterdam'},
+            'BRL': {'lat': 52.5200, 'lng': 13.4050, 'name': 'Berlin'},
+            'MUN': {'lat': 48.1351, 'lng': 11.5820, 'name': 'Munich'},
+            'KLN': {'lat': 50.9375, 'lng': 6.9603, 'name': 'Cologne'},
+            'FKF': {'lat': 50.1109, 'lng': 8.6821, 'name': 'Frankfurt'},
+            'WN': {'lat': 48.2082, 'lng': 16.3738, 'name': 'Vienna'},
+            'BXL': {'lat': 50.8503, 'lng': 4.3517, 'name': 'Brussels'},
+            'LJU': {'lat': 46.0569, 'lng': 14.5058, 'name': 'Ljubljana'},
+            'IST': {'lat': 41.0082, 'lng': 28.9784, 'name': 'Istanbul'},
+            'MLB': {'lat': -37.8136, 'lng': 144.9631, 'name': 'Melbourne'},
+            'PRT': {'lat': -31.9505, 'lng': 115.8605, 'name': 'Perth'},
+            'KAT': {'lat': 27.7172, 'lng': 85.3240, 'name': 'Kathmandu'},
+            'SL': {'lat': 37.5665, 'lng': 126.9780, 'name': 'Seoul'},
+            'DJN': {'lat': 36.3504, 'lng': 127.3845, 'name': 'Daejeon'},
+            'DHK': {'lat': 23.8103, 'lng': 90.4125, 'name': 'Dhaka'},
+            'BT': {'lat': 27.4712, 'lng': 89.6339, 'name': 'Bhutan'},
+            'CCU': {'lat': 21.1619, 'lng': -86.8515, 'name': 'Cancún'},
+            'DJBA': {'lat': 33.8076, 'lng': 10.8451, 'name': 'Djerba'},
+            'MRAK': {'lat': 31.6295, 'lng': -7.9811, 'name': 'Marrakech'},
+            'RBA': {'lat': 34.0209, 'lng': -6.8416, 'name': 'Rabat'},
+            'MBSA': {'lat': -4.0435, 'lng': 39.6682, 'name': 'Mombasa'},
+            'NCL': {'lat': 54.9783, 'lng': -1.6178, 'name': 'Newcastle'},
+            'MAN': {'lat': 53.4808, 'lng': -2.2426, 'name': 'Manchester'},
+            'MLGA': {'lat': 36.7213, 'lng': -4.4214, 'name': 'Malaga'},
+            'BBO': {'lat': 43.2630, 'lng': -2.9350, 'name': 'Bilbao'},
+            'BRC': {'lat': 41.3851, 'lng': 2.1734, 'name': 'Barcelona'},
+            'RA': {'lat': 44.4184, 'lng': 12.2035, 'name': 'Ravenna'},
+            'RAV': {'lat': 44.4184, 'lng': 12.2035, 'name': 'Ravenna'},
         }
         
         # Créer un index des invaders déjà dans updated_db
@@ -4182,6 +4467,8 @@ async def main_async():
                 verbose=verbose, dry_run=dry_run
             )
             changes.extend(issue_changes)
+    else:
+        print("\n⏭️ Issues GitHub non traitées (pas de repo configuré, utilisez --github-repo ou GITHUB_REPO)")
     
     save_files(updated_db, scraped_statuses, changes, not_in_github, geolocated, geo_audits, backup, dry_run)
     
