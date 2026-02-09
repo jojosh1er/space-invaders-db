@@ -38900,8 +38900,7 @@
     "previous_status": "destroyed",
     "previous_status_date": "novembre 2025",
     "geo_source": "community_issue",
-    "geo_confidence": "high",
-    "location_unknown": false
+    "geo_confidence": "high"
   },
   {
     "id": "PA_301",
@@ -41015,16 +41014,16 @@
     "lat": "48.8720628477",
     "lng": "2.3651469112",
     "points": "20",
-    "status": "destroyed",
+    "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0448-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0448-decembre2017.jpg",
     "city": "PA",
     "landing_date": "28/10/2001",
     "status_date": "juillet 2020",
     "status_source": "report",
-    "status_updated": "2026-02-08T06:50:31Z",
+    "status_updated": "2026-02-09T13:02:12.906762",
     "status_issue": 1,
-    "previous_status": "OK",
+    "previous_status": "destroyed",
     "previous_status_date": "juillet 2020"
   },
   {

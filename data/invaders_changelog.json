@@ -15,7 +15,15 @@
       "new_value": "destroyed",
       "detected_at": "2026-02-08T06:50:31Z",
       "source": "github-issue #1"
+    },
+    {
+      "invader_id": "PA_448",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "OK",
+      "detected_at": "2026-02-09T13:02:13.687170",
+      "source": "invader-spotter.art"
     }
   ],
-  "last_check": "2026-02-09T08:31:33.290940"
+  "last_check": "2026-02-09T13:02:13.687174"
 }
