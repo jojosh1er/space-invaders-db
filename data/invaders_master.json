@@ -41385,13 +41385,17 @@
     "lat": "48.8513978546",
     "lng": "2.3380376243",
     "points": "30",
-    "status": "OK",
+    "status": "hidden",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0473-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0473-mars2015.jpg",
     "city": "PA",
     "landing_date": "01/04/2002",
     "status_date": "octobre 2022",
-    "status_source": "report"
+    "status_source": "community_issue",
+    "previous_status": "OK",
+    "previous_status_date": "octobre 2022",
+    "status_updated": "2026-02-09T17:25:18Z",
+    "status_issue": 4
   },
   {
     "id": "PA_474",
