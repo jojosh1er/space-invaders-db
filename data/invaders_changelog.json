@@ -7,7 +7,15 @@
       "new_value": "OK",
       "detected_at": "2026-02-07T19:07:26.917039",
       "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_448",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-02-08T06:50:31Z",
+      "source": "github-issue #1"
     }
   ],
-  "last_check": "2026-02-07T19:07:26.917043"
+  "last_check": "2026-02-09T08:31:33.290940"
 }

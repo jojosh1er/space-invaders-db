@@ -38887,8 +38887,8 @@
   },
   {
     "id": "PA_300",
-    "lat": "48.8337413206",
-    "lng": "2.3536424212",
+    "lat": 48.833801,
+    "lng": 2.353755,
     "points": "10",
     "status": "damaged",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0300-grosplan.png",
@@ -38898,7 +38898,10 @@
     "status_date": "novembre 2025",
     "status_source": "report",
     "previous_status": "destroyed",
-    "previous_status_date": "novembre 2025"
+    "previous_status_date": "novembre 2025",
+    "geo_source": "community_issue",
+    "geo_confidence": "high",
+    "location_unknown": false
   },
   {
     "id": "PA_301",
@@ -41012,13 +41015,17 @@
     "lat": "48.8720628477",
     "lng": "2.3651469112",
     "points": "20",
-    "status": "OK",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0448-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0448-decembre2017.jpg",
     "city": "PA",
     "landing_date": "28/10/2001",
     "status_date": "juillet 2020",
-    "status_source": "report"
+    "status_source": "community_issue",
+    "previous_status": "OK",
+    "previous_status_date": "juillet 2020",
+    "status_updated": "2026-02-08T06:50:31Z",
+    "status_issue": 1
   },
   {
     "id": "PA_449",
