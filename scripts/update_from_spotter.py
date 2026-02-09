@@ -2496,7 +2496,10 @@ def apply_github_issues(master_db, issues, repo=None, token=None, verbose=False,
                 inv['geo_confidence'] = 'high' if (issue.get('accuracy', 999) < 50) else 'medium'
                 inv['location_unknown'] = False
                 if verbose:
-                    print(f"      📍 GPS: ({old_lat:.4f},{old_lng:.4f}) → ({issue['lat']:.6f},{issue['lng']:.6f})")
+                    try:
+                        print(f"      📍 GPS: ({float(old_lat):.4f},{float(old_lng):.4f}) → ({issue['lat']:.6f},{issue['lng']:.6f})")
+                    except (ValueError, TypeError):
+                        print(f"      📍 GPS: ({old_lat},{old_lng}) → ({issue['lat']:.6f},{issue['lng']:.6f})")
             
             # Mettre à jour les images
             if issue.get('image_invader'):
