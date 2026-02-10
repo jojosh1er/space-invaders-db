@@ -308,6 +308,77 @@ def calculate_distance(lat1, lng1, lat2, lng2):
     return R * c
 
 
+# Rayon max de cohérence ville (en mètres)
+# Adapté par taille de ville : grandes métropoles = rayon plus large
+CITY_MAX_RADIUS = {
+    # Grandes métropoles (rayon 40km)
+    'PA': 40000, 'LDN': 40000, 'NY': 50000, 'LA': 60000, 'TK': 50000,
+    'SP': 40000, 'BRL': 40000, 'ROM': 30000, 'BCN': 25000, 'BRC': 25000,
+    # Villes moyennes (rayon 20km)
+    'MRS': 20000, 'LYO': 20000, 'BDX': 20000, 'TLS': 20000, 'LIL': 20000,
+    'AMS': 20000, 'BXL': 20000, 'MAN': 20000, 'MLB': 30000, 'MIA': 30000,
+    'SD': 30000, 'HK': 25000,
+    # Petites villes / villages (rayon 10km)
+    'FTBL': 10000, 'VRS': 10000, 'CAPF': 10000, 'MEN': 10000, 'CON': 10000,
+    'VLMO': 10000, 'CAZ': 10000, 'LCT': 10000, 'FRQ': 10000, 'ANZR': 10000,
+    'GRU': 10000, 'NOO': 10000,
+    # Îles / zones isolées (rayon 50km)
+    'REUN': 50000, 'BT': 80000, 'GRTI': 20000,
+}
+DEFAULT_CITY_RADIUS = 25000  # 25km par défaut
+
+
+def validate_city_coherence(lat, lng, city_code, verbose=False):
+    """
+    Vérifie que les coordonnées trouvées sont cohérentes avec la ville attendue.
+    
+    Retourne un dict:
+    - valid: bool (coordonnées dans le rayon acceptable)
+    - distance_to_center: float (distance en mètres au centre-ville)
+    - max_radius: float (rayon max accepté pour cette ville)
+    - city_name: str
+    
+    Si la ville est inconnue dans CITY_CENTERS, retourne valid=True (pas de check).
+    """
+    result = {
+        'valid': True,
+        'distance_to_center': None,
+        'max_radius': None,
+        'city_name': None,
+        'warning': None,
+    }
+    
+    if not city_code or city_code not in CITY_CENTERS:
+        return result
+    
+    city = CITY_CENTERS[city_code]
+    result['city_name'] = city['name']
+    
+    # Cas spécial: ISS / Space
+    if city_code == 'SPACE':
+        result['valid'] = True
+        return result
+    
+    center_lat = city['lat']
+    center_lng = city['lng']
+    max_radius = CITY_MAX_RADIUS.get(city_code, DEFAULT_CITY_RADIUS)
+    result['max_radius'] = max_radius
+    
+    distance = calculate_distance(lat, lng, center_lat, center_lng)
+    result['distance_to_center'] = round(distance, 1)
+    
+    if distance > max_radius:
+        result['valid'] = False
+        result['warning'] = (
+            f"GPS ({lat:.5f}, {lng:.5f}) à {distance/1000:.1f}km du centre de "
+            f"{city['name']} (max: {max_radius/1000:.0f}km)"
+        )
+        if verbose:
+            print(f"      ⚠️ INCOHÉRENCE VILLE: {result['warning']}")
+    
+    return result
+
+
 def extract_gps_from_image_url(image_url, verbose=False):
     """
     Télécharge une image et extrait les coordonnées GPS des métadonnées EXIF.
@@ -1266,12 +1337,10 @@ class FlickrScraper:
             print(f"      [FLICKR] {msg}")
     
     def _format_tags(self, invader_id):
-        """Génère les variantes de tags à chercher"""
+        """Génère le tag Flickr (format officiel avec underscore uniquement)"""
         inv = invader_id.upper()
-        return [
-            inv.lower().replace('_', '_'),   # pa_1531
-            inv.lower().replace('_', ''),     # pa1531
-        ]
+        # La communauté Flickr utilise le format officiel: PA_1531, LDN_151, etc.
+        return [inv.lower()]  # → ['pa_1531']
     
     def _extract_photo_links(self):
         """Extrait les liens vers les photos depuis la page de résultats Flickr"""
@@ -2563,10 +2632,13 @@ class InvaderLocationSearcher:
         Pipeline:
         1. AroundUs (web scraping Google)
         2. IlluminateArt (web scraping Google)
-        3. Cohérence entre sources web
+        3. Cohérence entre sources web + validation ville
         4. [Fallback] Pnote.eu (lookup local, ±10m offset)
-        5. [Fallback] Flickr (API, photos geotaggées)
+        5. [Fallback] Flickr (scraping, photos geotaggées)
         6. Meilleur résultat + reverse geocoding
+        
+        Chaque source est validée contre la ville attendue.
+        Les coordonnées incohérentes sont rejetées avec un warning.
         """
         city_name = CITY_NAMES.get(city_code, city_code) if city_code else None
         
@@ -2587,8 +2659,26 @@ class InvaderLocationSearcher:
             'flickr': None,
             # Cohérence
             'coherence': None,
+            'city_validation': None,
+            'rejected_sources': [],
             'sources_checked': []
         }
+        
+        def _check_city(lat, lng, source_name):
+            """Valide les coordonnées contre la ville et retourne True si OK"""
+            if not city_code:
+                return True
+            check = validate_city_coherence(lat, lng, city_code, verbose=self.verbose)
+            if not check['valid']:
+                print(f"   🚫 {source_name} REJETÉ: {check['warning']}")
+                results['rejected_sources'].append({
+                    'source': source_name,
+                    'lat': lat, 'lng': lng,
+                    'reason': check['warning'],
+                    'distance_to_center': check['distance_to_center'],
+                })
+                return False
+            return True
         
         # 1. Chercher sur AroundUs
         print(f"   🔍 AroundUs...", end='', flush=True)
@@ -2596,8 +2686,10 @@ class InvaderLocationSearcher:
         results['sources_checked'].append({'source': 'aroundus', 'result': aroundus_result})
         results['aroundus'] = aroundus_result
         
+        aroundus_valid = False
         if aroundus_result['found']:
             print(f" ✅ GPS: {aroundus_result['lat']:.5f}, {aroundus_result['lng']:.5f}")
+            aroundus_valid = _check_city(aroundus_result['lat'], aroundus_result['lng'], 'AroundUs')
         else:
             print(f" ❌")
         
@@ -2609,18 +2701,23 @@ class InvaderLocationSearcher:
         results['sources_checked'].append({'source': 'illuminateartofficial', 'result': illuminate_result})
         results['illuminate'] = illuminate_result
         
+        illuminate_valid = False
         if illuminate_result['found']:
             print(f" ✅ GPS: {illuminate_result['lat']:.5f}, {illuminate_result['lng']:.5f}")
+            illuminate_valid = _check_city(illuminate_result['lat'], illuminate_result['lng'], 'IlluminateArt')
         else:
             print(f" ❌")
         
-        # 3. Test de cohérence entre sources web
-        coherence = self.check_coherence(aroundus_result, illuminate_result)
+        # 3. Test de cohérence entre sources web (seulement si les deux sont valides)
+        coherence = self.check_coherence(
+            aroundus_result if aroundus_valid else {'found': False},
+            illuminate_result if illuminate_valid else {'found': False}
+        )
         results['coherence'] = coherence
         
         # 4. Choisir le meilleur résultat parmi les sources web
         best_source = None
-        if aroundus_result['found'] and illuminate_result['found']:
+        if aroundus_valid and illuminate_valid:
             if coherence['status'] in ['excellent', 'good']:
                 best_source = 'aroundus'
             elif coherence['status'] == 'conflict':
@@ -2628,12 +2725,12 @@ class InvaderLocationSearcher:
                 print(f"   ⚠️  CONFLIT: {coherence['details']}")
             else:
                 best_source = 'aroundus'
-        elif aroundus_result['found']:
+        elif aroundus_valid:
             best_source = 'aroundus'
-        elif illuminate_result['found']:
+        elif illuminate_valid:
             best_source = 'illuminate'
         
-        # 5. Fallback Pnote (si sources web n'ont rien trouvé)
+        # 5. Fallback Pnote (si sources web n'ont rien trouvé de valide)
         if not best_source and self.pnote and self.pnote.loaded:
             print(f"   🔍 Pnote.eu...", end='', flush=True)
             pnote_result = self.pnote.search(invader_id, city_name)
@@ -2644,17 +2741,17 @@ class InvaderLocationSearcher:
                 print(f" ✅ GPS: {pnote_result['lat']:.5f}, {pnote_result['lng']:.5f} (±10m)")
                 if pnote_result.get('hint'):
                     print(f"      💡 Hint: {pnote_result['hint']}")
-                best_source = 'pnote'
-                coherence['status'] = 'single_source'
-                coherence['details'] = 'Seulement Pnote (±10m offset)'
+                if _check_city(pnote_result['lat'], pnote_result['lng'], 'Pnote'):
+                    best_source = 'pnote'
+                    coherence['status'] = 'single_source'
+                    coherence['details'] = 'Seulement Pnote (±10m offset)'
             else:
                 print(f" ❌")
-                # Même sans GPS, remonter le hint s'il existe
                 if pnote_result.get('hint'):
                     print(f"      💡 Hint disponible: {pnote_result['hint']}")
                     results['pnote_hint'] = pnote_result['hint']
         
-        # 6. Fallback Flickr (si toujours rien)
+        # 6. Fallback Flickr (si toujours rien de valide)
         if not best_source and self.flickr and self.flickr.enabled:
             print(f"   🔍 Flickr...", end='', flush=True)
             flickr_result = self.flickr.search(invader_id, city_name)
@@ -2666,9 +2763,10 @@ class InvaderLocationSearcher:
                 print(f" ✅ GPS: {flickr_result['lat']:.5f}, {flickr_result['lng']:.5f} (via {method})")
                 if flickr_result.get('photo_url'):
                     print(f"      📷 {flickr_result['photo_url']}")
-                best_source = 'flickr'
-                coherence['status'] = 'single_source'
-                coherence['details'] = f"Seulement Flickr (via {method})"
+                if _check_city(flickr_result['lat'], flickr_result['lng'], 'Flickr'):
+                    best_source = 'flickr'
+                    coherence['status'] = 'single_source'
+                    coherence['details'] = f"Seulement Flickr (via {method})"
             else:
                 print(f" ❌")
             
@@ -2703,7 +2801,12 @@ class InvaderLocationSearcher:
             results['source'] = 'flickr'
             results['url'] = flickr_result.get('photo_url')
         
-        # 8. Reverse geocoding si on a des coordonnées mais pas d'adresse
+        # 8. Validation finale ville (pour le résultat retenu)
+        if results['found'] and city_code:
+            city_check = validate_city_coherence(results['lat'], results['lng'], city_code)
+            results['city_validation'] = city_check
+        
+        # 9. Reverse geocoding si on a des coordonnées mais pas d'adresse
         if results['found'] and results['lat'] and results['lng'] and not results['address']:
             print(f"   🗺️  Reverse geocoding...", end='', flush=True)
             try:
@@ -2719,7 +2822,7 @@ class InvaderLocationSearcher:
                 if self.verbose:
                     print(f"      ⚠️ {e}")
         
-        # 9. Afficher le résumé de cohérence
+        # 10. Afficher le résumé
         if coherence['status'] != 'unknown':
             status_icons = {
                 'excellent': '🟢',
@@ -2731,6 +2834,9 @@ class InvaderLocationSearcher:
             }
             icon = status_icons.get(coherence['status'], '❓')
             print(f"   {icon} Cohérence: {coherence['details']}")
+        
+        if results.get('rejected_sources'):
+            print(f"   🚫 {len(results['rejected_sources'])} source(s) rejetée(s) (hors ville)")
         
         return results
 
