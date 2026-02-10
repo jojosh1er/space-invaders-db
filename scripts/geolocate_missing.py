@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 """
-🔍 Recherche de localisation via sources spécialisées Invader - Version 2
+🔍 Recherche de localisation via sources spécialisées Invader - Version 3
+
+Améliorations v3:
+- Nouveau fallback: pnote.eu (lookup local ou fetch URL, coordonnées ±10m, hints)
+- Nouveau fallback: Flickr scraping (photos geotaggées, sans clé API)
+- Pipeline étendu: AroundUs → Illuminate → Pnote → Flickr → EXIF → OCR
+- Support fichier pnote aux formats natif (obf_lat/obf_lng) et master-like
 
 Améliorations v2:
 - Ignore les coordonnées GPS à zéro (0.00, 0.00) sur AroundUs
@@ -12,8 +18,10 @@ Améliorations v2:
 Sources (par ordre de priorité):
 1. aroundus.com - Données structurées (GPS JSON-LD, adresse)
 2. illuminateartofficial.com - Coordonnées Google Maps
-3. EXIF image_lieu - Métadonnées GPS de la photo (fallback)
-4. OCR Tesseract - Analyse visuelle + OCR + géocodage (fallback)
+3. pnote.eu - Base communautaire crowdsourcée (±10m offset, hints)
+4. Flickr scraping - Photos geotaggées via Playwright (tags: flashinvaders, pa_xxxx)
+5. EXIF image_lieu - Métadonnées GPS de la photo (fallback)
+6. OCR Tesseract - Analyse visuelle + OCR + géocodage (fallback)
 
 Modes d'utilisation:
 
@@ -29,6 +37,21 @@ Modes d'utilisation:
 4. Fusion des résultats avec invaders_master.json:
    python geolocate_missing.py --merge invaders_relocalized.json --backup
 
+5. Avec pnote.eu en fallback (fetch URL automatique):
+   python geolocate_missing.py --from-master --city LDN --pnote-url
+
+6. Avec pnote.eu depuis un fichier local:
+   python geolocate_missing.py --from-master --city LDN --pnote-file data/pnote_invaders.json
+
+7. Avec Flickr en fallback (activé par défaut, scraping Playwright):
+   python geolocate_missing.py --from-master --city PA --visible
+
+8. Combo complet:
+   python geolocate_missing.py --from-master --pnote-url --visible
+
+9. Sans Flickr (si trop lent):
+   python geolocate_missing.py --from-master --pnote-url --no-flickr
+
 Options:
     --from-missing FILE   Utiliser ce fichier comme source (format missing_from_github)
     --from-master         Scanner le master et géolocaliser les invaders mal localisés
@@ -40,10 +63,13 @@ Options:
     --output FILE         Fichier de sortie JSON
     --backup              Créer un backup avant merge
     --dry-run             Simuler sans sauvegarder
+    --pnote-file FILE     Fichier JSON pnote.eu local pour fallback
+    --pnote-url [URL]     Fetch pnote.eu depuis URL (défaut: pnote.eu/.../invaders.json)
+    --no-flickr           Désactiver le scraping Flickr
 
-Logique de confiance (mode --from-missing):
+Logique de confiance:
 - HIGH:   AroundUs + Illuminate cohérents (<200m)
-- MEDIUM: Une seule source, sources différentes (>200m), EXIF ou OCR
+- MEDIUM: Une seule source, sources différentes (>200m), Pnote, Flickr, EXIF ou OCR
 - LOW:    Aucune source (fallback centre-ville)
 """
 
@@ -1068,6 +1094,382 @@ class ImageOCRAnalyzer:
         return result
 
 
+class PnoteSearcher:
+    """
+    Recherche dans la base pnote.eu (fichier JSON local ou fetch URL).
+    
+    Supporte trois modes d'entrée:
+    - URL directe: https://pnote.eu/projects/invaders/map/invaders.json?nocache=1
+    - Fichier local format pnote.eu natif: {id, obf_lat, obf_lng, status, hint, instagramUrl}
+    - Fichier local format master-like: {id, lat, lng, status, hint?, ...} (virgules décimales)
+    
+    Les coordonnées pnote ont un offset volontaire de ±10m.
+    Confiance: MEDIUM (offset connu).
+    """
+    
+    PNOTE_DEFAULT_URL = "https://pnote.eu/projects/invaders/map/invaders.json?nocache=1"
+    
+    def __init__(self, pnote_file=None, pnote_url=None, verbose=False):
+        self.verbose = verbose
+        self.data = {}  # id -> {lat, lng, status, hint}
+        self.loaded = False
+        if pnote_file:
+            self.load_file(pnote_file)
+        elif pnote_url:
+            self.load_url(pnote_url)
+    
+    def log(self, msg):
+        if self.verbose:
+            print(f"      [PNOTE] {msg}")
+    
+    def _index_data(self, raw):
+        """Indexe une liste d'invaders par ID"""
+        for inv in raw:
+            inv_id = inv.get('id', '').upper()
+            if not inv_id:
+                continue
+            
+            lat = lng = None
+            
+            # Format pnote.eu natif (obf_lat/obf_lng — floats)
+            if 'obf_lat' in inv:
+                try:
+                    lat = float(inv['obf_lat'])
+                    lng = float(inv['obf_lng'])
+                except (ValueError, TypeError):
+                    pass
+            
+            # Format master-like (lat/lng — strings avec virgules possibles)
+            elif 'lat' in inv:
+                try:
+                    lat = float(str(inv['lat']).replace(',', '.'))
+                    lng = float(str(inv['lng']).replace(',', '.'))
+                except (ValueError, TypeError):
+                    pass
+            
+            # Valider les coordonnées (pas à zéro, dans les bornes)
+            if lat is not None and lng is not None:
+                if abs(lat) < 0.01 and abs(lng) < 0.01:
+                    lat = lng = None
+                elif not (-90 <= lat <= 90 and -180 <= lng <= 180):
+                    lat = lng = None
+            
+            self.data[inv_id] = {
+                'lat': lat,
+                'lng': lng,
+                'status': inv.get('status'),
+                'hint': inv.get('hint'),
+            }
+        
+        with_coords = sum(1 for v in self.data.values() if v['lat'] is not None)
+        with_hints = sum(1 for v in self.data.values() if v.get('hint'))
+        self.loaded = True
+        print(f"   📦 Pnote chargé: {len(self.data)} invaders, {with_coords} avec GPS, {with_hints} avec hints")
+    
+    def load_file(self, filepath):
+        """Charge depuis un fichier JSON local"""
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                raw = json.load(f)
+            self._index_data(raw)
+        except Exception as e:
+            print(f"   ⚠️ Erreur chargement pnote (fichier): {e}")
+            self.loaded = False
+    
+    def load_url(self, url):
+        """Télécharge le JSON pnote depuis une URL"""
+        try:
+            print(f"   📡 Téléchargement pnote: {url[:60]}...")
+            resp = requests.get(url, headers=HEADERS, timeout=30)
+            if resp.status_code != 200:
+                print(f"   ⚠️ Pnote HTTP {resp.status_code}")
+                self.loaded = False
+                return
+            raw = resp.json()
+            self._index_data(raw)
+        except Exception as e:
+            print(f"   ⚠️ Erreur chargement pnote (URL): {e}")
+            self.loaded = False
+    
+    def search(self, invader_id, city_name=None):
+        """
+        Cherche un invader dans la base pnote.
+        Retourne un dict compatible avec le format des autres searchers.
+        """
+        result = {
+            'found': False,
+            'lat': None,
+            'lng': None,
+            'source': 'pnote',
+            'hint': None,
+            'status': None,
+            'error': None,
+        }
+        
+        if not self.loaded:
+            result['error'] = 'Pnote non chargé'
+            return result
+        
+        inv_id = invader_id.upper()
+        entry = self.data.get(inv_id)
+        
+        if not entry:
+            result['error'] = f'{inv_id} absent de pnote'
+            self.log(f"❌ {inv_id} non trouvé")
+            return result
+        
+        if entry['lat'] is not None and entry['lng'] is not None:
+            result['found'] = True
+            result['lat'] = entry['lat']
+            result['lng'] = entry['lng']
+            result['status'] = entry.get('status')
+            result['hint'] = entry.get('hint')
+            self.log(f"✅ {inv_id}: {entry['lat']:.6f}, {entry['lng']:.6f}")
+            if entry.get('hint'):
+                self.log(f"   Hint: {entry['hint']}")
+        else:
+            result['error'] = f'{inv_id} sans coordonnées dans pnote'
+            self.log(f"⚠️ {inv_id} trouvé mais sans GPS")
+            # On remonte quand même le hint s'il existe
+            if entry.get('hint'):
+                result['hint'] = entry['hint']
+                self.log(f"   Hint disponible: {entry['hint']}")
+        
+        return result
+
+
+class FlickrScraper:
+    """
+    Recherche de photos geotaggées sur Flickr par scraping HTML (sans API).
+    
+    Stratégie:
+    1. Cherche par tag sur flickr.com/search/?tags={invader_id}
+    2. Récupère les URLs des photos résultantes
+    3. Sur chaque page photo, extrait les coordonnées GPS du modelExport JS
+    
+    Flickr embarque les données geo dans le JavaScript de la page (modelExport).
+    Pattern: "location":{"latitude":48.xxx,"longitude":2.xxx}
+    
+    Utilise Playwright (partagé avec les autres searchers).
+    Confiance: MEDIUM (coordonnées de la photo, pas forcément de l'invader exact).
+    """
+    
+    SEARCH_URL = "https://www.flickr.com/search/?tags={tag}&view_all=1"
+    
+    def __init__(self, page=None, verbose=False):
+        self.page = page
+        self.verbose = verbose
+        self.enabled = page is not None
+    
+    def log(self, msg):
+        if self.verbose:
+            print(f"      [FLICKR] {msg}")
+    
+    def _format_tags(self, invader_id):
+        """Génère les variantes de tags à chercher"""
+        inv = invader_id.upper()
+        return [
+            inv.lower().replace('_', '_'),   # pa_1531
+            inv.lower().replace('_', ''),     # pa1531
+        ]
+    
+    def _extract_photo_links(self):
+        """Extrait les liens vers les photos depuis la page de résultats Flickr"""
+        try:
+            links = self.page.evaluate("""
+                () => {
+                    const results = [];
+                    // Flickr search results: div.photo-list-photo-view with data
+                    const photos = document.querySelectorAll('div.photo-list-photo-view a.overlay, a.photo-list-photo-view');
+                    photos.forEach(a => {
+                        const href = a.getAttribute('href');
+                        if (href && href.includes('/photos/')) {
+                            results.push('https://www.flickr.com' + href);
+                        }
+                    });
+                    // Fallback: any link matching /photos/{user}/{id}/
+                    if (results.length === 0) {
+                        document.querySelectorAll('a[href*="/photos/"]').forEach(a => {
+                            const href = a.getAttribute('href');
+                            if (href && /\\/photos\\/[^/]+\\/\\d+\\//.test(href)) {
+                                const full = href.startsWith('http') ? href : 'https://www.flickr.com' + href;
+                                if (!results.includes(full)) results.push(full);
+                            }
+                        });
+                    }
+                    return results.slice(0, 10);  // Max 10 photos
+                }
+            """)
+            return links
+        except Exception as e:
+            self.log(f"Erreur extraction liens: {e}")
+            return []
+    
+    def _extract_geo_from_photo_page(self):
+        """
+        Extrait les coordonnées GPS depuis une page photo Flickr.
+        Cherche dans:
+        1. Le modelExport JS (pattern location.latitude/longitude)
+        2. Les meta tags geo
+        3. Les liens vers la carte (?fLat=...&fLon=...)
+        """
+        try:
+            geo = self.page.evaluate("""
+                () => {
+                    const html = document.documentElement.innerHTML;
+                    
+                    // Strategy 1: modelExport location data
+                    // Pattern: "location":{"latitude":48.xxx,"longitude":2.xxx}
+                    const locMatch = html.match(/"location"\\s*:\\s*\\{[^}]*"latitude"\\s*:\\s*([\\d.-]+)[^}]*"longitude"\\s*:\\s*([\\d.-]+)/);
+                    if (locMatch) {
+                        const lat = parseFloat(locMatch[1]);
+                        const lng = parseFloat(locMatch[2]);
+                        if (Math.abs(lat) > 0.01 || Math.abs(lng) > 0.01) {
+                            return {found: true, lat: lat, lng: lng, method: 'modelExport'};
+                        }
+                    }
+                    
+                    // Strategy 1b: reverse order (longitude first)
+                    const locMatch2 = html.match(/"location"\\s*:\\s*\\{[^}]*"longitude"\\s*:\\s*([\\d.-]+)[^}]*"latitude"\\s*:\\s*([\\d.-]+)/);
+                    if (locMatch2) {
+                        const lng = parseFloat(locMatch2[1]);
+                        const lat = parseFloat(locMatch2[2]);
+                        if (Math.abs(lat) > 0.01 || Math.abs(lng) > 0.01) {
+                            return {found: true, lat: lat, lng: lng, method: 'modelExport_rev'};
+                        }
+                    }
+                    
+                    // Strategy 2: map link with fLat/fLon
+                    const mapMatch = html.match(/fLat=([\\d.-]+)&fLon=([\\d.-]+)/);
+                    if (mapMatch) {
+                        const lat = parseFloat(mapMatch[1]);
+                        const lng = parseFloat(mapMatch[2]);
+                        if (Math.abs(lat) > 0.01 || Math.abs(lng) > 0.01) {
+                            return {found: true, lat: lat, lng: lng, method: 'mapLink'};
+                        }
+                    }
+                    
+                    // Strategy 3: geo meta tags
+                    const geoLat = document.querySelector('meta[name="geo.position"]');
+                    if (geoLat) {
+                        const parts = geoLat.content.split(';');
+                        if (parts.length === 2) {
+                            const lat = parseFloat(parts[0]);
+                            const lng = parseFloat(parts[1]);
+                            if (Math.abs(lat) > 0.01 || Math.abs(lng) > 0.01) {
+                                return {found: true, lat: lat, lng: lng, method: 'metaGeo'};
+                            }
+                        }
+                    }
+                    
+                    // Strategy 4: data attributes on map elements
+                    const mapEl = document.querySelector('[data-lat][data-lng], [data-latitude][data-longitude]');
+                    if (mapEl) {
+                        const lat = parseFloat(mapEl.dataset.lat || mapEl.dataset.latitude);
+                        const lng = parseFloat(mapEl.dataset.lng || mapEl.dataset.longitude);
+                        if (Math.abs(lat) > 0.01 || Math.abs(lng) > 0.01) {
+                            return {found: true, lat: lat, lng: lng, method: 'dataAttr'};
+                        }
+                    }
+                    
+                    return {found: false};
+                }
+            """)
+            return geo
+        except Exception as e:
+            self.log(f"Erreur extraction geo: {e}")
+            return {'found': False}
+    
+    def _get_photo_owner(self):
+        """Extrait le nom du photographe"""
+        try:
+            owner = self.page.evaluate("""
+                () => {
+                    const el = document.querySelector('.owner-name, a.owner-name');
+                    return el ? el.textContent.trim() : null;
+                }
+            """)
+            return owner
+        except:
+            return None
+    
+    def search(self, invader_id, city_name=None):
+        """
+        Cherche des photos geotaggées correspondant à cet invader sur Flickr.
+        
+        Stratégie:
+        1. Recherche par tag exact (ex: pa_1531)
+        2. Si pas de résultats: tag sans underscore (ex: pa1531)
+        3. Pour chaque photo trouvée: extraire les coordonnées GPS
+        4. Retourner la première photo avec des coordonnées valides
+        """
+        result = {
+            'found': False,
+            'lat': None,
+            'lng': None,
+            'source': 'flickr',
+            'photo_url': None,
+            'owner': None,
+            'method': None,
+            'error': None,
+        }
+        
+        if not self.enabled:
+            result['error'] = 'Flickr désactivé (pas de page Playwright)'
+            return result
+        
+        tags = self._format_tags(invader_id)
+        
+        for tag in tags:
+            search_url = self.SEARCH_URL.format(tag=tag)
+            self.log(f"Recherche: {search_url}")
+            
+            try:
+                self.page.goto(search_url, timeout=15000, wait_until='domcontentloaded')
+                time.sleep(2)  # Attendre le rendu JS
+                
+                # Extraire les liens photo
+                photo_links = self._extract_photo_links()
+                self.log(f"{len(photo_links)} photos trouvées")
+                
+                if not photo_links:
+                    continue
+                
+                # Visiter chaque photo pour chercher des coordonnées
+                for i, photo_url in enumerate(photo_links[:5]):  # Max 5 photos
+                    self.log(f"Photo {i+1}: {photo_url}")
+                    
+                    try:
+                        self.page.goto(photo_url, timeout=15000, wait_until='domcontentloaded')
+                        time.sleep(1.5)
+                        
+                        geo = self._extract_geo_from_photo_page()
+                        
+                        if geo.get('found'):
+                            result['found'] = True
+                            result['lat'] = geo['lat']
+                            result['lng'] = geo['lng']
+                            result['method'] = geo.get('method')
+                            result['photo_url'] = photo_url
+                            result['owner'] = self._get_photo_owner()
+                            self.log(f"✅ GPS: {geo['lat']:.6f}, {geo['lng']:.6f} (via {geo.get('method')})")
+                            return result
+                    
+                    except Exception as e:
+                        self.log(f"Erreur page photo: {e}")
+                        continue
+                
+            except Exception as e:
+                self.log(f"Erreur recherche: {e}")
+                continue
+            
+            time.sleep(1)  # Pause entre les tags
+        
+        result['error'] = 'Aucune photo geotaggée trouvée'
+        self.log(f"❌ Rien trouvé pour {invader_id}")
+        return result
+
+
 class IlluminateArtSearcher:
     """Recherche sur illuminateartofficial.com via Google"""
     
@@ -2006,18 +2408,23 @@ class AroundUsSearcher:
 class InvaderLocationSearcher:
     """Recherche combinée sur plusieurs sources"""
     
-    def __init__(self, visible=False, verbose=False):
+    def __init__(self, visible=False, verbose=False, pnote_file=None, pnote_url=None, flickr=True):
         self.visible = visible
         self.verbose = verbose
+        self.pnote_file = pnote_file
+        self.pnote_url = pnote_url
+        self.flickr_enabled = flickr
         self.playwright = None
         self.browser = None
         self.page = None
         self.illuminate = None
         self.aroundus = None
         self.ocr_analyzer = None
+        self.pnote = None
+        self.flickr = None
     
     def start(self):
-        """Démarre le navigateur"""
+        """Démarre le navigateur et initialise les sources"""
         from playwright.sync_api import sync_playwright
         
         self.playwright = sync_playwright().start()
@@ -2031,10 +2438,18 @@ class InvaderLocationSearcher:
         )
         self.page = context.new_page()
         
-        # Initialiser les searchers
+        # Initialiser les searchers web
         self.illuminate = IlluminateArtSearcher(self.page, self.verbose)
         self.aroundus = AroundUsSearcher(self.page, self.verbose)
         self.ocr_analyzer = ImageOCRAnalyzer(self.verbose)
+        
+        # Initialiser les nouvelles sources (v3)
+        if self.pnote_file:
+            self.pnote = PnoteSearcher(pnote_file=self.pnote_file, verbose=self.verbose)
+        elif self.pnote_url:
+            self.pnote = PnoteSearcher(pnote_url=self.pnote_url, verbose=self.verbose)
+        if self.flickr_enabled:
+            self.flickr = FlickrScraper(self.page, self.verbose)
     
     def stop(self):
         """Arrête le navigateur"""
@@ -2143,8 +2558,15 @@ class InvaderLocationSearcher:
     
     def search(self, invader_id, city_code=None):
         """
-        Recherche un invader sur TOUTES les sources (AroundUs ET IlluminateArt)
-        Compare les résultats et teste la cohérence
+        Recherche un invader sur TOUTES les sources (v3)
+        
+        Pipeline:
+        1. AroundUs (web scraping Google)
+        2. IlluminateArt (web scraping Google)
+        3. Cohérence entre sources web
+        4. [Fallback] Pnote.eu (lookup local, ±10m offset)
+        5. [Fallback] Flickr (API, photos geotaggées)
+        6. Meilleur résultat + reverse geocoding
         """
         city_name = CITY_NAMES.get(city_code, city_code) if city_code else None
         
@@ -2161,6 +2583,8 @@ class InvaderLocationSearcher:
             # Résultats par source
             'aroundus': None,
             'illuminate': None,
+            'pnote': None,
+            'flickr': None,
             # Cohérence
             'coherence': None,
             'sources_checked': []
@@ -2190,22 +2614,16 @@ class InvaderLocationSearcher:
         else:
             print(f" ❌")
         
-        # 3. Test de cohérence
+        # 3. Test de cohérence entre sources web
         coherence = self.check_coherence(aroundus_result, illuminate_result)
         results['coherence'] = coherence
         
-        # 4. Choisir le meilleur résultat
-        # Priorité: si les deux sources sont d'accord → AroundUs (a souvent l'adresse)
-        # Si conflit → AroundUs (source primaire considérée plus fiable)
-        # Sinon → la source qui a trouvé
-        
+        # 4. Choisir le meilleur résultat parmi les sources web
         best_source = None
         if aroundus_result['found'] and illuminate_result['found']:
-            # Les deux ont trouvé
             if coherence['status'] in ['excellent', 'good']:
-                best_source = 'aroundus'  # Sources cohérentes, prendre AroundUs
+                best_source = 'aroundus'
             elif coherence['status'] == 'conflict':
-                # Conflit - prendre AroundUs par défaut mais signaler
                 best_source = 'aroundus'
                 print(f"   ⚠️  CONFLIT: {coherence['details']}")
             else:
@@ -2215,7 +2633,48 @@ class InvaderLocationSearcher:
         elif illuminate_result['found']:
             best_source = 'illuminate'
         
-        # 5. Remplir le résultat final
+        # 5. Fallback Pnote (si sources web n'ont rien trouvé)
+        if not best_source and self.pnote and self.pnote.loaded:
+            print(f"   🔍 Pnote.eu...", end='', flush=True)
+            pnote_result = self.pnote.search(invader_id, city_name)
+            results['sources_checked'].append({'source': 'pnote', 'result': pnote_result})
+            results['pnote'] = pnote_result
+            
+            if pnote_result['found']:
+                print(f" ✅ GPS: {pnote_result['lat']:.5f}, {pnote_result['lng']:.5f} (±10m)")
+                if pnote_result.get('hint'):
+                    print(f"      💡 Hint: {pnote_result['hint']}")
+                best_source = 'pnote'
+                coherence['status'] = 'single_source'
+                coherence['details'] = 'Seulement Pnote (±10m offset)'
+            else:
+                print(f" ❌")
+                # Même sans GPS, remonter le hint s'il existe
+                if pnote_result.get('hint'):
+                    print(f"      💡 Hint disponible: {pnote_result['hint']}")
+                    results['pnote_hint'] = pnote_result['hint']
+        
+        # 6. Fallback Flickr (si toujours rien)
+        if not best_source and self.flickr and self.flickr.enabled:
+            print(f"   🔍 Flickr...", end='', flush=True)
+            flickr_result = self.flickr.search(invader_id, city_name)
+            results['sources_checked'].append({'source': 'flickr', 'result': flickr_result})
+            results['flickr'] = flickr_result
+            
+            if flickr_result['found']:
+                method = flickr_result.get('method', '?')
+                print(f" ✅ GPS: {flickr_result['lat']:.5f}, {flickr_result['lng']:.5f} (via {method})")
+                if flickr_result.get('photo_url'):
+                    print(f"      📷 {flickr_result['photo_url']}")
+                best_source = 'flickr'
+                coherence['status'] = 'single_source'
+                coherence['details'] = f"Seulement Flickr (via {method})"
+            else:
+                print(f" ❌")
+            
+            time.sleep(0.5)  # Rate limiting Flickr
+        
+        # 7. Remplir le résultat final
         if best_source == 'aroundus':
             results['found'] = True
             results['lat'] = aroundus_result['lat']
@@ -2230,8 +2689,21 @@ class InvaderLocationSearcher:
             results['address'] = illuminate_result.get('address')
             results['source'] = 'illuminateartofficial'
             results['url'] = illuminate_result.get('url')
+        elif best_source == 'pnote':
+            results['found'] = True
+            results['lat'] = pnote_result['lat']
+            results['lng'] = pnote_result['lng']
+            results['source'] = 'pnote'
+            if pnote_result.get('hint'):
+                results['address'] = pnote_result['hint']
+        elif best_source == 'flickr':
+            results['found'] = True
+            results['lat'] = flickr_result['lat']
+            results['lng'] = flickr_result['lng']
+            results['source'] = 'flickr'
+            results['url'] = flickr_result.get('photo_url')
         
-        # 6. Reverse geocoding si on a des coordonnées mais pas d'adresse
+        # 8. Reverse geocoding si on a des coordonnées mais pas d'adresse
         if results['found'] and results['lat'] and results['lng'] and not results['address']:
             print(f"   🗺️  Reverse geocoding...", end='', flush=True)
             try:
@@ -2247,7 +2719,7 @@ class InvaderLocationSearcher:
                 if self.verbose:
                     print(f"      ⚠️ {e}")
         
-        # 7. Afficher le résumé de cohérence
+        # 9. Afficher le résumé de cohérence
         if coherence['status'] != 'unknown':
             status_icons = {
                 'excellent': '🟢',
@@ -2488,7 +2960,7 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
     print("=" * 60)
     
     # Stats
-    stats = {'total': len(missing_invaders), 'found': 0, 'high': 0, 'medium': 0, 'low': 0, 'exif': 0, 'ocr': 0, 'interactive': 0}
+    stats = {'total': len(missing_invaders), 'found': 0, 'high': 0, 'medium': 0, 'low': 0, 'exif': 0, 'ocr': 0, 'interactive': 0, 'pnote': 0, 'flickr': 0}
     results = []
     
     for i, inv in enumerate(missing_invaders, 1):
@@ -2541,8 +3013,14 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
                 stats['medium'] += 1
             
             stats['found'] += 1
+            
+            # Tracker les sources v3
+            src = search_result.get('source', '')
+            if src == 'pnote':
+                stats['pnote'] += 1
+            elif src == 'flickr':
+                stats['flickr'] += 1
         else:
-            # Fallback 1: Essayer l'extraction EXIF de l'image du lieu
             exif_result = None
             ocr_result = None
             image_lieu_url = inv.get('image_lieu')
@@ -2645,6 +3123,10 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
     print(f"   Trouvés: {stats['found']} ({100*stats['found']/max(1,stats['total']):.1f}%)")
     print(f"   🟢 HIGH:   {stats['high']}")
     medium_details = []
+    if stats['pnote'] > 0:
+        medium_details.append(f"{stats['pnote']} Pnote")
+    if stats['flickr'] > 0:
+        medium_details.append(f"{stats['flickr']} Flickr")
     if stats['exif'] > 0:
         medium_details.append(f"{stats['exif']} EXIF")
     if stats['ocr'] > 0:
@@ -2669,6 +3151,10 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
         f.write(f"Trouvés: {stats['found']}\n")
         f.write(f"HIGH: {stats['high']}, MEDIUM: {stats['medium']}")
         medium_details = []
+        if stats['pnote'] > 0:
+            medium_details.append(f"{stats['pnote']} Pnote")
+        if stats['flickr'] > 0:
+            medium_details.append(f"{stats['flickr']} Flickr")
         if stats['exif'] > 0:
             medium_details.append(f"{stats['exif']} EXIF")
         if stats['ocr'] > 0:
@@ -2812,6 +3298,14 @@ def main():
     parser.add_argument('--interactive', '-i', action='store_true', help='Mode interactif pour les non trouvés (Google Lens)')
     parser.add_argument('--backup', action='store_true', help='Créer un backup avant merge')
     parser.add_argument('--dry-run', action='store_true', help='Simuler sans sauvegarder')
+    # Sources v3
+    parser.add_argument('--pnote-file', dest='pnote_file', help='Fichier JSON pnote.eu local (fallback GPS ±10m)')
+    parser.add_argument('--pnote-url', dest='pnote_url', nargs='?',
+                        const=PnoteSearcher.PNOTE_DEFAULT_URL,
+                        default=None,
+                        help='Télécharger pnote.eu depuis URL (défaut: pnote.eu/projects/invaders/map/invaders.json)')
+    parser.add_argument('--no-flickr', dest='no_flickr', action='store_true',
+                        help='Désactiver la recherche Flickr (scraping)')
     
     args = parser.parse_args()
     
@@ -2946,7 +3440,7 @@ def main():
             json.dump(missing_format, f, indent=2, ensure_ascii=False)
         
         # Lancer le searcher
-        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose)
+        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr)
         try:
             searcher.start()
             print("🌐 Navigateur démarré")
@@ -2983,7 +3477,7 @@ def main():
             return
         
         # Démarrer le searcher
-        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose)
+        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr)
         try:
             searcher.start()
             print("🌐 Navigateur démarré")
@@ -3061,6 +3555,8 @@ def main():
         'found_aroundus': 0,
         'found_illuminate': 0,
         'found_both': 0,
+        'found_pnote': 0,
+        'found_flickr': 0,
         'has_existing': 0,
         'matches': 0,
         'differs': 0,
@@ -3080,7 +3576,7 @@ def main():
     results = []
     
     # Initialiser le searcher
-    searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose)
+    searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr)
     
     try:
         searcher.start()
@@ -3133,6 +3629,12 @@ def main():
                     stats['found_illuminate'] += 1
                 if aroundus_found and illuminate_found:
                     stats['found_both'] += 1
+                
+                # Sources v3
+                if search_result.get('source') == 'pnote':
+                    stats['found_pnote'] += 1
+                elif search_result.get('source') == 'flickr':
+                    stats['found_flickr'] += 1
                 
                 # Cohérence
                 coherence = search_result.get('coherence', {})
@@ -3187,6 +3689,8 @@ def main():
     print(f"   - via AroundUs:        {stats['found_aroundus']}")
     print(f"   - via IlluminateArt:   {stats['found_illuminate']}")
     print(f"   - Les deux sources:    {stats['found_both']}")
+    print(f"   - via Pnote.eu:       {stats['found_pnote']}")
+    print(f"   - via Flickr:          {stats['found_flickr']}")
     
     print(f"\n🔗 Cohérence entre sources:")
     print(f"   🟢 Excellent (<50m):   {stats['coherence']['excellent']}")
@@ -3229,7 +3733,9 @@ def main():
         
         f.write("Sources:\n")
         f.write("  - aroundus.com\n")
-        f.write("  - illuminateartofficial.com\n\n")
+        f.write("  - illuminateartofficial.com\n")
+        f.write("  - pnote.eu (fallback)\n")
+        f.write("  - flickr.com (fallback)\n\n")
         
         f.write(f"STATISTIQUES\n")
         f.write(f"-" * 40 + "\n")
@@ -3238,6 +3744,8 @@ def main():
         f.write(f"- AroundUs:           {stats['found_aroundus']}\n")
         f.write(f"- IlluminateArt:      {stats['found_illuminate']}\n")
         f.write(f"- Les deux:           {stats['found_both']}\n")
+        f.write(f"- Pnote.eu:           {stats['found_pnote']}\n")
+        f.write(f"- Flickr:             {stats['found_flickr']}\n")
         f.write(f"Nouvelles coords:     {stats['new_coords']}\n\n")
         
         f.write(f"COHERENCE ENTRE SOURCES\n")
