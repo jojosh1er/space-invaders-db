@@ -3854,7 +3854,7 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
             new_inv['geo_search_exhausted'] = False  # Trouvé → reset du tag
             
             # Déterminer la confiance
-            coherence = search_result.get('coherence', {})
+            coherence = search_result.get('coherence') or {}
             if coherence.get('status') in ['excellent', 'good']:
                 new_inv['geo_confidence'] = 'high'
                 stats['high'] += 1
@@ -4398,7 +4398,7 @@ def main():
         searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key, no_browser=args.no_browser)
         try:
             searcher.start()
-            print("🌐 Navigateur démarré")
+            print("🌐 Navigateur démarré" if not getattr(searcher, "no_browser", False) else "🤖 Sources HTTP démarrées")
             
             output_file = args.output if args.output else _p(DATA_DIR / 'invaders_relocalized.json')
             
@@ -4419,7 +4419,7 @@ def main():
             # Nettoyer le fichier temporaire
             if os.path.exists(tmp_file):
                 os.remove(tmp_file)
-            print("\n🌐 Navigateur fermé")
+            print("\n🌐 Navigateur fermé" if not getattr(searcher, "no_browser", False) else "\n🤖 Sources HTTP arrêtées")
         return
     
     # =========================================================================
@@ -4435,7 +4435,7 @@ def main():
         searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key, no_browser=args.no_browser)
         try:
             searcher.start()
-            print("🌐 Navigateur démarré")
+            print("🌐 Navigateur démarré" if not getattr(searcher, "no_browser", False) else "🤖 Sources HTTP démarrées")
             
             output_file = args.output if args.output else _p(DATA_DIR / 'invaders_geolocated.json')
             
@@ -4453,7 +4453,7 @@ def main():
             print(f"   python geolocate_missing.py --merge {output_file} --backup")
         finally:
             searcher.stop()
-            print("\n🌐 Navigateur fermé")
+            print("\n🌐 Navigateur fermé" if not getattr(searcher, "no_browser", False) else "\n🤖 Sources HTTP arrêtées")
         return
     
     # =========================================================================
@@ -4535,7 +4535,7 @@ def main():
     
     try:
         searcher.start()
-        print("🌐 Navigateur démarré")
+        print("🌐 Navigateur démarré" if not getattr(searcher, "no_browser", False) else "🤖 Sources HTTP démarrées")
         
         for i, inv in enumerate(invaders, 1):
             inv_id = inv.get('id', '')
@@ -4575,8 +4575,8 @@ def main():
                 stats['found'] += 1
                 
                 # Compter par source
-                aroundus_found = search_result.get('aroundus', {}).get('found', False)
-                illuminate_found = search_result.get('illuminate', {}).get('found', False)
+                aroundus_found = (search_result.get('aroundus') or {}).get('found', False)
+                illuminate_found = (search_result.get('illuminate') or {}).get('found', False)
                 
                 if aroundus_found:
                     stats['found_aroundus'] += 1
@@ -4592,7 +4592,7 @@ def main():
                     stats['found_flickr'] += 1
                 
                 # Cohérence
-                coherence = search_result.get('coherence', {})
+                coherence = search_result.get('coherence') or {}
                 coherence_status = coherence.get('status', 'unknown')
                 if coherence_status in stats['coherence']:
                     stats['coherence'][coherence_status] += 1
@@ -4617,7 +4617,7 @@ def main():
                     print(f"   🆕 Nouvelles coordonnées!")
             else:
                 # Pas trouvé - compter quand même la cohérence
-                coherence = search_result.get('coherence', {})
+                coherence = search_result.get('coherence') or {}
                 coherence_status = coherence.get('status', 'not_found')
                 if coherence_status in stats['coherence']:
                     stats['coherence'][coherence_status] += 1
@@ -4628,7 +4628,7 @@ def main():
     
     finally:
         searcher.stop()
-        print("\n🌐 Navigateur fermé")
+        print("\n🌐 Navigateur fermé" if not getattr(searcher, "no_browser", False) else "\n🤖 Sources HTTP arrêtées")
     
     # Statistiques
     print("\n" + "=" * 60)
@@ -4752,7 +4752,7 @@ def main():
                 f.write("\n")
         
         # Liste des conflits
-        conflicts = [r for r in results if r.get('coherence', {}).get('status') == 'conflict']
+        conflicts = [r for r in results if (r.get('coherence') or {}).get('status') == 'conflict']
         if conflicts:
             f.write(f"\n⚠️ {len(conflicts)} CONFLITS À VÉRIFIER:\n")
             f.write("-" * 40 + "\n\n")
@@ -4762,7 +4762,7 @@ def main():
                 f.write(f"{r['id']}:\n")
                 f.write(f"   AroundUs:   {aroundus.get('lat', 0):.6f}, {aroundus.get('lng', 0):.6f}\n")
                 f.write(f"   Illuminate: {illuminate.get('lat', 0):.6f}, {illuminate.get('lng', 0):.6f}\n")
-                f.write(f"   Distance:   {r.get('coherence', {}).get('distance_m', 0):.0f}m\n\n")
+                f.write(f"   Distance:   {(r.get('coherence') or {}).get('distance_m', 0):.0f}m\n\n")
     
     print(f"📄 Rapport: {txt_output}")
     
