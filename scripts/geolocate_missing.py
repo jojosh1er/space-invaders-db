@@ -52,6 +52,12 @@ Modes d'utilisation:
 9. Sans Flickr (si trop lent):
    python geolocate_missing.py --from-master --pnote-url --no-flickr
 
+10. Avec Claude Vision (analyse IA des images):
+   python geolocate_missing.py --from-master --pnote-url --anthropic-key sk-ant-...
+   # Ou via variable d'environnement:
+   export ANTHROPIC_API_KEY=sk-ant-...
+   python geolocate_missing.py --from-master --pnote-url
+
 Options:
     --from-missing FILE   Utiliser ce fichier comme source (format missing_from_github)
     --from-master         Scanner le master et géolocaliser les invaders mal localisés
@@ -66,14 +72,31 @@ Options:
     --pnote-file FILE     Fichier JSON pnote.eu local pour fallback
     --pnote-url [URL]     Fetch pnote.eu depuis URL (défaut: pnote.eu/.../invaders.json)
     --no-flickr           Désactiver le scraping Flickr
+    --anthropic-key KEY   Clé API Anthropic pour Claude Vision (ou env ANTHROPIC_API_KEY)
+
+Pipeline de recherche:
+1. AroundUs (web scraping Google)
+2. IlluminateArt (web scraping Google)
+3. Cohérence entre sources web + validation ville
+4. [Fallback] Pnote.eu (lookup local, ±10m offset)
+5. [Fallback] Flickr (scraping, photos geotaggées)
+6. [Fallback] EXIF image_lieu
+7. [Fallback] OCR Tesseract + patterns FR/UK
+8. [Fallback] Claude Vision (analyse IA de l'image)
+9. [Fallback] Google Lens interactif
+10. [Fallback] Centre-ville
 
 Logique de confiance:
 - HIGH:   AroundUs + Illuminate cohérents (<200m)
-- MEDIUM: Une seule source, sources différentes (>200m), Pnote, Flickr, EXIF ou OCR
+- MEDIUM: Une seule source, Pnote, Flickr, EXIF, OCR, Vision
 - LOW:    Aucune source (fallback centre-ville)
 """
 
 import argparse
+import warnings
+import urllib3
+warnings.filterwarnings("ignore", category=urllib3.exceptions.NotOpenSSLWarning)
+
 import json
 import math
 import os
@@ -491,37 +514,86 @@ def extract_gps_from_image_url(image_url, verbose=False):
     return result
 
 
-# Patterns d'adresses françaises pour extraction de texte
-FRENCH_ADDRESS_PATTERNS = [
-    # Rues
-    r"(\d+[,\s]*(?:bis|ter)?[,\s]*)?(?:rue|r\.)\s+(?:de\s+la\s+|du\s+|des\s+|de\s+l'?|d'?)?([A-ZÀ-Ÿ][a-zà-ÿ\-]+(?:\s+[A-ZÀ-Ÿ][a-zà-ÿ\-]+)*)",
-    # Avenues
-    r"(\d+[,\s]*)?(?:avenue|av\.?)\s+(?:de\s+la\s+|du\s+|des\s+|de\s+l'?|d'?)?([A-ZÀ-Ÿ][a-zà-ÿ\-]+(?:\s+[A-ZÀ-Ÿ][a-zà-ÿ\-]+)*)",
-    # Boulevards
-    r"(\d+[,\s]*)?(?:boulevard|bd\.?)\s+(?:de\s+la\s+|du\s+|des\s+|de\s+l'?|d'?)?([A-ZÀ-Ÿ][a-zà-ÿ\-]+(?:\s+[A-ZÀ-Ÿ][a-zà-ÿ\-]+)*)",
-    # Places
-    r"(?:place|pl\.)\s+(?:de\s+la\s+|du\s+|des\s+|de\s+l'?|d'?)?([A-ZÀ-Ÿ][a-zà-ÿ\-]+(?:\s+[A-ZÀ-Ÿ][a-zà-ÿ\-]+)*)",
-    # Quais
-    r"(\d+[,\s]*)?(?:quai)\s+(?:de\s+la\s+|du\s+|des\s+|de\s+l'?|d'?)?([A-ZÀ-Ÿ][a-zà-ÿ\-]+(?:\s+[A-ZÀ-Ÿ][a-zà-ÿ\-]+)*)",
-    # Passages
-    r"(?:passage)\s+(?:de\s+la\s+|du\s+|des\s+|de\s+l'?|d'?)?([A-ZÀ-Ÿ][a-zà-ÿ\-]+(?:\s+[A-ZÀ-Ÿ][a-zà-ÿ\-]+)*)",
-    # Impasses
-    r"(?:impasse)\s+(?:de\s+la\s+|du\s+|des\s+|de\s+l'?|d'?)?([A-ZÀ-Ÿ][a-zà-ÿ\-]+(?:\s+[A-ZÀ-Ÿ][a-zà-ÿ\-]+)*)",
-    # Allées
-    r"(?:allée)\s+(?:de\s+la\s+|du\s+|des\s+|de\s+l'?|d'?)?([A-ZÀ-Ÿ][a-zà-ÿ\-]+(?:\s+[A-ZÀ-Ÿ][a-zà-ÿ\-]+)*)",
+# =============================================================================
+# PATTERNS D'ADRESSES FRANÇAISES (enrichis v3)
+# =============================================================================
+# Supporte: Title Case, TOUT MAJUSCULES, minuscules
+# Les plaques parisiennes sont en MAJUSCULES (blanc sur bleu/vert)
+
+# Types de voies français (exhaustif)
+FR_STREET_TYPES = [
+    'rue', 'avenue', 'boulevard', 'place', 'quai', 'passage',
+    'impasse', 'allée', 'cours', 'cité', 'square', 'villa',
+    'chemin', 'sentier', 'galerie', 'parvis', 'esplanade',
+    'pont', 'port', 'faubourg', 'route', 'ruelle', 'voie',
+    'promenade', 'traverse', 'cour', 'résidence', 'hameau',
+    'carrefour', 'rond-point', 'mail', 'montée',
 ]
 
-# Patterns d'adresses anglaises (UK) pour extraction de texte
+# Set pour lookup rapide (en minuscules)
+FR_STREET_TYPES_SET = set(FR_STREET_TYPES)
+
+# Abréviations courantes
+FR_STREET_ABBREVS_PATTERN = r'(?:r\.|av\.?|bd\.?|bl\.?|pl\.|imp\.|all\.|ch\.|fg\.?|rte\.?|prom\.?)'
+
+# Pattern combiné des types de voies
+_FR_TYPES_FULL = '|'.join(FR_STREET_TYPES)
+_FR_TYPES_ALL = rf"(?:{_FR_TYPES_FULL}|{FR_STREET_ABBREVS_PATTERN})"
+
+# Articles français (de la, du, des, de l', d')
+_FR_ARTICLES = r"(?:de\s+la\s+|du\s+|des\s+|de\s+l['\u2019]?\s*|d['\u2019]\s*|de\s+)?"
+
+# Numéro de rue optionnel: 12, 12 bis, 12-14, 12B
+_FR_NUM = r"(?:\d{1,4}\s*(?:bis|ter|[A-Ba-b])?\s*[,\-]?\s*)?"
+
+# Noms propres (3 variantes pour couvrir les différents formats d'écriture)
+_FR_NAME_TITLE = r"[A-ZÀ-Ÿ][a-zà-ÿ\-']+(?:[\s\-][A-ZÀ-Ÿ][a-zà-ÿ\-']+)*"
+_FR_NAME_UPPER = r"[A-ZÀ-Ÿ]{2,}(?:[\s\-][A-ZÀ-Ÿ]{2,})*"
+_FR_NAME_MIXED = r"[A-ZÀ-Ÿa-zà-ÿ]{2,}(?:[\s\-][A-ZÀ-Ÿa-zà-ÿ]{2,})*"
+
+FRENCH_ADDRESS_PATTERNS = [
+    # Pattern MAJUSCULES plaques parisiennes: "RUE DE LA ROQUETTE", "BOULEVARD VOLTAIRE"
+    rf"{_FR_NUM}(?:{_FR_TYPES_ALL})\s+{_FR_ARTICLES}({_FR_NAME_UPPER})",
+    # Pattern Title Case: "Rue de la Roquette", "Boulevard Voltaire"
+    rf"{_FR_NUM}(?:{_FR_TYPES_ALL})\s+{_FR_ARTICLES}({_FR_NAME_TITLE})",
+    # Pattern mixte (OCR imparfait): "rue de la ROQuette"
+    rf"{_FR_NUM}(?:{_FR_TYPES_ALL})\s+{_FR_ARTICLES}({_FR_NAME_MIXED})",
+    # Arrondissement seul (utile pour contexte): "3e", "11ème", "XIe"
+    r"\b(\d{1,2})\s*(?:e|ème|eme|er|ère)\s*(?:arr\.?|arrondissement)?\b",
+    r"\b((?:I|II|III|IV|V|VI|VII|VIII|IX|X|XI|XII|XIII|XIV|XV|XVI|XVII|XVIII|XIX|XX))\s*(?:e|ème)?\s*(?:arr\.?|arrondissement)\b",
+]
+
+# =============================================================================
+# PATTERNS D'ADRESSES ANGLAISES (UK)
+# =============================================================================
+UK_STREET_TYPES_LIST = [
+    'Street', 'St', 'Road', 'Rd', 'Lane', 'Ln', 'Avenue', 'Ave',
+    'Place', 'Pl', 'Gardens', 'Gdns', 'Square', 'Sq', 'Terrace', 'Ter',
+    'Court', 'Ct', 'Mews', 'Row', 'Way', 'Close', 'Drive', 'Dr',
+    'Crescent', 'Cres', 'Grove', 'Hill', 'Walk', 'Yard', 'Passage',
+    'Alley', 'Gate', 'Green', 'Park', 'Bridge', 'Wharf', 'Quay',
+]
+UK_STREET_TYPES_SET = {s.upper() for s in UK_STREET_TYPES_LIST}
+_UK_TYPES = '|'.join(UK_STREET_TYPES_LIST)
+
+UK_BUILDING_TYPES_LIST = [
+    'House', 'Building', 'Tower', 'Hall', 'Centre', 'Center',
+    'Theatre', 'Theater', 'Opera', 'Museum', 'Gallery', 'Hotel',
+    'Station', 'Church', 'Cathedral', 'Palace', 'Castle', 'Abbey',
+    'Market', 'Exchange', 'Bank', 'Library', 'College', 'School',
+    'Hospital', 'Office', 'Arcade', 'Chambers', 'Lodge', 'Manor',
+    'Villa', 'Mansion', 'Arms', 'Inn', 'Pub', 'Bar', 'Shop', 'Store', 'Studios?',
+]
+UK_BUILDING_TYPES_SET = {s.upper().rstrip('?') for s in UK_BUILDING_TYPES_LIST}
+_UK_BUILDINGS = '|'.join(UK_BUILDING_TYPES_LIST)
+
 UK_ADDRESS_PATTERNS = [
-    # Street names avec code postal UK (ex: "Spring Gardens SW1", "Dansey Place W1")
-    # Format: [Nom] [Type] [Code postal optionnel]
-    r"([A-Z][A-Za-z']+(?:\s+[A-Z][A-Za-z']+)*)\s+(Street|St|Road|Rd|Lane|Ln|Avenue|Ave|Place|Pl|Gardens|Gdns|Square|Sq|Terrace|Ter|Court|Ct|Mews|Row|Way|Close|Drive|Dr|Crescent|Cres|Grove|Hill|Walk|Yard|Passage|Alley|Gate|Green|Park|Bridge|Wharf|Quay)\.?\s*([A-Z]{1,2}\d{1,2}[A-Z]?\s*\d?[A-Z]{0,2})?",
-    # Avec numéro devant (ex: "123 Oxford Street")
-    r"(\d+[A-Za-z]?)\s+([A-Z][A-Za-z']+(?:\s+[A-Z][A-Za-z']+)*)\s+(Street|St|Road|Rd|Lane|Ln|Avenue|Ave|Place|Pl|Gardens|Gdns|Square|Sq|Terrace|Ter|Court|Ct|Mews|Row|Way|Close|Drive|Dr|Crescent|Cres|Grove|Hill|Walk|Yard|Passage|Alley|Gate|Green|Park|Bridge|Wharf|Quay)\.?\s*([A-Z]{1,2}\d{1,2}[A-Z]?\s*\d?[A-Z]{0,2})?",
-    # Bâtiments/lieux nommés (ex: "Ilford House", "English National Opera")
-    r"([A-Z][A-Za-z']+(?:\s+[A-Z][A-Za-z']+)*)\s+(House|Building|Tower|Hall|Centre|Center|Theatre|Theater|Opera|Museum|Gallery|Hotel|Station|Church|Cathedral|Palace|Castle|Abbey|Market|Exchange|Bank|Library|College|School|Hospital|Office|Arcade|Chambers|Lodge|Manor|Villa|Mansion|Arms|Inn|Pub|Bar|Shop|Store|Studios?)",
-    # Code postal UK seul pour contexte (ex: "SW1", "W1", "EC1V")
-    # On garde ça pour info mais on ne l'utilise pas seul
+    # [Nom] [Type] [Code postal optionnel]
+    rf"([A-Z][A-Za-z']+(?:\s+[A-Z][A-Za-z']+)*)\s+({_UK_TYPES})\.?\s*([A-Z]{{1,2}}\d{{1,2}}[A-Z]?\s*\d?[A-Z]{{0,2}})?",
+    # Avec numéro devant
+    rf"(\d+[A-Za-z]?)\s+([A-Z][A-Za-z']+(?:\s+[A-Z][A-Za-z']+)*)\s+({_UK_TYPES})\.?\s*([A-Z]{{1,2}}\d{{1,2}}[A-Z]?\s*\d?[A-Z]{{0,2}})?",
+    # Bâtiments/lieux nommés
+    rf"([A-Z][A-Za-z']+(?:\s+[A-Z][A-Za-z']+)*)\s+({_UK_BUILDINGS})",
 ]
 
 # Patterns pour noms de lieux/enseignes (recherche plus large)
@@ -759,64 +831,51 @@ class ImageOCRAnalyzer:
         return True
     
     def _is_valid_street_name(self, address):
-        """Vérifie si l'adresse contient un nom de rue valide (pas du bruit)"""
-        # Rejeter si trop de mots courts (bruit OCR typique)
+        """Vérifie si l'adresse contient un nom de rue valide (FR ou UK)"""
+        # Rejeter si trop court
+        if len(address) < 5:
+            return False
+        
         words = address.split()
+        
+        # Rejeter si trop de mots courts (bruit OCR typique)
         short_words = sum(1 for w in words if len(w) <= 2)
-        if len(words) > 3 and short_words / len(words) > 0.4:
+        if len(words) > 3 and short_words / len(words) > 0.5:
             return False
         
-        # Extraire le nom (tout avant le type de rue)
-        uk_street_types = r'(Street|St|Road|Rd|Lane|Ln|Avenue|Ave|Place|Pl|Gardens|Gdns|Square|Sq|Terrace|Ter|Court|Ct|Mews|Row|Way|Close|Drive|Dr|Crescent|Cres|Grove|Hill|Walk|Yard|Passage|Alley|Gate|Green|Park|Bridge|Wharf|Quay)'
-        match = re.match(rf'^(.+?)\s+{uk_street_types}', address, re.IGNORECASE)
+        # Vérifier pattern français
+        fr_types_lower = '|'.join(FR_STREET_TYPES)
+        fr_match = re.match(
+            rf'^(\d+\s*(?:bis|ter)?\s*[,\-]?\s*)?({fr_types_lower}|{FR_STREET_ABBREVS_PATTERN})\s+(.+)$',
+            address, re.IGNORECASE
+        )
+        if fr_match:
+            name = fr_match.group(3)
+            # Nettoyer les articles
+            name = re.sub(r"^(?:de\s+la\s+|du\s+|des\s+|de\s+l['\u2019]?\s*|d['\u2019]?\s*|de\s+)",
+                         '', name, flags=re.IGNORECASE).strip()
+            if len(name) >= 3 and sum(1 for c in name if c.isalpha()) >= 3:
+                if 'ii' not in name.lower() and not re.search(r'(.)\1{3,}', name):
+                    return True
         
-        if not match:
-            # Pas de pattern UK, vérifier le pattern français
-            fr_match = re.match(r'^(\d+\s*)?(rue|avenue|boulevard|place|quai|passage|impasse|allée)\s+(.+)$', address, re.IGNORECASE)
-            if fr_match:
-                name = fr_match.group(3)
-            else:
-                return False  # Pas de pattern reconnu = invalide
-        else:
-            name = match.group(1).strip()
+        # Vérifier pattern UK
+        uk_types = '|'.join(UK_STREET_TYPES_LIST)
+        uk_match = re.match(rf'^(.+?)\s+({uk_types})\.?\s*', address, re.IGNORECASE)
+        if uk_match:
+            name = uk_match.group(1).strip()
+            if len(name) >= 3 and sum(1 for c in name if c.isalpha()) >= 3:
+                if 'ii' not in name.lower():
+                    return True
         
-        # Valider le nom
-        if len(name) < 3:
-            return False
+        # Vérifier pattern bâtiment UK
+        uk_builds = '|'.join(UK_BUILDING_TYPES_LIST)
+        build_match = re.match(rf'^(.+?)\s+({uk_builds})\s*', address, re.IGNORECASE)
+        if build_match:
+            name = build_match.group(1).strip()
+            if len(name) >= 3:
+                return True
         
-        # Compter les lettres
-        letters = sum(1 for c in name if c.isalpha())
-        if letters < 3:
-            return False
-        
-        # Ignorer si trop de 'i' consécutifs (bruit OCR typique)
-        if 'ii' in name.lower():
-            return False
-        
-        # Ignorer si le nom contient trop de mots courts
-        name_words = name.split()
-        if len(name_words) > 2:
-            short = sum(1 for w in name_words if len(w) <= 2)
-            if short / len(name_words) > 0.5:
-                return False
-        
-        # Vérifier que le nom est en format valide (UPPER, Title, ou mixte acceptable)
-        # Rejeter si trop de minuscules ET pas en Title Case
-        alpha_chars = [c for c in name if c.isalpha()]
-        if alpha_chars:
-            lower_count = sum(1 for c in alpha_chars if c.islower())
-            upper_count = len(alpha_chars) - lower_count
-            
-            # Acceptable: tout majuscules, tout minuscules, ou Title Case
-            if lower_count > 0 and upper_count > 0:
-                # Mixte: vérifier que c'est du Title Case valide
-                # Title Case = chaque mot commence par une majuscule
-                is_title_case = all(w[0].isupper() for w in name_words if w and w[0].isalpha())
-                if not is_title_case:
-                    # Pas Title Case et pas tout majuscules = probablement du bruit
-                    return False
-        
-        return True
+        return False
     
     def extract_text_with_preprocessing(self, pil_image, lang='eng'):
         """
@@ -897,11 +956,13 @@ class ImageOCRAnalyzer:
     def _recombine_fragments(self, text, city_code=None):
         """
         Essaie de recombiner des fragments de texte OCR en adresses.
-        Par exemple: 
-        - "SPRING", "GARDENS", "SW1" → "SPRING GARDENS SW1"
-        - "133", "ILFORD", "HOUSE" → "133 ILFORD HOUSE"
+        Supporte FR et UK.
+        
+        Exemples FR: "RUE", "DE LA", "ROQUETTE" → "RUE DE LA ROQUETTE"
+        Exemples UK: "SPRING", "GARDENS", "SW1" → "SPRING GARDENS SW1"
         """
         candidates = []  # (score, address)
+        country = CITY_COUNTRIES.get(city_code, 'fr')
         
         # Séparer en lignes puis en mots
         lines = [l.strip() for l in text.upper().split('\n') if l.strip()]
@@ -910,76 +971,217 @@ class ImageOCRAnalyzer:
             words = line.split()
             all_words.extend([w.strip() for w in words if len(w.strip()) > 1])
         
-        # Types de rue UK
-        uk_street_types = {'STREET', 'ST', 'ROAD', 'RD', 'LANE', 'LN', 'AVENUE', 'AVE', 
-                          'PLACE', 'PL', 'GARDENS', 'GDNS', 'SQUARE', 'SQ', 'TERRACE', 
-                          'TER', 'COURT', 'CT', 'MEWS', 'ROW', 'WAY', 'CLOSE', 'DRIVE',
-                          'DR', 'CRESCENT', 'CRES', 'GROVE', 'HILL', 'WALK', 'YARD',
-                          'PASSAGE', 'ALLEY', 'GATE', 'GREEN', 'PARK', 'BRIDGE', 'WHARF', 'QUAY'}
+        # =====================================================================
+        # RECOMBINAISON FRANÇAISE
+        # =====================================================================
+        if country in ('fr', 'it', 'es', 'nl', 'de'):
+            candidates.extend(self._recombine_french(lines, all_words, city_code))
         
-        # Types de bâtiments UK
-        uk_building_types = {'HOUSE', 'BUILDING', 'TOWER', 'HALL', 'CENTRE', 'CENTER',
-                            'THEATRE', 'THEATER', 'OPERA', 'MUSEUM', 'GALLERY', 'HOTEL',
-                            'STATION', 'CHURCH', 'CATHEDRAL', 'PALACE', 'CASTLE', 'ABBEY',
-                            'MARKET', 'EXCHANGE', 'BANK', 'LIBRARY', 'COLLEGE', 'SCHOOL',
-                            'HOSPITAL', 'OFFICE', 'ARCADE', 'CHAMBERS', 'LODGE', 'MANOR',
-                            'VILLA', 'MANSION', 'ARMS', 'INN', 'PUB', 'BAR', 'SHOP', 'STORE'}
+        # =====================================================================
+        # RECOMBINAISON UK / US
+        # =====================================================================
+        if country in ('uk', 'us'):
+            candidates.extend(self._recombine_uk(lines, all_words))
         
-        # Noms communs de rues/bâtiments UK (pour le scoring)
-        common_uk_names = {'SPRING', 'OXFORD', 'BAKER', 'ABBEY', 'KINGS', 'QUEENS', 
-                          'VICTORIA', 'REGENT', 'BOND', 'FLEET', 'STRAND', 'SOHO',
-                          'BRICK', 'DEAN', 'GREEK', 'POLAND', 'CARNABY', 'COVENT',
-                          'TRAFALGAR', 'LEICESTER', 'PICCADILLY', 'CHELSEA', 'DANSEY',
-                          'ARBLAY', "D'ARBLAY", 'ILFORD', 'WARDOUR', 'BERWICK', 'FRITH',
-                          'WHITEHALL', 'DOWNING', 'PORTOBELLO', 'CAMDEN', 'BRIXTON'}
+        # Si pays inconnu, essayer les deux
+        if country not in ('fr', 'it', 'es', 'nl', 'de', 'uk', 'us'):
+            candidates.extend(self._recombine_french(lines, all_words, city_code))
+            candidates.extend(self._recombine_uk(lines, all_words))
         
-        # Codes postaux UK pattern
+        # Trier par score décroissant et dédupliquer
+        candidates.sort(key=lambda x: -x[0])
+        seen = set()
+        unique = []
+        for score, address in candidates:
+            key = address.upper()
+            if key not in seen and score >= 40:
+                seen.add(key)
+                unique.append((score, address))
+                self.log(f"Candidat (score={score}): {address}")
+        
+        return [addr for score, addr in unique[:5]]
+    
+    def _recombine_french(self, lines, all_words, city_code=None):
+        """Recombinaison spécifique FR"""
+        candidates = []
+        
+        # Noms de rues/places connus à Paris (bonus scoring fort)
+        KNOWN_FR_NAMES = {
+            # Grandes artères parisiennes
+            'RIVOLI', 'VOLTAIRE', 'REPUBLIQUE', 'RÉPUBLIQUE', 'BELLEVILLE',
+            'ROQUETTE', 'OBERKAMPF', 'MÉNILMONTANT', 'MENILMONTANT',
+            'CHARONNE', 'BASTILLE', 'TEMPLE', 'TURBIGO', 'RÉAUMUR', 'REAUMUR',
+            'SÉBASTOPOL', 'SEBASTOPOL', 'MAGENTA', 'STRASBOURG',
+            'HAUSSMANN', 'OPÉRA', 'OPERA', 'MADELEINE', 'CONCORDE',
+            'CHAMPS', 'ÉLYSÉES', 'ELYSEES', 'MONTMARTRE', 'PIGALLE',
+            'CLICHY', 'BATIGNOLLES', 'SAINT', 'SAINTE', 'FAUBOURG',
+            'VAUGIRARD', 'GRENELLE', 'LECOURBE', 'CONVENTION',
+            'DAGUERRE', 'ALÉSIA', 'ALESIA', 'TOLBIAC', 'GLACIÈRE', 'GLACIERE',
+            'MOUFFETARD', 'MONGE', 'JUSSIEU', 'CARDINAL', 'LEMOINE',
+            'POPINCOURT', 'FOLIE', 'MÉRICOURT', 'MERICOURT',
+            'BUTTES', 'CHAUMONT', 'JOURDAIN', 'PYRÉNÉES', 'PYRENEES',
+            'GAMBETTA', 'PÈRE', 'PERE', 'LACHAISE', 'MARAIS', 'FRANCS',
+            'BOURGEOIS', 'ARCHIVES', 'BRETAGNE', 'TURENNE', 'BEAUMARCHAIS',
+            'RICHARD', 'LENOIR', 'PARMENTIER', 'JEAN', 'PIERRE', 'TIMBAUD',
+            # Noms propres courants
+            'VICTOR', 'HUGO', 'JEAN', 'JAURÈS', 'JAURES', 'LÉON', 'LEON',
+            'GAMBETTA', 'DANTON', 'VOLTAIRE', 'MOLIÈRE', 'MOLIERE',
+            'PASTEUR', 'RASPAIL', 'DENFERT', 'ROCHEREAU',
+            # Londres
+            'OXFORD', 'BAKER', 'REGENT', 'BOND', 'FLEET', 'STRAND',
+            'BRICK', 'CARNABY', 'SOHO', 'COVENT', 'PICCADILLY',
+            'PORTOBELLO', 'CAMDEN', 'BRIXTON', 'SHOREDITCH',
+        }
+        
+        # Trouver les types de voies dans le texte
+        fr_types_upper = {t.upper() for t in FR_STREET_TYPES}
+        found_types = []
+        for i, line in enumerate(lines):
+            for word in line.split():
+                clean = word.strip('.,;:!?')
+                if clean in fr_types_upper:
+                    found_types.append((clean, i, line))
+        
+        if not found_types:
+            return candidates
+        
+        # Pour chaque type de voie trouvé, chercher le nom qui suit
+        for street_type, line_idx, full_line in found_types:
+            # Stratégie 1: tout est sur la même ligne
+            # Ex: "RUE DE LA ROQUETTE" ou "BOULEVARD VOLTAIRE"
+            type_pos = full_line.find(street_type)
+            after_type = full_line[type_pos + len(street_type):].strip()
+            
+            # Nettoyer les articles au début
+            after_clean = re.sub(
+                r"^(?:DE\s+LA\s+|DU\s+|DES\s+|DE\s+L['\u2019]?\s*|D['\u2019]?\s*|DE\s+)",
+                '', after_type, flags=re.IGNORECASE
+            ).strip()
+            
+            if after_clean and len(after_clean) >= 3:
+                # Construire l'adresse complète
+                address = f"{street_type} {after_type}".strip()
+                # Chercher un numéro avant le type sur la même ligne
+                before_type = full_line[:type_pos].strip()
+                num_match = re.search(r'(\d{1,4})\s*$', before_type)
+                if num_match:
+                    address = f"{num_match.group(1)} {address}"
+                
+                score = self._score_french_address(address, after_clean, KNOWN_FR_NAMES)
+                if score > 0:
+                    candidates.append((score, address.title()))
+            
+            # Stratégie 2: nom sur la ligne suivante
+            if line_idx + 1 < len(lines):
+                next_line = lines[line_idx + 1].strip()
+                # Ignorer si la ligne suivante est un autre type de voie
+                if next_line.split()[0] if next_line else '' not in fr_types_upper:
+                    next_clean = re.sub(
+                        r"^(?:DE\s+LA\s+|DU\s+|DES\s+|DE\s+L['\u2019]?\s*|D['\u2019]?\s*|DE\s+)",
+                        '', next_line, flags=re.IGNORECASE
+                    ).strip()
+                    if next_clean and len(next_clean) >= 3:
+                        # Combiner type + articles + nom
+                        combined = f"{street_type} {next_line}".strip()
+                        score = self._score_french_address(combined, next_clean, KNOWN_FR_NAMES)
+                        # Bonus pour adjacence de lignes
+                        score += 10
+                        if score > 0:
+                            candidates.append((score, combined.title()))
+        
+        # Stratégie 3: chercher des noms connus isolés
+        for word in all_words:
+            clean = word.strip('.,;:!?')
+            if clean in KNOWN_FR_NAMES and clean not in fr_types_upper:
+                # Chercher un type de voie à proximité
+                for street_type, _, _ in found_types:
+                    address = f"{street_type} {clean}"
+                    candidates.append((60, address.title()))
+        
+        return candidates
+    
+    def _score_french_address(self, address, name_part, known_names):
+        """Score une adresse française candidate"""
+        score = 0
+        words = name_part.split()
+        
+        # Bonus si un mot est un nom connu
+        for w in words:
+            if w.strip('.,;:!?') in known_names:
+                score += 50
+                break
+        
+        # Bonus si le nom a une longueur raisonnable (3-40 chars)
+        if 3 <= len(name_part) <= 40:
+            score += 20
+        
+        # Bonus si plusieurs mots (plus spécifique)
+        if len(words) >= 2:
+            score += 10
+        
+        # Bonus voyelles présentes (pas du bruit consonantique)
+        vowels = sum(1 for c in name_part if c in 'AEIOUYÀÂÉÈÊËÏÎÔÙÛÜ')
+        if vowels >= 1:
+            score += 15
+        
+        # Malus: caractères répétés ou patterns bizarres
+        if re.search(r'(.)\1{2,}', name_part):
+            score -= 30
+        if len(set(name_part.replace(' ', ''))) < 4:
+            score -= 30
+        # Malus: trop de consonnes consécutives
+        if re.search(r'[BCDFGHJKLMNPQRSTVWXZ]{4,}', name_part):
+            score -= 20
+        
+        return score
+    
+    def _recombine_uk(self, lines, all_words):
+        """Recombinaison spécifique UK (inchangée, refactorisée)"""
+        candidates = []
+        
+        # Noms communs UK
+        common_uk_names = {
+            'SPRING', 'OXFORD', 'BAKER', 'ABBEY', 'KINGS', 'QUEENS',
+            'VICTORIA', 'REGENT', 'BOND', 'FLEET', 'STRAND', 'SOHO',
+            'BRICK', 'DEAN', 'GREEK', 'POLAND', 'CARNABY', 'COVENT',
+            'TRAFALGAR', 'LEICESTER', 'PICCADILLY', 'CHELSEA', 'DANSEY',
+            'ARBLAY', "D'ARBLAY", 'ILFORD', 'WARDOUR', 'BERWICK', 'FRITH',
+            'WHITEHALL', 'DOWNING', 'PORTOBELLO', 'CAMDEN', 'BRIXTON',
+        }
         uk_postcode_pattern = re.compile(r'^[A-Z]{1,2}\d{1,2}[A-Z]?$')
         
-        # Extraire les numéros avec comptage (pour privilégier les plus fréquents)
+        # Extraire numéros par fréquence
         number_counts = {}
         for line in lines:
-            # Chercher des numéros au début de ligne ou isolés
-            nums = re.findall(r'\b(\d{1,3})\b', line)
-            for n in nums:
-                if 1 <= int(n) <= 999:  # Numéros de rue valides
+            for n in re.findall(r'\b(\d{1,3})\b', line):
+                if 1 <= int(n) <= 999:
                     number_counts[n] = number_counts.get(n, 0) + 1
-        
-        # Trier par fréquence décroissante, puis par valeur décroissante
-        sorted_numbers = sorted(number_counts.keys(), 
+        sorted_numbers = sorted(number_counts.keys(),
                                key=lambda x: (-number_counts[x], -int(x)))
         
-        # Chercher les fragments de type rue (mots complets uniquement)
+        # Trouver fragments de type rue
         street_fragments = []
         for line in lines:
-            for street_type in uk_street_types:
-                # Chercher le mot complet (pas une sous-chaîne)
-                pattern = rf'\b{street_type}\b'
-                if re.search(pattern, line):
-                    match = re.search(rf'({street_type}\s*[A-Z]{{1,2}}\d{{1,2}}[A-Z]?)', line)
-                    if match:
-                        street_fragments.append((street_type, match.group(1), 'street'))
-                    else:
-                        street_fragments.append((street_type, street_type, 'street'))
+            for st in UK_STREET_TYPES_SET:
+                if re.search(rf'\b{st}\b', line):
+                    m = re.search(rf'({st}\s*[A-Z]{{1,2}}\d{{1,2}}[A-Z]?)', line)
+                    street_fragments.append((st, m.group(1) if m else st, 'street'))
         
-        # Chercher les fragments de type bâtiment (mots complets uniquement)
         building_fragments = []
         for line in lines:
-            for building_type in uk_building_types:
-                # Chercher le mot complet (pas une sous-chaîne)
-                pattern = rf'\b{building_type}\b'
-                if re.search(pattern, line):
-                    building_fragments.append((building_type, building_type, 'building'))
+            for bt in UK_BUILDING_TYPES_SET:
+                if re.search(rf'\b{bt}\b', line):
+                    building_fragments.append((bt, bt, 'building'))
         
-        # Chercher les noms potentiels (mots en majuscules de 4+ lettres)
+        # Noms potentiels
         potential_names = []
         for word in all_words:
-            clean_word = re.sub(r'[^A-Z]', '', word)
-            if len(clean_word) >= 4 and clean_word.isalpha():
-                if clean_word not in uk_street_types and clean_word not in uk_building_types:
-                    potential_names.append(clean_word)
+            clean = re.sub(r'[^A-Z]', '', word)
+            if len(clean) >= 4 and clean.isalpha():
+                if clean not in UK_STREET_TYPES_SET and clean not in UK_BUILDING_TYPES_SET:
+                    potential_names.append(clean)
         
-        # Combiner noms + fragments de rue avec scoring
+        # Combiner
         for name in potential_names:
             for frag_type, fragment, kind in street_fragments:
                 if not fragment.startswith(name):
@@ -987,42 +1189,19 @@ class ImageOCRAnalyzer:
                     score = self._score_address(name, fragment, common_uk_names, uk_postcode_pattern)
                     if score > 0:
                         candidates.append((score, address))
-        
-        # Combiner numéros + noms + types de bâtiments
-        for name in potential_names:
-            for building_type, fragment, kind in building_fragments:
+            
+            for bt, fragment, kind in building_fragments:
                 address = f"{name} {fragment}"
                 score = self._score_address(name, fragment, common_uk_names, uk_postcode_pattern)
-                # Bonus pour les bâtiments
                 if name in common_uk_names:
                     score += 20
                 if score > 0:
-                    # Essayer avec un numéro devant (par ordre de fréquence)
                     for num in sorted_numbers:
-                        addr_with_num = f"{num} {address}"
-                        # Bonus pour avoir un numéro + bonus pour fréquence
-                        freq_bonus = number_counts[num] * 5  # +5 par occurrence
-                        candidates.append((score + 25 + freq_bonus, addr_with_num))
-                    # Aussi sans numéro
+                        freq_bonus = number_counts[num] * 5
+                        candidates.append((score + 25 + freq_bonus, f"{num} {address}"))
                     candidates.append((score, address))
         
-        # Trier par score décroissant et retourner les meilleurs
-        candidates.sort(key=lambda x: -x[0])
-        
-        # Dédupliquer (garder le meilleur score par adresse)
-        seen = set()
-        unique_candidates = []
-        for score, address in candidates:
-            addr_key = address.upper()
-            if addr_key not in seen and score >= 50:
-                seen.add(addr_key)
-                unique_candidates.append((score, address))
-                self.log(f"Candidat (score={score}): {address}")
-        
-        # Retourner les 5 meilleurs candidats
-        addresses = [addr for score, addr in unique_candidates[:5]]
-        
-        return addresses
+        return candidates
     
     def _score_address(self, name, fragment, common_names, postcode_pattern):
         """Calcule un score pour une adresse candidate"""
@@ -1051,30 +1230,125 @@ class ImageOCRAnalyzer:
         
         return score
     
-    def geocode_address(self, address):
-        """Géocode une adresse via Nominatim"""
-        try:
-            url = "https://nominatim.openstreetmap.org/search"
-            params = {
-                'q': address,
-                'format': 'json',
-                'limit': 1
+    def geocode_address(self, address, city_code=None):
+        """
+        Géocode une adresse via Nominatim (structuré puis free-form).
+        Valide le résultat contre la ville attendue.
+        
+        Stratégie:
+        1. Requête structurée (street=, city=, country=) — plus précise
+        2. Si échec: requête free-form (q=) avec ville en suffixe
+        3. Validation des coordonnées contre la ville attendue
+        """
+        city_name = None
+        country_code = None
+        if city_code:
+            city_info = CITY_CENTERS.get(city_code)
+            if city_info:
+                city_name = city_info.get('name')
+            country = CITY_COUNTRIES.get(city_code, 'fr')
+            country_map = {
+                'fr': 'fr', 'uk': 'gb', 'us': 'us', 'it': 'it', 'es': 'es',
+                'de': 'de', 'nl': 'nl', 'jp': 'jp', 'cn': 'cn', 'th': 'th',
             }
-            response = requests.get(url, params=params, headers={
-                'User-Agent': 'InvaderHunter/2.0'
-            }, timeout=10)
+            country_code = country_map.get(country)
+        
+        base_url = "https://nominatim.openstreetmap.org/search"
+        headers = {'User-Agent': 'InvaderHunter/3.0'}
+        
+        # Stratégie 1: requête structurée
+        if city_name:
+            try:
+                params = {
+                    'street': address,
+                    'city': city_name,
+                    'format': 'json',
+                    'limit': 3,
+                    'addressdetails': 1,
+                }
+                if country_code:
+                    params['countrycodes'] = country_code
+                
+                response = requests.get(base_url, params=params, headers=headers, timeout=10)
+                if response.status_code == 200:
+                    results = response.json()
+                    geo = self._pick_best_nominatim_result(results, city_code)
+                    if geo:
+                        self.log(f"Geocode structuré: {geo['lat']:.5f}, {geo['lng']:.5f}")
+                        return geo
+            except Exception as e:
+                self.log(f"Erreur geocode structuré: {e}")
+        
+        # Stratégie 2: requête free-form avec ville
+        try:
+            query = address
+            if city_name and city_name.lower() not in address.lower():
+                query = f"{address}, {city_name}"
             
+            params = {
+                'q': query,
+                'format': 'json',
+                'limit': 3,
+                'addressdetails': 1,
+            }
+            if country_code:
+                params['countrycodes'] = country_code
+            
+            response = requests.get(base_url, params=params, headers=headers, timeout=10)
             if response.status_code == 200:
                 results = response.json()
-                if results:
-                    lat = float(results[0]['lat'])
-                    lng = float(results[0]['lon'])
-                    if not (abs(lat) < 0.01 and abs(lng) < 0.01):
-                        return {'lat': lat, 'lng': lng, 'display_name': results[0].get('display_name')}
+                geo = self._pick_best_nominatim_result(results, city_code)
+                if geo:
+                    self.log(f"Geocode free-form: {geo['lat']:.5f}, {geo['lng']:.5f}")
+                    return geo
         except Exception as e:
-            self.log(f"Erreur geocoding: {e}")
+            self.log(f"Erreur geocode free-form: {e}")
         
         return None
+    
+    def _pick_best_nominatim_result(self, results, city_code=None):
+        """
+        Parmi les résultats Nominatim, choisit le meilleur.
+        Priorise les résultats cohérents avec la ville attendue.
+        """
+        if not results:
+            return None
+        
+        best = None
+        best_distance = float('inf')
+        
+        for r in results:
+            lat = float(r['lat'])
+            lng = float(r['lon'])
+            
+            # Ignorer les coordonnées nulles
+            if abs(lat) < 0.01 and abs(lng) < 0.01:
+                continue
+            
+            candidate = {
+                'lat': lat,
+                'lng': lng,
+                'display_name': r.get('display_name', ''),
+                'type': r.get('type', ''),
+                'importance': float(r.get('importance', 0)),
+            }
+            
+            # Validation contre la ville
+            if city_code and city_code in CITY_CENTERS:
+                check = validate_city_coherence(lat, lng, city_code)
+                if check['valid']:
+                    dist = check['distance_to_center'] or float('inf')
+                    if dist < best_distance:
+                        best = candidate
+                        best_distance = dist
+                else:
+                    self.log(f"Nominatim rejeté: {check['warning']}")
+            else:
+                # Pas de ville à valider, prendre le premier
+                if best is None:
+                    best = candidate
+        
+        return best
     
     def analyze(self, image_url, city_name=None, city_code=None):
         """
@@ -1150,7 +1424,7 @@ class ImageOCRAnalyzer:
         # 4. Géocoder la première adresse trouvée
         for addr in addresses:
             self.log(f"Géocodage: {addr}")
-            geo = self.geocode_address(addr)
+            geo = self.geocode_address(addr, city_code=city_code)
             if geo:
                 result['found'] = True
                 result['lat'] = geo['lat']
@@ -1162,6 +1436,260 @@ class ImageOCRAnalyzer:
         if not result['found']:
             result['error'] = 'Géocodage échoué pour toutes les adresses'
         
+        return result
+
+
+class VisionAnalyzer:
+    """
+    Analyse d'image via Claude Vision API (Anthropic).
+    
+    Alternative à Tesseract OCR — utilise la compréhension visuelle de Claude
+    pour lire les plaques de rue (même floues/en perspective), identifier des
+    monuments ou contexte visuel, et extraire des indices de localisation.
+    
+    Nécessite: pip install anthropic
+    Usage: --anthropic-key sk-ant-... (ou env ANTHROPIC_API_KEY)
+    
+    Coût: ~0.003€ par image (Sonnet + vision)
+    """
+    
+    VISION_MODEL = "claude-sonnet-4-5-20250929"
+    
+    SYSTEM_PROMPT = """Tu es un expert en géolocalisation d'œuvres de street art, 
+spécialisé dans les mosaïques Space Invaders de l'artiste Invader.
+
+Analyse cette photo et identifie TOUS les indices de localisation visibles:
+- Plaques de rue (même partiellement lisibles, en perspective, floues)
+- Noms d'enseignes, commerces, restaurants  
+- Numéros de bâtiments
+- Monuments, bâtiments reconnaissables
+- Style architectural (haussmannien, briques, etc.)
+- Panneaux de signalisation, panneaux directionnels
+- Arrondissement parisien (si plaques vertes/bleues visibles)
+- Tout autre indice géographique
+
+Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
+{
+  "street_signs": ["texte exact de chaque plaque de rue visible"],
+  "building_numbers": ["numéros de bâtiments visibles"],
+  "shop_signs": ["noms d'enseignes/commerces visibles"],
+  "landmarks": ["monuments ou bâtiments reconnaissables"],
+  "district": "arrondissement ou quartier si identifiable",
+  "architectural_style": "style architectural observé",
+  "other_clues": ["tout autre indice de localisation"],
+  "best_address_guess": "ta meilleure estimation d'adresse complète",
+  "confidence": "HIGH/MEDIUM/LOW",
+  "reasoning": "explication courte de ton raisonnement"
+}"""
+    
+    def __init__(self, api_key=None, verbose=False):
+        self.api_key = api_key or os.environ.get('ANTHROPIC_API_KEY')
+        self.verbose = verbose
+        self.enabled = False
+        self.client = None
+        
+        if self.api_key:
+            try:
+                import anthropic
+                self.client = anthropic.Anthropic(api_key=self.api_key)
+                self.enabled = True
+                print("   🧠 Claude Vision activé")
+            except ImportError:
+                print("   ⚠️ Claude Vision: 'pip install anthropic' requis")
+            except Exception as e:
+                print(f"   ⚠️ Claude Vision init: {e}")
+    
+    def log(self, msg):
+        if self.verbose:
+            print(f"      [VISION] {msg}")
+    
+    def _download_image_base64(self, image_url):
+        """Télécharge l'image et retourne le base64 + media type"""
+        try:
+            response = requests.get(image_url, headers=HEADERS, timeout=15)
+            if response.status_code != 200:
+                return None, None
+            
+            content_type = response.headers.get('content-type', 'image/jpeg')
+            # Normaliser le media type
+            if 'png' in content_type:
+                media_type = 'image/png'
+            elif 'webp' in content_type:
+                media_type = 'image/webp'
+            elif 'gif' in content_type:
+                media_type = 'image/gif'
+            else:
+                media_type = 'image/jpeg'
+            
+            import base64
+            b64 = base64.standard_b64encode(response.content).decode('utf-8')
+            
+            # Vérifier la taille (Claude max ~20MB)
+            if len(response.content) > 20 * 1024 * 1024:
+                self.log("Image trop grande (>20MB)")
+                return None, None
+            
+            self.log(f"Image: {len(response.content)//1024}KB, {media_type}")
+            return b64, media_type
+            
+        except Exception as e:
+            self.log(f"Erreur téléchargement: {e}")
+            return None, None
+    
+    def _call_vision(self, image_b64, media_type, city_name=None):
+        """Envoie l'image à Claude Vision et parse la réponse JSON"""
+        try:
+            # Contextualiser le prompt avec la ville
+            user_msg = "Analyse cette photo d'un Space Invader (mosaïque street art)."
+            if city_name:
+                user_msg += f" L'invader se situe à {city_name}."
+            user_msg += " Identifie tous les indices de localisation."
+            
+            response = self.client.messages.create(
+                model=self.VISION_MODEL,
+                max_tokens=1000,
+                system=self.SYSTEM_PROMPT,
+                messages=[{
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "image",
+                            "source": {
+                                "type": "base64",
+                                "media_type": media_type,
+                                "data": image_b64,
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "text": user_msg
+                        }
+                    ]
+                }]
+            )
+            
+            # Extraire le texte de la réponse
+            raw = response.content[0].text.strip()
+            self.log(f"Réponse brute: {raw[:200]}...")
+            
+            # Parser le JSON (nettoyer si nécessaire)
+            raw = re.sub(r'^```json\s*', '', raw)
+            raw = re.sub(r'\s*```$', '', raw)
+            
+            return json.loads(raw)
+            
+        except json.JSONDecodeError as e:
+            self.log(f"JSON invalide: {e}")
+            # Essayer d'extraire quand même l'adresse
+            addr_match = re.search(r'"best_address_guess"\s*:\s*"([^"]+)"', raw)
+            if addr_match:
+                return {'best_address_guess': addr_match.group(1), 'confidence': 'LOW'}
+            return None
+        except Exception as e:
+            self.log(f"Erreur Vision API: {e}")
+            return None
+    
+    def analyze(self, image_url, city_name=None, city_code=None):
+        """
+        Analyse complète via Claude Vision:
+        1. Télécharge l'image en base64
+        2. Envoie à Claude pour analyse visuelle
+        3. Géocode la meilleure adresse trouvée
+        4. Valide contre la ville attendue
+        
+        Returns:
+            dict: {'found': bool, 'lat': float, 'lng': float, 'address': str,
+                   'source': 'vision', 'clues': dict, 'confidence': str}
+        """
+        result = {
+            'found': False,
+            'lat': None,
+            'lng': None,
+            'address': None,
+            'source': 'vision',
+            'clues': None,
+            'confidence': None,
+            'error': None,
+        }
+        
+        if not self.enabled:
+            result['error'] = 'Vision non activé (--anthropic-key requis)'
+            return result
+        
+        # 1. Télécharger l'image
+        self.log(f"Téléchargement: {image_url[:60]}...")
+        b64, media_type = self._download_image_base64(image_url)
+        if not b64:
+            result['error'] = 'Impossible de télécharger l\'image'
+            return result
+        
+        # 2. Analyser avec Claude Vision
+        self.log("Envoi à Claude Vision...")
+        clues = self._call_vision(b64, media_type, city_name)
+        if not clues:
+            result['error'] = 'Pas de réponse exploitable de Vision'
+            return result
+        
+        result['clues'] = clues
+        result['confidence'] = clues.get('confidence', 'LOW')
+        
+        # Afficher les indices trouvés
+        if clues.get('street_signs'):
+            self.log(f"Plaques: {clues['street_signs']}")
+        if clues.get('shop_signs'):
+            self.log(f"Enseignes: {clues['shop_signs']}")
+        if clues.get('landmarks'):
+            self.log(f"Repères: {clues['landmarks']}")
+        if clues.get('district'):
+            self.log(f"Quartier: {clues['district']}")
+        
+        # 3. Construire les adresses candidates à géocoder
+        addresses_to_try = []
+        
+        # Priorité 1: best_address_guess de Claude
+        if clues.get('best_address_guess'):
+            addr = clues['best_address_guess']
+            if city_name and city_name.lower() not in addr.lower():
+                addr = f"{addr}, {city_name}"
+            addresses_to_try.append(addr)
+        
+        # Priorité 2: plaques de rue + numéros
+        for sign in (clues.get('street_signs') or []):
+            nums = clues.get('building_numbers') or ['']
+            for num in nums[:1]:  # Premier numéro seulement
+                addr = f"{num} {sign}".strip() if num else sign
+                if city_name and city_name.lower() not in addr.lower():
+                    addr = f"{addr}, {city_name}"
+                if addr not in addresses_to_try:
+                    addresses_to_try.append(addr)
+        
+        # Priorité 3: enseignes
+        for shop in (clues.get('shop_signs') or []):
+            addr = shop
+            if city_name:
+                addr = f"{shop}, {city_name}"
+            if addr not in addresses_to_try:
+                addresses_to_try.append(addr)
+        
+        if not addresses_to_try:
+            result['error'] = 'Aucune adresse exploitable dans les indices'
+            return result
+        
+        # 4. Géocoder (utiliser l'OCR analyzer pour son geocoder amélioré)
+        ocr = ImageOCRAnalyzer(verbose=self.verbose)
+        
+        for addr in addresses_to_try[:5]:
+            self.log(f"Géocodage: {addr}")
+            geo = ocr.geocode_address(addr, city_code=city_code)
+            if geo:
+                result['found'] = True
+                result['lat'] = geo['lat']
+                result['lng'] = geo['lng']
+                result['address'] = addr
+                self.log(f"✅ GPS: {geo['lat']:.6f}, {geo['lng']:.6f}")
+                return result
+        
+        result['error'] = 'Géocodage échoué pour toutes les adresses Vision'
         return result
 
 
@@ -2477,12 +3005,13 @@ class AroundUsSearcher:
 class InvaderLocationSearcher:
     """Recherche combinée sur plusieurs sources"""
     
-    def __init__(self, visible=False, verbose=False, pnote_file=None, pnote_url=None, flickr=True):
+    def __init__(self, visible=False, verbose=False, pnote_file=None, pnote_url=None, flickr=True, anthropic_key=None):
         self.visible = visible
         self.verbose = verbose
         self.pnote_file = pnote_file
         self.pnote_url = pnote_url
         self.flickr_enabled = flickr
+        self.anthropic_key = anthropic_key
         self.playwright = None
         self.browser = None
         self.page = None
@@ -2491,6 +3020,7 @@ class InvaderLocationSearcher:
         self.ocr_analyzer = None
         self.pnote = None
         self.flickr = None
+        self.vision = None
     
     def start(self):
         """Démarre le navigateur et initialise les sources"""
@@ -2519,6 +3049,8 @@ class InvaderLocationSearcher:
             self.pnote = PnoteSearcher(pnote_url=self.pnote_url, verbose=self.verbose)
         if self.flickr_enabled:
             self.flickr = FlickrScraper(self.page, self.verbose)
+        if self.anthropic_key:
+            self.vision = VisionAnalyzer(api_key=self.anthropic_key, verbose=self.verbose)
     
     def stop(self):
         """Arrête le navigateur"""
@@ -3066,7 +3598,7 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
     print("=" * 60)
     
     # Stats
-    stats = {'total': len(missing_invaders), 'found': 0, 'high': 0, 'medium': 0, 'low': 0, 'exif': 0, 'ocr': 0, 'interactive': 0, 'pnote': 0, 'flickr': 0}
+    stats = {'total': len(missing_invaders), 'found': 0, 'high': 0, 'medium': 0, 'low': 0, 'exif': 0, 'ocr': 0, 'vision': 0, 'interactive': 0, 'pnote': 0, 'flickr': 0}
     results = []
     
     for i, inv in enumerate(missing_invaders, 1):
@@ -3180,8 +3712,42 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
                         else:
                             print(f"      ❌ {ocr_result.get('error', 'Non trouvé')}")
             
+            # Fallback Claude Vision (si image dispo et OCR n'a pas trouvé)
+            found_via_image = (exif_result and exif_result.get('found')) or (ocr_result and ocr_result.get('found'))
+            vision_result = None
+            if not found_via_image and image_lieu_url and searcher.vision and searcher.vision.enabled:
+                print(f"   🧠 Claude Vision...", end='', flush=True)
+                vision_result = searcher.vision.analyze(image_lieu_url, city_name, city_code)
+                
+                if vision_result.get('found'):
+                    # Valider contre la ville
+                    if city_code:
+                        check = validate_city_coherence(vision_result['lat'], vision_result['lng'], city_code)
+                        if not check['valid']:
+                            print(f" 🚫 REJETÉ ({check['warning']})")
+                            vision_result['found'] = False
+                    
+                    if vision_result.get('found'):
+                        new_inv['lat'] = vision_result['lat']
+                        new_inv['lng'] = vision_result['lng']
+                        new_inv['address'] = vision_result.get('address')
+                        new_inv['geo_source'] = 'vision'
+                        new_inv['geo_confidence'] = 'medium' if vision_result.get('confidence') in ('HIGH', 'MEDIUM') else 'low'
+                        new_inv['location_unknown'] = False
+                        stats['found'] += 1
+                        stats['medium'] += 1
+                        stats['vision'] += 1
+                        print(f" ✅ {vision_result['lat']:.6f}, {vision_result['lng']:.6f}")
+                        if vision_result.get('address'):
+                            print(f"      📍 {vision_result['address']}")
+                        confidence = vision_result.get('confidence', '?')
+                        print(f"      🎯 Confiance: {confidence}")
+                        found_via_image = True
+                else:
+                    print(f" ❌ {vision_result.get('error', 'Non trouvé')}")
+            
             # Fallback interactif: proposer Google Lens si mode interactif activé
-            found_via_fallback = (exif_result and exif_result.get('found')) or (ocr_result and ocr_result.get('found'))
+            found_via_fallback = found_via_image
             if not found_via_fallback and interactive:
                 if image_lieu_url:
                     interactive_result = interactive_google_lens(
@@ -3237,6 +3803,8 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
         medium_details.append(f"{stats['exif']} EXIF")
     if stats['ocr'] > 0:
         medium_details.append(f"{stats['ocr']} OCR")
+    if stats['vision'] > 0:
+        medium_details.append(f"{stats['vision']} Vision")
     if stats['interactive'] > 0:
         medium_details.append(f"{stats['interactive']} Interactive")
     medium_suffix = f" (dont {', '.join(medium_details)})" if medium_details else ""
@@ -3265,6 +3833,8 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
             medium_details.append(f"{stats['exif']} EXIF")
         if stats['ocr'] > 0:
             medium_details.append(f"{stats['ocr']} OCR")
+        if stats['vision'] > 0:
+            medium_details.append(f"{stats['vision']} Vision")
         if medium_details:
             f.write(f" (dont {', '.join(medium_details)})")
         f.write(f", LOW: {stats['low']}\n\n")
@@ -3412,6 +3982,8 @@ def main():
                         help='Télécharger pnote.eu depuis URL (défaut: pnote.eu/projects/invaders/map/invaders.json)')
     parser.add_argument('--no-flickr', dest='no_flickr', action='store_true',
                         help='Désactiver la recherche Flickr (scraping)')
+    parser.add_argument('--anthropic-key', dest='anthropic_key', default=None,
+                        help='Clé API Anthropic pour Claude Vision (ou env ANTHROPIC_API_KEY)')
     
     args = parser.parse_args()
     
@@ -3546,7 +4118,7 @@ def main():
             json.dump(missing_format, f, indent=2, ensure_ascii=False)
         
         # Lancer le searcher
-        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr)
+        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key)
         try:
             searcher.start()
             print("🌐 Navigateur démarré")
@@ -3583,7 +4155,7 @@ def main():
             return
         
         # Démarrer le searcher
-        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr)
+        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key)
         try:
             searcher.start()
             print("🌐 Navigateur démarré")
@@ -3682,7 +4254,7 @@ def main():
     results = []
     
     # Initialiser le searcher
-    searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr)
+    searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key)
     
     try:
         searcher.start()
