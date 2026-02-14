@@ -1441,46 +1441,105 @@ class ImageOCRAnalyzer:
 
 class VisionAnalyzer:
     """
-    Analyse d'image via Claude Vision API (Anthropic).
+    Analyse d'image via Claude Vision API (Anthropic) — v2.
     
-    Alternative à Tesseract OCR — utilise la compréhension visuelle de Claude
-    pour lire les plaques de rue (même floues/en perspective), identifier des
-    monuments ou contexte visuel, et extraire des indices de localisation.
+    Fonctionnalités:
+    - Multi-images: image_lieu (vue large) + image_close (gros plan) pour croiser les indices
+    - Prompts adaptés par ville (plaques parisiennes, postcodes UK, etc.)
+    - Recherche web des commerces/landmarks identifiés par la Vision
     
     Nécessite: pip install anthropic
     Usage: --anthropic-key sk-ant-... (ou env ANTHROPIC_API_KEY)
-    
-    Coût: ~0.003€ par image (Sonnet + vision)
+    Coût: ~0.003-0.006€ par invader (1-2 images Sonnet)
     """
     
     VISION_MODEL = "claude-sonnet-4-5-20250929"
     
-    SYSTEM_PROMPT = """Tu es un expert en géolocalisation d'œuvres de street art, 
+    # Prompts spécifiques par pays/ville
+    CITY_HINTS = {
+        'PA': {
+            'context': "Paris, France",
+            'hints': """Indices spécifiques à Paris:
+- Les plaques de rue parisiennes sont BLANCHES sur fond BLEU (rues) ou VERT (boulevards/avenues)
+- Elles indiquent souvent l'arrondissement en bas (ex: "3e Arr't", "11e")  
+- Numérotation: les numéros pairs sont à droite en montant
+- Cherche: plaques Vélib', bouches de métro RATP style Hector Guimard, colonnes Morris, fontaines Wallace
+- Les pharmacies ont des croix vertes, les tabacs ont des losanges rouges
+- Style haussmannien = pierre de taille, balcons filants aux 2e et 5e étages"""
+        },
+        'LDN': {
+            'context': "Londres, UK",
+            'hints': """Indices spécifiques à Londres:
+- Les plaques de rue sont BLANCHES sur fond NOIR ou BLEU (selon le borough)
+- Les postcodes UK sont visibles partout (ex: SW1, EC1, W1, E2)
+- Cherche: cabines téléphoniques rouges, bus à impériale rouges, plaques rondes bleues (English Heritage)
+- Briques rouges = typique Est londonien (Shoreditch, Brick Lane)
+- Cherche les noms de pubs, off-licences, charity shops"""
+        },
+        'LYO': {
+            'context': "Lyon, France",
+            'hints': """Indices spécifiques à Lyon:
+- Plaques de rue similaires à Paris (blanches sur bleu/vert)
+- Cherche: traboules (passages couverts), murs peints, quais de Saône/Rhône
+- Quartiers: Croix-Rousse (pentes, murs en pisé), Vieux Lyon (Renaissance), Confluence"""
+        },
+        'MRS': {
+            'context': "Marseille, France",
+            'hints': """Indices spécifiques à Marseille:
+- Plaques de rue en céramique bleue et blanche typiques
+- Cherche: Bonne Mère en arrière-plan, Vieux-Port, calanques
+- Style: immeubles colorés, volets bleus"""
+        },
+        'TK': {
+            'context': "Tokyo, Japon",
+            'hints': """Indices spécifiques à Tokyo:
+- Plaques de rue en japonais (kanji/hiragana) + romanisation
+- Numérotation par bloc (chōme-ban-gō)
+- Cherche: enseignes en katakana, konbini (7-Eleven, Lawson, FamilyMart)
+- Style: fils électriques, distributeurs automatiques, architecture mixte"""
+        },
+        'BKK': {
+            'context': "Bangkok, Thaïlande",
+            'hints': """Indices spécifiques à Bangkok:
+- Texte en thaï + translittération latine
+- Soi (ruelles) numérotées depuis les routes principales
+- Cherche: tuk-tuks, temples, fils électriques très denses, 7-Eleven omniprésents"""
+        },
+    }
+    
+    # Prompt par défaut pour les villes sans hints spécifiques
+    DEFAULT_HINTS = """Indices généraux:
+- Cherche les plaques de rue, panneaux de signalisation, numéros de bâtiments
+- Identifie les enseignes commerciales, restaurants, pharmacies
+- Note le style architectural, les monuments reconnaissables
+- Cherche les codes postaux, noms de quartiers"""
+    
+    SYSTEM_PROMPT_TEMPLATE = """Tu es un expert en géolocalisation d'œuvres de street art, 
 spécialisé dans les mosaïques Space Invaders de l'artiste Invader.
 
-Analyse cette photo et identifie TOUS les indices de localisation visibles:
-- Plaques de rue (même partiellement lisibles, en perspective, floues)
-- Noms d'enseignes, commerces, restaurants  
-- Numéros de bâtiments
-- Monuments, bâtiments reconnaissables
-- Style architectural (haussmannien, briques, etc.)
-- Panneaux de signalisation, panneaux directionnels
-- Arrondissement parisien (si plaques vertes/bleues visibles)
-- Tout autre indice géographique
+Contexte: L'invader se situe à {city_context}.
+
+{city_hints}
+
+Analyse les images fournies et identifie TOUS les indices de localisation visibles.
+Si plusieurs images sont fournies, la première est une vue large (contexte) et la seconde un gros plan (détails).
+Croise les indices des deux images.
 
 Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
-{
+{{
   "street_signs": ["texte exact de chaque plaque de rue visible"],
   "building_numbers": ["numéros de bâtiments visibles"],
-  "shop_signs": ["noms d'enseignes/commerces visibles"],
+  "shop_signs": ["noms d'enseignes/commerces visibles avec type si possible"],
   "landmarks": ["monuments ou bâtiments reconnaissables"],
   "district": "arrondissement ou quartier si identifiable",
+  "postcode": "code postal si visible",
+  "metro_bus": ["stations de métro/bus/tram visibles"],
   "architectural_style": "style architectural observé",
   "other_clues": ["tout autre indice de localisation"],
-  "best_address_guess": "ta meilleure estimation d'adresse complète",
+  "best_address_guess": "ta meilleure estimation d'adresse complète incluant la ville",
   "confidence": "HIGH/MEDIUM/LOW",
   "reasoning": "explication courte de ton raisonnement"
-}"""
+}}"""
     
     def __init__(self, api_key=None, verbose=False):
         self.api_key = api_key or os.environ.get('ANTHROPIC_API_KEY')
@@ -1493,7 +1552,7 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
                 import anthropic
                 self.client = anthropic.Anthropic(api_key=self.api_key)
                 self.enabled = True
-                print("   🧠 Claude Vision activé")
+                print("   🧠 Claude Vision activé (multi-images + recherche web)")
             except ImportError:
                 print("   ⚠️ Claude Vision: 'pip install anthropic' requis")
             except Exception as e:
@@ -1508,10 +1567,10 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
         try:
             response = requests.get(image_url, headers=HEADERS, timeout=15)
             if response.status_code != 200:
+                self.log(f"HTTP {response.status_code} pour {image_url[:50]}")
                 return None, None
             
             content_type = response.headers.get('content-type', 'image/jpeg')
-            # Normaliser le media type
             if 'png' in content_type:
                 media_type = 'image/png'
             elif 'webp' in content_type:
@@ -1524,7 +1583,6 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
             import base64
             b64 = base64.standard_b64encode(response.content).decode('utf-8')
             
-            # Vérifier la taille (Claude max ~20MB)
             if len(response.content) > 20 * 1024 * 1024:
                 self.log("Image trop grande (>20MB)")
                 return None, None
@@ -1536,43 +1594,67 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
             self.log(f"Erreur téléchargement: {e}")
             return None, None
     
-    def _call_vision(self, image_b64, media_type, city_name=None):
-        """Envoie l'image à Claude Vision et parse la réponse JSON"""
+    def _build_prompt(self, city_code=None, city_name=None):
+        """Construit le system prompt adapté à la ville"""
+        # Chercher les hints spécifiques à la ville
+        city_info = self.CITY_HINTS.get(city_code, {})
+        city_context = city_info.get('context', city_name or 'ville inconnue')
+        city_hints = city_info.get('hints', self.DEFAULT_HINTS)
+        
+        return self.SYSTEM_PROMPT_TEMPLATE.format(
+            city_context=city_context,
+            city_hints=city_hints,
+        )
+    
+    def _call_vision(self, images, city_code=None, city_name=None):
+        """
+        Envoie une ou plusieurs images à Claude Vision.
+        
+        Args:
+            images: list of (b64, media_type, label) tuples
+            city_code: code ville pour prompt adapté
+            city_name: nom ville pour contexte
+            
+        Returns: dict (parsed JSON) or None
+        """
         try:
-            # Contextualiser le prompt avec la ville
-            user_msg = "Analyse cette photo d'un Space Invader (mosaïque street art)."
-            if city_name:
-                user_msg += f" L'invader se situe à {city_name}."
-            user_msg += " Identifie tous les indices de localisation."
+            system_prompt = self._build_prompt(city_code, city_name)
+            
+            # Construire le contenu multi-images
+            content = []
+            for b64, media_type, label in images:
+                content.append({
+                    "type": "image",
+                    "source": {
+                        "type": "base64",
+                        "media_type": media_type,
+                        "data": b64,
+                    }
+                })
+                content.append({
+                    "type": "text",
+                    "text": f"[{label}]"
+                })
+            
+            content.append({
+                "type": "text",
+                "text": "Analyse ces images et identifie tous les indices de localisation."
+            })
             
             response = self.client.messages.create(
                 model=self.VISION_MODEL,
-                max_tokens=1000,
-                system=self.SYSTEM_PROMPT,
+                max_tokens=1200,
+                system=system_prompt,
                 messages=[{
                     "role": "user",
-                    "content": [
-                        {
-                            "type": "image",
-                            "source": {
-                                "type": "base64",
-                                "media_type": media_type,
-                                "data": image_b64,
-                            }
-                        },
-                        {
-                            "type": "text",
-                            "text": user_msg
-                        }
-                    ]
+                    "content": content
                 }]
             )
             
-            # Extraire le texte de la réponse
             raw = response.content[0].text.strip()
-            self.log(f"Réponse brute: {raw[:200]}...")
+            self.log(f"Réponse brute: {raw[:300]}...")
             
-            # Parser le JSON (nettoyer si nécessaire)
+            # Parser le JSON
             raw = re.sub(r'^```json\s*', '', raw)
             raw = re.sub(r'\s*```$', '', raw)
             
@@ -1580,7 +1662,7 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
             
         except json.JSONDecodeError as e:
             self.log(f"JSON invalide: {e}")
-            # Essayer d'extraire quand même l'adresse
+            # Extraction de secours
             addr_match = re.search(r'"best_address_guess"\s*:\s*"([^"]+)"', raw)
             if addr_match:
                 return {'best_address_guess': addr_match.group(1), 'confidence': 'LOW'}
@@ -1589,13 +1671,114 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
             self.log(f"Erreur Vision API: {e}")
             return None
     
-    def analyze(self, image_url, city_name=None, city_code=None):
+    def _search_landmark_address(self, name, city_name=None):
         """
-        Analyse complète via Claude Vision:
-        1. Télécharge l'image en base64
-        2. Envoie à Claude pour analyse visuelle
-        3. Géocode la meilleure adresse trouvée
-        4. Valide contre la ville attendue
+        Recherche l'adresse d'un commerce/landmark via Nominatim.
+        Ex: "Boulangerie Dupain" → "12 Rue de la Roquette, Paris"
+        """
+        try:
+            query = name
+            if city_name:
+                query = f"{name}, {city_name}"
+            
+            url = "https://nominatim.openstreetmap.org/search"
+            params = {
+                'q': query,
+                'format': 'json',
+                'limit': 3,
+                'addressdetails': 1,
+            }
+            response = requests.get(url, params=params,
+                                    headers={'User-Agent': 'InvaderHunter/3.0'},
+                                    timeout=10)
+            
+            if response.status_code == 200:
+                results = response.json()
+                if results:
+                    r = results[0]
+                    lat = float(r['lat'])
+                    lng = float(r['lon'])
+                    display = r.get('display_name', '')
+                    self.log(f"Landmark '{name}' → {lat:.5f}, {lng:.5f} ({display[:60]})")
+                    return {
+                        'lat': lat, 'lng': lng,
+                        'display_name': display,
+                        'source_name': name,
+                    }
+        except Exception as e:
+            self.log(f"Erreur recherche landmark '{name}': {e}")
+        
+        return None
+    
+    def _search_landmarks_web(self, clues, city_name=None, city_code=None):
+        """
+        Recherche les coordonnées des commerces et landmarks identifiés par Vision.
+        Retourne une liste de candidats GPS triés par pertinence.
+        """
+        candidates = []
+        
+        # 1. Chercher les enseignes/commerces
+        for shop in (clues.get('shop_signs') or []):
+            if len(shop) >= 4:  # Ignorer les noms trop courts
+                self.log(f"Recherche enseigne: {shop}")
+                result = self._search_landmark_address(shop, city_name)
+                if result:
+                    # Valider contre la ville
+                    if city_code:
+                        check = validate_city_coherence(result['lat'], result['lng'], city_code)
+                        if check['valid']:
+                            candidates.append({**result, 'type': 'shop', 'score': 70})
+                        else:
+                            self.log(f"  → hors ville, ignoré")
+                    else:
+                        candidates.append({**result, 'type': 'shop', 'score': 60})
+                time.sleep(1)  # Rate limiting Nominatim
+        
+        # 2. Chercher les landmarks
+        for landmark in (clues.get('landmarks') or []):
+            if len(landmark) >= 4:
+                self.log(f"Recherche landmark: {landmark}")
+                result = self._search_landmark_address(landmark, city_name)
+                if result:
+                    if city_code:
+                        check = validate_city_coherence(result['lat'], result['lng'], city_code)
+                        if check['valid']:
+                            candidates.append({**result, 'type': 'landmark', 'score': 80})
+                        else:
+                            self.log(f"  → hors ville, ignoré")
+                    else:
+                        candidates.append({**result, 'type': 'landmark', 'score': 70})
+                time.sleep(1)
+        
+        # 3. Chercher les stations de métro/bus
+        for station in (clues.get('metro_bus') or []):
+            if len(station) >= 3:
+                self.log(f"Recherche station: {station}")
+                # Ajouter "station" pour disambiguation
+                query = f"station {station}"
+                result = self._search_landmark_address(query, city_name)
+                if result:
+                    if city_code:
+                        check = validate_city_coherence(result['lat'], result['lng'], city_code)
+                        if check['valid']:
+                            candidates.append({**result, 'type': 'metro_bus', 'score': 65})
+                        else:
+                            self.log(f"  → hors ville, ignoré")
+                    else:
+                        candidates.append({**result, 'type': 'metro_bus', 'score': 55})
+                time.sleep(1)
+        
+        candidates.sort(key=lambda x: -x['score'])
+        return candidates
+    
+    def analyze(self, image_lieu_url, city_name=None, city_code=None, image_close_url=None):
+        """
+        Analyse complète via Claude Vision v2:
+        1. Télécharge image_lieu (+ image_close si dispo)
+        2. Envoie à Claude avec prompt adapté à la ville
+        3. Géocode la meilleure adresse (Nominatim structuré)
+        4. Recherche web des commerces/landmarks identifiés
+        5. Valide contre la ville attendue
         
         Returns:
             dict: {'found': bool, 'lat': float, 'lng': float, 'address': str,
@@ -1616,16 +1799,28 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
             result['error'] = 'Vision non activé (--anthropic-key requis)'
             return result
         
-        # 1. Télécharger l'image
-        self.log(f"Téléchargement: {image_url[:60]}...")
-        b64, media_type = self._download_image_base64(image_url)
-        if not b64:
-            result['error'] = 'Impossible de télécharger l\'image'
+        # 1. Télécharger les images
+        images = []
+        
+        self.log(f"Téléchargement image_lieu: {image_lieu_url[:60]}...")
+        b64_lieu, mt_lieu = self._download_image_base64(image_lieu_url)
+        if b64_lieu:
+            images.append((b64_lieu, mt_lieu, "Vue large — contexte de la rue"))
+        
+        if image_close_url:
+            self.log(f"Téléchargement image_close: {image_close_url[:60]}...")
+            b64_close, mt_close = self._download_image_base64(image_close_url)
+            if b64_close:
+                images.append((b64_close, mt_close, "Gros plan — détails de la mosaïque et son environnement immédiat"))
+        
+        if not images:
+            result['error'] = 'Impossible de télécharger les images'
             return result
         
-        # 2. Analyser avec Claude Vision
-        self.log("Envoi à Claude Vision...")
-        clues = self._call_vision(b64, media_type, city_name)
+        self.log(f"Envoi de {len(images)} image(s) à Claude Vision...")
+        
+        # 2. Analyser avec Claude Vision (prompt adapté à la ville)
+        clues = self._call_vision(images, city_code=city_code, city_name=city_name)
         if not clues:
             result['error'] = 'Pas de réponse exploitable de Vision'
             return result
@@ -1635,47 +1830,40 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
         
         # Afficher les indices trouvés
         if clues.get('street_signs'):
-            self.log(f"Plaques: {clues['street_signs']}")
+            self.log(f"🪧 Plaques: {clues['street_signs']}")
         if clues.get('shop_signs'):
-            self.log(f"Enseignes: {clues['shop_signs']}")
+            self.log(f"🏪 Enseignes: {clues['shop_signs']}")
         if clues.get('landmarks'):
-            self.log(f"Repères: {clues['landmarks']}")
+            self.log(f"🏛️ Repères: {clues['landmarks']}")
+        if clues.get('metro_bus'):
+            self.log(f"🚇 Transports: {clues['metro_bus']}")
         if clues.get('district'):
-            self.log(f"Quartier: {clues['district']}")
+            self.log(f"📍 Quartier: {clues['district']}")
+        if clues.get('postcode'):
+            self.log(f"📮 Code postal: {clues['postcode']}")
         
         # 3. Construire les adresses candidates à géocoder
         addresses_to_try = []
         
         # Priorité 1: best_address_guess de Claude
         if clues.get('best_address_guess'):
-            addr = clues['best_address_guess']
-            if city_name and city_name.lower() not in addr.lower():
-                addr = f"{addr}, {city_name}"
-            addresses_to_try.append(addr)
+            addresses_to_try.append(clues['best_address_guess'])
         
         # Priorité 2: plaques de rue + numéros
         for sign in (clues.get('street_signs') or []):
             nums = clues.get('building_numbers') or ['']
-            for num in nums[:1]:  # Premier numéro seulement
+            for num in nums[:1]:
                 addr = f"{num} {sign}".strip() if num else sign
                 if city_name and city_name.lower() not in addr.lower():
                     addr = f"{addr}, {city_name}"
                 if addr not in addresses_to_try:
                     addresses_to_try.append(addr)
         
-        # Priorité 3: enseignes
-        for shop in (clues.get('shop_signs') or []):
-            addr = shop
-            if city_name:
-                addr = f"{shop}, {city_name}"
-            if addr not in addresses_to_try:
-                addresses_to_try.append(addr)
-        
         if not addresses_to_try:
-            result['error'] = 'Aucune adresse exploitable dans les indices'
-            return result
+            # Pas d'adresse textuelle → fallback sur landmarks web uniquement
+            self.log("Pas d'adresse dans les indices, recherche web des landmarks...")
         
-        # 4. Géocoder (utiliser l'OCR analyzer pour son geocoder amélioré)
+        # 4. Géocoder les adresses candidates (Nominatim structuré)
         ocr = ImageOCRAnalyzer(verbose=self.verbose)
         
         for addr in addresses_to_try[:5]:
@@ -1686,10 +1874,23 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
                 result['lat'] = geo['lat']
                 result['lng'] = geo['lng']
                 result['address'] = addr
-                self.log(f"✅ GPS: {geo['lat']:.6f}, {geo['lng']:.6f}")
+                self.log(f"✅ GPS via adresse: {geo['lat']:.6f}, {geo['lng']:.6f}")
                 return result
         
-        result['error'] = 'Géocodage échoué pour toutes les adresses Vision'
+        # 5. Recherche web des commerces/landmarks identifiés
+        self.log("Recherche web des commerces et landmarks...")
+        landmark_candidates = self._search_landmarks_web(clues, city_name, city_code)
+        
+        if landmark_candidates:
+            best = landmark_candidates[0]
+            result['found'] = True
+            result['lat'] = best['lat']
+            result['lng'] = best['lng']
+            result['address'] = f"{best.get('source_name', '?')} ({best['display_name'][:80]})"
+            self.log(f"✅ GPS via {best['type']}: {best['lat']:.6f}, {best['lng']:.6f}")
+            return result
+        
+        result['error'] = 'Géocodage échoué pour tous les indices Vision'
         return result
 
 
@@ -3005,13 +3206,14 @@ class AroundUsSearcher:
 class InvaderLocationSearcher:
     """Recherche combinée sur plusieurs sources"""
     
-    def __init__(self, visible=False, verbose=False, pnote_file=None, pnote_url=None, flickr=True, anthropic_key=None):
+    def __init__(self, visible=False, verbose=False, pnote_file=None, pnote_url=None, flickr=True, anthropic_key=None, no_browser=False):
         self.visible = visible
         self.verbose = verbose
         self.pnote_file = pnote_file
         self.pnote_url = pnote_url
-        self.flickr_enabled = flickr
+        self.flickr_enabled = flickr and not no_browser
         self.anthropic_key = anthropic_key
+        self.no_browser = no_browser
         self.playwright = None
         self.browser = None
         self.page = None
@@ -3023,33 +3225,40 @@ class InvaderLocationSearcher:
         self.vision = None
     
     def start(self):
-        """Démarre le navigateur et initialise les sources"""
-        from playwright.sync_api import sync_playwright
+        """Démarre les sources. En mode --no-browser, pas de Playwright."""
         
-        self.playwright = sync_playwright().start()
-        self.browser = self.playwright.chromium.launch(
-            headless=not self.visible,
-            args=['--disable-blink-features=AutomationControlled']
-        )
-        context = self.browser.new_context(
-            viewport={'width': 1280, 'height': 900},
-            user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
-        )
-        self.page = context.new_page()
+        if not self.no_browser:
+            # Mode normal: lancer le navigateur
+            from playwright.sync_api import sync_playwright
+            
+            self.playwright = sync_playwright().start()
+            self.browser = self.playwright.chromium.launch(
+                headless=not self.visible,
+                args=['--disable-blink-features=AutomationControlled']
+            )
+            context = self.browser.new_context(
+                viewport={'width': 1280, 'height': 900},
+                user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
+            )
+            self.page = context.new_page()
+            
+            # Sources qui nécessitent le navigateur
+            self.illuminate = IlluminateArtSearcher(self.page, self.verbose)
+            self.aroundus = AroundUsSearcher(self.page, self.verbose)
+            if self.flickr_enabled:
+                self.flickr = FlickrScraper(self.page, self.verbose)
+        else:
+            print("   🤖 Mode sans navigateur (Pnote + EXIF + OCR + Vision)")
         
-        # Initialiser les searchers web
-        self.illuminate = IlluminateArtSearcher(self.page, self.verbose)
-        self.aroundus = AroundUsSearcher(self.page, self.verbose)
+        # Sources sans navigateur (toujours initialisées)
         self.ocr_analyzer = ImageOCRAnalyzer(self.verbose)
         
-        # Initialiser les nouvelles sources (v3)
         if self.pnote_file:
             self.pnote = PnoteSearcher(pnote_file=self.pnote_file, verbose=self.verbose)
         elif self.pnote_url:
             self.pnote = PnoteSearcher(pnote_url=self.pnote_url, verbose=self.verbose)
-        if self.flickr_enabled:
-            self.flickr = FlickrScraper(self.page, self.verbose)
-        if self.anthropic_key:
+        
+        if self.anthropic_key or os.environ.get('ANTHROPIC_API_KEY'):
             self.vision = VisionAnalyzer(api_key=self.anthropic_key, verbose=self.verbose)
     
     def stop(self):
@@ -3062,44 +3271,45 @@ class InvaderLocationSearcher:
     def reverse_geocode(self, lat, lng):
         """
         Convertit des coordonnées GPS en adresse via Nominatim (OpenStreetMap)
-        Utilise Playwright pour contourner les restrictions réseau
+        Utilise requests en mode --no-browser, Playwright sinon
         Retourne l'adresse ou None si échec
         """
         try:
             url = f"https://nominatim.openstreetmap.org/reverse?lat={lat}&lon={lng}&format=json&addressdetails=1"
             
-            # Utiliser Playwright pour faire la requête
-            response = self.page.request.get(url, headers={'User-Agent': 'InvaderHunter/1.0'})
-            
-            if response.ok:
+            if self.no_browser or not self.page:
+                resp = requests.get(url, headers={'User-Agent': 'InvaderHunter/3.0'}, timeout=10)
+                if resp.status_code != 200:
+                    return None
+                data = resp.json()
+            else:
+                response = self.page.request.get(url, headers={'User-Agent': 'InvaderHunter/1.0'})
+                if not response.ok:
+                    return None
                 data = response.json()
-                
-                # Construire une adresse lisible
-                address_parts = []
-                addr = data.get('address', {})
-                
-                # Numéro + rue
-                if addr.get('house_number'):
-                    address_parts.append(addr['house_number'])
-                if addr.get('road'):
-                    address_parts.append(addr['road'])
-                elif addr.get('pedestrian'):
-                    address_parts.append(addr['pedestrian'])
-                
-                # Ville
-                city = addr.get('city') or addr.get('town') or addr.get('village') or addr.get('municipality')
-                if city:
-                    address_parts.append(city)
-                
-                # Code postal
-                if addr.get('postcode'):
-                    address_parts.append(addr['postcode'])
-                
-                if address_parts:
-                    return ', '.join(address_parts)
-                
-                # Fallback: display_name complet
-                return data.get('display_name', '')[:100]
+            
+            # Construire une adresse lisible
+            address_parts = []
+            addr = data.get('address', {})
+            
+            if addr.get('house_number'):
+                address_parts.append(addr['house_number'])
+            if addr.get('road'):
+                address_parts.append(addr['road'])
+            elif addr.get('pedestrian'):
+                address_parts.append(addr['pedestrian'])
+            
+            city = addr.get('city') or addr.get('town') or addr.get('village') or addr.get('municipality')
+            if city:
+                address_parts.append(city)
+            
+            if addr.get('postcode'):
+                address_parts.append(addr['postcode'])
+            
+            if address_parts:
+                return ', '.join(address_parts)
+            
+            return data.get('display_name', '')[:100]
             
         except Exception as e:
             if self.verbose:
@@ -3213,32 +3423,36 @@ class InvaderLocationSearcher:
             return True
         
         # 1. Chercher sur AroundUs
-        print(f"   🔍 AroundUs...", end='', flush=True)
-        aroundus_result = self.aroundus.search(invader_id, city_name)
-        results['sources_checked'].append({'source': 'aroundus', 'result': aroundus_result})
-        results['aroundus'] = aroundus_result
-        
+        aroundus_result = {'found': False}
         aroundus_valid = False
-        if aroundus_result['found']:
-            print(f" ✅ GPS: {aroundus_result['lat']:.5f}, {aroundus_result['lng']:.5f}")
-            aroundus_valid = _check_city(aroundus_result['lat'], aroundus_result['lng'], 'AroundUs')
-        else:
-            print(f" ❌")
-        
-        time.sleep(1)
+        if not self.no_browser and self.aroundus:
+            print(f"   🔍 AroundUs...", end='', flush=True)
+            aroundus_result = self.aroundus.search(invader_id, city_name)
+            results['sources_checked'].append({'source': 'aroundus', 'result': aroundus_result})
+            results['aroundus'] = aroundus_result
+            
+            if aroundus_result['found']:
+                print(f" ✅ GPS: {aroundus_result['lat']:.5f}, {aroundus_result['lng']:.5f}")
+                aroundus_valid = _check_city(aroundus_result['lat'], aroundus_result['lng'], 'AroundUs')
+            else:
+                print(f" ❌")
+            
+            time.sleep(1)
         
         # 2. Chercher sur Illuminate Art (TOUJOURS, même si AroundUs a trouvé)
-        print(f"   🔍 IlluminateArt...", end='', flush=True)
-        illuminate_result = self.illuminate.search(invader_id, city_name)
-        results['sources_checked'].append({'source': 'illuminateartofficial', 'result': illuminate_result})
-        results['illuminate'] = illuminate_result
-        
+        illuminate_result = {'found': False}
         illuminate_valid = False
-        if illuminate_result['found']:
-            print(f" ✅ GPS: {illuminate_result['lat']:.5f}, {illuminate_result['lng']:.5f}")
-            illuminate_valid = _check_city(illuminate_result['lat'], illuminate_result['lng'], 'IlluminateArt')
-        else:
-            print(f" ❌")
+        if not self.no_browser and self.illuminate:
+            print(f"   🔍 IlluminateArt...", end='', flush=True)
+            illuminate_result = self.illuminate.search(invader_id, city_name)
+            results['sources_checked'].append({'source': 'illuminateartofficial', 'result': illuminate_result})
+            results['illuminate'] = illuminate_result
+            
+            if illuminate_result['found']:
+                print(f" ✅ GPS: {illuminate_result['lat']:.5f}, {illuminate_result['lng']:.5f}")
+                illuminate_valid = _check_city(illuminate_result['lat'], illuminate_result['lng'], 'IlluminateArt')
+            else:
+                print(f" ❌")
         
         # 3. Test de cohérence entre sources web (seulement si les deux sont valides)
         coherence = self.check_coherence(
@@ -3262,7 +3476,7 @@ class InvaderLocationSearcher:
         elif illuminate_valid:
             best_source = 'illuminate'
         
-        # 5. Fallback Pnote (si sources web n'ont rien trouvé de valide)
+        # 5. Pnote (fallback en mode normal, source primaire en mode --no-browser)
         if not best_source and self.pnote and self.pnote.loaded:
             print(f"   🔍 Pnote.eu...", end='', flush=True)
             pnote_result = self.pnote.search(invader_id, city_name)
@@ -3283,8 +3497,8 @@ class InvaderLocationSearcher:
                     print(f"      💡 Hint disponible: {pnote_result['hint']}")
                     results['pnote_hint'] = pnote_result['hint']
         
-        # 6. Fallback Flickr (si toujours rien de valide)
-        if not best_source and self.flickr and self.flickr.enabled:
+        # 6. Fallback Flickr (si toujours rien de valide — nécessite navigateur)
+        if not best_source and not self.no_browser and self.flickr and self.flickr.enabled:
             print(f"   🔍 Flickr...", end='', flush=True)
             flickr_result = self.flickr.search(invader_id, city_name)
             results['sources_checked'].append({'source': 'flickr', 'result': flickr_result})
@@ -3637,6 +3851,7 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
             new_inv['address'] = search_result.get('address')
             new_inv['geo_source'] = search_result.get('source')
             new_inv['location_unknown'] = False
+            new_inv['geo_search_exhausted'] = False  # Trouvé → reset du tag
             
             # Déterminer la confiance
             coherence = search_result.get('coherence', {})
@@ -3674,6 +3889,7 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
                     new_inv['geo_source'] = 'exif_image_lieu'
                     new_inv['geo_confidence'] = 'medium'
                     new_inv['location_unknown'] = False
+                    new_inv['geo_search_exhausted'] = False
                     stats['found'] += 1
                     stats['medium'] += 1
                     stats['exif'] += 1
@@ -3703,6 +3919,7 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
                             new_inv['geo_source'] = 'ocr'
                             new_inv['geo_confidence'] = 'medium'
                             new_inv['location_unknown'] = False
+                            new_inv['geo_search_exhausted'] = False
                             stats['found'] += 1
                             stats['medium'] += 1
                             stats['ocr'] += 1
@@ -3716,8 +3933,13 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
             found_via_image = (exif_result and exif_result.get('found')) or (ocr_result and ocr_result.get('found'))
             vision_result = None
             if not found_via_image and image_lieu_url and searcher.vision and searcher.vision.enabled:
-                print(f"   🧠 Claude Vision...", end='', flush=True)
-                vision_result = searcher.vision.analyze(image_lieu_url, city_name, city_code)
+                image_close_url = inv.get('image_invader')  # Gros plan mosaïque
+                n_images = "2 images" if image_close_url else "1 image"
+                print(f"   🧠 Claude Vision ({n_images})...", end='', flush=True)
+                vision_result = searcher.vision.analyze(
+                    image_lieu_url, city_name, city_code,
+                    image_close_url=image_close_url
+                )
                 
                 if vision_result.get('found'):
                     # Valider contre la ville
@@ -3734,6 +3956,7 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
                         new_inv['geo_source'] = 'vision'
                         new_inv['geo_confidence'] = 'medium' if vision_result.get('confidence') in ('HIGH', 'MEDIUM') else 'low'
                         new_inv['location_unknown'] = False
+                        new_inv['geo_search_exhausted'] = False
                         stats['found'] += 1
                         stats['medium'] += 1
                         stats['vision'] += 1
@@ -3763,6 +3986,7 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
                     new_inv['geo_source'] = 'interactive'
                     new_inv['geo_confidence'] = 'medium'
                     new_inv['location_unknown'] = False
+                    new_inv['geo_search_exhausted'] = False
                     stats['found'] += 1
                     stats['medium'] += 1
                     stats['interactive'] += 1
@@ -3775,11 +3999,16 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
                     new_inv['lng'] = CITY_CENTERS[city_code]['lng']
                     new_inv['geo_source'] = 'city_center'
                     new_inv['geo_confidence'] = 'low'
+                    new_inv['geo_search_exhausted'] = True
+                    new_inv['geo_search_date'] = datetime.now().isoformat()
                     print(f"   ⚠️ Fallback: centre de {CITY_CENTERS[city_code]['name']}")
+                    print(f"      🏷️ Marqué geo_search_exhausted (sera ignoré au prochain run)")
                 else:
                     new_inv['lat'] = 0
                     new_inv['lng'] = 0
                     new_inv['geo_source'] = 'unknown'
+                    new_inv['geo_search_exhausted'] = True
+                    new_inv['geo_search_date'] = datetime.now().isoformat()
                     print(f"   ⚠️ Ville inconnue: {city_code}")
                 
                 stats['low'] += 1
@@ -3917,6 +4146,9 @@ def merge_with_updated(geolocated_file, updated_file=None, backup=False, dry_run
                 updated_db[idx]['geo_source'] = geo_inv.get('geo_source')
                 updated_db[idx]['geo_confidence'] = new_conf
                 updated_db[idx]['location_unknown'] = geo_inv.get('location_unknown', False)
+                updated_db[idx]['geo_search_exhausted'] = geo_inv.get('geo_search_exhausted', False)
+                if geo_inv.get('geo_search_date'):
+                    updated_db[idx]['geo_search_date'] = geo_inv['geo_search_date']
                 if geo_inv.get('address'):
                     updated_db[idx]['address'] = geo_inv['address']
                 updated_db[idx]['preserved'] = True
@@ -3984,8 +4216,24 @@ def main():
                         help='Désactiver la recherche Flickr (scraping)')
     parser.add_argument('--anthropic-key', dest='anthropic_key', default=None,
                         help='Clé API Anthropic pour Claude Vision (ou env ANTHROPIC_API_KEY)')
+    parser.add_argument('--id', dest='invader_id', default=None,
+                        help='Chercher un seul invader par son code (ex: PA_1531, LDN_42)')
+    parser.add_argument('--retry-failed', dest='retry_failed', action='store_true',
+                        help='Relancer la recherche des invaders marqués geo_search_exhausted')
+    parser.add_argument('--no-browser', dest='no_browser', action='store_true',
+                        help='Mode sans navigateur: Pnote + EXIF + OCR + Vision uniquement (idéal CI/CD)')
     
     args = parser.parse_args()
+    
+    # --id implique --from-master et --retry-failed
+    if args.invader_id:
+        args.from_master = True
+        args.retry_failed = True  # Forcer la recherche même si déjà échoué
+    
+    # --no-browser implique --no-flickr et désactive --interactive
+    if args.no_browser:
+        args.no_flickr = True
+        args.interactive = False
     
     # =========================================================================
     # Mode --merge: fusionner avec invaders_updated.json
@@ -4039,24 +4287,31 @@ def main():
             
             # Marqué explicitement comme inconnu
             if inv.get('location_unknown') is True:
+                # Mais si déjà cherché et échoué → skip (sauf --retry-failed)
+                if inv.get('geo_search_exhausted') and not args.retry_failed:
+                    return False, 'search_exhausted_skip'
                 return True, 'location_unknown'
             
             # Source = city_center
             if inv.get('geo_source') == 'city_center':
+                # Déjà cherché et échoué → skip (sauf --retry-failed)
+                if inv.get('geo_search_exhausted') and not args.retry_failed:
+                    return False, 'search_exhausted_skip'
                 return True, 'city_center_tag'
             
             # Confiance très basse
             if inv.get('geo_confidence') == 'very_low':
+                if inv.get('geo_search_exhausted') and not args.retry_failed:
+                    return False, 'search_exhausted_skip'
                 return True, 'very_low_confidence'
             
             # Coordonnées = centre-ville connu
-            # On ne flagge que les invaders dont les coords correspondent EXACTEMENT
-            # aux valeurs de notre dictionnaire CITY_CENTERS (4 décimales),
-            # car c'est notre script qui les a placés là en fallback.
             city = inv.get('city', '').upper()
             if city in city_centers_coords:
                 c_lat, c_lng = city_centers_coords[city]
                 if round(lat, 4) == round(c_lat, 4) and round(lng, 4) == round(c_lng, 4):
+                    if inv.get('geo_search_exhausted') and not args.retry_failed:
+                        return False, 'search_exhausted_skip'
                     return True, 'at_city_center'
             
             return False, None
@@ -4067,14 +4322,27 @@ def main():
             candidates = [inv for inv in candidates if inv.get('city', '').upper() == args.city.upper()]
             print(f"   {len(candidates)} invaders pour {args.city}")
         
+        # Filtrer par ID spécifique (--id PA_1531)
+        if args.invader_id:
+            target_id = args.invader_id.upper().replace('-', '_')
+            candidates = [inv for inv in candidates 
+                         if inv.get('id', inv.get('name', '')).upper().replace('-', '_') == target_id]
+            if not candidates:
+                print(f"❌ Invader '{args.invader_id}' non trouvé dans le master")
+                return
+            print(f"   🎯 Cible unique: {target_id}")
+        
         # Identifier les mal localisés
         poorly_located = []
         reasons_count = {}
+        exhausted_skip_count = 0
         for inv in candidates:
             needs_geo, reason = is_poorly_located(inv)
             if needs_geo:
                 poorly_located.append(inv)
                 reasons_count[reason] = reasons_count.get(reason, 0) + 1
+            elif reason == 'search_exhausted_skip':
+                exhausted_skip_count += 1
         
         print(f"\n📊 {len(poorly_located)} invaders à re-géolocaliser sur {len(candidates)}:")
         for reason, count in sorted(reasons_count.items(), key=lambda x: -x[1]):
@@ -4089,10 +4357,19 @@ def main():
                 'at_city_center': '📍 Au centre-ville exact',
             }
             print(f"   {labels.get(reason, reason)}: {count}")
+        if exhausted_skip_count > 0:
+            print(f"   ⏭️  Ignorés (recherche déjà échouée): {exhausted_skip_count}")
+            if not args.retry_failed:
+                print(f"      💡 Utilisez --retry-failed pour relancer ces recherches")
         
         if not poorly_located:
-            print("✅ Tous les invaders ont des coordonnées valides!")
-            return
+            # Si --id est passé, forcer la recherche même si les coords sont OK
+            if args.invader_id and candidates:
+                poorly_located = candidates
+                print(f"   🎯 Recherche forcée pour {args.invader_id}")
+            else:
+                print("✅ Tous les invaders ont des coordonnées valides!")
+                return
         
         # Limiter
         if args.limit:
@@ -4118,7 +4395,7 @@ def main():
             json.dump(missing_format, f, indent=2, ensure_ascii=False)
         
         # Lancer le searcher
-        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key)
+        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key, no_browser=args.no_browser)
         try:
             searcher.start()
             print("🌐 Navigateur démarré")
@@ -4155,7 +4432,7 @@ def main():
             return
         
         # Démarrer le searcher
-        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key)
+        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key, no_browser=args.no_browser)
         try:
             searcher.start()
             print("🌐 Navigateur démarré")
@@ -4254,7 +4531,7 @@ def main():
     results = []
     
     # Initialiser le searcher
-    searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key)
+    searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key, no_browser=args.no_browser)
     
     try:
         searcher.start()
