@@ -1,0 +1,707 @@
+GÉOLOCALISATION DES INVADERS MANQUANTS
+============================================================
+
+Total: 104
+Trouvés: 60
+HIGH: 0, MEDIUM: 19 (dont 2 Pnote, 2 OCR, 56 Vision), LOW: 85
+
+BGK_08 🔴 (LOW)
+   GPS: 13.756300, 100.501800
+   Source: city_center
+   💡 Hint: Impossible à déterminer - aucun indice de localisation précis visible | mur crépi beige/sable, texture rugueuse typique 
+   Maps: https://www.google.com/maps?q=13.7563,100.5018
+   ⚠️ Localisation approximative
+
+BGK_13 🔴 (LOW)
+   GPS: 13.737302, 100.560575
+   Source: vision
+   Adresse: commerciale
+   💡 Hint: probablement dans un quartier central comme Sukhumvit, Silom | probablement dans un quartier central comme Sukhumvit, Si
+   Maps: https://www.google.com/maps?q=13.7373019,100.5605753
+
+BGK_22 🔴 (LOW)
+   GPS: 13.756300, 100.501800
+   Source: city_center
+   💡 Hint: Impossible à déterminer - aucun indice de localisation visible | Mur extérieur ancien, texture rugueuse, couleur terre/m
+   Maps: https://www.google.com/maps?q=13.7563,100.5018
+   ⚠️ Localisation approximative
+
+BGK_23 🟡 (MEDIUM)
+   GPS: 13.721810, 100.581855
+   Source: vision
+   Adresse: Sukhumvit Road
+   💡 Hint: près de BTS Skytrain station, Bangkok 10110
+   Maps: https://www.google.com/maps?q=13.7218099,100.5818548
+
+BGK_46 🔴 (LOW)
+   GPS: 13.729340, 100.545090
+   Source: vision_district
+   Adresse: ~Lumphini, Bangkok
+   💡 Hint: Thanon Phloen Chit, Lumphini, Pathum Wan, Bangkok (proximité BTS Chit Lom ou Phloen Chit) | près de BTS Chit Lom | Archi
+   Maps: https://www.google.com/maps?q=13.7293398,100.5450896
+
+BT_01 🔴 (LOW)
+   GPS: 27.471355, 89.633673
+   Source: vision_district
+   Adresse: ~Thimphu, Bhutan
+   💡 Hint: Thimphu, Bhutan (zone résidentielle ou monastique traditionnelle) | Architecture traditionnelle bhoutanaise avec murs en
+   Maps: https://www.google.com/maps?q=27.4713546,89.6336729
+
+BT_02 🟡 (MEDIUM)
+   GPS: 27.668553, 89.708955
+   Source: vision
+   Adresse: Punakha, Bhutan -
+   💡 Hint: près de du Punakha Dzong
+   Maps: https://www.google.com/maps?q=27.6685526,89.7089548
+
+BT_03 🔴 (LOW)
+   GPS: 27.471355, 89.633673
+   Source: vision_district
+   Adresse: ~Thimphu, Bhutan
+   💡 Hint: Thimphu, Bhutan - exact street location cannot be determined from available visual clues | Simple urban architecture wit
+   Maps: https://www.google.com/maps?q=27.4713546,89.6336729
+
+BT_04 🟡 (MEDIUM)
+   GPS: 27.471355, 89.633673
+   Source: vision
+   Adresse: Thimphu, Bhutan
+   Maps: https://www.google.com/maps?q=27.4713546,89.6336729
+
+BT_05 🔴 (LOW)
+   GPS: 27.490083, 89.749007
+   Source: vision_district
+   Adresse: ~Dochu La Pass, Bhutan
+   💡 Hint: Dochu La Pass, Thimphu-Punakha Highway, Bhutan | quartier: Dochu La Pass | Traditional Bhutanese gate architecture with 
+   Maps: https://www.google.com/maps?q=27.4900827,89.7490068
+
+BT_06 🔴 (LOW)
+   GPS: 27.471200, 89.633900
+   Source: city_center
+   💡 Hint: Main highway between Thimphu and Paro, Bhutan | entre Thimphu et Paro | Traditional Bhutanese roadside with concrete bar
+   Maps: https://www.google.com/maps?q=27.4712,89.6339
+   ⚠️ Localisation approximative
+
+BT_08 🔴 (LOW)
+   GPS: 27.430767, 89.412987
+   Source: vision_district
+   Adresse: ~Paro, Bhutan
+   💡 Hint: Zangley Restaurant & Bar, Paro, Bhutan | Architecture bhoutanaise traditionnelle avec toits en pente, décoration rouge e
+   Maps: https://www.google.com/maps?q=27.4307674,89.412987
+
+BT_09 🔴 (LOW)
+   GPS: 27.476829, 89.636137
+   Source: vision
+   Adresse: Rural
+   💡 Hint: insufficient visible clues for specific address | près de Paro, Bhutan | insufficient visible clues for specific address
+   Maps: https://www.google.com/maps?q=27.4768286,89.6361373
+
+BT_10 🔴 (LOW)
+   GPS: 27.430767, 89.412987
+   Source: vision_district
+   Adresse: ~Paro, Bhutan
+   💡 Hint: Sentier forestier près de Thimphu ou Paro, Bhoutan (zone rurale montagneuse) | zone rurale montagneuse | près de Thimphu
+   Maps: https://www.google.com/maps?q=27.4307674,89.412987
+
+DHK_01 🟡 (MEDIUM)
+   GPS: 23.856799, 90.647335
+   Source: ocr
+   Adresse: R. GROUP, Dhaka
+   Maps: https://www.google.com/maps?q=23.8567993,90.6473346
+
+DHK_02 🔴 (LOW)
+   GPS: 23.810300, 90.412500
+   Source: city_center
+   💡 Hint: Shop 01, 144 Floor, Old Dhaka commercial district | Dense urban South Asian commercial architecture with mixed-use build
+   Maps: https://www.google.com/maps?q=23.8103,90.4125
+   ⚠️ Localisation approximative
+
+DHK_03 🔴 (LOW)
+   GPS: 23.743409, 90.371546
+   Source: vision_district
+   Adresse: ~Dhanmondi, Dhaka
+   💡 Hint: Inspire International School Dhaka (IISD), Dhanmondi, Dhaka | IISD | Modern educational building with distinctive checke
+   Maps: https://www.google.com/maps?q=23.7434089,90.3715465
+
+DHK_04 🔴 (LOW)
+   GPS: 23.810300, 90.412500
+   Source: city_center
+   💡 Hint: Impossible à déterminer - aucun indice de localisation visible | Mur en béton/ciment brut, surface dégradée typique des 
+   Maps: https://www.google.com/maps?q=23.8103,90.4125
+   ⚠️ Localisation approximative
+
+DHK_05 🟡 (MEDIUM)
+   GPS: 23.738489, 90.393415
+   Source: vision
+   Adresse: Shahbag Road
+   💡 Hint: près de Central Shaheed Minar, Dhaka 1000
+   Maps: https://www.google.com/maps?q=23.7384893,90.3934146
+
+DHK_06 🔴 (LOW)
+   GPS: 23.791973, 90.374087
+   Source: vision_district
+   Adresse: ~Mirpur, Dhaka
+   💡 Hint: Zone éducative, possiblement secteur Dhanmondi ou Mirpur, Dhaka | probablement secteur Dhanmondi, Dhaka | Mur en briques
+   Maps: https://www.google.com/maps?q=23.7919728,90.3740871
+
+DJN_12 🔴 (LOW)
+   GPS: 36.329280, 127.427040
+   Source: vision
+   Adresse: Eunhaeng-dong, Jung-gu, Daejeon
+   Maps: https://www.google.com/maps?q=36.32928,127.42704
+
+FRQ_01 🟡 (MEDIUM)
+   GPS: 43.960032, 5.780966
+   Source: pnote
+   Adresse: 5, Rue Louis Andrieux, Forcalquier, 04300
+   Maps: https://www.google.com/maps?q=43.9600323868,5.780965756
+
+FTBL_20 🔴 (LOW)
+   GPS: 48.401000, 2.702400
+   Source: city_center
+   💡 Hint: Lisière de la Forêt de Fontainebleau, secteur Route de la Bonne Dame ou Route du Mont Ussy | Zone naturelle/forestière, 
+   Maps: https://www.google.com/maps?q=48.401,2.7024
+   ⚠️ Localisation approximative
+
+GRTI_01 🔴 (LOW)
+   GPS: 29.033300, -13.633300
+   Source: city_center
+   💡 Hint: Réserve naturelle ou zone de conservation à Graciosa - localisation précise impossible sans coordonnées GPS | zone de co
+   Maps: https://www.google.com/maps?q=29.0333,-13.6333
+   ⚠️ Localisation approximative
+
+GRTI_02 🔴 (LOW)
+   GPS: 29.033300, -13.633300
+   Source: city_center
+   💡 Hint: Zone rurale de Graciosa, Açores, Portugal - probablement sur un chemin ou route secondaire entre Santa Cruz da Graciosa 
+   Maps: https://www.google.com/maps?q=29.0333,-13.6333
+   ⚠️ Localisation approximative
+
+GRTI_03 🔴 (LOW)
+   GPS: 29.033300, -13.633300
+   Source: city_center
+   💡 Hint: Zone rurale de Graciosa, Açores, Portugal - probablement le long d'un sentier de randonnée ou chemin rural près d'une zo
+   Maps: https://www.google.com/maps?q=29.0333,-13.6333
+   ⚠️ Localisation approximative
+
+GRTI_04 🔴 (LOW)
+   GPS: 29.033300, -13.633300
+   Source: city_center
+   💡 Hint: Zone côtière nord ou est de l'île de Graciosa, Açores, probablement près d'une plage ou embouchure de rivière | probable
+   Maps: https://www.google.com/maps?q=29.0333,-13.6333
+   ⚠️ Localisation approximative
+
+GRTI_05 🔴 (LOW)
+   GPS: 29.033300, -13.633300
+   Source: city_center
+   💡 Hint: centre historique de Graciosa, probablement Santa Cruz da Graciosa | probablement Santa Cruz da Graciosa | mur en pierre
+   Maps: https://www.google.com/maps?q=29.0333,-13.6333
+   ⚠️ Localisation approximative
+
+GRTI_06 🔴 (LOW)
+   GPS: 29.033300, -13.633300
+   Source: city_center
+   💡 Hint: Zone rurale de Graciosa, probablement aux abords d'un chemin agricole ou verger | probablement aux abords d'un chemin ag
+   Maps: https://www.google.com/maps?q=29.0333,-13.6333
+   ⚠️ Localisation approximative
+
+GRTI_07 🔴 (LOW)
+   GPS: 29.033300, -13.633300
+   Source: city_center
+   💡 Hint: Chemin rural ou sentier de randonnée, zone agricole de Graciosa, Açores | Borne kilométrique ou poteau indicateur rural
+   Maps: https://www.google.com/maps?q=29.0333,-13.6333
+   ⚠️ Localisation approximative
+
+GRTI_08 🔴 (LOW)
+   GPS: 29.033300, -13.633300
+   Source: city_center
+   💡 Hint: Zone centrale de Santa Cruz, Graciosa, Cap-Vert | architecture locale modeste, construction en béton/pierre, environneme
+   Maps: https://www.google.com/maps?q=29.0333,-13.6333
+   ⚠️ Localisation approximative
+
+HK_15 🔴 (LOW)
+   GPS: 22.319300, 114.169400
+   Source: city_center
+   💡 Hint: Impossible à déterminer - installation intérieure privée | Intérieur résidentiel, murs beiges/crème, style appartement o
+   Maps: https://www.google.com/maps?q=22.3193,114.1694
+   ⚠️ Localisation approximative
+
+IST_03 🟡 (MEDIUM)
+   GPS: 41.006516, 28.975977
+   Source: vision
+   Adresse: Sultanahmet Meydanı, Fatih, Istanbul
+   💡 Hint: Place Sultanahmet près de la Mosquée Bleue
+   Maps: https://www.google.com/maps?q=41.0065157,28.9759773
+
+IST_15 🔴 (LOW)
+   GPS: 41.006383, 28.973344
+   Source: vision_district
+   Adresse: ~Sultanahmet, Istanbul
+   💡 Hint: Sultanahmet, quartier historique d'Istanbul, probablement près des sites touristiques majeurs | probablement près des si
+   Maps: https://www.google.com/maps?q=41.0063833,28.9733442
+
+IST_16 🔴 (LOW)
+   GPS: 41.008200, 28.978400
+   Source: city_center
+   💡 Hint: Impossible à déterminer - aucun indice de localisation visible | Mur moderne blanc avec base en béton ou pierre sombre
+   Maps: https://www.google.com/maps?q=41.0082,28.9784
+   ⚠️ Localisation approximative
+
+IST_19 🔴 (LOW)
+   GPS: 41.008200, 28.978400
+   Source: city_center
+   💡 Hint: Quartier de Beyoğlu ou Kadıköy, Istanbul - localisation précise impossible sans indices textuels | Quartier de Beyoğlu, 
+   Maps: https://www.google.com/maps?q=41.0082,28.9784
+   ⚠️ Localisation approximative
+
+KAT_02 🟡 (MEDIUM)
+   GPS: 27.716658, 85.312702
+   Source: vision
+   Adresse: Thamel, Kathmandu
+   Maps: https://www.google.com/maps?q=27.7166578,85.3127015
+
+KAT_04 🔴 (LOW)
+   GPS: 27.716658, 85.312702
+   Source: vision_district
+   Adresse: ~Thamel, Kathmandu
+   💡 Hint: Thamel district, Old Kathmandu, Nepal (zone touristique historique) | zone touristique historique | Architecture traditi
+   Maps: https://www.google.com/maps?q=27.7166578,85.3127015
+
+KAT_06 🔴 (LOW)
+   GPS: 27.716658, 85.312702
+   Source: vision
+   Adresse: Thamel, Kathmandu
+   Maps: https://www.google.com/maps?q=27.7166578,85.3127015
+
+KAT_14 🔴 (LOW)
+   GPS: 27.717200, 85.324000
+   Source: city_center
+   💡 Hint: 26, quartier résidentiel de Kathmandu près d'un centre social (Samajik Sewa Kendra) | Samajik Sewa Kendra | Architecture
+   Maps: https://www.google.com/maps?q=27.7172,85.324
+   ⚠️ Localisation approximative
+
+KAT_20 🔴 (LOW)
+   GPS: 27.716658, 85.312702
+   Source: vision
+   Adresse: Thamel, Kathmandu
+   💡 Hint: zone touristique près de restaurants et commerces
+   Maps: https://www.google.com/maps?q=27.7166578,85.3127015
+
+KAT_21 🔴 (LOW)
+   GPS: 27.716658, 85.312702
+   Source: vision_district
+   Adresse: ~Thamel, Kathmandu
+   💡 Hint: Thamel ou Asan Tole, vieux quartier de Kathmandu, Népal | Architecture népalaise traditionnelle avec briques rouges appa
+   Maps: https://www.google.com/maps?q=27.7166578,85.3127015
+
+KAT_24 🔴 (LOW)
+   GPS: 27.716658, 85.312702
+   Source: vision
+   Adresse: Thamel, Kathmandu, Népal
+   Maps: https://www.google.com/maps?q=27.7166578,85.3127015
+
+LSN_03 🔴 (LOW)
+   GPS: 46.519700, 6.632300
+   Source: city_center
+   Maps: https://www.google.com/maps?q=46.5197,6.6323
+   ⚠️ Localisation approximative
+
+LSN_06 🔴 (LOW)
+   GPS: 46.519700, 6.632300
+   Source: city_center
+   Maps: https://www.google.com/maps?q=46.5197,6.6323
+   ⚠️ Localisation approximative
+
+MBSA_02 🟡 (MEDIUM)
+   GPS: -4.058748, 39.676167
+   Source: vision
+   Adresse: Old Town, Mombasa
+   💡 Hint: près de Ndia Kuu Road
+   Maps: https://www.google.com/maps?q=-4.058748,39.6761668
+
+MBSA_06 🔴 (LOW)
+   GPS: -4.058748, 39.676167
+   Source: vision_district
+   Adresse: ~Old Town, Mombasa
+   💡 Hint: Ndia Kuu Road, Old Town, Mombasa | Commercial colonial avec façades vieillissantes, volets métalliques | enseigne: MOMBA
+   Maps: https://www.google.com/maps?q=-4.058748,39.6761668
+
+MBSA_08 🔴 (LOW)
+   GPS: -4.055225, 39.669587
+   Source: vision_district
+   Adresse: ~Mombasa Old Town, Mombasa
+   💡 Hint: Destiny Restaurant, Ndia Kuu Road, Mombasa Old Town | Architecture coloniale côtière, bâtiment d'angle à façade blanche 
+   Maps: https://www.google.com/maps?q=-4.0552246,39.669587
+
+MBSA_09 🔴 (LOW)
+   GPS: -4.047980, 39.670540
+   Source: vision
+   Adresse: Mombasa
+   💡 Hint: probablement Old Town
+   Maps: https://www.google.com/maps?q=-4.0479801,39.6705404
+
+MIA_76 🟡 (MEDIUM)
+   GPS: 25.791562, -80.145773
+   Source: vision
+   Adresse: Venetian Causeway, Miami Beach, FL 33139
+   Maps: https://www.google.com/maps?q=25.7915624,-80.1457725
+
+MIA_77 🟡 (MEDIUM)
+   GPS: 25.791252, -80.129908
+   Source: vision
+   Adresse: Collins Avenue, Miami Beach, FL
+   Maps: https://www.google.com/maps?q=25.7912515,-80.1299081
+
+MIA_85 🔴 (LOW)
+   GPS: 25.779500, -80.186734
+   Source: vision_district
+   Adresse: ~waterfront, Miami
+   💡 Hint: Biscayne Bay waterfront promenade, Downtown Miami or Edgewater district | quartier: waterfront area | coastal urban deve
+   Maps: https://www.google.com/maps?q=25.7795004,-80.1867343
+
+MLB_01 🟡 (MEDIUM)
+   GPS: -37.809457, 144.968620
+   Source: vision
+   Adresse: Brady Lane, Melbourne VIC 3000
+   Maps: https://www.google.com/maps?q=-37.8094569,144.9686202
+
+MLB_04 🟡 (MEDIUM)
+   GPS: -37.811785, 144.969018
+   Source: vision
+   Adresse: Croft Alley, Melbourne VIC 3000
+   Maps: https://www.google.com/maps?q=-37.8117849,144.9690181
+
+MLB_06 🔴 (LOW)
+   GPS: -37.813600, 144.963100
+   Source: city_center
+   💡 Hint: Unable to determine specific address - no visible location markers in images | Pavement/footpath installation
+   Maps: https://www.google.com/maps?q=-37.8136,144.9631
+   ⚠️ Localisation approximative
+
+MLB_15 🟡 (MEDIUM)
+   GPS: -37.816359, 144.968970
+   Source: vision
+   Adresse: 9 Hosier Lane, Melbourne VIC 3000
+   Maps: https://www.google.com/maps?q=-37.8163589,144.96897
+
+MLB_17 🔴 (LOW)
+   GPS: -37.813600, 144.963100
+   Source: city_center
+   💡 Hint: Impossible à déterminer - aucun indice de localisation visible | Mur en béton ou plâtre vieilli, aspect industriel ou ur
+   Maps: https://www.google.com/maps?q=-37.8136,144.9631
+   ⚠️ Localisation approximative
+
+MPL_13 🔴 (LOW)
+   GPS: 43.610800, 3.876700
+   Source: city_center
+   💡 Hint: Centre-ville de Montpellier - localisation impossible à déterminer sans indices visibles | Mur en béton/ciment moderne
+   Maps: https://www.google.com/maps?q=43.6108,3.8767
+   ⚠️ Localisation approximative
+
+MPL_16 🔴 (LOW)
+   GPS: 43.614058, 3.876531
+   Source: vision
+   Adresse: Centre historique de Montpellier
+   💡 Hint: probablement rue de l'Ancien Courrier | près de Place de la Comédie
+   Maps: https://www.google.com/maps?q=43.6140579,3.8765306
+
+MPL_20 🔴 (LOW)
+   GPS: 43.614058, 3.876531
+   Source: vision_district
+   Adresse: ~Centre historique de Montpellier, Montpellier
+   💡 Hint: Centre historique de Montpellier, quartier de l'Écusson | Façade ancienne en pierre claire, mur crépi beige/crème typiqu
+   Maps: https://www.google.com/maps?q=43.6140579,3.8765306
+
+MPL_37 🔴 (LOW)
+   GPS: 43.632405, 3.896155
+   Source: vision_district
+   Adresse: ~Centre-ville de Montpellier, Montpellier
+   💡 Hint: Centre-ville de Montpellier, zone commerciale près de la Place de la Comédie ou Écusson | près de la Place de la Comédie
+   Maps: https://www.google.com/maps?q=43.6324046,3.896155
+
+MPL_40 🟡 (MEDIUM)
+   GPS: 43.606420, 3.924483
+   Source: vision
+   Adresse: Centre commercial Odysseum, Montpellier
+   Maps: https://www.google.com/maps?q=43.6064198,3.9244828
+
+NY_190 🔴 (LOW)
+   GPS: 40.667838, -73.979145
+   Source: vision_district
+   Adresse: ~Brooklyn, New York
+   💡 Hint: Atlantic Avenue-Barclays Center Station underground passages, Brooklyn, NY | Industrial underground/subway infrastructur
+   Maps: https://www.google.com/maps?q=40.6678377,-73.9791449
+
+NY_191 🔴 (LOW)
+   GPS: 40.715936, -73.986806
+   Source: vision
+   Adresse: Lower East Side, Manhattan
+   Maps: https://www.google.com/maps?q=40.7159357,-73.9868057
+
+NY_192 🔴 (LOW)
+   GPS: 40.715380, -74.009306
+   Source: vision_district
+   Adresse: ~Tribeca, New York
+   💡 Hint: Lower Manhattan retail district, likely SoHo or Tribeca area | probablement SoHo | Industrial/commercial building with l
+   Maps: https://www.google.com/maps?q=40.7153802,-74.0093063
+
+NY_194 🔴 (LOW)
+   GPS: 40.718784, -73.990027
+   Source: vision
+   Adresse: Lower East Side
+   Maps: https://www.google.com/maps?q=40.7187837,-73.9900266
+
+NY_197 🔴 (LOW)
+   GPS: 40.705750, -73.996276
+   Source: vision
+   Adresse: Brooklyn
+   💡 Hint: près de Manhattan Bridge | près de Manhattan Bridge
+   Maps: https://www.google.com/maps?q=40.7057498,-73.9962765
+
+NY_198 🔴 (LOW)
+   GPS: 40.712800, -74.006000
+   Source: city_center
+   💡 Hint: Unable to determine specific address - appears to be under bridge or overpass in industrial area of New York | Unable to
+   Maps: https://www.google.com/maps?q=40.7128,-74.006
+   ⚠️ Localisation approximative
+
+NY_199 🔴 (LOW)
+   GPS: 40.712800, -74.006000
+   Source: city_center
+   💡 Hint: Unable to determine specific address from available visual information | Urban industrial, weathered concrete or metal s
+   Maps: https://www.google.com/maps?q=40.7128,-74.006
+   ⚠️ Localisation approximative
+
+NY_200 🔴 (LOW)
+   GPS: 40.715936, -73.986806
+   Source: vision
+   Adresse: Lower East Side, Manhattan
+   Maps: https://www.google.com/maps?q=40.7159357,-73.9868057
+
+NY_201 🔴 (LOW)
+   GPS: 40.712800, -74.006000
+   Source: city_center
+   💡 Hint: Underground/basement location in New York City, possibly in Lower Manhattan industrial district or abandoned subway infr
+   Maps: https://www.google.com/maps?q=40.7128,-74.006
+   ⚠️ Localisation approximative
+
+NY_202 🔴 (LOW)
+   GPS: 40.712800, -74.006000
+   Source: city_center
+   💡 Hint: Tunnel de la ligne de métro MTA New York, localisation précise impossible sans indices visibles | Infrastructure ferrovi
+   Maps: https://www.google.com/maps?q=40.7128,-74.006
+   ⚠️ Localisation approximative
+
+NY_203 🔴 (LOW)
+   GPS: 40.712800, -74.006000
+   Source: city_center
+   💡 Hint: Station de métro new-yorkaise non identifiable avec certitude sans signalétique visible | Infrastructure ferroviaire urb
+   Maps: https://www.google.com/maps?q=40.7128,-74.006
+   ⚠️ Localisation approximative
+
+NY_204 🔴 (LOW)
+   GPS: 40.712800, -74.006000
+   Source: city_center
+   💡 Hint: Sous le viaduc du métro aérien près de Bowery, Lower East Side, Manhattan | près de Bowery, Lower East Side, Manhattan |
+   Maps: https://www.google.com/maps?q=40.7128,-74.006
+   ⚠️ Localisation approximative
+
+NY_206 🔴 (LOW)
+   GPS: 40.715936, -73.986806
+   Source: vision
+   Adresse: Lower East Side, Manhattan -
+   💡 Hint: entre Houston St et 14th St | entre Houston St et 14th St
+   Maps: https://www.google.com/maps?q=40.7159357,-73.9868057
+
+NY_208 🔴 (LOW)
+   GPS: 40.740596, -74.008114
+   Source: vision
+   Adresse: High Line
+   Maps: https://www.google.com/maps?q=40.7405964,-74.008114
+
+NY_209 🔴 (LOW)
+   GPS: 40.693734, -73.988526
+   Source: vision_district
+   Adresse: ~Brooklyn Bridge, New York
+   💡 Hint: Abandoned City Hall Subway Station, Brooklyn Bridge area, Manhattan | Industrial abandoned building with railway/subway 
+   Maps: https://www.google.com/maps?q=40.693734,-73.9885263
+
+NY_210 🔴 (LOW)
+   GPS: 40.712800, -74.006000
+   Source: city_center
+   💡 Hint: Unable to determine specific address - appears to be abandoned High Line area or similar derelict elevated railway struc
+   Maps: https://www.google.com/maps?q=40.7128,-74.006
+   ⚠️ Localisation approximative
+
+NY_211 🔴 (LOW)
+   GPS: 40.712800, -74.006000
+   Source: city_center
+   💡 Hint: Station de métro abandonnée NYC (probablement ligne Lower Manhattan ou station désaffectée) | probablement ligne Lower M
+   Maps: https://www.google.com/maps?q=40.7128,-74.006
+   ⚠️ Localisation approximative
+
+NY_212 🔴 (LOW)
+   GPS: 40.705750, -73.996276
+   Source: vision
+   Adresse: Brooklyn
+   Maps: https://www.google.com/maps?q=40.7057498,-73.9962765
+
+NY_213 🔴 (LOW)
+   GPS: 40.712800, -74.006000
+   Source: city_center
+   💡 Hint: Impossible à déterminer - aucun indice de localisation visible | Trottoir urbain en béton/asphalte typique
+   Maps: https://www.google.com/maps?q=40.7128,-74.006
+   ⚠️ Localisation approximative
+
+NY_214 🟡 (MEDIUM)
+   GPS: 40.784527, -73.984660
+   Source: vision
+   Adresse: Freedom Tunnel, West Side, Manhattan, New York
+   💡 Hint: Riverside Park
+   Maps: https://www.google.com/maps?q=40.7845272,-73.9846601
+
+POTI_53 🔴 (LOW)
+   GPS: -19.583600, -65.753100
+   Source: city_center
+   💡 Hint: Centre historique de Potosí, probablement près de la Plaza 10 de Noviembre | près de la Plaza 10 de Noviembre | colonial
+   Maps: https://www.google.com/maps?q=-19.5836,-65.7531
+   ⚠️ Localisation approximative
+
+RBA_03 🔴 (LOW)
+   GPS: 34.019368, -6.827768
+   Source: vision_district
+   Adresse: ~médina de Rabat, Rabat
+   💡 Hint: Avenue Mohammed V ou Rue des Consuls, médina de Rabat | mur en pierre/crépi beige typique de l'architecture marocaine
+   Maps: https://www.google.com/maps?q=34.019368,-6.8277679
+
+RBA_11 🔴 (LOW)
+   GPS: 34.019368, -6.827768
+   Source: vision_district
+   Adresse: ~Médina de Rabat, Rabat
+   💡 Hint: Avenue Moulay Hassan, Médina de Rabat (proximité des remparts Almohades) | proximité des remparts Almohades | quartier: 
+   Maps: https://www.google.com/maps?q=34.019368,-6.8277679
+
+RTD_26 🔴 (LOW)
+   GPS: 51.922500, 4.479200
+   Source: city_center
+   💡 Hint: Impossible à déterminer - aucun indice de localisation visible
+   Maps: https://www.google.com/maps?q=51.9225,4.4792
+   ⚠️ Localisation approximative
+
+SPACE_01  🔴 (LOW)
+   Source: city_center
+   💡 Hint: Station Spatiale Internationale, Orbite terrestre basse, 400km d'altitude | quartier: Orbite terrestre basse | Installat
+   ⚠️ Localisation approximative
+
+SPACE_02 🟡 (MEDIUM)
+   GPS: 45.079905, 7.599007
+   Source: vision
+   Adresse: International Space Station (International Space Station, Via Alessandro Manzoni, Borgata Paradiso, Collegno,)
+   Maps: https://www.google.com/maps?q=45.0799046,7.5990066
+
+TK_05 🔴 (LOW)
+   GPS: 35.676200, 139.650300
+   Source: city_center
+   💡 Hint: Impossible à déterminer - aucun indice de localisation visible | pavement gris granuleux typique des trottoirs japonais
+   Maps: https://www.google.com/maps?q=35.6762,139.6503
+   ⚠️ Localisation approximative
+
+TK_24 🔴 (LOW)
+   GPS: 35.676200, 139.650300
+   Source: city_center
+   💡 Hint: Impossible de déterminer une adresse précise | mur en crépi/enduit texturé beige/sable, style moderne simple
+   Maps: https://www.google.com/maps?q=35.6762,139.6503
+   ⚠️ Localisation approximative
+
+TK_26 🔴 (LOW)
+   GPS: 35.676200, 139.650300
+   Source: city_center
+   💡 Hint: Impossible à déterminer - aucun indice de localisation visible | Surface en béton/ciment
+   Maps: https://www.google.com/maps?q=35.6762,139.6503
+   ⚠️ Localisation approximative
+
+TK_28 🔴 (LOW)
+   GPS: 35.676200, 139.650300
+   Source: city_center
+   Maps: https://www.google.com/maps?q=35.6762,139.6503
+   ⚠️ Localisation approximative
+
+TK_44 🔴 (LOW)
+   GPS: 35.676200, 139.650300
+   Source: city_center
+   💡 Hint: Impossible à déterminer - aucun indice textuel visible | Mur crépi beige/jaune typique japonais
+   Maps: https://www.google.com/maps?q=35.6762,139.6503
+   ⚠️ Localisation approximative
+
+TK_49 🔴 (LOW)
+   GPS: 35.662592, 139.698337
+   Source: vision
+   Adresse: Shibuya, Tokyo
+   Maps: https://www.google.com/maps?q=35.662592,139.698337
+
+TK_55 🔴 (LOW)
+   GPS: 35.640811, 139.702517
+   Source: vision
+   Adresse: Tokyo, nord-est (
+   💡 Hint: probablement Taito-ku, Sumida-ku | possiblement Taito-ku, Koto-ku basé sur le style architectural des années 70-80
+   Maps: https://www.google.com/maps?q=35.6408112,139.7025174
+
+TK_60 🔴 (LOW)
+   GPS: 35.653790, 139.692823
+   Source: vision_district
+   Adresse: ~Shibuya-ku, Tokyo
+   💡 Hint: Shibuya-ku, Tokyo - ruelle secondaire près de la gare de Shibuya | près de la gare de Shibuya | mur en béton brut indust
+   Maps: https://www.google.com/maps?q=35.65379,139.6928233
+
+TK_61 🔴 (LOW)
+   GPS: 35.676200, 139.650300
+   Source: city_center
+   💡 Hint: Zone commerciale ou industrielle de Tokyo, impossibilité de déterminer l'adresse précise sans indices textuels visibles 
+   Maps: https://www.google.com/maps?q=35.6762,139.6503
+   ⚠️ Localisation approximative
+
+TK_66 🔴 (LOW)
+   GPS: 35.676200, 139.650300
+   Source: city_center
+   💡 Hint: Impossible à déterminer - aucun élément de localisation visible | Surface textile/tissu noir
+   Maps: https://www.google.com/maps?q=35.6762,139.6503
+   ⚠️ Localisation approximative
+
+TK_67 🟡 (MEDIUM)
+   GPS: 35.608080, 139.327193
+   Source: ocr
+   Adresse: AV Vie, Tokyo
+   Maps: https://www.google.com/maps?q=35.6080799,139.3271929
+
+TK_71 🔴 (LOW)
+   GPS: 35.702541, 139.695385
+   Source: vision
+   Adresse: Shinjuku, Tokyo
+   Maps: https://www.google.com/maps?q=35.7025408,139.6953853
+
+TK_75 🔴 (LOW)
+   GPS: 35.676200, 139.650300
+   Source: city_center
+   💡 Hint: Impossible à déterminer - aucun indice de localisation visible | surface en asphalte ou béton texturé sombre
+   Maps: https://www.google.com/maps?q=35.6762,139.6503
+   ⚠️ Localisation approximative
+
+VLMO_01 🟡 (MEDIUM)
+   GPS: 45.455322, 6.450564
+   Source: pnote
+   Adresse: Route de Crève-Cœur, Les Avanchers-Valmorel, 73260
+   Maps: https://www.google.com/maps?q=45.455321525,6.4505635988
+
+VRN_02 🔴 (LOW)
+   GPS: 25.285400, 82.999000
+   Source: city_center
+   💡 Hint: Gali near Dashashwamedh Ghat, Varanasi, Uttar Pradesh | près de Dashashwamedh Ghat, Varanasi, Uttar Pradesh | architectu
+   Maps: https://www.google.com/maps?q=25.2854,82.999
+   ⚠️ Localisation approximative
+
+VRN_13 🔴 (LOW)
+   GPS: 25.335649, 83.007629
+   Source: vision_district
+   Adresse: ~Uttar Pradesh, Varanasi
+   💡 Hint: Shiv Ganga Ghat, Varanasi, Uttar Pradesh | quartier: Ghat area along Ganges riverfront | Traditional Varanasi ghat archi
+   Maps: https://www.google.com/maps?q=25.3356491,83.0076292
+

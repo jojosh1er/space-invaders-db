@@ -1,95 +1,94 @@
 #!/usr/bin/env python3
 """
-🔍 Recherche de localisation via sources spécialisées Invader - Version 3
+🔍 Recherche de localisation via sources spécialisées Invader — Version 5
 
-Améliorations v3:
-- Nouveau fallback: pnote.eu (lookup local ou fetch URL, coordonnées ±10m, hints)
-- Nouveau fallback: Flickr scraping (photos geotaggées, sans clé API)
-- Pipeline étendu: AroundUs → Illuminate → Pnote → Flickr → EXIF → OCR
-- Support fichier pnote aux formats natif (obf_lat/obf_lng) et master-like
-
-Améliorations v2:
-- Ignore les coordonnées GPS à zéro (0.00, 0.00) sur AroundUs
-- Support multilingue complet (EN, FR, NL, DE, ES, IT, PL, PT)
-- Accepte aroundus.com et xx.aroundus.com
-- Fallback EXIF: extrait les coordonnées GPS des métadonnées de l'image du lieu
-- Fallback OCR: analyse visuelle Tesseract pour détecter plaques de rue, enseignes
+Pipeline multi-sources avec fallbacks progressifs pour géolocaliser les
+Space Invaders à partir d'images, de bases communautaires et d'IA.
 
 Sources (par ordre de priorité):
-1. aroundus.com - Données structurées (GPS JSON-LD, adresse)
-2. illuminateartofficial.com - Coordonnées Google Maps
-3. pnote.eu - Base communautaire crowdsourcée (±10m offset, hints)
-4. Flickr scraping - Photos geotaggées via Playwright (tags: flashinvaders, pa_xxxx)
-5. EXIF image_lieu - Métadonnées GPS de la photo (fallback)
-6. OCR Tesseract - Analyse visuelle + OCR + géocodage (fallback)
+1. aroundus.com — Données structurées (GPS JSON-LD, adresse)
+2. illuminateartofficial.com — Coordonnées Google Maps
+3. Cohérence inter-sources — Validation si 2 sources concordent (<200m)
+4. pnote.eu — Base communautaire crowdsourcée (±10m offset, hints)
+5. Flickr — Photos geotaggées via Playwright (tags: flashinvaders, pa_xxxx)
+6. EXIF image_lieu — Métadonnées GPS de la photo originale
+7. OCR Tesseract — Analyse visuelle + patterns FR/UK + géocodage Nominatim
+8. Google Lens — Visual matching autonome (requests + BeautifulSoup)
+9. Claude Vision — Analyse IA multi-images + nettoyage adresses + landmarks
+   9a. Géocodage adresses nettoyées (parenthèses, "near", "between"...)
+   9b. Géocodage landmarks directs (Federation Square, Fort Jesus...)
+   9c. Recherche web commerces/landmarks identifiés
+   9d. Fallback quartier/district (~500m vs ~5km centre-ville)
+10. Google Lens interactif (mode --interactive)
+11. Fallback centre-ville (dernier recours)
 
 Modes d'utilisation:
 
-1. Mode classique (fichier invaders avec coords existantes):
-   python geolocate_missing.py invaders_master.json --city AMI --limit 10 --visible
+1. Depuis le master (invaders mal localisés):
+   python3 geolocate_missing.py --from-master --pnote-url --no-browser -v
+   python3 geolocate_missing.py --from-master --city NYC --limit 20 --pnote-url --no-browser -v
+   python3 geolocate_missing.py --from-master --city PA --pnote-url --visible     # avec navigateur
 
-2. Mode invaders manquants (depuis invaders_missing_from_github.json):
-   python geolocate_missing.py --from-missing invaders_missing_from_github.json --city ORLN --limit 5 --visible
+2. Invader unique (force --from-master + --retry-failed):
+   python3 geolocate_missing.py --id PA_1531 --pnote-url --no-browser -v
+   python3 geolocate_missing.py --id LDN_42 --pnote-url --visible -i             # interactif
 
-3. Mode master (invaders sans coords ou au centre-ville):
-   python geolocate_missing.py --from-master --city PA --limit 20 --visible
+3. Depuis invaders manquants:
+   python3 geolocate_missing.py --from-missing data/invaders_missing.json --city ORLN --limit 5
 
-4. Fusion des résultats avec invaders_master.json:
-   python geolocate_missing.py --merge invaders_relocalized.json --backup
+4. Mode classique (fichier quelconque):
+   python3 geolocate_missing.py data/my_invaders.json --city AMI --limit 10 --visible
 
-5. Avec pnote.eu en fallback (fetch URL automatique):
-   python geolocate_missing.py --from-master --city LDN --pnote-url
+5. Fusion des résultats avec le master:
+   python3 geolocate_missing.py --merge data/invaders_relocalized.json --dry-run -v   # prévisualisation
+   python3 geolocate_missing.py --merge data/invaders_relocalized.json --backup        # avec backup
 
-6. Avec pnote.eu depuis un fichier local:
-   python geolocate_missing.py --from-master --city LDN --pnote-file data/pnote_invaders.json
+6. Ré-essayer les échecs précédents:
+   python3 geolocate_missing.py --from-master --retry-failed --pnote-url --no-browser --limit 30 -v
 
-7. Avec Flickr en fallback (activé par défaut, scraping Playwright):
-   python geolocate_missing.py --from-master --city PA --visible
-
-8. Combo complet:
-   python geolocate_missing.py --from-master --pnote-url --visible
-
-9. Sans Flickr (si trop lent):
-   python geolocate_missing.py --from-master --pnote-url --no-flickr
-
-10. Avec Claude Vision (analyse IA des images):
-   python geolocate_missing.py --from-master --pnote-url --anthropic-key sk-ant-...
-   # Ou via variable d'environnement:
-   export ANTHROPIC_API_KEY=sk-ant-...
-   python geolocate_missing.py --from-master --pnote-url
+7. CI/CD GitHub Actions (mode sans navigateur):
+   python3 geolocate_missing.py --from-master --pnote-url --no-browser --limit 50 -v
+   python3 geolocate_missing.py --merge data/invaders_relocalized.json --backup
 
 Options:
-    --from-missing FILE   Utiliser ce fichier comme source (format missing_from_github)
     --from-master         Scanner le master et géolocaliser les invaders mal localisés
+    --from-missing FILE   Utiliser ce fichier comme source (format missing_from_github)
     --merge FILE          Fusionner FILE avec invaders_master.json
-    --city PA             Filtrer par ville
-    --limit 100           Limiter le nombre d'invaders
-    --verbose             Mode verbeux
-    --visible             Afficher le navigateur
-    --output FILE         Fichier de sortie JSON
+    --id CODE             Chercher un seul invader (ex: PA_1531, LDN_42)
+    --city, -c CODE       Filtrer par ville (ex: PA, NYC, BGK)
+    --limit, -l N         Nombre max d'invaders à traiter
+    --retry-failed        Relancer même si geo_search_exhausted
+    --no-browser          Mode sans navigateur: Pnote+EXIF+OCR+Lens+Vision (idéal CI/CD)
+    --pnote-url [URL]     Télécharger pnote.eu (URL par défaut fournie)
+    --pnote-file FILE     Fichier JSON pnote.eu local
+    --no-flickr           Désactiver Flickr
+    --no-lens             Désactiver Google Lens
+    --anthropic-key KEY   Clé API Anthropic (ou env ANTHROPIC_API_KEY)
+    --visible             Afficher le navigateur Playwright
+    --interactive, -i     Mode interactif (Google Lens manuel)
+    --verbose, -v         Mode verbeux
+    --output, -o FILE     Fichier de sortie JSON
     --backup              Créer un backup avant merge
     --dry-run             Simuler sans sauvegarder
-    --pnote-file FILE     Fichier JSON pnote.eu local pour fallback
-    --pnote-url [URL]     Fetch pnote.eu depuis URL (défaut: pnote.eu/.../invaders.json)
-    --no-flickr           Désactiver le scraping Flickr
-    --anthropic-key KEY   Clé API Anthropic pour Claude Vision (ou env ANTHROPIC_API_KEY)
+    --pause N             Pause entre requêtes (défaut: 1.0s)
+    --only-missing        Seulement les invaders sans coordonnées
 
-Pipeline de recherche:
-1. AroundUs (web scraping Google)
-2. IlluminateArt (web scraping Google)
-3. Cohérence entre sources web + validation ville
-4. [Fallback] Pnote.eu (lookup local, ±10m offset)
-5. [Fallback] Flickr (scraping, photos geotaggées)
-6. [Fallback] EXIF image_lieu
-7. [Fallback] OCR Tesseract + patterns FR/UK
-8. [Fallback] Claude Vision (analyse IA de l'image)
-9. [Fallback] Google Lens interactif
-10. [Fallback] Centre-ville
+Niveaux de confiance:
+    HIGH   🟢  Deux sources concordantes (<200m)
+    MEDIUM 🟡  Une source fiable (AroundUs, Pnote, EXIF, OCR, Lens, Vision)
+    LOW    🔴  Source approximative (Vision district ~500m, centre-ville ~5km)
 
-Logique de confiance:
-- HIGH:   AroundUs + Illuminate cohérents (<200m)
-- MEDIUM: Une seule source, Pnote, Flickr, EXIF, OCR, Vision
-- LOW:    Aucune source (fallback centre-ville)
+Champs JSON de sortie:
+    geo_source            Source (aroundus, pnote, exif_image_lieu, ocr, vision, vision_district, city_center...)
+    geo_confidence        high, medium, low, very_low
+    geo_hint              Indices Vision non géocodés (adresses brutes, enseignes, landmarks, style)
+    geo_search_exhausted  true = toutes les sources testées sans succès
+    geo_search_date       Date ISO de la dernière recherche
+
+Dépendances:
+    pip install requests beautifulsoup4 Pillow pytesseract anthropic
+    apt install tesseract-ocr tesseract-ocr-fra  # optionnel, pour OCR
+    pip install playwright && playwright install chromium  # optionnel, pour navigateur
 """
 
 import argparse
@@ -604,16 +603,60 @@ LANDMARK_PATTERNS = [
 
 # Mapping des codes ville vers le pays/langue pour choisir les patterns
 CITY_COUNTRIES = {
+    # France (défaut si absent, mais on les liste pour clarté)
+    'PA': 'fr', 'LY': 'fr', 'MARS': 'fr', 'TLS': 'fr', 'BDX': 'fr',
+    'NA': 'fr', 'NTE': 'fr', 'LIL': 'fr', 'LILE': 'fr', 'LILL': 'fr',
+    'STR': 'fr', 'STRG': 'fr', 'MTP': 'fr', 'MPL': 'fr', 'NICE': 'fr', 'NP': 'fr',
+    'AMI': 'fr', 'ORLN': 'fr', 'DIJ': 'fr', 'GRN': 'fr', 'AIX': 'fr',
+    'AVI': 'fr', 'NIM': 'fr', 'CLR': 'fr', 'RN': 'fr', 'RNS': 'fr',
+    'VRS': 'fr', 'VER': 'fr', 'REIM': 'fr', 'BAB': 'fr', 'FTBL': 'fr',
+    'PAU': 'fr', 'PRP': 'fr', 'MTB': 'fr', 'CAPF': 'fr', 'CAZ': 'fr',
+    'LCT': 'fr', 'LBR': 'fr', 'FRQ': 'fr', 'MEN': 'fr', 'CON': 'fr',
+    'VLMO': 'fr', 'REUN': 'fr', 'NCE': 'fr', 'BTA': 'fr',
+    'CF': 'fr', 'CFT': 'fr', 'CFRT': 'fr', 'CAP': 'fr',
+    'ARN': 'fr', 'ARC': 'fr', 'RON': 'fr', 'ROY': 'fr',
+    'LROC': 'fr', 'LRC': 'fr', 'LEGE': 'fr', 'LGF': 'fr', 'MLH': 'fr',
+    'LYO': 'fr', 'MRS': 'fr', 'REN': 'fr',
     # UK
-    'LDN': 'uk', 'MAN': 'uk', 'BRM': 'uk', 'LPL': 'uk', 'EDI': 'uk', 'GLA': 'uk',
-    # France
-    'PA': 'fr', 'LYO': 'fr', 'MRS': 'fr', 'BDX': 'fr', 'NTE': 'fr', 'STR': 'fr',
-    'TLS': 'fr', 'NCE': 'fr', 'REN': 'fr', 'VRS': 'fr', 'ORLN': 'fr', 'MLH': 'fr',
-    # USA
+    'LDN': 'uk', 'MAN': 'uk', 'NCL': 'uk', 'BHM': 'uk',
+    'BRM': 'uk', 'LPL': 'uk', 'EDI': 'uk', 'GLA': 'uk',
+    # Spain
+    'BCN': 'es', 'BRC': 'es', 'MLGA': 'es', 'BBO': 'es', 'MAD': 'es',
+    # Italy
+    'ROM': 'it', 'RAV': 'it', 'RA': 'it', 'FLRN': 'it', 'FLR': 'it',
+    'MLN': 'it', 'MIL': 'it', 'NPL': 'it', 'NAP': 'it',
+    'VEN': 'it', 'VCE': 'it', 'GEN': 'it', 'GNS': 'it',
+    # Netherlands
+    'AMS': 'nl', 'RTD': 'nl', 'NOO': 'nl',
+    # Germany
+    'BRL': 'de', 'BER': 'de', 'MUN': 'de', 'KLN': 'de', 'FKF': 'de',
+    # Austria
+    'WN': 'at', 'VIE': 'at',
+    # Belgium
+    'BXL': 'be', 'BRU': 'be', 'CHAR': 'be', 'ANVR': 'be',
+    'BRG': 'be', 'BRUG': 'be', 'RDU': 'be',
+    # Switzerland
+    'BRN': 'ch', 'BSL': 'ch', 'GNV': 'ch', 'LSN': 'ch', 'ANZR': 'ch',
+    # Portugal
+    'LIS': 'pt', 'LX': 'pt', 'LSB': 'pt', 'FAO': 'pt', 'GRTI': 'pt',
+    # Other Europe
+    'LJU': 'si', 'PRG': 'cz', 'WAR': 'pl', 'IST': 'tr',
+    'RVK': 'is', 'HALM': 'se', 'VSB': 'se', 'GRU': 'hr',
+    # North Africa / Middle East
+    'MRAK': 'ma', 'RBA': 'ma', 'TUN': 'tn', 'TN': 'tn', 'DJBA': 'tn',
+    'ELT': 'il', 'MBSA': 'ke',
+    # Asia
+    'TK': 'jp', 'TYO': 'jp',
+    'HK': 'cn',
+    'BGK': 'th', 'BKK': 'th',
+    'KAT': 'np', 'DHK': 'bd',
+    'DJN': 'kr', 'SL': 'kr',
+    'BT': 'bt', 'SIN': 'sg', 'VRN': 'in',
+    # Americas
     'NY': 'us', 'LA': 'us', 'SF': 'us', 'MIA': 'us', 'CHI': 'us', 'SD': 'us',
-    # Autres
-    'TYO': 'jp', 'HK': 'cn', 'BKK': 'th', 'ROM': 'it', 'AMS': 'nl', 'BCN': 'es',
-    'MAD': 'es', 'BER': 'de', 'VIE': 'de', 'BRU': 'fr',  # Bruxelles = français
+    'SP': 'br', 'CCU': 'mx', 'POTI': 'bo',
+    # Oceania
+    'MLB': 'au', 'SYD': 'au', 'PRT': 'au',
 }
 
 
@@ -1250,6 +1293,11 @@ class ImageOCRAnalyzer:
             country_map = {
                 'fr': 'fr', 'uk': 'gb', 'us': 'us', 'it': 'it', 'es': 'es',
                 'de': 'de', 'nl': 'nl', 'jp': 'jp', 'cn': 'cn', 'th': 'th',
+                'at': 'at', 'be': 'be', 'ch': 'ch', 'pt': 'pt', 'pl': 'pl',
+                'cz': 'cz', 'si': 'si', 'tr': 'tr', 'is': 'is', 'se': 'se',
+                'hr': 'hr', 'ma': 'ma', 'tn': 'tn', 'il': 'il', 'ke': 'ke',
+                'np': 'np', 'bd': 'bd', 'kr': 'kr', 'bt': 'bt', 'sg': 'sg',
+                'in': 'in', 'br': 'br', 'mx': 'mx', 'bo': 'bo', 'au': 'au',
             }
             country_code = country_map.get(country)
         
@@ -1759,6 +1807,136 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
         
         return cleaned
     
+    def _clean_address_for_geocoding(self, address, city_name=None):
+        """
+        Nettoie une adresse brute Vision pour la rendre géocodable par Nominatim.
+        Retourne (cleaned_address, hint) où hint contient les infos descriptives retirées.
+        """
+        import re
+        
+        if not address:
+            return None, None
+        
+        hint_parts = []
+        addr = address.strip()
+        
+        # 0. Extraire et retirer les parenthèses EN PREMIER (avant le test "impossible")
+        #    "Near Punakha Dzong (not determinable)" → addr="Near Punakha Dzong", hint gardé
+        paren_match = re.search(r'\(([^)]+)\)', addr)
+        if paren_match:
+            paren_content = paren_match.group(1).strip()
+            if not re.search(r'\b(not determinable|impossible|specific street)\b', paren_content, re.IGNORECASE):
+                hint_parts.append(paren_content)
+            addr = re.sub(r'\s*\([^)]+\)\s*', ' ', addr).strip().rstrip(',;')
+        
+        # 1. Filtrer les adresses "impossible" (APRÈS avoir retiré les parenthèses)
+        if re.search(r'\b(impossible|not determinable|ind[ée]terminable|sans indices|aucun indice|unable to determine)\b', addr, re.IGNORECASE):
+            return None, addr
+        
+        # 2. Retirer "between X and Y" / "entre X et Y" (garder comme hint)
+        between_match = re.search(
+            r',?\s*\b(?:between|entre)\s+(.+?)(?:\s+(?:and|et)\s+(.+?))?(?:,|$)',
+            addr, re.IGNORECASE
+        )
+        if between_match:
+            hint_parts.append(f"entre {between_match.group(1)}" + (f" et {between_match.group(2)}" if between_match.group(2) else ""))
+            before = addr[:between_match.start()].strip().rstrip(',; ')
+            after = addr[between_match.end():].strip().lstrip(',; ')
+            addr = f"{before}, {after}" if before and after else (before or after)
+            addr = addr.strip().rstrip(',;')
+        
+        # 3. Retirer "near/près de/proximité" → extraire le lieu après
+        near_match = re.search(
+            r'^\s*(?:near|pr[èe]s\s+de|proximit[ée]\s+(?:de|du|des)?|à\s+proximit[ée]\s+de)\s+',
+            addr, re.IGNORECASE
+        )
+        if near_match:
+            hint_parts.append(f"près de {addr[near_match.end():]}")
+            addr = addr[near_match.end():].strip()
+        # Aussi "..., near X" en fin d'adresse
+        near_suffix = re.search(
+            r',?\s*\b(?:near|pr[èe]s\s+de|proximit[ée])\s+(.+?)$',
+            addr, re.IGNORECASE
+        )
+        if near_suffix:
+            hint_parts.append(f"près de {near_suffix.group(1)}")
+            addr = addr[:near_suffix.start()].strip().rstrip(',;')
+        
+        # 4. "probablement/probably/possibly" → extraire le lieu après
+        prob_match = re.search(
+            r',?\s*\b(?:probablement|possiblement|peut-[êe]tre|probably|possibly|likely)\s+'
+            r'(?:dans\s+le\s+|dans\s+la\s+|sur\s+|à\s+|(?:le\s+|la\s+)?quartier\s+(?:de\s+|du\s+)?|station\s+)?',
+            addr, re.IGNORECASE
+        )
+        if prob_match:
+            after_prob = addr[prob_match.end():].strip()
+            before_prob = addr[:prob_match.start()].strip().rstrip(',;')
+            hint_parts.append(f"probablement {after_prob}")
+            if after_prob and len(after_prob) > 3:
+                addr = before_prob
+        
+        # 5. "Zone/Secteur/Area" prefix → retirer le préfixe descriptif entier
+        #    "Zone commerciale centrale de Daejeon" → "Daejeon"
+        #    "Secteur résidentiel/commercial de Dhaka" → "Dhaka"
+        #    "Quartier historique de Sultanahmet" → "Sultanahmet"
+        zone_match = re.match(
+            r'(?:Zone|Secteur|Area|District|Quartier)\b'    # mot-clé
+            r'[\s/]*'                                       # espace ou /
+            r'(?:[\w/éèêàâôûîïü-]+[\s/]+)*'                # adjectifs (greedy): commerciale, centrale, résidentiel/commercial...
+            r'(?:de\s+la\s+|de\s+l\b\s*|de\s+|du\s+|des\s+)?',  # article: de, du, des, de la
+            addr, re.IGNORECASE
+        )
+        if zone_match and zone_match.end() < len(addr):
+            remaining = addr[zone_match.end():].strip()
+            if len(remaining) > 3:
+                addr = remaining
+        
+        # 5b. Retirer le suffixe "area/zone/district/quarter" en fin de segment
+        #     "Pratunam area" → "Pratunam", "Silom district, Bangkok" → "Silom, Bangkok"
+        addr = re.sub(
+            r'\s+(?:area|zone|district|quarter|quartier|sector|secteur|neighborhood|neighbourhood)(?=\s*,|\s*$)',
+            '', addr, flags=re.IGNORECASE
+        ).strip()
+        
+        # 6. Retirer "secteur entre les quartiers..." et descriptions vagues
+        addr = re.sub(r',?\s*secteur\s+entre\s+.+$', '', addr, flags=re.IGNORECASE).strip()
+        
+        # 7. Retirer les tirets descriptifs: "Bangkok - localisation impossible"
+        dash_desc = re.search(r'\s*[-–—]\s*(?:localisation|location|impossible|specific|street address|zone)', addr, re.IGNORECASE)
+        if dash_desc:
+            addr = addr[:dash_desc.start()].strip()
+        
+        # 8. Retirer "Sous le métro aérien de la ligne..." et autres descriptions de transport
+        transport_match = re.match(
+            r'(?:Sous\s+le\s+|Sur\s+le\s+|Le\s+long\s+du?\s+)(?:métro|pont|viaduc|autoroute|highway)\s+.+?,\s*',
+            addr, re.IGNORECASE
+        )
+        if transport_match:
+            addr = addr[transport_match.end():].strip()
+        
+        # 9. Nettoyer les espaces et ponctuation
+        addr = re.sub(r'\s+', ' ', addr)  # espaces multiples
+        addr = re.sub(r'\s+,', ',', addr)  # " ," → ","
+        addr = re.sub(r',\s*,', ',', addr)  # ",," → ","
+        addr = addr.strip().rstrip(',;.')
+        
+        # 10. Retirer les mots orphelins résiduels (probablement, possibly, etc.)
+        addr = re.sub(
+            r',?\s*\b(?:probablement|possiblement|peut-être|probably|possibly|likely)\s*,?\s*$',
+            '', addr, flags=re.IGNORECASE
+        ).strip().rstrip(',;.')
+        addr = re.sub(
+            r'^\s*(?:probablement|possiblement|peut-être|probably|possibly|likely)\s*,?\s*',
+            '', addr, flags=re.IGNORECASE
+        ).strip()
+        
+        # 10. Si l'adresse nettoyée est trop courte → perdu
+        if not addr or len(addr) < 4:
+            return None, ' | '.join(hint_parts) if hint_parts else None
+        
+        hint = ' | '.join(hint_parts) if hint_parts else None
+        return addr, hint
+    
     def _is_descriptive_landmark(self, name):
         """
         Détecte si un 'landmark' est en fait une description vague plutôt qu'un nom propre.
@@ -1782,39 +1960,61 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
     def _search_landmark_address(self, name, city_name=None):
         """
         Recherche l'adresse d'un commerce/landmark via Nominatim.
-        Ex: "Boulangerie Dupain" → "12 Rue de la Roquette, Paris"
+        Stratégies multiples:
+        1. Free-form: "name, city"
+        2. Sans la ville si déjà dans le nom: "Inspire International School Dhaka"
+        3. Nom simplifié (sans parenthèses/acronymes): "Inspire International School"
         """
-        try:
-            query = name
-            if city_name:
-                query = f"{name}, {city_name}"
-            
-            url = "https://nominatim.openstreetmap.org/search"
-            params = {
-                'q': query,
-                'format': 'json',
-                'limit': 3,
-                'addressdetails': 1,
-            }
-            response = requests.get(url, params=params,
-                                    headers={'User-Agent': 'InvaderHunter/3.0'},
-                                    timeout=10)
-            
-            if response.status_code == 200:
-                results = response.json()
-                if results:
-                    r = results[0]
-                    lat = float(r['lat'])
-                    lng = float(r['lon'])
-                    display = r.get('display_name', '')
-                    self.log(f"Landmark '{name}' → {lat:.5f}, {lng:.5f} ({display[:60]})")
-                    return {
-                        'lat': lat, 'lng': lng,
-                        'display_name': display,
-                        'source_name': name,
-                    }
-        except Exception as e:
-            self.log(f"Erreur recherche landmark '{name}': {e}")
+        import re
+        queries_to_try = []
+        
+        # Query 1: nom + ville (sauf si la ville est déjà dans le nom)
+        if city_name and city_name.lower() not in name.lower():
+            queries_to_try.append(f"{name}, {city_name}")
+        
+        # Query 2: nom seul (si ville déjà dans le nom)
+        queries_to_try.append(name)
+        
+        # Query 3: nom nettoyé (retirer parenthèses, acronymes)
+        clean_name = re.sub(r'\s*\([^)]+\)', '', name).strip()
+        # Retirer le nom de ville en suffixe pour essayer sans
+        if city_name and clean_name.lower().endswith(city_name.lower()):
+            shorter = clean_name[:-(len(city_name))].strip().rstrip(',; ')
+            if shorter and len(shorter) > 3:
+                if city_name:
+                    queries_to_try.append(f"{shorter}, {city_name}")
+        if clean_name != name and clean_name not in queries_to_try:
+            queries_to_try.append(clean_name)
+        
+        for query in queries_to_try:
+            try:
+                url = "https://nominatim.openstreetmap.org/search"
+                params = {
+                    'q': query,
+                    'format': 'json',
+                    'limit': 3,
+                    'addressdetails': 1,
+                }
+                response = requests.get(url, params=params,
+                                        headers={'User-Agent': 'InvaderHunter/5.0'},
+                                        timeout=10)
+                
+                if response.status_code == 200:
+                    results = response.json()
+                    if results:
+                        r = results[0]
+                        lat = float(r['lat'])
+                        lng = float(r['lon'])
+                        display = r.get('display_name', '')
+                        self.log(f"Landmark '{name}' → {lat:.5f}, {lng:.5f} ({display[:60]})")
+                        return {
+                            'lat': lat, 'lng': lng,
+                            'display_name': display,
+                            'source_name': name,
+                        }
+            except Exception as e:
+                self.log(f"Erreur recherche landmark '{query}': {e}")
+            time.sleep(1)  # Rate limiting Nominatim
         
         return None
     
@@ -1824,23 +2024,46 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
         Retourne une liste de candidats GPS triés par pertinence.
         """
         candidates = []
+        best_addr_raw = clues.get('best_address_guess', '')
         
-        # 1. Chercher les enseignes/commerces (nettoyées)
+        # 1. Chercher les enseignes/commerces (avec nom complet depuis l'adresse)
         for shop in (clues.get('shop_signs') or []):
             clean_name = self._clean_shop_name(shop)
-            if len(clean_name) >= 4:  # Ignorer les noms trop courts
-                self.log(f"Recherche enseigne: {clean_name}")
-                result = self._search_landmark_address(clean_name, city_name)
+            if len(clean_name) < 4:
+                continue
+            
+            # Chercher le nom complet dans best_address_guess
+            # "METRO" → "METRO Department Store" si dans l'adresse
+            search_names = [clean_name]
+            if best_addr_raw:
+                full_match = re.search(
+                    rf'\b{re.escape(clean_name)}\s+(?:Department\s+Store|Store|Shop|Restaurant|'
+                    rf'Café|Cafe|Hotel|Mall|Market|Center|Centre|Bar|Pub|Bank|Pharmacy|'
+                    rf'Supermarket|Hypermarket|Gallery|Museum|Theater|Theatre|Cinema|'
+                    rf'Hospital|Clinic|School|University|Station|Tower|Plaza|Building)'
+                    r'(?:\s+\w+)?',
+                    best_addr_raw, re.IGNORECASE
+                )
+                if full_match:
+                    full_name = full_match.group(0).strip()
+                    if full_name != clean_name:
+                        search_names.insert(0, full_name)  # Priorité au nom complet
+                        self.log(f"Nom complet trouvé: {clean_name} → {full_name}")
+            
+            for sname in search_names:
+                self.log(f"Recherche enseigne: {sname}")
+                result = self._search_landmark_address(sname, city_name)
                 if result:
-                    # Valider contre la ville
                     if city_code:
                         check = validate_city_coherence(result['lat'], result['lng'], city_code)
                         if check['valid']:
                             candidates.append({**result, 'type': 'shop', 'score': 70})
+                            break  # Trouvé → pas besoin d'essayer le nom court
                         else:
                             self.log(f"  → hors ville, ignoré")
                     else:
                         candidates.append({**result, 'type': 'shop', 'score': 60})
+                        break
                 time.sleep(1)  # Rate limiting Nominatim
         
         # 2. Chercher les landmarks (filtrer les descriptions vagues)
@@ -1911,6 +2134,8 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
             result['error'] = 'Vision non activé (--anthropic-key requis)'
             return result
         
+        import re
+        
         # 1. Télécharger les images
         images = []
         
@@ -1954,15 +2179,24 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
         if clues.get('postcode'):
             self.log(f"📮 Code postal: {clues['postcode']}")
         
-        # 3. Construire les adresses candidates à géocoder
+        # 3. Construire les adresses candidates à géocoder (nettoyées)
         addresses_to_try = []
+        hints_collected = []
         
-        # Priorité 1: best_address_guess de Claude (avec variantes si "ou"/"or")
+        # Priorité 1: best_address_guess de Claude (nettoyé + variantes)
         if clues.get('best_address_guess'):
-            variants = self._split_address_variants(clues['best_address_guess'])
-            for v in variants:
-                if v not in addresses_to_try:
-                    addresses_to_try.append(v)
+            # D'abord splitter les variantes "ou"/"or"
+            raw_variants = self._split_address_variants(clues['best_address_guess'])
+            
+            for raw_v in raw_variants:
+                cleaned, hint = self._clean_address_for_geocoding(raw_v, city_name)
+                if hint:
+                    hints_collected.append(hint)
+                if cleaned and cleaned not in addresses_to_try:
+                    addresses_to_try.append(cleaned)
+                    # Si l'adresse nettoyée est différente de l'originale, garder les deux
+                    if raw_v != cleaned and raw_v not in addresses_to_try:
+                        addresses_to_try.append(raw_v)
         
         # Priorité 2: plaques de rue + numéros
         for sign in (clues.get('street_signs') or []):
@@ -1974,15 +2208,45 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
                 if addr not in addresses_to_try:
                     addresses_to_try.append(addr)
         
+        # Priorité 3: landmarks identifiés (noms propres) → essayer directement
+        for landmark in (clues.get('landmarks') or []):
+            if self._is_descriptive_landmark(landmark):
+                continue
+            lm_addr = landmark
+            if city_name and city_name.lower() not in landmark.lower():
+                lm_addr = f"{landmark}, {city_name}"
+            if lm_addr not in addresses_to_try:
+                addresses_to_try.append(lm_addr)
+        
+        # Priorité 4: extraire les noms de rues et lieux depuis les hints "near/entre"
+        #   hint "près de METRO Department Store, Ratchaprarop Road, Bangkok"
+        #   → extrait "Ratchaprarop Road" comme variante d'adresse
+        road_pattern = re.compile(
+            r'((?:[A-Z][a-zA-Zéèêàâôûîïü\'\-]+\s+)*'
+            r'(?:Road|Street|Avenue|Boulevard|Blvd|Rue|Via|Strasse|Straße|Calle|'
+            r'Lane|Drive|Alley|Soi|Thanon|Jalan|Rua|Avenida|Corso|Passage|'
+            r'Ratchaprarop|Sukhumvit|Silom|Sathorn'  # noms thaï courants
+            r')(?:\s+\w+)?)',
+            re.IGNORECASE
+        )
+        for hint in hints_collected:
+            for road_match in road_pattern.finditer(hint):
+                road_name = road_match.group(1).strip()
+                if road_name and len(road_name) > 5:
+                    road_addr = road_name
+                    if city_name and city_name.lower() not in road_name.lower():
+                        road_addr = f"{road_name}, {city_name}"
+                    if road_addr not in addresses_to_try:
+                        addresses_to_try.append(road_addr)
+        
         if not addresses_to_try:
-            # Pas d'adresse textuelle → fallback sur landmarks web uniquement
             self.log("Pas d'adresse dans les indices, recherche web des landmarks...")
         
-        # 4. Géocoder les adresses candidates (Nominatim structuré)
+        # 4. Géocoder les adresses candidates (Nominatim)
         ocr = ImageOCRAnalyzer(verbose=self.verbose)
         
         self.log(f"{len(addresses_to_try)} adresse(s) à essayer")
-        for addr in addresses_to_try[:8]:
+        for addr in addresses_to_try[:10]:
             self.log(f"Géocodage: {addr}")
             geo = ocr.geocode_address(addr, city_code=city_code)
             if geo:
@@ -1990,8 +2254,14 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
                 result['lat'] = geo['lat']
                 result['lng'] = geo['lng']
                 result['address'] = addr
+                # Stocker le hint s'il existe
+                if hints_collected:
+                    result['geo_hint'] = ' | '.join(hints_collected[:3])
                 self.log(f"✅ GPS via adresse: {geo['lat']:.6f}, {geo['lng']:.6f}")
                 return result
+        
+        # Mémoriser les adresses échouées (le fallback quartier en extraira les noms de quartier)
+        self._failed_address_variants = addresses_to_try
         
         # 5. Recherche web des commerces/landmarks identifiés
         self.log("Recherche web des commerces et landmarks...")
@@ -2003,8 +2273,187 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
             result['lat'] = best['lat']
             result['lng'] = best['lng']
             result['address'] = f"{best.get('source_name', '?')} ({best['display_name'][:80]})"
+            if hints_collected:
+                result['geo_hint'] = ' | '.join(hints_collected[:3])
             self.log(f"✅ GPS via {best['type']}: {best['lat']:.6f}, {best['lng']:.6f}")
             return result
+        
+        # 6. Fallback quartier: géocoder le district/arrondissement identifié
+        #    Donne une position ~500m au lieu de ~5km du centre-ville
+        import re
+        
+        # Construire le hint complet à partir de tous les indices Vision
+        all_hint_parts = list(hints_collected)  # hints du nettoyage d'adresse
+        if clues.get('best_address_guess'):
+            all_hint_parts.insert(0, clues['best_address_guess'])
+        if clues.get('district'):
+            all_hint_parts.append(f"quartier: {clues['district']}")
+        if clues.get('architectural_style') and len(clues['architectural_style']) > 10:
+            all_hint_parts.append(clues['architectural_style'][:80])
+        for shop in (clues.get('shop_signs') or [])[:3]:
+            all_hint_parts.append(f"enseigne: {shop}")
+        for lm in (clues.get('landmarks') or [])[:2]:
+            all_hint_parts.append(f"repère: {lm}")
+        
+        # Collecter les noms de quartier DISTINCTS des adresses déjà essayées
+        already_tried = set()
+        for addr in addresses_to_try:
+            already_tried.add(addr.lower().strip())
+            if city_name and city_name.lower() not in addr.lower():
+                already_tried.add(f"{addr}, {city_name}".lower().strip())
+        
+        district_candidates = []  # liste ordonnée (pas set) pour préserver la priorité
+        road_candidates = []      # noms de rues → géocodage structuré street=
+        
+        road_pattern = re.compile(
+            r'\b(road|street|avenue|boulevard|blvd|rue|via|strasse|straße|calle|'
+            r'lane|drive|way|alley|soi|thanon|jalan|rua|avenida|corso|passage)\b',
+            re.IGNORECASE
+        )
+        
+        def _add_candidate(name, target_list):
+            """Ajoute un candidat s'il est nouveau et significatif."""
+            name = name.strip().rstrip(',;.')
+            # Retirer "area/district" suffixe
+            name = re.sub(
+                r'\s+(?:area|zone|district|quarter|quartier|sector|secteur)\s*$',
+                '', name, flags=re.IGNORECASE
+            ).strip()
+            if (name and len(name) > 3 
+                and name.lower() not in already_tried
+                and name not in target_list
+                and not re.match(r'(?:quartier|zone|area|district|sector|secteur)\s*$', name, re.IGNORECASE)
+                # Filtrer le nom de la ville seul (Dhaka → "Dhaka, Dhaka" = centre-ville inutile)
+                and (not city_name or name.lower() != city_name.lower())):
+                target_list.append(name)
+                already_tried.add(name.lower())
+        
+        def _add_segment(seg, target_list=None):
+            """Traite un segment: split 'or/ou', classifie route vs quartier, ajoute."""
+            for part in re.split(r'\s+(?:or|ou)\s+', seg):
+                part = part.strip().rstrip(',;.')
+                # Retirer "area/district" suffixe dans chaque partie
+                part = re.sub(
+                    r'\s+(?:area|zone|district|quarter|quartier|sector|secteur)\s*$',
+                    '', part, flags=re.IGNORECASE
+                ).strip()
+                if part and len(part) > 3:
+                    if road_pattern.search(part):
+                        _add_candidate(part, road_candidates)
+                    else:
+                        _add_candidate(part, target_list or district_candidates)
+        
+        # Source 1: champ district explicite (priorité haute)
+        district_raw = clues.get('district', '')
+        if district_raw:
+            # Nettoyer le district
+            cleaned_d, _ = self._clean_address_for_geocoding(district_raw, city_name)
+            if cleaned_d:
+                _add_segment(cleaned_d)
+        
+        # Source 2: extraire les noms de quartier depuis best_address_guess
+        best_addr = clues.get('best_address_guess', '')
+        if best_addr:
+            # Nettoyer d'abord
+            cleaned_ba, _ = self._clean_address_for_geocoding(best_addr, city_name)
+            if cleaned_ba:
+                # Essayer chaque segment séparé par virgule, puis split or/ou
+                for seg in re.split(r'\s*,\s*', cleaned_ba):
+                    seg = seg.strip()
+                    if seg and len(seg) > 3:
+                        _add_segment(seg)
+        
+        # Source 3: extraire les quartiers depuis les adresses échouées (segment par segment)
+        if hasattr(self, '_failed_address_variants'):
+            for addr in self._failed_address_variants:
+                cleaned_fa, _ = self._clean_address_for_geocoding(addr, city_name)
+                if cleaned_fa:
+                    for seg in re.split(r'\s*,\s*', cleaned_fa):
+                        seg = seg.strip()
+                        if seg and len(seg) > 3:
+                            _add_segment(seg)
+        
+        # Source 4: hints du nettoyage d'adresse (les "probablement X" extraits)
+        for hint in hints_collected:
+            # Extraire le lieu après "probablement"
+            prob_match = re.search(r'probablement\s+(.+)', hint, re.IGNORECASE)
+            if prob_match:
+                _add_segment(prob_match.group(1).strip())
+        
+        if city_name and (district_candidates or road_candidates):
+            self.log(f"Fallback: {len(district_candidates)} quartier(s), {len(road_candidates)} rue(s) à essayer")
+            
+            # 6a. D'abord les quartiers (géocodage free-form: "Silom, Bangkok")
+            for district in district_candidates[:4]:
+                query = f"{district}, {city_name}"
+                if query.lower() in already_tried:
+                    continue
+                self.log(f"Fallback quartier: {query}")
+                geo = ocr.geocode_address(query, city_code=city_code)
+                if geo:
+                    result['found'] = True
+                    result['lat'] = geo['lat']
+                    result['lng'] = geo['lng']
+                    result['address'] = f"~{district}, {city_name}"
+                    result['confidence'] = 'LOW'
+                    result['source_detail'] = 'vision_district'
+                    if all_hint_parts:
+                        result['geo_hint'] = ' | '.join(dict.fromkeys(all_hint_parts[:5]))
+                    self.log(f"✅ GPS via quartier: {geo['lat']:.6f}, {geo['lng']:.6f} (~{district})")
+                    return result
+                time.sleep(1)
+            
+            # 6b. Puis les rues (géocodage structuré: street="Rama IV Road" city="Bangkok")
+            for road in road_candidates[:3]:
+                self.log(f"Fallback rue: {road}, {city_name}")
+                # Utiliser directement Nominatim structuré
+                try:
+                    base_url = "https://nominatim.openstreetmap.org/search"
+                    params = {
+                        'street': road,
+                        'city': city_name,
+                        'format': 'json',
+                        'limit': 3,
+                        'addressdetails': 1,
+                    }
+                    country = CITY_COUNTRIES.get(city_code, '')
+                    country_map = {
+                        'fr': 'fr', 'uk': 'gb', 'us': 'us', 'it': 'it', 'es': 'es',
+                        'de': 'de', 'nl': 'nl', 'jp': 'jp', 'cn': 'cn', 'th': 'th',
+                        'at': 'at', 'be': 'be', 'ch': 'ch', 'pt': 'pt', 'pl': 'pl',
+                        'cz': 'cz', 'si': 'si', 'tr': 'tr', 'is': 'is', 'se': 'se',
+                        'hr': 'hr', 'ma': 'ma', 'tn': 'tn', 'il': 'il', 'ke': 'ke',
+                        'np': 'np', 'bd': 'bd', 'kr': 'kr', 'bt': 'bt', 'sg': 'sg',
+                        'in': 'in', 'br': 'br', 'mx': 'mx', 'bo': 'bo', 'au': 'au',
+                    }
+                    cc = country_map.get(country)
+                    if cc:
+                        params['countrycodes'] = cc
+                    
+                    response = requests.get(base_url, params=params,
+                                            headers={'User-Agent': 'InvaderHunter/5.0'},
+                                            timeout=10)
+                    if response.status_code == 200:
+                        results = response.json()
+                        geo = ocr._pick_best_nominatim_result(results, city_code)
+                        if geo:
+                            result['found'] = True
+                            result['lat'] = geo['lat']
+                            result['lng'] = geo['lng']
+                            result['address'] = f"~{road}, {city_name}"
+                            result['confidence'] = 'LOW'
+                            result['source_detail'] = 'vision_district'
+                            if all_hint_parts:
+                                result['geo_hint'] = ' | '.join(dict.fromkeys(all_hint_parts[:5]))
+                            self.log(f"✅ GPS via rue: {geo['lat']:.6f}, {geo['lng']:.6f} (~{road})")
+                            return result
+                except Exception as e:
+                    self.log(f"Erreur geocode rue: {e}")
+                time.sleep(1)
+        
+        # Même en cas d'échec total, stocker le hint pour référence
+        if all_hint_parts:
+            result['geo_hint'] = ' | '.join(dict.fromkeys(all_hint_parts[:5]))
         
         result['error'] = 'Géocodage échoué pour tous les indices Vision'
         return result
@@ -2012,20 +2461,19 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
 
 class GoogleLensSearcher:
     """
-    Recherche expérimentale via Google Lens (visual matching).
-    Envoie l'image de l'invader à Google Lens et analyse les résultats
-    pour trouver des pages web avec des coordonnées GPS.
-    
-    Nécessite: pip install git+https://github.com/krishna2206/google-lens-python.git
+    Recherche via Google Lens (visual matching) — implémentation autonome.
+    Envoie l'image à lens.google.com et parse les résultats HTML.
+    Ne dépend d'aucun package externe (seulement requests + bs4).
     
     Sources reconnues dans les visual_matches:
     - aroundus.com → GPS extractible
     - illuminate.artofficial.com → GPS extractible  
     - flickr.com → EXIF GPS possible
     - streetartcities.com → GPS dans URL/page
-    - invaderswashere.com → référence connue
-    - Pages avec adresses dans le titre
     """
+    
+    LENS_URL = "https://lens.google.com"
+    USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64; rv:120.0) Gecko/20100101 Firefox/120.0'
     
     # Patterns de sites géo-sourcés connus
     GEO_SOURCES = {
@@ -2042,100 +2490,204 @@ class GoogleLensSearcher:
     
     # Patterns d'adresses dans les titres
     ADDRESS_PATTERNS = [
-        # "Invader PA_1231 - Rue de Rivoli, Paris"
         r'(?:rue|boulevard|avenue|place|passage|impasse|quai|allée)\s+[\w\s\-\']+',
-        # "PA_1231 at 45 Rue de..."
         r'\d+\s+(?:rue|boulevard|avenue|place|passage)\s+[\w\s\-\']+',
-        # "Street Name, City"
         r'(?:street|road|avenue|lane|square|crescent)\s+[\w\s\-\']+',
     ]
     
     def __init__(self, verbose=False):
         self.verbose = verbose
-        self.lens = None
-        self.available = False
-        self._init_lens()
-    
-    def _init_lens(self):
-        """Initialise le client Google Lens si le package est disponible."""
-        try:
-            from googlelens import GoogleLens
-            self.lens = GoogleLens()
-            self._patch_lens()
-            self.available = True
-        except ImportError:
-            if self.verbose:
-                print("      ⚠️ google-lens-python non installé (pip install git+https://github.com/krishna2206/google-lens-python.git)")
-            self.available = False
-    
-    def _patch_lens(self):
-        """
-        Monkey-patch google-lens-python pour corriger:
-        - Status 303 (Google a changé de 302 à 303)
-        - Parsing IndexError sur nouveau layout Google
-        """
-        import types
-        lens = self.lens
-        original_parse = lens._GoogleLens__parse_prerender_script
-        original_get_script = lens._GoogleLens__get_prerender_script
-        
-        def patched_search_by_file(self_lens, file_path):
-            multipart = {
-                'encoded_image': (file_path, open(file_path, 'rb')),
-                'image_content': ''
-            }
-            params = {"hl": "en", "gl": "us"}
-            response = self_lens.session.post(
-                self_lens.url + "/upload",
-                files=multipart,
-                params=params,
-                allow_redirects=False
-            )
-            # Accept both 302 and 303 redirects
-            if response.status_code not in (302, 303):
-                return None
-            search_url = response.headers.get('Location')
-            if not search_url:
-                return None
-            response = self_lens.session.get(search_url)
-            try:
-                prerender_script = original_get_script(response.text)
-                return original_parse(prerender_script)
-            except (IndexError, KeyError, TypeError):
-                return None
-        
-        def patched_search_by_url(self_lens, url):
-            params = {"url": url, "hl": "en", "gl": "us"}
-            response = self_lens.session.get(
-                self_lens.url + "/uploadbyurl",
-                params=params,
-                allow_redirects=True
-            )
-            try:
-                prerender_script = original_get_script(response.text)
-                return original_parse(prerender_script)
-            except (IndexError, KeyError, TypeError):
-                return None
-        
-        lens.search_by_file = types.MethodType(patched_search_by_file, lens)
-        lens.search_by_url = types.MethodType(patched_search_by_url, lens)
+        self.session = requests.Session()
+        self.session.headers.update({'User-Agent': self.USER_AGENT})
+        self.available = True  # Toujours disponible (pas de dépendance externe)
     
     def log(self, msg):
         if self.verbose:
             print(f"      [LENS] {msg}")
     
+    def _parse_lens_html(self, html):
+        """
+        Parse la page de résultats Google Lens pour extraire les visual matches.
+        Cherche les données dans les scripts AF_initDataCallback.
+        
+        Returns:
+            dict: {'match': {...} or None, 'similar': [...]}
+        """
+        import re
+        from bs4 import BeautifulSoup
+        
+        data = {'match': None, 'similar': []}
+        
+        try:
+            soup = BeautifulSoup(html, 'html.parser')
+            
+            # Chercher le script AF_initDataCallback avec key 'ds:0'
+            scripts = soup.find_all('script')
+            target_script = None
+            
+            for s in scripts:
+                text = s.text or ''
+                if 'AF_initDataCallback(' in text:
+                    key_match = re.search(r"key:\s*'ds:(\d+)'", text)
+                    if key_match and key_match.group(1) == '0':
+                        target_script = text
+                        break
+            
+            if not target_script:
+                self.log("Script AF_initDataCallback ds:0 non trouvé")
+                return data
+            
+            # Nettoyer et parser le JSON
+            cleaned = target_script.replace("AF_initDataCallback(", "").replace(");", "")
+            hash_match = re.search(r"hash:\s*'(\d+)'", cleaned)
+            if hash_match:
+                hash_val = hash_match.group(1)
+                cleaned = cleaned.replace(
+                    f"key: 'ds:0', hash: '{hash_val}', data:",
+                    f'"key": "ds:0", "hash": "{hash_val}", "data":'
+                ).replace("sideChannel:", '"sideChannel":')
+            
+            parsed = json.loads(cleaned)
+            prerender = parsed.get('data', [[]])[1] if len(parsed.get('data', [])) > 1 else None
+            
+            if not prerender:
+                self.log("Pas de données prerender")
+                return data
+            
+            # Extraire le match principal
+            try:
+                data['match'] = {
+                    'title': prerender[0][1][8][12][0][0][0],
+                    'thumbnail': prerender[0][1][8][12][0][2][0][0],
+                    'pageURL': prerender[0][1][8][12][0][2][0][4],
+                }
+            except (IndexError, TypeError, KeyError):
+                pass
+            
+            # Extraire les visual matches
+            visual_matches = None
+            try:
+                if data['match']:
+                    visual_matches = prerender[1][1][8][8][0][12]
+                else:
+                    visual_matches = prerender[0][1][8][8][0][12]
+            except (IndexError, TypeError, KeyError):
+                # Essayer des chemins alternatifs (Google change souvent le layout)
+                for path_attempt in [
+                    lambda: prerender[0][1][8][8][0][12],
+                    lambda: prerender[1][1][8][8][0][12],
+                    lambda: prerender[0][1][8][12],
+                ]:
+                    try:
+                        visual_matches = path_attempt()
+                        if isinstance(visual_matches, list) and len(visual_matches) > 0:
+                            break
+                    except (IndexError, TypeError, KeyError):
+                        continue
+            
+            if visual_matches:
+                for match in visual_matches:
+                    try:
+                        title = match[3] if len(match) > 3 else ''
+                        similarity = match[1] if len(match) > 1 else None
+                        page_url = match[5] if len(match) > 5 else ''
+                        source_site = match[14] if len(match) > 14 else ''
+                        
+                        thumbnail_url = None
+                        if isinstance(match[0], list) and len(match[0]) > 0 and isinstance(match[0][0], str):
+                            thumbnail_url = match[0][0]
+                        
+                        data['similar'].append({
+                            'title': title or '',
+                            'similarity score': similarity,
+                            'thumbnail': thumbnail_url,
+                            'pageURL': page_url or '',
+                            'sourceWebsite': source_site or '',
+                        })
+                    except (IndexError, TypeError):
+                        continue
+            
+        except json.JSONDecodeError as e:
+            self.log(f"Erreur JSON parsing: {e}")
+        except Exception as e:
+            self.log(f"Erreur parsing HTML: {type(e).__name__}: {e}")
+        
+        return data
+    
+    def _search_by_url(self, image_url):
+        """Recherche Google Lens par URL d'image."""
+        try:
+            params = {"url": image_url, "hl": "en", "gl": "us"}
+            resp = self.session.get(
+                f"{self.LENS_URL}/uploadbyurl",
+                params=params,
+                allow_redirects=True,
+                timeout=20
+            )
+            if resp.status_code == 200:
+                return self._parse_lens_html(resp.text)
+            else:
+                self.log(f"uploadbyurl: status {resp.status_code}")
+        except Exception as e:
+            self.log(f"search_by_url échoué: {e}")
+        return None
+    
+    def _search_by_file(self, image_url):
+        """Télécharge l'image puis upload vers Google Lens."""
+        try:
+            import tempfile
+            
+            # Télécharger l'image
+            resp = requests.get(image_url, headers={'User-Agent': 'InvaderHunter/3.0'}, timeout=15)
+            if resp.status_code != 200:
+                self.log(f"Échec téléchargement: {resp.status_code}")
+                return None
+            
+            suffix = '.jpg' if 'jpeg' in resp.headers.get('content-type', '') else '.png'
+            with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp:
+                tmp.write(resp.content)
+                tmp_path = tmp.name
+            
+            # Upload vers Google Lens
+            multipart = {
+                'encoded_image': (os.path.basename(tmp_path), open(tmp_path, 'rb')),
+                'image_content': ''
+            }
+            params = {"hl": "en", "gl": "us"}
+            
+            upload_resp = self.session.post(
+                f"{self.LENS_URL}/upload",
+                files=multipart,
+                params=params,
+                allow_redirects=False,
+                timeout=20
+            )
+            
+            os.unlink(tmp_path)
+            
+            # Suivre le redirect (302 OU 303)
+            if upload_resp.status_code not in (302, 303):
+                self.log(f"Upload: status inattendu {upload_resp.status_code}")
+                return None
+            
+            search_url = upload_resp.headers.get('Location')
+            if not search_url:
+                self.log("Pas de Location header dans le redirect")
+                return None
+            
+            self.log(f"Redirect {upload_resp.status_code} → {search_url[:60]}...")
+            result_resp = self.session.get(search_url, timeout=20)
+            
+            return self._parse_lens_html(result_resp.text)
+            
+        except Exception as e:
+            self.log(f"search_by_file échoué: {e}")
+        return None
+    
     def search(self, image_url, invader_id=None, city_code=None, city_name=None):
         """
         Recherche une image d'invader via Google Lens.
-        
-        Args:
-            image_url: URL publique de l'image
-            invader_id: Code de l'invader (ex: PA_1231)
-            city_code: Code ville (ex: PA, LDN)
-            city_name: Nom ville (ex: Paris, London)
-        
-        Returns:
-            dict avec found, lat, lng, address, source, matches[], error
+        Essaie d'abord par URL, puis par upload fichier si échec.
         """
         result = {
             'found': False,
@@ -2148,35 +2700,19 @@ class GoogleLensSearcher:
             'error': None,
         }
         
-        if not self.available:
-            result['error'] = 'google-lens-python non disponible'
-            return result
-        
         try:
             self.log(f"Recherche Google Lens: {image_url[:80]}...")
-            lens_result = None
             
-            # Méthode 1: search_by_url (rapide)
-            lens_result = self.lens.search_by_url(image_url)
+            # Méthode 1: par URL (rapide, pas de téléchargement)
+            lens_result = self._search_by_url(image_url)
             
-            # Méthode 2: télécharger l'image et search_by_file (fallback)
-            if not lens_result:
-                self.log("search_by_url sans résultat, tentative par fichier...")
-                try:
-                    import tempfile
-                    resp = requests.get(image_url, headers={'User-Agent': 'InvaderHunter/3.0'}, timeout=15)
-                    if resp.status_code == 200:
-                        suffix = '.jpg' if 'jpeg' in resp.headers.get('content-type', '') else '.png'
-                        with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp:
-                            tmp.write(resp.content)
-                            tmp_path = tmp.name
-                        lens_result = self.lens.search_by_file(tmp_path)
-                        os.unlink(tmp_path)
-                except Exception as e:
-                    self.log(f"Fallback fichier échoué: {e}")
+            # Méthode 2: par upload fichier (contourne les problèmes d'URL)
+            if not lens_result or (not lens_result.get('match') and not lens_result.get('similar')):
+                self.log("Pas de résultats par URL, tentative par upload fichier...")
+                lens_result = self._search_by_file(image_url)
             
-            if not lens_result:
-                result['error'] = 'Aucun résultat Lens'
+            if not lens_result or (not lens_result.get('match') and not lens_result.get('similar')):
+                result['error'] = 'Aucun résultat Lens (URL + upload)'
                 return result
             
             # Analyser le match principal
@@ -2215,7 +2751,6 @@ class GoogleLensSearcher:
             
             # Tenter d'extraire les coordonnées des meilleurs candidats
             if result['geo_candidates']:
-                # Trier par score décroissant
                 result['geo_candidates'].sort(key=lambda x: x['score'], reverse=True)
                 
                 for candidate in result['geo_candidates']:
@@ -2235,7 +2770,6 @@ class GoogleLensSearcher:
                 result['address_hint'] = address_hint
                 self.log(f"💡 Indice d'adresse: {address_hint}")
                 
-                # Essayer de géocoder l'adresse
                 coords = self._geocode_address_hint(address_hint, city_name, city_code)
                 if coords:
                     result['found'] = True
@@ -2248,9 +2782,6 @@ class GoogleLensSearcher:
             if not result['found']:
                 result['error'] = f'{len(similar)} matches mais aucune coordonnée extraite'
             
-        except (IndexError, KeyError, TypeError) as e:
-            result['error'] = f'Lens parsing échoué (Google a peut-être changé son HTML): {type(e).__name__}'
-            self.log(f"⚠️ {result['error']}")
         except Exception as e:
             result['error'] = f'Erreur Lens: {type(e).__name__}: {str(e)[:100]}'
             self.log(f"❌ {result['error']}")
@@ -2274,57 +2805,40 @@ class GoogleLensSearcher:
         return None
     
     def _extract_coords_from_candidate(self, candidate, city_code=None, city_name=None):
-        """
-        Tente d'extraire les coordonnées GPS d'une page web candidate.
-        Utilise requests (pas de navigateur).
-        """
+        """Tente d'extraire les coordonnées GPS d'une page web candidate."""
         url = candidate.get('url', '')
         domain = candidate.get('domain', '')
         
         try:
-            # Flickr: extraire GPS de l'API photo
             if 'flickr.com' in domain:
                 return self._extract_flickr_coords(url, city_code)
-            
-            # StreetArtCities: GPS souvent dans les métadonnées de la page
             if 'streetartcities' in domain or 'streetartmap' in domain:
-                return self._extract_streetart_coords(url, city_code)
-            
-            # AroundUs / Illuminate: fetcher la page et chercher des coords
+                return self._extract_page_coords(url, city_code)
             if 'aroundus' in domain or 'illuminate' in domain:
                 return self._extract_page_coords(url, city_code)
-            
         except Exception as e:
             self.log(f"Erreur extraction coords de {domain}: {e}")
         
         return None
     
     def _extract_flickr_coords(self, url, city_code=None):
-        """Extrait les coordonnées GPS d'une photo Flickr via sa page."""
+        """Extrait les coordonnées GPS d'une photo Flickr."""
         try:
-            # Extraire photo_id de l'URL Flickr
             import re
             photo_match = re.search(r'flickr\.com/photos/[^/]+/(\d+)', url)
             if not photo_match:
                 return None
             
-            photo_id = photo_match.group(1)
-            # Fetcher la page de la photo pour le geo
-            geo_url = f"https://www.flickr.com/photos/geo/{photo_id}"
-            
             resp = requests.get(url, headers={'User-Agent': 'InvaderHunter/3.0'}, timeout=10)
             if resp.status_code != 200:
                 return None
             
-            # Chercher les coordonnées dans le HTML
             lat_match = re.search(r'"latitude":\s*([-\d.]+)', resp.text)
             lng_match = re.search(r'"longitude":\s*([-\d.]+)', resp.text)
             
             if lat_match and lng_match:
-                lat = float(lat_match.group(1))
-                lng = float(lng_match.group(1))
+                lat, lng = float(lat_match.group(1)), float(lng_match.group(1))
                 if lat != 0 and lng != 0:
-                    # Valider contre la ville
                     if city_code:
                         check = validate_city_coherence(lat, lng, city_code)
                         if not check['valid']:
@@ -2335,59 +2849,26 @@ class GoogleLensSearcher:
             self.log(f"Erreur Flickr: {e}")
         return None
     
-    def _extract_streetart_coords(self, url, city_code=None):
-        """Extrait les coordonnées d'une page streetartcities/streetartmap."""
+    def _extract_page_coords(self, url, city_code=None):
+        """Extrait les coordonnées GPS d'une page web quelconque."""
         try:
+            import re
             resp = requests.get(url, headers={'User-Agent': 'InvaderHunter/3.0'}, timeout=10)
             if resp.status_code != 200:
                 return None
             
-            import re
-            # Patterns courants pour les coordonnées dans ces sites
-            # "lat":48.8566,"lng":2.3522 ou data-lat="48.8566" data-lng="2.3522"
             patterns = [
                 r'"lat"\s*:\s*([-\d.]+)\s*,\s*"lng"\s*:\s*([-\d.]+)',
                 r'"latitude"\s*:\s*([-\d.]+)\s*,\s*"longitude"\s*:\s*([-\d.]+)',
                 r'data-lat=["\']?([-\d.]+)["\']?\s+data-lng=["\']?([-\d.]+)',
-                r'@([-\d.]+),([-\d.]+)',  # Google Maps style
-            ]
-            
-            for pattern in patterns:
-                match = re.search(pattern, resp.text)
-                if match:
-                    lat = float(match.group(1))
-                    lng = float(match.group(2))
-                    if -90 <= lat <= 90 and -180 <= lng <= 180 and lat != 0:
-                        if city_code:
-                            check = validate_city_coherence(lat, lng, city_code)
-                            if not check['valid']:
-                                continue
-                        return {'lat': lat, 'lng': lng}
-        except Exception as e:
-            self.log(f"Erreur streetart: {e}")
-        return None
-    
-    def _extract_page_coords(self, url, city_code=None):
-        """Extrait les coordonnées GPS d'une page AroundUs/Illuminate."""
-        try:
-            resp = requests.get(url, headers={'User-Agent': 'InvaderHunter/3.0'}, timeout=10)
-            if resp.status_code != 200:
-                return None
-            
-            import re
-            # Chercher des patterns Google Maps ou coordonnées
-            patterns = [
                 r'@([-\d.]+),([-\d.]+)',
                 r'maps\?.*?ll=([-\d.]+),([-\d.]+)',
-                r'"lat"\s*:\s*([-\d.]+).*?"lng"\s*:\s*([-\d.]+)',
-                r'latitude["\s:=]+([-\d.]+).*?longitude["\s:=]+([-\d.]+)',
             ]
             
             for pattern in patterns:
                 match = re.search(pattern, resp.text)
                 if match:
-                    lat = float(match.group(1))
-                    lng = float(match.group(2))
+                    lat, lng = float(match.group(1)), float(match.group(2))
                     if -90 <= lat <= 90 and -180 <= lng <= 180 and lat != 0:
                         if city_code:
                             check = validate_city_coherence(lat, lng, city_code)
@@ -2395,14 +2876,11 @@ class GoogleLensSearcher:
                                 continue
                         return {'lat': lat, 'lng': lng}
         except Exception as e:
-            self.log(f"Erreur page coords: {e}")
+            self.log(f"Erreur extraction page: {e}")
         return None
     
     def _extract_address_from_titles(self, matches, city_name=None):
-        """
-        Cherche des indices d'adresse dans les titres des visual matches.
-        Ex: "PA_1231 - 12 Rue de Rivoli" → "12 Rue de Rivoli"
-        """
+        """Cherche des indices d'adresse dans les titres des visual matches."""
         import re
         
         for match in matches:
@@ -2410,13 +2888,11 @@ class GoogleLensSearcher:
             if not title:
                 continue
             
-            # Chercher des patterns d'adresse
             for pattern in self.ADDRESS_PATTERNS:
                 addr_match = re.search(pattern, title, re.IGNORECASE)
                 if addr_match:
                     address = addr_match.group(0).strip()
-                    if len(address) > 8:  # Ignorer les très courts
-                        # Ajouter la ville si pas présente
+                    if len(address) > 8:
                         if city_name and city_name.lower() not in address.lower():
                             address = f"{address}, {city_name}"
                         return address
@@ -2430,37 +2906,23 @@ class GoogleLensSearcher:
             if city_name and city_name.lower() not in address.lower():
                 query = f"{address}, {city_name}"
             
-            params = {
-                'q': query,
-                'format': 'json',
-                'limit': 3,
-                'addressdetails': 1,
-            }
-            
             resp = requests.get(
                 'https://nominatim.openstreetmap.org/search',
-                params=params,
+                params={'q': query, 'format': 'json', 'limit': 3, 'addressdetails': 1},
                 headers={'User-Agent': 'InvaderHunter/3.0'},
                 timeout=10
             )
             
             if resp.status_code == 200:
-                results = resp.json()
-                for r in results:
-                    lat = float(r['lat'])
-                    lng = float(r['lon'])
+                for r in resp.json():
+                    lat, lng = float(r['lat']), float(r['lon'])
                     if city_code:
                         check = validate_city_coherence(lat, lng, city_code)
                         if not check['valid']:
                             continue
-                    return {
-                        'lat': lat,
-                        'lng': lng,
-                        'address': r.get('display_name', address)[:120],
-                    }
+                    return {'lat': lat, 'lng': lng, 'address': r.get('display_name', address)[:120]}
         except Exception as e:
             self.log(f"Erreur geocode: {e}")
-        
         return None
 
 
@@ -4575,20 +5037,43 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
                         new_inv['lat'] = vision_result['lat']
                         new_inv['lng'] = vision_result['lng']
                         new_inv['address'] = vision_result.get('address')
-                        new_inv['geo_source'] = 'vision'
-                        new_inv['geo_confidence'] = 'medium' if vision_result.get('confidence') in ('HIGH', 'MEDIUM') else 'low'
+                        if vision_result.get('geo_hint'):
+                            new_inv['geo_hint'] = vision_result['geo_hint']
+                        
+                        is_district = vision_result.get('source_detail') == 'vision_district'
+                        is_high_medium = vision_result.get('confidence') in ('HIGH', 'MEDIUM')
+                        
+                        new_inv['geo_source'] = 'vision_district' if is_district else 'vision'
+                        new_inv['geo_confidence'] = 'low' if is_district else ('medium' if is_high_medium else 'low')
                         new_inv['location_unknown'] = False
+                        # District = approximatif → ne pas marquer exhausted, on pourra retenter
                         new_inv['geo_search_exhausted'] = False
                         stats['found'] += 1
-                        stats['medium'] += 1
                         stats['vision'] += 1
-                        print(f" ✅ {vision_result['lat']:.6f}, {vision_result['lng']:.6f}")
-                        if vision_result.get('address'):
-                            print(f"      📍 {vision_result['address']}")
+                        
+                        if is_district:
+                            stats['low'] += 1
+                            print(f" 📍 {vision_result['lat']:.6f}, {vision_result['lng']:.6f} (quartier)")
+                            if vision_result.get('address'):
+                                print(f"      🏘️ {vision_result['address']} (approximatif, ~500m)")
+                            if vision_result.get('geo_hint'):
+                                print(f"      💡 Hint: {vision_result['geo_hint'][:80]}")
+                        else:
+                            if is_high_medium:
+                                stats['medium'] += 1
+                            else:
+                                stats['low'] += 1
+                            print(f" ✅ {vision_result['lat']:.6f}, {vision_result['lng']:.6f}")
+                            if vision_result.get('address'):
+                                print(f"      📍 {vision_result['address']}")
+                        
                         confidence = vision_result.get('confidence', '?')
                         print(f"      🎯 Confiance: {confidence}")
                         found_via_image = True
                 else:
+                    # Même en cas d'échec, stocker le hint s'il existe
+                    if vision_result and vision_result.get('geo_hint'):
+                        new_inv['geo_hint'] = vision_result['geo_hint']
                     print(f" ❌ {vision_result.get('error', 'Non trouvé')}")
             
             # Fallback interactif: proposer Google Lens si mode interactif activé
@@ -4702,6 +5187,8 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
             f.write(f"   Source: {inv.get('geo_source', '?')}\n")
             if inv.get('address'):
                 f.write(f"   Adresse: {inv['address']}\n")
+            if inv.get('geo_hint'):
+                f.write(f"   💡 Hint: {inv['geo_hint'][:120]}\n")
             if inv['lat'] and inv['lng']:
                 f.write(f"   Maps: https://www.google.com/maps?q={inv['lat']},{inv['lng']}\n")
             if inv.get('location_unknown'):
@@ -4777,6 +5264,8 @@ def merge_with_updated(geolocated_file, updated_file=None, backup=False, dry_run
                     updated_db[idx]['geo_search_date'] = geo_inv['geo_search_date']
                 if geo_inv.get('address'):
                     updated_db[idx]['address'] = geo_inv['address']
+                if geo_inv.get('geo_hint'):
+                    updated_db[idx]['geo_hint'] = geo_inv['geo_hint']
                 updated_db[idx]['preserved'] = True
                 updated_db[idx]['preserved_date'] = datetime.now().isoformat()
                 updated += 1
