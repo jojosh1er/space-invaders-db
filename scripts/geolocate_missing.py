@@ -2061,11 +2061,64 @@ class GoogleLensSearcher:
         try:
             from googlelens import GoogleLens
             self.lens = GoogleLens()
+            self._patch_lens()
             self.available = True
         except ImportError:
             if self.verbose:
                 print("      ⚠️ google-lens-python non installé (pip install git+https://github.com/krishna2206/google-lens-python.git)")
             self.available = False
+    
+    def _patch_lens(self):
+        """
+        Monkey-patch google-lens-python pour corriger:
+        - Status 303 (Google a changé de 302 à 303)
+        - Parsing IndexError sur nouveau layout Google
+        """
+        import types
+        lens = self.lens
+        original_parse = lens._GoogleLens__parse_prerender_script
+        original_get_script = lens._GoogleLens__get_prerender_script
+        
+        def patched_search_by_file(self_lens, file_path):
+            multipart = {
+                'encoded_image': (file_path, open(file_path, 'rb')),
+                'image_content': ''
+            }
+            params = {"hl": "en", "gl": "us"}
+            response = self_lens.session.post(
+                self_lens.url + "/upload",
+                files=multipart,
+                params=params,
+                allow_redirects=False
+            )
+            # Accept both 302 and 303 redirects
+            if response.status_code not in (302, 303):
+                return None
+            search_url = response.headers.get('Location')
+            if not search_url:
+                return None
+            response = self_lens.session.get(search_url)
+            try:
+                prerender_script = original_get_script(response.text)
+                return original_parse(prerender_script)
+            except (IndexError, KeyError, TypeError):
+                return None
+        
+        def patched_search_by_url(self_lens, url):
+            params = {"url": url, "hl": "en", "gl": "us"}
+            response = self_lens.session.get(
+                self_lens.url + "/uploadbyurl",
+                params=params,
+                allow_redirects=True
+            )
+            try:
+                prerender_script = original_get_script(response.text)
+                return original_parse(prerender_script)
+            except (IndexError, KeyError, TypeError):
+                return None
+        
+        lens.search_by_file = types.MethodType(patched_search_by_file, lens)
+        lens.search_by_url = types.MethodType(patched_search_by_url, lens)
     
     def log(self, msg):
         if self.verbose:
@@ -2104,13 +2157,11 @@ class GoogleLensSearcher:
             lens_result = None
             
             # Méthode 1: search_by_url (rapide)
-            try:
-                lens_result = self.lens.search_by_url(image_url)
-            except (IndexError, KeyError, TypeError) as e:
-                self.log(f"search_by_url échoué ({type(e).__name__}), tentative par fichier...")
+            lens_result = self.lens.search_by_url(image_url)
             
-            # Méthode 2: télécharger l'image et search_by_file (plus fiable)
+            # Méthode 2: télécharger l'image et search_by_file (fallback)
             if not lens_result:
+                self.log("search_by_url sans résultat, tentative par fichier...")
                 try:
                     import tempfile
                     resp = requests.get(image_url, headers={'User-Agent': 'InvaderHunter/3.0'}, timeout=15)
@@ -2121,8 +2172,6 @@ class GoogleLensSearcher:
                             tmp_path = tmp.name
                         lens_result = self.lens.search_by_file(tmp_path)
                         os.unlink(tmp_path)
-                except (IndexError, KeyError, TypeError) as e:
-                    self.log(f"search_by_file aussi échoué ({type(e).__name__})")
                 except Exception as e:
                     self.log(f"Fallback fichier échoué: {e}")
             
