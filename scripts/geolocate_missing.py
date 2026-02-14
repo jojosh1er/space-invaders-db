@@ -2101,7 +2101,30 @@ class GoogleLensSearcher:
         
         try:
             self.log(f"Recherche Google Lens: {image_url[:80]}...")
-            lens_result = self.lens.search_by_url(image_url)
+            lens_result = None
+            
+            # Méthode 1: search_by_url (rapide)
+            try:
+                lens_result = self.lens.search_by_url(image_url)
+            except (IndexError, KeyError, TypeError) as e:
+                self.log(f"search_by_url échoué ({type(e).__name__}), tentative par fichier...")
+            
+            # Méthode 2: télécharger l'image et search_by_file (plus fiable)
+            if not lens_result:
+                try:
+                    import tempfile
+                    resp = requests.get(image_url, headers={'User-Agent': 'InvaderHunter/3.0'}, timeout=15)
+                    if resp.status_code == 200:
+                        suffix = '.jpg' if 'jpeg' in resp.headers.get('content-type', '') else '.png'
+                        with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp:
+                            tmp.write(resp.content)
+                            tmp_path = tmp.name
+                        lens_result = self.lens.search_by_file(tmp_path)
+                        os.unlink(tmp_path)
+                except (IndexError, KeyError, TypeError) as e:
+                    self.log(f"search_by_file aussi échoué ({type(e).__name__})")
+                except Exception as e:
+                    self.log(f"Fallback fichier échoué: {e}")
             
             if not lens_result:
                 result['error'] = 'Aucun résultat Lens'
@@ -2176,6 +2199,9 @@ class GoogleLensSearcher:
             if not result['found']:
                 result['error'] = f'{len(similar)} matches mais aucune coordonnée extraite'
             
+        except (IndexError, KeyError, TypeError) as e:
+            result['error'] = f'Lens parsing échoué (Google a peut-être changé son HTML): {type(e).__name__}'
+            self.log(f"⚠️ {result['error']}")
         except Exception as e:
             result['error'] = f'Erreur Lens: {type(e).__name__}: {str(e)[:100]}'
             self.log(f"❌ {result['error']}")
@@ -3701,7 +3727,7 @@ class AroundUsSearcher:
 class InvaderLocationSearcher:
     """Recherche combinée sur plusieurs sources"""
     
-    def __init__(self, visible=False, verbose=False, pnote_file=None, pnote_url=None, flickr=True, anthropic_key=None, no_browser=False):
+    def __init__(self, visible=False, verbose=False, pnote_file=None, pnote_url=None, flickr=True, anthropic_key=None, no_browser=False, no_lens=False):
         self.visible = visible
         self.verbose = verbose
         self.pnote_file = pnote_file
@@ -3709,6 +3735,7 @@ class InvaderLocationSearcher:
         self.flickr_enabled = flickr and not no_browser
         self.anthropic_key = anthropic_key
         self.no_browser = no_browser
+        self.no_lens = no_lens
         self.playwright = None
         self.browser = None
         self.page = None
@@ -3758,7 +3785,7 @@ class InvaderLocationSearcher:
             self.vision = VisionAnalyzer(api_key=self.anthropic_key, verbose=self.verbose)
         
         # Google Lens (expérimental, mode --no-browser uniquement)
-        if self.no_browser:
+        if self.no_browser and not self.no_lens:
             self.google_lens = GoogleLensSearcher(verbose=self.verbose)
             if self.google_lens.available:
                 print("   🔍 Google Lens activé (expérimental)")
@@ -4772,6 +4799,8 @@ def main():
                         help='Relancer la recherche des invaders marqués geo_search_exhausted')
     parser.add_argument('--no-browser', dest='no_browser', action='store_true',
                         help='Mode sans navigateur: Pnote + EXIF + OCR + Lens + Vision uniquement (idéal CI/CD)')
+    parser.add_argument('--no-lens', dest='no_lens', action='store_true',
+                        help='Désactive Google Lens (expérimental, peut être instable)')
     
     args = parser.parse_args()
     
@@ -4945,7 +4974,7 @@ def main():
             json.dump(missing_format, f, indent=2, ensure_ascii=False)
         
         # Lancer le searcher
-        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key, no_browser=args.no_browser)
+        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key, no_browser=args.no_browser, no_lens=getattr(args, "no_lens", False))
         try:
             searcher.start()
             print("🌐 Navigateur démarré" if not getattr(searcher, "no_browser", False) else "🤖 Sources HTTP démarrées")
@@ -4982,7 +5011,7 @@ def main():
             return
         
         # Démarrer le searcher
-        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key, no_browser=args.no_browser)
+        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key, no_browser=args.no_browser, no_lens=getattr(args, "no_lens", False))
         try:
             searcher.start()
             print("🌐 Navigateur démarré" if not getattr(searcher, "no_browser", False) else "🤖 Sources HTTP démarrées")
@@ -5081,7 +5110,7 @@ def main():
     results = []
     
     # Initialiser le searcher
-    searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key, no_browser=args.no_browser)
+    searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key, no_browser=args.no_browser, no_lens=getattr(args, "no_lens", False))
     
     try:
         searcher.start()
