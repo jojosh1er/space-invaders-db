@@ -5339,6 +5339,9 @@ def main():
                         help='Mode sans navigateur: Pnote + EXIF + OCR + Lens + Vision uniquement (idéal CI/CD)')
     parser.add_argument('--no-lens', dest='no_lens', action='store_true',
                         help='Désactive Google Lens (expérimental, peut être instable)')
+    parser.add_argument('--backtest', dest='backtest_ids', default=None,
+                        help='Mode backtest: IDs séparés par des virgules (ex: PA_142,NY_100,TK_30). '
+                             'Compare la géolocalisation avec les coordonnées réelles du master.')
     
     args = parser.parse_args()
     
@@ -5362,6 +5365,325 @@ def main():
             dry_run=args.dry_run,
             verbose=args.verbose
         )
+        return
+    
+    # =========================================================================
+    # Mode --backtest: tester la pipeline sur des invaders à coordonnées connues
+    # =========================================================================
+    if args.backtest_ids:
+        import math
+        
+        def _haversine_km(lat1, lon1, lat2, lon2):
+            R = 6371
+            dlat = math.radians(lat2 - lat1)
+            dlon = math.radians(lon2 - lon1)
+            a = math.sin(dlat/2)**2 + math.cos(math.radians(lat1))*math.cos(math.radians(lat2))*math.sin(dlon/2)**2
+            return R * 2 * math.asin(min(1.0, math.sqrt(a)))
+        
+        if not MASTER_FILE.exists():
+            print(f"❌ Fichier master non trouvé: {MASTER_FILE}")
+            return
+        
+        # Parser les IDs demandés
+        target_ids = [x.strip().upper().replace('-', '_') for x in args.backtest_ids.split(',') if x.strip()]
+        print(f"🧪 MODE BACKTEST — {len(target_ids)} invaders à tester")
+        print("=" * 70)
+        
+        # Charger le master
+        with open(_p(MASTER_FILE), 'r', encoding='utf-8') as f:
+            master_db = json.load(f)
+        
+        # Extraire les invaders cibles et sauver la vérité terrain
+        ground_truth = {}
+        missing_format = []
+        not_found = []
+        
+        master_index = {inv.get('id', inv.get('name', '')).upper().replace('-', '_'): inv for inv in master_db}
+        
+        for tid in target_ids:
+            inv = master_index.get(tid)
+            if not inv:
+                not_found.append(tid)
+                continue
+            
+            lat = inv.get('lat')
+            lng = inv.get('lng')
+            if lat is None or lng is None:
+                print(f"  ⚠️  {tid}: pas de coordonnées dans le master, ignoré")
+                continue
+            
+            try:
+                lat, lng = float(lat), float(lng)
+            except (ValueError, TypeError):
+                print(f"  ⚠️  {tid}: coordonnées invalides, ignoré")
+                continue
+            
+            if lat == 0 and lng == 0:
+                print(f"  ⚠️  {tid}: coordonnées (0,0), ignoré")
+                continue
+            
+            # Sauver la vérité terrain
+            ground_truth[tid] = {
+                'lat': lat,
+                'lng': lng,
+                'city': inv.get('city', ''),
+                'geo_source': inv.get('geo_source', ''),
+                'geo_address': inv.get('geo_address', ''),
+            }
+            
+            # Créer la version "missing" (sans coordonnées)
+            missing_format.append({
+                'name': inv.get('id', inv.get('name', '')),
+                'city': inv.get('city', ''),
+                'status': inv.get('status', 'OK'),
+                'points': inv.get('points', 0),
+                'image_invader': inv.get('image_invader'),
+                'image_lieu': inv.get('image_lieu'),
+                'landing_date': inv.get('landing_date'),
+                'status_date': inv.get('status_date'),
+            })
+        
+        if not_found:
+            print(f"  ❌ Non trouvés dans le master: {', '.join(not_found)}")
+        
+        if not missing_format:
+            print("❌ Aucun invader valide pour le backtest")
+            return
+        
+        print(f"\n📍 {len(ground_truth)} invaders avec vérité terrain:")
+        for tid in sorted(ground_truth):
+            gt = ground_truth[tid]
+            print(f"  {tid:12s} ({gt['lat']:10.6f}, {gt['lng']:10.6f}) — {gt['city']}")
+        
+        # Écrire le fichier temporaire
+        tmp_file = _p(DATA_DIR / '_tmp_backtest.json')
+        with open(tmp_file, 'w', encoding='utf-8') as f:
+            json.dump(missing_format, f, indent=2, ensure_ascii=False)
+        
+        output_file = args.output if args.output else _p(DATA_DIR / 'backtest_results.json')
+        
+        # Lancer la géolocalisation
+        print(f"\n🔍 Lancement de la pipeline de géolocalisation...")
+        print("=" * 70)
+        
+        searcher = InvaderLocationSearcher(
+            visible=args.visible, verbose=args.verbose,
+            pnote_file=args.pnote_file, pnote_url=args.pnote_url,
+            flickr=not args.no_flickr, anthropic_key=args.anthropic_key,
+            no_browser=args.no_browser, no_lens=getattr(args, "no_lens", False)
+        )
+        try:
+            searcher.start()
+            
+            process_missing_invaders(
+                missing_file=tmp_file,
+                output_file=output_file,
+                searcher=searcher,
+                city_filter=None,
+                limit=None,
+                pause=args.pause,
+                interactive=args.interactive
+            )
+        finally:
+            searcher.stop()
+            if os.path.exists(tmp_file):
+                os.remove(tmp_file)
+        
+        # =====================================================================
+        # Comparer les résultats avec la vérité terrain
+        # =====================================================================
+        print("\n")
+        print("=" * 70)
+        print("🧪 RAPPORT DE BACKTEST")
+        print("=" * 70)
+        
+        if not os.path.exists(output_file):
+            print("❌ Fichier de résultats non trouvé")
+            return
+        
+        with open(output_file, 'r', encoding='utf-8') as f:
+            results = json.load(f)
+        
+        # Indexer les résultats par ID
+        result_index = {}
+        for r in results:
+            rid = r.get('id', r.get('name', '')).upper().replace('-', '_')
+            result_index[rid] = r
+        
+        # Analyse comparative
+        comparisons = []
+        for tid in sorted(ground_truth):
+            gt = ground_truth[tid]
+            result = result_index.get(tid)
+            
+            comp = {
+                'id': tid,
+                'city': gt['city'],
+                'real_lat': gt['lat'],
+                'real_lng': gt['lng'],
+            }
+            
+            if not result:
+                comp['status'] = 'NOT_PROCESSED'
+                comp['distance_km'] = None
+                comparisons.append(comp)
+                continue
+            
+            res_lat = result.get('lat')
+            res_lng = result.get('lng')
+            res_source = result.get('geo_source', '?')
+            res_conf = result.get('geo_confidence', '?')
+            res_addr = result.get('geo_address', '')
+            res_hint = result.get('geo_hint', '')
+            
+            comp['found_lat'] = float(res_lat) if res_lat else None
+            comp['found_lng'] = float(res_lng) if res_lng else None
+            comp['source'] = res_source
+            comp['confidence'] = res_conf
+            comp['address'] = res_addr
+            comp['hint'] = res_hint[:100] if res_hint else ''
+            
+            if comp['found_lat'] is not None and comp['found_lng'] is not None:
+                comp['distance_km'] = _haversine_km(
+                    gt['lat'], gt['lng'],
+                    comp['found_lat'], comp['found_lng']
+                )
+                
+                # Classification de précision
+                d = comp['distance_km']
+                if d < 0.1:
+                    comp['status'] = 'EXCELLENT'  # <100m
+                elif d < 0.5:
+                    comp['status'] = 'GOOD'       # <500m
+                elif d < 1.0:
+                    comp['status'] = 'OK'          # <1km
+                elif d < 3.0:
+                    comp['status'] = 'APPROX'      # <3km (bon quartier)
+                elif d < 10.0:
+                    comp['status'] = 'ZONE'        # <10km (bonne zone)
+                else:
+                    comp['status'] = 'FAR'         # >10km
+            else:
+                comp['status'] = 'NO_COORDS'
+                comp['distance_km'] = None
+            
+            comparisons.append(comp)
+        
+        # Affichage du tableau de résultats
+        print(f"\n{'ID':12s} {'Ville':6s} {'Source':18s} {'Conf':7s} {'Dist':>8s} {'Qualité':12s} Adresse trouvée")
+        print("-" * 100)
+        
+        status_icons = {
+            'EXCELLENT': '🎯',
+            'GOOD': '✅',
+            'OK': '🟡',
+            'APPROX': '🟠',
+            'ZONE': '🔶',
+            'FAR': '❌',
+            'NO_COORDS': '⛔',
+            'NOT_PROCESSED': '⚪',
+        }
+        
+        for c in comparisons:
+            icon = status_icons.get(c['status'], '?')
+            dist_str = f"{c['distance_km']:.2f}km" if c['distance_km'] is not None else 'N/A'
+            addr = c.get('address', '')[:40]
+            source = c.get('source', 'N/A')
+            conf = c.get('confidence', 'N/A')
+            print(f"{c['id']:12s} {c['city']:6s} {source:18s} {conf:7s} {dist_str:>8s} {icon} {c['status']:12s} {addr}")
+        
+        # Statistiques
+        print("\n" + "=" * 70)
+        print("📊 STATISTIQUES")
+        print("=" * 70)
+        
+        total = len(comparisons)
+        by_status = {}
+        for c in comparisons:
+            by_status[c['status']] = by_status.get(c['status'], 0) + 1
+        
+        distances = [c['distance_km'] for c in comparisons if c['distance_km'] is not None]
+        
+        print(f"\nTotal testé: {total}")
+        for s in ['EXCELLENT', 'GOOD', 'OK', 'APPROX', 'ZONE', 'FAR', 'NO_COORDS', 'NOT_PROCESSED']:
+            if s in by_status:
+                labels = {
+                    'EXCELLENT': '🎯 Excellent (<100m)',
+                    'GOOD': '✅ Bon (<500m)',
+                    'OK': '🟡 Correct (<1km)',
+                    'APPROX': '🟠 Approximatif (<3km)',
+                    'ZONE': '🔶 Bonne zone (<10km)',
+                    'FAR': '❌ Loin (>10km)',
+                    'NO_COORDS': '⛔ Pas de coordonnées',
+                    'NOT_PROCESSED': '⚪ Non traité',
+                }
+                print(f"  {labels[s]:35s}: {by_status[s]:2d} ({by_status[s]/total*100:.0f}%)")
+        
+        if distances:
+            print(f"\n  Distance moyenne:  {sum(distances)/len(distances):.2f} km")
+            print(f"  Distance médiane:  {sorted(distances)[len(distances)//2]:.2f} km")
+            print(f"  Meilleure:         {min(distances):.2f} km")
+            print(f"  Pire:              {max(distances):.2f} km")
+            
+            under_1km = sum(1 for d in distances if d < 1.0)
+            under_3km = sum(1 for d in distances if d < 3.0)
+            under_10km = sum(1 for d in distances if d < 10.0)
+            print(f"\n  Précision <1km:    {under_1km}/{len(distances)} ({under_1km/len(distances)*100:.0f}%)")
+            print(f"  Précision <3km:    {under_3km}/{len(distances)} ({under_3km/len(distances)*100:.0f}%)")
+            print(f"  Précision <10km:   {under_10km}/{len(distances)} ({under_10km/len(distances)*100:.0f}%)")
+        
+        # Sauver le rapport JSON
+        report_file = output_file.replace('.json', '_report.json')
+        report = {
+            'date': datetime.now().isoformat(),
+            'total': total,
+            'distances': distances,
+            'by_status': by_status,
+            'stats': {
+                'mean_km': sum(distances)/len(distances) if distances else None,
+                'median_km': sorted(distances)[len(distances)//2] if distances else None,
+                'min_km': min(distances) if distances else None,
+                'max_km': max(distances) if distances else None,
+                'under_1km': sum(1 for d in distances if d < 1.0) if distances else 0,
+                'under_3km': sum(1 for d in distances if d < 3.0) if distances else 0,
+                'under_10km': sum(1 for d in distances if d < 10.0) if distances else 0,
+            },
+            'comparisons': comparisons,
+        }
+        with open(report_file, 'w', encoding='utf-8') as f:
+            json.dump(report, f, indent=2, ensure_ascii=False, default=str)
+        print(f"\n📋 Rapport sauvé: {report_file}")
+        
+        # Générer aussi un rapport texte lisible
+        txt_file = output_file.replace('.json', '_report.txt')
+        with open(txt_file, 'w', encoding='utf-8') as f:
+            f.write("BACKTEST GÉOLOCALISATION — RAPPORT\n")
+            f.write("=" * 70 + "\n")
+            f.write(f"Date: {datetime.now().strftime('%d/%m/%Y %H:%M')}\n")
+            f.write(f"Invaders testés: {total}\n\n")
+            
+            f.write(f"{'ID':12s} {'Ville':6s} {'Source':18s} {'Distance':>10s} {'Qualité':12s}\n")
+            f.write("-" * 65 + "\n")
+            for c in comparisons:
+                dist_str = f"{c['distance_km']:.2f}km" if c['distance_km'] is not None else 'N/A'
+                f.write(f"{c['id']:12s} {c['city']:6s} {c.get('source','N/A'):18s} {dist_str:>10s} {c['status']:12s}\n")
+                if c.get('address'):
+                    f.write(f"             trouvé: {c['address'][:60]}\n")
+                if c.get('hint'):
+                    f.write(f"             hint: {c['hint'][:60]}\n")
+                real_str = f"({c['real_lat']:.6f}, {c['real_lng']:.6f})"
+                found_str = f"({c.get('found_lat',0):.6f}, {c.get('found_lng',0):.6f})" if c.get('found_lat') else 'N/A'
+                f.write(f"             réel: {real_str}  trouvé: {found_str}\n")
+            
+            if distances:
+                f.write(f"\nMoyenne: {sum(distances)/len(distances):.2f}km")
+                f.write(f"  Médiane: {sorted(distances)[len(distances)//2]:.2f}km")
+                f.write(f"  Min: {min(distances):.2f}km  Max: {max(distances):.2f}km\n")
+                under_1 = sum(1 for d in distances if d < 1.0)
+                under_3 = sum(1 for d in distances if d < 3.0)
+                f.write(f"<1km: {under_1}/{len(distances)}  <3km: {under_3}/{len(distances)}\n")
+        
+        print(f"📄 Rapport texte: {txt_file}")
         return
     
     # =========================================================================
