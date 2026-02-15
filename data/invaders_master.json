@@ -34794,9 +34794,9 @@
     "landing_date": "27/03/2019",
     "status_date": "février 2026",
     "status_source": "report",
+    "status_updated": "2026-02-15T07:12:00.468590",
     "previous_status": "OK",
-    "previous_status_date": "avril 2019",
-    "status_updated": "2026-02-15T07:12:00.468590"
+    "previous_status_date": "avril 2019"
   },
   {
     "id": "PA_1392",
@@ -42274,10 +42274,10 @@
     "city": "PA",
     "landing_date": "02/03/2003",
     "status_date": "février 2026",
-    "previous_status": "destroyed",
-    "previous_status_date": "juin 2025",
+    "status_source": "Instagram",
     "status_updated": "2026-02-15T07:12:00.471833",
-    "status_source": "Instagram"
+    "previous_status": "destroyed",
+    "previous_status_date": "juin 2025"
   },
   {
     "id": "PA_514",
@@ -44071,9 +44071,9 @@
     "landing_date": "25/12/2005",
     "status_date": "février 2026",
     "status_source": "report",
+    "status_updated": "2026-02-15T07:12:00.472621",
     "previous_status": "destroyed",
-    "previous_status_date": "février 2022",
-    "status_updated": "2026-02-15T07:12:00.472621"
+    "previous_status_date": "février 2022"
   },
   {
     "id": "PA_639",
@@ -44909,9 +44909,9 @@
     "landing_date": "11/11/2006",
     "status_date": "février 2026",
     "status_source": "report",
+    "status_updated": "2026-02-15T07:12:00.472994",
     "previous_status": "destroyed",
-    "previous_status_date": "mars 2024",
-    "status_updated": "2026-02-15T07:12:00.472994"
+    "previous_status_date": "mars 2024"
   },
   {
     "id": "PA_697",
@@ -44925,9 +44925,9 @@
     "landing_date": "12/11/2006",
     "status_date": "février 2026",
     "status_source": "report",
+    "status_updated": "2026-02-15T07:12:00.473002",
     "previous_status": "destroyed",
-    "previous_status_date": "septembre 2021",
-    "status_updated": "2026-02-15T07:12:00.473002"
+    "previous_status_date": "septembre 2021"
   },
   {
     "id": "PA_698",
