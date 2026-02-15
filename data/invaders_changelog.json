@@ -31,7 +31,47 @@
       "new_value": "hidden",
       "detected_at": "2026-02-09T17:48:27.114964",
       "source": "github-issue #4"
+    },
+    {
+      "invader_id": "PA_1391",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "hidden",
+      "detected_at": "2026-02-15T07:12:01.489261",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_513",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "OK",
+      "detected_at": "2026-02-15T07:12:01.489266",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_638",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "OK",
+      "detected_at": "2026-02-15T07:12:01.489268",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_696",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "OK",
+      "detected_at": "2026-02-15T07:12:01.489269",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_697",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "OK",
+      "detected_at": "2026-02-15T07:12:01.489271",
+      "source": "invader-spotter.art"
     }
   ],
-  "last_check": "2026-02-09T17:48:27.114968"
+  "last_check": "2026-02-15T07:12:01.489272"
 }

@@ -175,7 +175,8 @@
     "image_lieu": "https://www.invader-spotter.art/photos/AMI/AMI_04-juin2025.jpg",
     "city": "AMI",
     "landing_date": "10/06/2025",
-    "status_date": "juin 2025"
+    "status_date": "février 2026",
+    "status_source": "report"
   },
   {
     "id": "AMI_05",
@@ -2716,11 +2717,7 @@
     "status_date": "mars 2006",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Swensen's (Swensen's, 74, ถนนรามบุตรี, แขวงตลาดยอด, เขตพระนคร, กรุงเทพมหานคร, 10200, ประเทศ)",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054513"
+    "address": "Swensen's (Swensen's, 74, ถนนรามบุตรี, แขวงตลาดยอด, เขตพระนคร, กรุงเทพมหานคร, 10200, ประเทศ)"
   },
   {
     "id": "BGK_07",
@@ -2748,12 +2745,7 @@
     "previous_status": "unknown",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:19:31.903155",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295215",
-    "geo_hint": "Impossible à déterminer - aucun indice de localisation précis visible | mur crépi beige/sable, texture rugueuse typique de bâtiments anciens ou rénovés"
+    "location_unknown": true
   },
   {
     "id": "BGK_09",
@@ -2810,11 +2802,7 @@
     "previous_status_date": "février 2025",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Asiatique The Riverfront (Asiatique The Riverfront, ซอยเจริญกรุง 74/3, บ้านใหม่, แขวงวัดพระยาไกร, เขตบางคอ)",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054540"
+    "address": "Asiatique The Riverfront (Asiatique The Riverfront, ซอยเจริญกรุง 74/3, บ้านใหม่, แขวงวัดพระยาไกร, เขตบางคอ)"
   },
   {
     "id": "BGK_13",
@@ -2830,13 +2818,7 @@
     "status_source": "FlashInvaders",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:41:20.725606",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295261",
-    "address": "commerciale",
-    "geo_hint": "probablement dans un quartier central comme Sukhumvit, Silom | probablement dans un quartier central comme Sukhumvit, Siam | probablement dans un quartier central comme Sukhumvit, Silom"
+    "address": "commerciale"
   },
   {
     "id": "BGK_14",
@@ -2959,12 +2941,7 @@
     "previous_status": "unknown",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:19:57.798314",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295276",
-    "geo_hint": "Impossible à déterminer - aucun indice de localisation visible | Mur extérieur ancien, texture rugueuse, couleur terre/marron foncé"
+    "location_unknown": true
   },
   {
     "id": "BGK_23",
@@ -2982,13 +2959,7 @@
     "previous_status_date": "février 2025",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:42:03.316167",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295354",
-    "address": "Sukhumvit Road",
-    "geo_hint": "près de BTS Skytrain station, Bangkok 10110"
+    "address": "Sukhumvit Road"
   },
   {
     "id": "BGK_24",
@@ -3308,13 +3279,7 @@
     "previous_status_date": "février 2025",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:42:32.550964",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295377",
-    "address": "~Lumphini, Bangkok",
-    "geo_hint": "Thanon Phloen Chit, Lumphini, Pathum Wan, Bangkok (proximité BTS Chit Lom ou Phloen Chit) | près de BTS Chit Lom | Architecture urbaine mixte Bangkok - immeubles modernes et bâtiments coloniaux b | enseigne: METRO"
+    "address": "~Lumphini, Bangkok"
   },
   {
     "id": "BGK_47",
@@ -3712,11 +3677,7 @@
     "status_date": "avril 2024",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "TRESOR (Tresor Berlin, 70, Köpenicker Straße, Luisenstadt, Mitte, Berlin, 10179, Deutsch)",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054557"
+    "address": "TRESOR (Tresor Berlin, 70, Köpenicker Straße, Luisenstadt, Mitte, Berlin, 10179, Deutsch)"
   },
   {
     "id": "BRL_09",
@@ -4952,13 +4913,7 @@
     "status_source": "report",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:43:14.793193",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295388",
-    "address": "~Thimphu, Bhutan",
-    "geo_hint": "Thimphu, Bhutan (zone résidentielle ou monastique traditionnelle) | Architecture traditionnelle bhoutanaise avec murs en terre/pisé, portes en bois "
+    "address": "~Thimphu, Bhutan"
   },
   {
     "id": "BT_02",
@@ -4974,13 +4929,7 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:43:33.322725",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295399",
-    "address": "Punakha, Bhutan -",
-    "geo_hint": "près de du Punakha Dzong"
+    "address": "Punakha, Bhutan -"
   },
   {
     "id": "BT_03",
@@ -4996,13 +4945,7 @@
     "status_source": "report",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:43:48.522358",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295408",
-    "address": "~Thimphu, Bhutan",
-    "geo_hint": "Thimphu, Bhutan - exact street location cannot be determined from available visual clues | Simple urban architecture with metal railings and concrete/plaster walls"
+    "address": "~Thimphu, Bhutan"
   },
   {
     "id": "BT_04",
@@ -5018,11 +4961,6 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:44:05.286612",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295421",
     "address": "Thimphu, Bhutan"
   },
   {
@@ -5039,13 +4977,7 @@
     "status_source": "report",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:44:25.065456",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295432",
-    "address": "~Dochu La Pass, Bhutan",
-    "geo_hint": "Dochu La Pass, Thimphu-Punakha Highway, Bhutan | quartier: Dochu La Pass | Traditional Bhutanese gate architecture with prayer flags | repère: Dochu La Pass gate | repère: Himalayan mountain range viewpoint"
+    "address": "~Dochu La Pass, Bhutan"
   },
   {
     "id": "BT_06",
@@ -5061,12 +4993,7 @@
     "status_source": "report",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:22:21.252166",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295441",
-    "geo_hint": "Main highway between Thimphu and Paro, Bhutan | entre Thimphu et Paro | Traditional Bhutanese roadside with concrete barriers"
+    "location_unknown": true
   },
   {
     "id": "BT_07",
@@ -5082,11 +5009,7 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Tashichho Dzong (བཀྲ་ཤིས་ཆོས་རྫོང, 216, Chhodzong Lam NE, Kawang Chhodzong, Zilungkha, Chang Gewo)",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054577"
+    "address": "Tashichho Dzong (བཀྲ་ཤིས་ཆོས་རྫོང, 216, Chhodzong Lam NE, Kawang Chhodzong, Zilungkha, Chang Gewo)"
   },
   {
     "id": "BT_08",
@@ -5102,13 +5025,7 @@
     "status_source": "report",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:45:36.228032",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295453",
-    "address": "~Paro, Bhutan",
-    "geo_hint": "Zangley Restaurant & Bar, Paro, Bhutan | Architecture bhoutanaise traditionnelle avec toits en pente, décoration rouge et | enseigne: CM | enseigne: ZANGLEY RESTAURANT & BAR"
+    "address": "~Paro, Bhutan"
   },
   {
     "id": "BT_09",
@@ -5124,13 +5041,7 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:46:07.164080",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295507",
-    "address": "Rural",
-    "geo_hint": "insufficient visible clues for specific address | près de Paro, Bhutan | insufficient visible clues for specific address"
+    "address": "Rural"
   },
   {
     "id": "BT_10",
@@ -5146,13 +5057,7 @@
     "status_source": "report",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:46:26.560244",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295530",
-    "address": "~Paro, Bhutan",
-    "geo_hint": "Sentier forestier près de Thimphu ou Paro, Bhoutan (zone rurale montagneuse) | zone rurale montagneuse | près de Thimphu, Bhoutan | zone rurale montagneuse | Architecture bhoutanaise traditionnelle - chorten (stupa) avec fenêtres à treill | repère: Chorten bouddhiste traditionnel bhoutanais"
+    "address": "~Paro, Bhutan"
   },
   {
     "id": "BT_11",
@@ -5168,11 +5073,7 @@
     "status_source": "flash",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Bhutan Post (Bhutan Post, 196, Chang Lam SE, Chang Gewog, ཐིམ་ཕུག, ཐིམ་ཕུ་རྫོང་ཁག་, 11001, འབ)",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054591"
+    "address": "Bhutan Post (Bhutan Post, 196, Chang Lam SE, Chang Gewog, ཐིམ་ཕུག, ཐིམ་ཕུ་རྫོང་ཁག་, 11001, འབ)"
   },
   {
     "id": "BXL_01",
@@ -7112,11 +7013,6 @@
     "status_source": "report",
     "geo_source": "ocr",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:47:20.488025",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295545",
     "address": "R. GROUP, Dhaka"
   },
   {
@@ -7133,12 +7029,7 @@
     "status_source": "report",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:24:22.461175",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295557",
-    "geo_hint": "Shop 01, 144 Floor, Old Dhaka commercial district | Dense urban South Asian commercial architecture with mixed-use buildings, typica | enseigne: N.H. Electronics | enseigne: Digital Printing Urgent Seal | enseigne: Multi Refrigeration"
+    "location_unknown": true
   },
   {
     "id": "DHK_03",
@@ -7154,13 +7045,7 @@
     "status_source": "report",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:48:36.970384",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295567",
-    "address": "~Dhanmondi, Dhaka",
-    "geo_hint": "Inspire International School Dhaka (IISD), Dhanmondi, Dhaka | IISD | Modern educational building with distinctive checkered black and white facade pa | enseigne: Inspire International School Dhaka (IISD) | repère: Inspire International School Dhaka"
+    "address": "~Dhanmondi, Dhaka"
   },
   {
     "id": "DHK_04",
@@ -7175,12 +7060,7 @@
     "previous_status": "unknown",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:25:05.094155",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295576",
-    "geo_hint": "Impossible à déterminer - aucun indice de localisation visible | Mur en béton/ciment brut, surface dégradée typique des zones urbaines"
+    "location_unknown": true
   },
   {
     "id": "DHK_05",
@@ -7196,13 +7076,7 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:49:48.023105",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295585",
-    "address": "Shahbag Road",
-    "geo_hint": "près de Central Shaheed Minar, Dhaka 1000"
+    "address": "Shahbag Road"
   },
   {
     "id": "DHK_06",
@@ -7218,13 +7092,7 @@
     "status_source": "report",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:50:44.518743",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295595",
-    "address": "~Mirpur, Dhaka",
-    "geo_hint": "Zone éducative, possiblement secteur Dhanmondi ou Mirpur, Dhaka | probablement secteur Dhanmondi, Dhaka | Mur en briques avec clôture métallique, style urbain sud-asiatique typique | enseigne: O & A Level | enseigne: A Level Mathematics"
+    "address": "~Mirpur, Dhaka"
   },
   {
     "id": "DIJ_01",
@@ -8227,11 +8095,6 @@
     "previous_status_date": "avril 2025",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:51:22.365887",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295604",
     "address": "Eunhaeng-dong, Jung-gu, Daejeon"
   },
   {
@@ -8661,11 +8524,7 @@
     "status_source": "report",
     "geo_source": "pnote",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "5, Rue Louis Andrieux, Forcalquier, 04300",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295613"
+    "address": "5, Rue Louis Andrieux, Forcalquier, 04300"
   },
   {
     "id": "FRQ_02",
@@ -8979,12 +8838,7 @@
     "previous_status_date": "décembre 2025",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:27:21.050456",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295634",
-    "geo_hint": "Lisière de la Forêt de Fontainebleau, secteur Route de la Bonne Dame ou Route du Mont Ussy | Zone naturelle/forestière, poteau électrique ou téléphonique"
+    "location_unknown": true
   },
   {
     "id": "FTBL_21",
@@ -10561,12 +10415,7 @@
     "previous_status": "unknown",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:27:37.380565",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295658",
-    "geo_hint": "Réserve naturelle ou zone de conservation à Graciosa - localisation précise impossible sans coordonnées GPS | zone de conservation à Graciosa - localisation précise impossible sans coordonnées GPS | Pas de bâtiments visibles - zone naturelle/rurale"
+    "location_unknown": true
   },
   {
     "id": "GRTI_02",
@@ -10581,12 +10430,7 @@
     "previous_status": "unknown",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:28:01.671529",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295677",
-    "geo_hint": "Zone rurale de Graciosa, Açores, Portugal - probablement sur un chemin ou route secondaire entre Santa Cruz da Graciosa et Praia | probablement un chemin | entre Santa Cruz da Graciosa et Praia | mur en béton ou pierre claire"
+    "location_unknown": true
   },
   {
     "id": "GRTI_03",
@@ -10601,12 +10445,7 @@
     "previous_status": "unknown",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:28:25.941013",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295697",
-    "geo_hint": "Zone rurale de Graciosa, Açores, Portugal - probablement le long d'un sentier de randonnée ou chemin rural près d'une zone humide | probablement le long d'un sentier de randonnée | borne kilométrique ou marker routier en béton"
+    "location_unknown": true
   },
   {
     "id": "GRTI_04",
@@ -10621,12 +10460,7 @@
     "previous_status": "unknown",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:28:53.230733",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295707",
-    "geo_hint": "Zone côtière nord ou est de l'île de Graciosa, Açores, probablement près d'une plage ou embouchure de rivière | probablement près d'une plage | environnement naturel rural/côtier"
+    "location_unknown": true
   },
   {
     "id": "GRTI_05",
@@ -10641,12 +10475,7 @@
     "previous_status": "unknown",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:29:08.958719",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295716",
-    "geo_hint": "centre historique de Graciosa, probablement Santa Cruz da Graciosa | probablement Santa Cruz da Graciosa | mur en pierre rustique, apparence ancienne"
+    "location_unknown": true
   },
   {
     "id": "GRTI_06",
@@ -10661,12 +10490,7 @@
     "previous_status": "unknown",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:29:27.782893",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295724",
-    "geo_hint": "Zone rurale de Graciosa, probablement aux abords d'un chemin agricole ou verger | probablement aux abords d'un chemin agricole | rural/agricole"
+    "location_unknown": true
   },
   {
     "id": "GRTI_07",
@@ -10681,12 +10505,7 @@
     "previous_status": "unknown",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:29:49.944325",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295733",
-    "geo_hint": "Chemin rural ou sentier de randonnée, zone agricole de Graciosa, Açores | Borne kilométrique ou poteau indicateur rural"
+    "location_unknown": true
   },
   {
     "id": "GRTI_08",
@@ -10701,12 +10520,7 @@
     "previous_status": "unknown",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:30:13.691105",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295741",
-    "geo_hint": "Zone centrale de Santa Cruz, Graciosa, Cap-Vert | architecture locale modeste, construction en béton/pierre, environnement urbain  | enseigne: AIRTEL"
+    "location_unknown": true
   },
   {
     "id": "GRU_01",
@@ -10997,11 +10811,7 @@
     "status_source": "flash",
     "geo_source": "pnote",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "港威大道 Gateway Boulevard, 香港 Hong Kong, 999077",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054645"
+    "address": "港威大道 Gateway Boulevard, 香港 Hong Kong, 999077"
   },
   {
     "id": "HK_107",
@@ -11056,11 +10866,7 @@
     "landing_date": "31/08/2001",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Tsim Sha Tsui)",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054649"
+    "address": "Tsim Sha Tsui)"
   },
   {
     "id": "HK_110",
@@ -11421,12 +11227,7 @@
     "previous_status": "unknown",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:30:26.961646",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295750",
-    "geo_hint": "Impossible à déterminer - installation intérieure privée | Intérieur résidentiel, murs beiges/crème, style appartement ordinaire"
+    "location_unknown": true
   },
   {
     "id": "HK_16",
@@ -12501,13 +12302,7 @@
     "landing_date": "17/09/2003",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:55:37.487460",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295760",
-    "address": "Sultanahmet Meydanı, Fatih, Istanbul",
-    "geo_hint": "Place Sultanahmet près de la Mosquée Bleue"
+    "address": "Sultanahmet Meydanı, Fatih, Istanbul"
   },
   {
     "id": "IST_04",
@@ -12669,13 +12464,7 @@
     "previous_status": "unknown",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:55:54.208832",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295792",
-    "address": "~Sultanahmet, Istanbul",
-    "geo_hint": "Sultanahmet, quartier historique d'Istanbul, probablement près des sites touristiques majeurs | probablement près des sites touristiques majeurs | Ancien mur en pierre détérioré, crépi gris écaillé, architecture historique"
+    "address": "~Sultanahmet, Istanbul"
   },
   {
     "id": "IST_16",
@@ -12690,12 +12479,7 @@
     "previous_status": "unknown",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:31:09.242286",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295804",
-    "geo_hint": "Impossible à déterminer - aucun indice de localisation visible | Mur moderne blanc avec base en béton ou pierre sombre"
+    "location_unknown": true
   },
   {
     "id": "IST_17",
@@ -12737,12 +12521,7 @@
     "landing_date": "20/09/2003",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:31:22.803655",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295813",
-    "geo_hint": "Quartier de Beyoğlu ou Kadıköy, Istanbul - localisation précise impossible sans indices textuels | Quartier de Beyoğlu, Istanbul - localisation précise impossible sans indices textuels | Kadıköy, Istanbul - localisation précise impossible sans indices textuels | Bâtiment avec façade jaune/ocre, style résidentiel méditerranéen ou du Moyen-Ori"
+    "location_unknown": true
   },
   {
     "id": "IST_20",
@@ -12786,11 +12565,6 @@
     "previous_status_date": "décembre 2025",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:56:43.207770",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295822",
     "address": "Thamel, Kathmandu"
   },
   {
@@ -12820,13 +12594,7 @@
     "status_source": "Instagram",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:56:59.072350",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295832",
-    "address": "~Thamel, Kathmandu",
-    "geo_hint": "Thamel district, Old Kathmandu, Nepal (zone touristique historique) | zone touristique historique | Architecture traditionnelle népalaise - bâtiments en briques anciennes, ruelle é"
+    "address": "~Thamel, Kathmandu"
   },
   {
     "id": "KAT_05",
@@ -12855,11 +12623,6 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:57:29.100689",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295840",
     "address": "Thamel, Kathmandu"
   },
   {
@@ -12967,12 +12730,7 @@
     "previous_status_date": "avril 2025",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:32:39.936055",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295850",
-    "geo_hint": "26, quartier résidentiel de Kathmandu près d'un centre social (Samajik Sewa Kendra) | Samajik Sewa Kendra | Architecture népalaise urbaine typique avec façades en béton vieillies, fenêtres | enseigne: Samajik Sewa Kendra"
+    "location_unknown": true
   },
   {
     "id": "KAT_15",
@@ -13044,11 +12802,7 @@
     "previous_status_date": "décembre 2025",
     "geo_source": "pnote",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "स्वयम्भू मार्ग, काठमाडौँ महानगरपालिका, 20356",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054678"
+    "address": "स्वयम्भू मार्ग, काठमाडौँ महानगरपालिका, 20356"
   },
   {
     "id": "KAT_20",
@@ -13062,13 +12816,7 @@
     "landing_date": "03/03/2008",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:58:09.346787",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295859",
-    "address": "Thamel, Kathmandu",
-    "geo_hint": "zone touristique près de restaurants et commerces"
+    "address": "Thamel, Kathmandu"
   },
   {
     "id": "KAT_21",
@@ -13086,13 +12834,7 @@
     "previous_status_date": "décembre 2025",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:58:37.380318",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295869",
-    "address": "~Thamel, Kathmandu",
-    "geo_hint": "Thamel ou Asan Tole, vieux quartier de Kathmandu, Népal | Architecture népalaise traditionnelle avec briques rouges apparentes, bâtiments "
+    "address": "~Thamel, Kathmandu"
   },
   {
     "id": "KAT_22",
@@ -13132,11 +12874,6 @@
     "landing_date": "04/03/2008",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T15:58:55.488606",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295878",
     "address": "Thamel, Kathmandu, Népal"
   },
   {
@@ -19633,11 +19370,7 @@
     "previous_status": "unknown",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:33:34.225742",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295888"
+    "location_unknown": true
   },
   {
     "id": "LSN_04",
@@ -19677,11 +19410,7 @@
     "previous_status": "unknown",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:33:35.231003",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295896"
+    "location_unknown": true
   },
   {
     "id": "LSN_07",
@@ -22383,11 +22112,7 @@
     "status_source": "StreetView",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Fort Jesus (Fort Jesus, Fort Jesus Road, Ngomani, Makadara/Mji Wa Kale ward, Mvita, Mombasa,)",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054698"
+    "address": "Fort Jesus (Fort Jesus, Fort Jesus Road, Ngomani, Makadara/Mji Wa Kale ward, Mvita, Mombasa,)"
   },
   {
     "id": "MBSA_02",
@@ -22403,13 +22128,7 @@
     "status_source": "Street View",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:00:02.500662",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295916",
-    "address": "Old Town, Mombasa",
-    "geo_hint": "près de Ndia Kuu Road"
+    "address": "Old Town, Mombasa"
   },
   {
     "id": "MBSA_03",
@@ -22464,13 +22183,7 @@
     "status_source": "Street View",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:00:26.044102",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295927",
-    "address": "~Old Town, Mombasa",
-    "geo_hint": "Ndia Kuu Road, Old Town, Mombasa | Commercial colonial avec façades vieillissantes, volets métalliques | enseigne: MOMBASA RUBBER STAMP SERV. | enseigne: JIH"
+    "address": "~Old Town, Mombasa"
   },
   {
     "id": "MBSA_07",
@@ -22499,13 +22212,7 @@
     "status_source": "Street View",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:00:43.640211",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295936",
-    "address": "~Mombasa Old Town, Mombasa",
-    "geo_hint": "Destiny Restaurant, Ndia Kuu Road, Mombasa Old Town | Architecture coloniale côtière, bâtiment d'angle à façade blanche décrépie, vole | enseigne: DESTINY RESTAURANT"
+    "address": "~Mombasa Old Town, Mombasa"
   },
   {
     "id": "MBSA_09",
@@ -22520,13 +22227,7 @@
     "previous_status": "unknown",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:01:02.127385",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295944",
-    "address": "Mombasa",
-    "geo_hint": "probablement Old Town"
+    "address": "Mombasa"
   },
   {
     "id": "MBSA_10",
@@ -23623,11 +23324,6 @@
     "previous_status_date": "mars 2016",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:01:39.218605",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295953",
     "address": "Venetian Causeway, Miami Beach, FL 33139"
   },
   {
@@ -23644,11 +23340,6 @@
     "status_source": "spott",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:01:58.150517",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295961",
     "address": "Collins Avenue, Miami Beach, FL"
   },
   {
@@ -23665,11 +23356,7 @@
     "status_source": "spott",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Wynwood District, NW 2nd Avenue, Miami, FL 33127",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054718"
+    "address": "Wynwood District, NW 2nd Avenue, Miami, FL 33127"
   },
   {
     "id": "MIA_79",
@@ -23737,11 +23424,7 @@
     "status_source": "spott",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Downtown Miami",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054721"
+    "address": "Downtown Miami"
   },
   {
     "id": "MIA_84",
@@ -23770,13 +23453,7 @@
     "status_source": "spott",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:02:51.073120",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295970",
-    "address": "~waterfront, Miami",
-    "geo_hint": "Biscayne Bay waterfront promenade, Downtown Miami or Edgewater district | quartier: waterfront area | coastal urban development with tropical landscaping | repère: waterfront promenade | repère: palm trees"
+    "address": "~waterfront, Miami"
   },
   {
     "id": "MLB_01",
@@ -23792,11 +23469,6 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:03:17.515826",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295979",
     "address": "Brady Lane, Melbourne VIC 3000"
   },
   {
@@ -23826,11 +23498,7 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Bourke Street Mall (Bourke Street Mall, East End Theatre District, Melbourne, City of Melbourne, Vic)",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054729"
+    "address": "Bourke Street Mall (Bourke Street Mall, East End Theatre District, Melbourne, City of Melbourne, Vic)"
   },
   {
     "id": "MLB_04",
@@ -23846,11 +23514,6 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:04:33.575935",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295987",
     "address": "Croft Alley, Melbourne VIC 3000"
   },
   {
@@ -23879,12 +23542,7 @@
     "previous_status": "unknown",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:36:55.263317",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.295995",
-    "geo_hint": "Unable to determine specific address - no visible location markers in images | Pavement/footpath installation"
+    "location_unknown": true
   },
   {
     "id": "MLB_07",
@@ -23952,11 +23610,7 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Friends of the Earth (Friends of the Earth, 312, Smith Street, Collingwood, Melbourne, City of Yarra, )",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054738"
+    "address": "Friends of the Earth (Friends of the Earth, 312, Smith Street, Collingwood, Melbourne, City of Yarra, )"
   },
   {
     "id": "MLB_12",
@@ -23998,11 +23652,7 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Beyond (Beyond Rest Moonee Ponds, 14, Hinkins Street, Moonee Ponds, Melbourne, City of M)",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054741"
+    "address": "Beyond (Beyond Rest Moonee Ponds, 14, Hinkins Street, Moonee Ponds, Melbourne, City of M)"
   },
   {
     "id": "MLB_15",
@@ -24018,11 +23668,6 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:06:20.462605",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296004",
     "address": "9 Hosier Lane, Melbourne VIC 3000"
   },
   {
@@ -24051,12 +23696,7 @@
     "previous_status": "unknown",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:37:38.528615",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296012",
-    "geo_hint": "Impossible à déterminer - aucun indice de localisation visible | Mur en béton ou plâtre vieilli, aspect industriel ou urbain dégradé"
+    "location_unknown": true
   },
   {
     "id": "MLB_18",
@@ -24113,11 +23753,7 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Federation Square (Federation Square, Swanston Street, Melbourne, City of Melbourne, Victoria, 3000)",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054750"
+    "address": "Federation Square (Federation Square, Swanston Street, Melbourne, City of Melbourne, Victoria, 3000)"
   },
   {
     "id": "MLB_22",
@@ -24725,12 +24361,7 @@
     "previous_status": "unknown",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:37:49.930867",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296021",
-    "geo_hint": "Centre-ville de Montpellier - localisation impossible à déterminer sans indices visibles | Mur en béton/ciment moderne"
+    "location_unknown": true
   },
   {
     "id": "MPL_14",
@@ -24771,13 +24402,7 @@
     "previous_status": "unknown",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:07:35.099220",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296029",
-    "address": "Centre historique de Montpellier",
-    "geo_hint": "probablement rue de l'Ancien Courrier | près de Place de la Comédie"
+    "address": "Centre historique de Montpellier"
   },
   {
     "id": "MPL_17",
@@ -24833,13 +24458,7 @@
     "previous_status": "unknown",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:07:47.213281",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296038",
-    "address": "~Centre historique de Montpellier, Montpellier",
-    "geo_hint": "Centre historique de Montpellier, quartier de l'Écusson | Façade ancienne en pierre claire, mur crépi beige/crème typique du centre histor"
+    "address": "~Centre historique de Montpellier, Montpellier"
   },
   {
     "id": "MPL_21",
@@ -25061,13 +24680,7 @@
     "landing_date": "08/08/1999",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:08:01.316401",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296047",
-    "address": "~Centre-ville de Montpellier, Montpellier",
-    "geo_hint": "Centre-ville de Montpellier, zone commerciale près de la Place de la Comédie ou Écusson | près de la Place de la Comédie | Bâtiment moderne avec façade en béton brut"
+    "address": "~Centre-ville de Montpellier, Montpellier"
   },
   {
     "id": "MPL_38",
@@ -25108,11 +24721,6 @@
     "status_date": "avril 2024",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:08:23.523755",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296055",
     "address": "Centre commercial Odysseum, Montpellier"
   },
   {
@@ -27597,13 +27205,7 @@
     "status_source": "report",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:08:52.485814",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296081",
-    "address": "~Brooklyn, New York",
-    "geo_hint": "Atlantic Avenue-Barclays Center Station underground passages, Brooklyn, NY | Industrial underground/subway infrastructure with concrete pillars and exposed c"
+    "address": "~Brooklyn, New York"
   },
   {
     "id": "NY_191",
@@ -27619,11 +27221,6 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:09:29.835020",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296130",
     "address": "Lower East Side, Manhattan"
   },
   {
@@ -27638,13 +27235,7 @@
     "landing_date": "10/05/2016",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:10:03.246399",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296195",
-    "address": "~Tribeca, New York",
-    "geo_hint": "Lower Manhattan retail district, likely SoHo or Tribeca area | probablement SoHo | Industrial/commercial building with large display windows, possibly retail store"
+    "address": "~Tribeca, New York"
   },
   {
     "id": "NY_193",
@@ -27660,11 +27251,7 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Brooklyn waterfront district",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054777"
+    "address": "Brooklyn waterfront district"
   },
   {
     "id": "NY_194",
@@ -27680,11 +27267,6 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:10:52.812899",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296486",
     "address": "Lower East Side"
   },
   {
@@ -27701,11 +27283,7 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Industrial area in Brooklyn",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054783"
+    "address": "Industrial area in Brooklyn"
   },
   {
     "id": "NY_196",
@@ -27721,11 +27299,7 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "High Line, Chelsea, Manhattan, New York",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054785"
+    "address": "High Line, Chelsea, Manhattan, New York"
   },
   {
     "id": "NY_197",
@@ -27741,13 +27315,7 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:12:04.707169",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296498",
-    "address": "Brooklyn",
-    "geo_hint": "près de Manhattan Bridge | près de Manhattan Bridge"
+    "address": "Brooklyn"
   },
   {
     "id": "NY_198",
@@ -27763,12 +27331,7 @@
     "status_source": "report",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:41:44.157096",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296507",
-    "geo_hint": "Unable to determine specific address - appears to be under bridge or overpass in industrial area of New York | Unable to determine specific address - appears to be under bridge | Industrial/urban with metal pillars or posts"
+    "location_unknown": true
   },
   {
     "id": "NY_199",
@@ -27782,12 +27345,7 @@
     "landing_date": "11/05/2016",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:41:58.287967",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296516",
-    "geo_hint": "Unable to determine specific address from available visual information | Urban industrial, weathered concrete or metal surface with graffiti"
+    "location_unknown": true
   },
   {
     "id": "NY_20",
@@ -27816,11 +27374,6 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:13:10.729869",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296526",
     "address": "Lower East Side, Manhattan"
   },
   {
@@ -27839,12 +27392,7 @@
     "previous_status_date": "juin 2025",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:42:34.556979",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296536",
-    "geo_hint": "Underground/basement location in New York City, possibly in Lower Manhattan industrial district or abandoned subway infrastructure | probablement in Lower Manhattan industrial district | Industrial/basement architecture with exposed brick walls, metal staircase"
+    "location_unknown": true
   },
   {
     "id": "NY_202",
@@ -27860,12 +27408,7 @@
     "status_source": "report",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:42:53.831164",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296544",
-    "geo_hint": "Tunnel de la ligne de métro MTA New York, localisation précise impossible sans indices visibles | Infrastructure ferroviaire souterraine - tunnel de métro ou train"
+    "location_unknown": true
   },
   {
     "id": "NY_203",
@@ -27881,12 +27424,7 @@
     "status_source": "Instagram",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:43:17.164520",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296553",
-    "geo_hint": "Station de métro new-yorkaise non identifiable avec certitude sans signalétique visible | Infrastructure ferroviaire urbaine, colonnes métalliques rivetées de style indus"
+    "location_unknown": true
   },
   {
     "id": "NY_204",
@@ -27902,12 +27440,7 @@
     "status_source": "report",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:43:47.454001",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296562",
-    "geo_hint": "Sous le viaduc du métro aérien près de Bowery, Lower East Side, Manhattan | près de Bowery, Lower East Side, Manhattan | Infrastructure ferroviaire industrielle - structure métallique en acier avec pou"
+    "location_unknown": true
   },
   {
     "id": "NY_205",
@@ -27936,13 +27469,7 @@
     "status_source": "YouTube",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:15:00.989491",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296572",
-    "address": "Lower East Side, Manhattan -",
-    "geo_hint": "entre Houston St et 14th St | entre Houston St et 14th St"
+    "address": "Lower East Side, Manhattan -"
   },
   {
     "id": "NY_207",
@@ -27958,11 +27485,7 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "du Lower East Side, Manhattan",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054813"
+    "address": "du Lower East Side, Manhattan"
   },
   {
     "id": "NY_208",
@@ -27978,11 +27501,6 @@
     "status_source": "YouTube",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:15:46.721470",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296580",
     "address": "High Line"
   },
   {
@@ -27999,13 +27517,7 @@
     "status_source": "report",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:16:12.637113",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296589",
-    "address": "~Brooklyn Bridge, New York",
-    "geo_hint": "Abandoned City Hall Subway Station, Brooklyn Bridge area, Manhattan | Industrial abandoned building with railway/subway infrastructure"
+    "address": "~Brooklyn Bridge, New York"
   },
   {
     "id": "NY_21",
@@ -28034,12 +27546,7 @@
     "status_source": "report",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:45:14.885812",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296599",
-    "geo_hint": "Unable to determine specific address - appears to be abandoned High Line area or similar derelict elevated railway structure in Manhattan | Unable to determine specific address - appears to be abandoned High Line area | industrial abandoned structure, tunnel or underpass"
+    "location_unknown": true
   },
   {
     "id": "NY_211",
@@ -28055,12 +27562,7 @@
     "status_source": "report",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:45:42.444766",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296608",
-    "geo_hint": "Station de métro abandonnée NYC (probablement ligne Lower Manhattan ou station désaffectée) | probablement ligne Lower Manhattan | Station de métro souterraine abandonnée ou en rénovation, architecture industrie"
+    "location_unknown": true
   },
   {
     "id": "NY_212",
@@ -28074,11 +27576,6 @@
     "landing_date": "17/05/2016",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:17:27.375327",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296616",
     "address": "Brooklyn"
   },
   {
@@ -28095,12 +27592,7 @@
     "status_source": "FlashInvaders",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:46:16.829763",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296626",
-    "geo_hint": "Impossible à déterminer - aucun indice de localisation visible | Trottoir urbain en béton/asphalte typique"
+    "location_unknown": true
   },
   {
     "id": "NY_214",
@@ -28116,13 +27608,7 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:18:13.052490",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296635",
-    "address": "Freedom Tunnel, West Side, Manhattan, New York",
-    "geo_hint": "Riverside Park"
+    "address": "Freedom Tunnel, West Side, Manhattan, New York"
   },
   {
     "id": "NY_215",
@@ -28140,11 +27626,7 @@
     "previous_status_date": "avril 2025",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Lower Manhattan",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054836"
+    "address": "Lower Manhattan"
   },
   {
     "id": "NY_216",
@@ -28211,11 +27693,7 @@
     "previous_status": "unknown",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Chelsea, New York",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054838"
+    "address": "Chelsea, New York"
   },
   {
     "id": "NY_23",
@@ -35309,13 +34787,16 @@
     "lat": "48.8133284048",
     "lng": "2.3892062021",
     "points": "50",
-    "status": "OK",
+    "status": "hidden",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1391-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1391-avril2019.jpg",
     "city": "PA",
     "landing_date": "27/03/2019",
-    "status_date": "avril 2019",
-    "status_source": "spott"
+    "status_date": "février 2026",
+    "status_source": "report",
+    "previous_status": "OK",
+    "previous_status_date": "avril 2019",
+    "status_updated": "2026-02-15T07:12:00.468590"
   },
   {
     "id": "PA_1392",
@@ -39067,7 +38548,7 @@
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0255-decembre2018.jpg",
     "city": "PA",
     "landing_date": "31/01/2000",
-    "status_date": "décembre 2024",
+    "status_date": "février 2026",
     "status_source": "report",
     "previous_status": "destroyed",
     "previous_status_date": "décembre 2024"
@@ -42224,7 +41705,7 @@
     "landing_date": "01/04/2002",
     "status_date": "octobre 2022",
     "status_source": "report",
-    "status_updated": "2026-02-09T17:25:18Z",
+    "status_updated": "2026-02-09T17:48:27.114964",
     "status_issue": 4,
     "previous_status": "OK",
     "previous_status_date": "octobre 2022"
@@ -42787,12 +42268,16 @@
     "lat": "48.8617502611",
     "lng": "2.3644330984",
     "points": "10",
-    "status": "destroyed",
+    "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0513-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0513-juin2025.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0513-fevrier2026.jpg",
     "city": "PA",
     "landing_date": "02/03/2003",
-    "status_date": "juin 2025"
+    "status_date": "février 2026",
+    "previous_status": "destroyed",
+    "previous_status_date": "juin 2025",
+    "status_updated": "2026-02-15T07:12:00.471833",
+    "status_source": "Instagram"
   },
   {
     "id": "PA_514",
@@ -44579,13 +44064,16 @@
     "lat": "48.8647149122",
     "lng": "2.3534022744",
     "points": "50",
-    "status": "destroyed",
+    "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0638-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0638-septembre2018.jpg",
     "city": "PA",
     "landing_date": "25/12/2005",
-    "status_date": "février 2022",
-    "status_source": "report"
+    "status_date": "février 2026",
+    "status_source": "report",
+    "previous_status": "destroyed",
+    "previous_status_date": "février 2022",
+    "status_updated": "2026-02-15T07:12:00.472621"
   },
   {
     "id": "PA_639",
@@ -45414,26 +44902,32 @@
     "lat": "48.8611228956",
     "lng": "2.3632839226",
     "points": "20",
-    "status": "destroyed",
+    "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0696-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0696-septembre2022.jpg",
     "city": "PA",
     "landing_date": "11/11/2006",
-    "status_date": "mars 2024",
-    "status_source": "report"
+    "status_date": "février 2026",
+    "status_source": "report",
+    "previous_status": "destroyed",
+    "previous_status_date": "mars 2024",
+    "status_updated": "2026-02-15T07:12:00.472994"
   },
   {
     "id": "PA_697",
     "lat": "48.8539074831",
     "lng": "2.3698593377",
     "points": "20",
-    "status": "destroyed",
+    "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0697-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0697-avril2015.jpg",
     "city": "PA",
     "landing_date": "12/11/2006",
-    "status_date": "septembre 2021",
-    "status_source": "report"
+    "status_date": "février 2026",
+    "status_source": "report",
+    "previous_status": "destroyed",
+    "previous_status_date": "septembre 2021",
+    "status_updated": "2026-02-15T07:12:00.473002"
   },
   {
     "id": "PA_698",
@@ -50482,12 +49976,7 @@
     "status_source": "report",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:47:09.422840",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296644",
-    "geo_hint": "Centre historique de Potosí, probablement près de la Plaza 10 de Noviembre | près de la Plaza 10 de Noviembre | colonial espagnol avec voûte en berceau, murs épais crème/jaune pâle"
+    "location_unknown": true
   },
   {
     "id": "PRP_01",
@@ -51499,13 +50988,7 @@
     "status_source": "spott",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:19:20.609870",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296654",
-    "address": "~médina de Rabat, Rabat",
-    "geo_hint": "Avenue Mohammed V ou Rue des Consuls, médina de Rabat | mur en pierre/crépi beige typique de l'architecture marocaine"
+    "address": "~médina de Rabat, Rabat"
   },
   {
     "id": "RBA_04",
@@ -51612,13 +51095,7 @@
     "status_source": "spott",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:19:39.055522",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296663",
-    "address": "~Médina de Rabat, Rabat",
-    "geo_hint": "Avenue Moulay Hassan, Médina de Rabat (proximité des remparts Almohades) | proximité des remparts Almohades | quartier: Probablement Médina ou zones près des remparts historiques | Architecture marocaine traditionnelle avec boiseries ornementales, pergola en bo | repère: Fortifications/remparts historiques visibles en arrière-plan"
+    "address": "~Médina de Rabat, Rabat"
   },
   {
     "id": "RBA_12",
@@ -51725,11 +51202,7 @@
     "status_source": "spott",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "minaret (Pharmacie du Minaret صيدلية المنارة, Avenue Hassan II شارع الحسن الثاني, Océan ⵍ)",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054850"
+    "address": "minaret (Pharmacie du Minaret صيدلية المنارة, Avenue Hassan II شارع الحسن الثاني, Océan ⵍ)"
   },
   {
     "id": "RBA_20",
@@ -51942,11 +51415,7 @@
     "status_source": "report",
     "geo_source": "pnote",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Lotissement Jacarandas, Saint-Leu, 97436",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054853"
+    "address": "Lotissement Jacarandas, Saint-Leu, 97436"
   },
   {
     "id": "REUN_10",
@@ -53344,12 +52813,7 @@
     "landing_date": "15/12/2001",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:47:57.147316",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296672",
-    "geo_hint": "Impossible à déterminer - aucun indice de localisation visible"
+    "location_unknown": true
   },
   {
     "id": "SD_01",
@@ -53404,11 +52868,7 @@
     "status_source": "StreetView",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Sprint (Sprint, 386, East H Street, Chula Vista, San Diego County, California, 91910, Un)",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054859"
+    "address": "Sprint (Sprint, 386, East H Street, Chula Vista, San Diego County, California, 91910, Un)"
   },
   {
     "id": "SD_05",
@@ -53643,11 +53103,7 @@
     "previous_status_date": "septembre 2025",
     "geo_source": "pnote",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "5, 월드컵북로, 서울특별시, 04038",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054862"
+    "address": "5, 월드컵북로, 서울특별시, 04038"
   },
   {
     "id": "SL_02",
@@ -53665,11 +53121,7 @@
     "previous_status_date": "septembre 2025",
     "geo_source": "pnote",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "96, 어울마당로, 서울특별시, 04040",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054864"
+    "address": "96, 어울마당로, 서울특별시, 04040"
   },
   {
     "id": "SL_03",
@@ -53685,11 +53137,7 @@
     "status_source": "report",
     "geo_source": "pnote",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "55, 서강로9길, 서울특별시, 04059",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054867"
+    "address": "55, 서강로9길, 서울특별시, 04059"
   },
   {
     "id": "SL_04",
@@ -53705,11 +53153,7 @@
     "status_source": "report",
     "geo_source": "pnote",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "31-19, 와우산로21길, 서울특별시, 04041",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054870"
+    "address": "31-19, 와우산로21길, 서울특별시, 04041"
   },
   {
     "id": "SL_05",
@@ -53725,11 +53169,7 @@
     "status_source": "report",
     "geo_source": "pnote",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "14, 와우산로23길, 서울특별시, 04054",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054872"
+    "address": "14, 와우산로23길, 서울특별시, 04054"
   },
   {
     "id": "SL_06",
@@ -53747,11 +53187,7 @@
     "previous_status_date": "janvier 2025",
     "geo_source": "pnote",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "29, 와우산로21길, 서울특별시, 04041",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054875"
+    "address": "29, 와우산로21길, 서울특별시, 04041"
   },
   {
     "id": "SL_07",
@@ -53767,11 +53203,7 @@
     "status_source": "report",
     "geo_source": "pnote",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "92, 퇴계로18길, 서울특별시, 04630",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054878"
+    "address": "92, 퇴계로18길, 서울특별시, 04630"
   },
   {
     "id": "SL_08",
@@ -53787,11 +53219,7 @@
     "status_source": "report",
     "geo_source": "pnote",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "28, 소공로6길, 서울특별시, 04630",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054881"
+    "address": "28, 소공로6길, 서울특별시, 04630"
   },
   {
     "id": "SL_09",
@@ -53807,11 +53235,7 @@
     "status_source": "FlashInvaders",
     "geo_source": "pnote",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "11, 인사동길, 서울특별시, 03164",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054883"
+    "address": "11, 인사동길, 서울특별시, 03164"
   },
   {
     "id": "SL_10",
@@ -53827,11 +53251,7 @@
     "status_source": "FlashInvaders",
     "geo_source": "pnote",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "인사동길, 서울특별시, 03148",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054886"
+    "address": "인사동길, 서울특별시, 03148"
   },
   {
     "id": "SL_11",
@@ -53847,11 +53267,7 @@
     "status_source": "FlashInvaders",
     "geo_source": "pnote",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "41-1, 인사동길, 서울특별시, 03162",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054889"
+    "address": "41-1, 인사동길, 서울특별시, 03162"
   },
   {
     "id": "SL_12",
@@ -53869,11 +53285,7 @@
     "previous_status_date": "septembre 2025",
     "geo_source": "pnote",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "5-26, 인사동4길, 서울특별시, 03148",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054891"
+    "address": "5-26, 인사동4길, 서울특별시, 03148"
   },
   {
     "id": "SL_13",
@@ -53889,11 +53301,7 @@
     "status_source": "report",
     "geo_source": "pnote",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "91-1, 명동길, 서울특별시, 04538",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054894"
+    "address": "91-1, 명동길, 서울특별시, 04538"
   },
   {
     "id": "SL_14",
@@ -53909,11 +53317,7 @@
     "status_source": "report",
     "geo_source": "pnote",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "35, 마른내로2길, 서울특별시, 04555",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054897"
+    "address": "35, 마른내로2길, 서울특별시, 04555"
   },
   {
     "id": "SPACE_01 ",
@@ -53927,12 +53331,7 @@
     "landing_date": "05/08/2012",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:48:19.450277",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296683",
-    "geo_hint": "Station Spatiale Internationale, Orbite terrestre basse, 400km d'altitude | quartier: Orbite terrestre basse | Installation spatiale - panneau solaire visible | repère: Station Spatiale Internationale"
+    "location_unknown": true
   },
   {
     "id": "SPACE_02",
@@ -53948,11 +53347,6 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:21:42.651178",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296691",
     "address": "International Space Station (International Space Station, Via Alessandro Manzoni, Borgata Paradiso, Collegno,)"
   },
   {
@@ -54717,12 +54111,7 @@
     "landing_date": "20/09/1999",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:49:10.354842",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296701",
-    "geo_hint": "Impossible à déterminer - aucun indice de localisation visible | pavement gris granuleux typique des trottoirs japonais"
+    "location_unknown": true
   },
   {
     "id": "TK_06",
@@ -55441,12 +54830,7 @@
     "landing_date": "23/09/1999",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:49:24.227378",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296710",
-    "geo_hint": "Impossible de déterminer une adresse précise | mur en crépi/enduit texturé beige/sable, style moderne simple"
+    "location_unknown": true
   },
   {
     "id": "TK_25",
@@ -55473,12 +54857,7 @@
     "landing_date": "24/09/1999",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:49:36.023983",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296719",
-    "geo_hint": "Impossible à déterminer - aucun indice de localisation visible | Surface en béton/ciment"
+    "location_unknown": true
   },
   {
     "id": "TK_27",
@@ -55503,11 +54882,7 @@
     "previous_status": "unknown",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:49:37.033265",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296728"
+    "location_unknown": true
   },
   {
     "id": "TK_29",
@@ -55702,12 +55077,7 @@
     "landing_date": "05/09/2001",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:49:49.596921",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296737",
-    "geo_hint": "Impossible à déterminer - aucun indice textuel visible | Mur crépi beige/jaune typique japonais"
+    "location_unknown": true
   },
   {
     "id": "TK_45",
@@ -55767,11 +55137,6 @@
     "landing_date": "07/09/2001",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:22:52.989616",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296811",
     "address": "Shibuya, Tokyo"
   },
   {
@@ -55847,13 +55212,7 @@
     "landing_date": "09/09/2001",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:23:10.776274",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296816",
-    "address": "Tokyo, nord-est (",
-    "geo_hint": "probablement Taito-ku, Sumida-ku | possiblement Taito-ku, Koto-ku basé sur le style architectural des années 70-80"
+    "address": "Tokyo, nord-est ("
   },
   {
     "id": "TK_56",
@@ -55919,13 +55278,7 @@
     "landing_date": "10/09/2001",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:23:25.831480",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296820",
-    "address": "~Shibuya-ku, Tokyo",
-    "geo_hint": "Shibuya-ku, Tokyo - ruelle secondaire près de la gare de Shibuya | près de la gare de Shibuya | mur en béton brut industriel, environnement urbain dense"
+    "address": "~Shibuya-ku, Tokyo"
   },
   {
     "id": "TK_61",
@@ -55939,12 +55292,7 @@
     "landing_date": "11/09/2001",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:50:57.861199",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296824",
-    "geo_hint": "Zone commerciale ou industrielle de Tokyo, impossibilité de déterminer l'adresse précise sans indices textuels visibles | Zone commerciale, impossibilité de déterminer l'adresse précise sans indices textuels visibles | industrielle de Tokyo, impossibilité de déterminer l'adresse précise sans indices textuels visibles | Architecture japonaise moderne, présence de grilles de ventilation/climatisation"
+    "location_unknown": true
   },
   {
     "id": "TK_62",
@@ -55973,11 +55321,7 @@
     "status_source": "StreetView",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Swatch (Swatch, スペイン坂, 宇田川町, 神南, 渋谷区, 東京都, 150-0042, 日本)",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054933"
+    "address": "Swatch (Swatch, スペイン坂, 宇田川町, 神南, 渋谷区, 東京都, 150-0042, 日本)"
   },
   {
     "id": "TK_64",
@@ -56013,12 +55357,7 @@
     "landing_date": "12/09/2001",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:51:10.197039",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296829",
-    "geo_hint": "Impossible à déterminer - aucun élément de localisation visible | Surface textile/tissu noir"
+    "location_unknown": true
   },
   {
     "id": "TK_67",
@@ -56032,11 +55371,6 @@
     "landing_date": "12/09/2001",
     "geo_source": "ocr",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:24:39.987403",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296832",
     "address": "AV Vie, Tokyo"
   },
   {
@@ -56090,11 +55424,6 @@
     "landing_date": "13/09/2001",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:24:53.511557",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296836",
     "address": "Shinjuku, Tokyo"
   },
   {
@@ -56143,12 +55472,7 @@
     "landing_date": "25/11/2001",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:51:45.196641",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296839",
-    "geo_hint": "Impossible à déterminer - aucun indice de localisation visible | surface en asphalte ou béton texturé sombre"
+    "location_unknown": true
   },
   {
     "id": "TK_76",
@@ -56201,11 +55525,7 @@
     "status_source": "StreetView",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Times (Times Parking, 元競馬場通り, 下目黒五丁目, 下目黒, 目黒区, 東京都, 153-0064, 日本)",
-    "preserved": true,
-    "preserved_date": "2026-02-14T16:39:18.054947"
+    "address": "Times (Times Parking, 元競馬場通り, 下目黒五丁目, 下目黒, 目黒区, 東京都, 153-0064, 日本)"
   },
   {
     "id": "TK_80",
@@ -56612,11 +55932,7 @@
     "status_source": "spott",
     "geo_source": "pnote",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "address": "Route de Crève-Cœur, Les Avanchers-Valmorel, 73260",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296842"
+    "address": "Route de Crève-Cœur, Les Avanchers-Valmorel, 73260"
   },
   {
     "id": "VLMO_02",
@@ -56673,12 +55989,7 @@
     "status_source": "report",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "geo_search_exhausted": true,
-    "geo_search_date": "2026-02-14T17:52:10.129949",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296846",
-    "geo_hint": "Gali near Dashashwamedh Ghat, Varanasi, Uttar Pradesh | près de Dashashwamedh Ghat, Varanasi, Uttar Pradesh | architecture indienne traditionnelle, ruelle étroite typique de Varanasi | enseigne: PC"
+    "location_unknown": true
   },
   {
     "id": "VRN_03",
@@ -56832,13 +56143,7 @@
     "previous_status_date": "novembre 2024",
     "geo_source": "vision_district",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
-    "geo_search_date": "2026-02-14T16:26:29.997659",
-    "preserved": true,
-    "preserved_date": "2026-02-14T18:27:49.296851",
-    "address": "~Uttar Pradesh, Varanasi",
-    "geo_hint": "Shiv Ganga Ghat, Varanasi, Uttar Pradesh | quartier: Ghat area along Ganges riverfront | Traditional Varanasi ghat architecture with stone steps leading to river, mix of | enseigne: SHIV GANGA JHACTORY | repère: Ghat steps along Ganges River"
+    "address": "~Uttar Pradesh, Varanasi"
   },
   {
     "id": "VRN_14",
