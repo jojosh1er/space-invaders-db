@@ -46,8 +46,9 @@ jobs:
           pip install -r scripts/requirements.txt
           playwright install chromium
           playwright install-deps
-          # Dépendances géolocalisation (OCR + Vision)
+          # Dépendances géolocalisation (OCR + Vision + Lens)
           pip install pytesseract anthropic Pillow
+          pip install git+https://github.com/krishna2206/google-lens-python.git
           sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-fra
       
       - name: 🔍 Scrape & process issues
@@ -129,6 +130,7 @@ jobs:
           "
       
       - name: 📤 Commit & Push
+        id: commit
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "Space Invaders Bot 🛸"
@@ -136,6 +138,10 @@ jobs:
           # Vérifier s'il y a des changements
           if git diff --quiet data/; then
             echo "✅ Aucun changement détecté" >> $GITHUB_STEP_SUMMARY
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "change_count=0" >> $GITHUB_OUTPUT
+            echo "total_invaders=$(python3 -c "import json; print(json.load(open('data/metadata.json'))['total_invaders'])")" >> $GITHUB_OUTPUT
+            echo "total_cities=$(python3 -c "import json; print(json.load(open('data/metadata.json'))['total_cities'])")" >> $GITHUB_OUTPUT
             exit 0
           fi
           
@@ -184,11 +190,50 @@ jobs:
           
           with open('summary.md', 'w') as f:
               f.write('\n'.join(lines))
+          
+          # Générer aussi le rapport texte pour le mail
+          txt = []
+          txt.append('RAPPORT DE MISE A JOUR SPACE INVADERS')
+          txt.append('=' * 45)
+          txt.append(f'Date: {datetime.now().strftime(\"%d/%m/%Y %H:%M UTC\")}')
+          txt.append(f'Total invaders: {m[\"total_invaders\"]}')
+          txt.append(f'Villes: {m[\"total_cities\"]}')
+          txt.append(f'Avec coordonnees: {m.get(\"with_coordinates\",\"?\")}')
+          txt.append(f'Geolocalises (precis): {geolocated}')
+          txt.append(f'Recherche epuisee: {exhausted}')
+          txt.append(f'Changements: {len(recent)}')
+          txt.append('')
+          if recent:
+              txt.append('DETAIL DES CHANGEMENTS:')
+              txt.append('-' * 30)
+              for c in recent[:80]:
+                  inv_id = c.get('invader_id', '?')
+                  ctype = c.get('change_type', '?')
+                  old_v = c.get('old_value', '')
+                  new_v = c.get('new_value', '')
+                  src = c.get('source', 'spotter')
+                  if ctype == 'new_invader':
+                      txt.append(f'  + {inv_id} (nouveau, source: {src})')
+                  elif ctype == 'status_update':
+                      txt.append(f'  ~ {inv_id}: {old_v} -> {new_v} ({src})')
+                  else:
+                      txt.append(f'  * {inv_id}: {new_v} ({src})')
+              if len(recent) > 80:
+                  txt.append(f'  ... et {len(recent)-80} autres')
+          with open('/tmp/email_body.txt', 'w') as f:
+              f.write('\n'.join(txt))
+          
           print(len(recent))
           " > /tmp/change_count.txt
           
           CHANGES=$(cat /tmp/change_count.txt)
+          CITIES=$(python3 -c "import json; print(json.load(open('data/metadata.json'))['total_cities'])")
           cat summary.md >> $GITHUB_STEP_SUMMARY
+          
+          echo "has_changes=true" >> $GITHUB_OUTPUT
+          echo "change_count=${CHANGES}" >> $GITHUB_OUTPUT
+          echo "total_invaders=${TOTAL}" >> $GITHUB_OUTPUT
+          echo "total_cities=${CITIES}" >> $GITHUB_OUTPUT
           
           DATE=$(date +"%Y-%m-%d")
           
@@ -196,3 +241,35 @@ jobs:
           git commit -m "🔄 Auto-update ${DATE} - ${TOTAL} invaders, ${CHANGES} changements"
           git pull --rebase origin main
           git push
+      
+      - name: 📧 Notification email
+        if: always()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: >-
+            🛸 Invaders Update
+            ${{ steps.commit.outputs.has_changes == 'true'
+                && format('[{0} changements]', steps.commit.outputs.change_count)
+                || '[Aucun changement]' }}
+            - ${{ job.status }}
+          to: ${{ secrets.EMAIL_RECIPIENTS }}
+          from: Space Invaders Bot <${{ secrets.SMTP_USERNAME }}>
+          body: |
+            Rapport de mise à jour — ${{ github.event.repository.name }}
+
+            Statut: ${{ job.status == 'success' && '✅ Succès' || job.status == 'failure' && '❌ Échec' || '⚠️ ' }}${{ job.status }}
+            Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            ${{ steps.commit.outputs.has_changes == 'true'
+                && format('{0} changements appliqués ({1} invaders, {2} villes)',
+                   steps.commit.outputs.change_count,
+                   steps.commit.outputs.total_invaders,
+                   steps.commit.outputs.total_cities)
+                || 'Aucun changement détecté cette semaine.' }}
+
+            → Rapport détaillé: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          attachments: ${{ steps.commit.outputs.has_changes == 'true' && '/tmp/email_body.txt' || '' }}
