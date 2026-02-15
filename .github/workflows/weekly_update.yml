@@ -242,34 +242,17 @@ jobs:
           git pull --rebase origin main
           git push
       
-      - name: 📧 Notification email
+      - name: 📧 Notifications email personnalisées
         if: always()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 587
-          username: ${{ secrets.SMTP_USERNAME }}
-          password: ${{ secrets.SMTP_PASSWORD }}
-          subject: >-
-            🛸 Invaders Update
-            ${{ steps.commit.outputs.has_changes == 'true'
-                && format('[{0} changements]', steps.commit.outputs.change_count)
-                || '[Aucun changement]' }}
-            - ${{ job.status }}
-          to: ${{ secrets.EMAIL_RECIPIENTS }}
-          from: Space Invaders Bot <${{ secrets.SMTP_USERNAME }}>
-          body: |
-            Rapport de mise à jour — ${{ github.event.repository.name }}
-
-            Statut: ${{ job.status == 'success' && '✅ Succès' || job.status == 'failure' && '❌ Échec' || '⚠️ ' }}${{ job.status }}
-            Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-
-            ${{ steps.commit.outputs.has_changes == 'true'
-                && format('{0} changements appliqués ({1} invaders, {2} villes)',
-                   steps.commit.outputs.change_count,
-                   steps.commit.outputs.total_invaders,
-                   steps.commit.outputs.total_cities)
-                || 'Aucun changement détecté cette semaine.' }}
-
-            → Rapport détaillé: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          attachments: ${{ steps.commit.outputs.has_changes == 'true' && '/tmp/email_body.txt' || '' }}
+        env:
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          EMAIL_CONFIG: ${{ secrets.EMAIL_CONFIG }}
+          HAS_CHANGES: ${{ steps.commit.outputs.has_changes }}
+          CHANGE_COUNT: ${{ steps.commit.outputs.change_count }}
+          TOTAL_INVADERS: ${{ steps.commit.outputs.total_invaders }}
+          TOTAL_CITIES: ${{ steps.commit.outputs.total_cities }}
+          JOB_STATUS: ${{ job.status }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: python scripts/send_notifications.py
