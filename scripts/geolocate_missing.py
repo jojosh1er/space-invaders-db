@@ -1903,10 +1903,11 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
             if len(remaining) > 3:
                 addr = remaining
         
-        # 5b. Retirer le suffixe "area/zone/district/quarter" en fin de segment
+        # 5b. Retirer le suffixe "area/zone/district" en fin de segment
         #     "Pratunam area" → "Pratunam", "Silom district, Bangkok" → "Silom, Bangkok"
+        #     NOTE: pas "quarter" car souvent nom propre (Gaslamp Quarter, French Quarter)
         addr = re.sub(
-            r'\s+(?:area|zone|district|quarter|quartier|sector|secteur|neighborhood|neighbourhood)(?=\s*,|\s*$)',
+            r'\s+(?:area|zone|district|sector|secteur|neighborhood|neighbourhood)(?=\s*,|\s*$)',
             '', addr, flags=re.IGNORECASE
         ).strip()
         
@@ -1925,6 +1926,103 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
         )
         if transport_match:
             addr = addr[transport_match.end():].strip()
+        
+        # 8b-PRE. "Angle Rue X et Rue Y, 75006 Paris" → addr="Rue X, 75006", hint="intersection: Rue Y, 75006"
+        #     L'intersection de 2 rues = info très précise, on garde la 2e rue dans hint
+        #     DOIT être traité AVANT les noise_patterns pour ne pas perdre les noms de rues
+        angle_match = re.match(
+            r'(?:Angle|Corner|Intersection|Croisement)\s+(?:de\s+(?:la\s+)?|du\s+|des\s+)?',
+            addr, re.IGNORECASE
+        )
+        if angle_match:
+            after_angle = addr[angle_match.end():].strip()
+            handled = False
+            
+            # Pattern 1: street-type prefix (Rue X et Avenue Y)
+            et_match = re.search(r'\s+(?:et|and|&)\s+((?:Rue|Avenue|Boulevard|Quai|Place|Street|Road|rue|avenue|boulevard|Via|Calle|Rua)\s)', after_angle, re.IGNORECASE)
+            if et_match:
+                first_street = after_angle[:et_match.start()].strip()
+                after_et = after_angle[et_match.end():].strip()
+                second_street_full = et_match.group(1).rstrip() + after_et
+                suffix_match = re.search(r',\s*(.+)$', second_street_full)
+                if suffix_match:
+                    second_street = second_street_full[:suffix_match.start()].strip().rstrip(',;')
+                    suffix = suffix_match.group(1).strip()
+                    addr = f"{first_street}, {suffix}"
+                    hint_parts.append(f"intersection: {et_match.group(1)}{after_et}")
+                else:
+                    addr = first_street
+                    hint_parts.append(f"intersection: {second_street_full.strip()}")
+                handled = True
+            
+            if not handled:
+                # Pattern 2: simple "et/and/&" (German suffix types: Weintraubengasse and Praterstraße)
+                et_simple = re.search(r'\s+(?:et|and|&)\s+', after_angle, re.IGNORECASE)
+                if et_simple:
+                    first_street = after_angle[:et_simple.start()].strip()
+                    second_part = after_angle[et_simple.end():].strip()
+                    suffix_match = re.search(r',\s*(.+)$', second_part)
+                    if suffix_match:
+                        second_street = second_part[:suffix_match.start()].strip().rstrip(',;')
+                        suffix = suffix_match.group(1).strip()
+                        addr = f"{first_street}, {suffix}"
+                        hint_parts.append(f"intersection: {second_street}, {suffix}")
+                    else:
+                        addr = first_street
+                        hint_parts.append(f"intersection: {second_part}")
+                    handled = True
+            
+            if not handled:
+                # Pas de séparateur trouvé, retirer juste le préfixe "Angle"
+                addr = after_angle
+        
+        # 8b. Retirer descriptions spatiales EN MILIEU d'adresse
+        #     "Rue de Tolbiac sous viaduc ligne 6, 75013" → "Rue de Tolbiac, 75013"
+        #     "Boulevard Paoli, Vieux-Port, 20200" → "Boulevard Paoli, 20200"
+        #     "Place des Vosges, passage d'angle, 75004" → "Place des Vosges, 75004"
+        #     "Brooklyn Bridge pedestrian walkway, near Brooklyn tower" → "Brooklyn Bridge"
+        noise_patterns = [
+            r",?\s*sous\s+(?:viaduc|structure|pont|métro|le\s+)[\w\s\-']*",     # sous viaduc ligne 6
+            r",?\s*sur\s+le\s+(?:pont|viaduc)[\w\s\-'/]*",                     # sur le pont piétonnier/cycliste
+            r",?\s*passage\s+d'angle\b",                                        # passage d'angle
+            r",\s*angle\s+(?:Rue|Avenue|Boulevard|Quai|Place|Street|Road)\b[\w\s\-'éèêàâôûîïü]*(?=,)", # , angle Boulevard X, (REQUIERT virgule avant)
+            r",?\s*(?:Vieux-Port|vieux[\s-]port)\b",                            # Vieux-Port
+            r",?\s*,?\s*Centre-ville\b,?\s*",                                   # Centre-ville
+            r",?\s*,?\s*centre\s+historique\s+(?:de\s+|du\s+|d[e']\s*)?",      # centre historique de X
+            r",?\s*,?\s*Downtown\b",                                            # Downtown (en milieu)
+        ]
+        for pat in noise_patterns:
+            addr = re.sub(pat, ', ', addr, count=1, flags=re.IGNORECASE).strip().strip(',;').strip()
+        
+        # 8b-extra. Handle "pedestrian walkway" / "elevated walkway" as prefix
+        #     "Brooklyn Bridge pedestrian walkway, near Brooklyn tower" → "Brooklyn Bridge"
+        #     "Elevated walkway in Central District, Hong Kong" → "Central District, Hong Kong"
+        walkway_prefix = re.match(
+            r'(?:Elevated|Pedestrian)\s+walkway\s+(?:in|on|over|near|de|du|dans)\s+',
+            addr, re.IGNORECASE
+        )
+        if walkway_prefix:
+            addr = addr[walkway_prefix.end():].strip()
+        else:
+            # Strip walkway as suffix: "Brooklyn Bridge pedestrian walkway" → "Brooklyn Bridge"
+            addr = re.sub(r'\s+(?:pedestrian|elevated)\s+walkway\b', '', addr, flags=re.IGNORECASE).strip()
+        
+        # 8b-extra. "near X" at end (after noise removal)
+        near_end = re.search(r',?\s*near\s+[\w\s]+$', addr, re.IGNORECASE)
+        if near_end:
+            addr = addr[:near_end.start()].strip().rstrip(',;')
+        
+        # 8d. Retirer "/" en milieu d'adresse comme séparateur de lieux
+        #     "Viale Farini/Porta Adriana, 48121 Ravenna" → "Viale Farini, 48121 Ravenna"
+        if '/' in addr and ' ou ' not in addr.lower():
+            slash_match = re.search(r'([^/]+)/([^/,]+)', addr)
+            if slash_match:
+                part1 = slash_match.group(1).strip()
+                rest = addr[slash_match.end():].strip().lstrip(',').strip()
+                if rest:
+                    addr = f"{part1}, {rest}"
+                else:
+                    addr = part1
         
         # 9. Nettoyer les espaces et ponctuation
         addr = re.sub(r'\s+', ' ', addr)  # espaces multiples
@@ -2029,6 +2127,131 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
             time.sleep(1)  # Rate limiting Nominatim
         
         return None
+    
+    def _refine_with_intersection(self, lat1, lng1, hints, city_name=None, city_code=None):
+        """
+        Si les hints contiennent une info d'intersection ("intersection: Rue Y, 75006 Paris"),
+        géocode la 2e rue et retourne le point médian (approximation de l'intersection).
+        
+        Pour 2 rues qui se croisent, le midpoint entre leurs centroïdes Nominatim
+        est souvent plus proche de l'intersection réelle que le centroïde d'une seule rue.
+        
+        Returns: (lat, lng, street2_name) or (None, None, None) if no intersection found
+        """
+        import re
+        
+        # Chercher un hint d'intersection
+        intersection_hint = None
+        for hint in (hints or []):
+            if isinstance(hint, str) and hint.startswith('intersection: '):
+                intersection_hint = hint[len('intersection: '):].strip()
+                break
+        
+        if not intersection_hint:
+            return None, None, None
+        
+        self.log(f"🔀 Intersection détectée: {intersection_hint}")
+        
+        # Géocoder la 2e rue
+        ocr = ImageOCRAnalyzer(verbose=self.verbose)
+        
+        addr2 = intersection_hint
+        if city_name and city_name.lower() not in addr2.lower():
+            addr2 = f"{addr2}, {city_name}"
+        
+        geo2 = ocr.geocode_address(addr2, city_code=city_code)
+        
+        if not geo2:
+            self.log(f"  ❌ 2e rue non géocodée: {addr2}")
+            return None, None, None
+        
+        lat2, lng2 = geo2['lat'], geo2['lng']
+        
+        # Vérifier que les 2 rues sont dans la même zone (< 5km)
+        import math
+        R = 6371
+        dlat = math.radians(lat2 - lat1)
+        dlon = math.radians(lng2 - lng1)
+        a = (math.sin(dlat/2)**2 + 
+             math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * 
+             math.sin(dlon/2)**2)
+        dist_km = R * 2 * math.asin(min(1.0, math.sqrt(a)))
+        
+        if dist_km > 5:
+            self.log(f"  ⚠️ 2 rues trop éloignées ({dist_km:.1f}km), pas d'intersection")
+            return None, None, None
+        
+        # Midpoint = approximation de l'intersection
+        mid_lat = (lat1 + lat2) / 2
+        mid_lng = (lng1 + lng2) / 2
+        
+        self.log(f"  📍 Intersection estimée: {mid_lat:.6f}, {mid_lng:.6f} (midpoint, rues à {dist_km:.1f}km)")
+        
+        return mid_lat, mid_lng, intersection_hint
+    
+    def _classify_vision_tier(self, vision_result, city_code=None):
+        """
+        Classify Vision geocoding quality into 3 tiers based on ML-derived rules.
+        Trained on 200-sample harvest (AUC=0.705, validated via 5-fold CV).
+        
+        TIER 1 (high):   street_signs ≥ 1 AND distance_to_center < 3km → 81% <1km
+        TIER 2 (medium): confidence HIGH OR has_postcode OR address_has_number → 65% <1km
+        TIER 3 (low):    everything else → 40% <1km
+        
+        Returns: ('high', 'medium', or 'low'), reason_string
+        """
+        import math, re
+        
+        clues = vision_result.get('clues') or {}
+        confidence = (vision_result.get('confidence') or 'LOW').upper()
+        lat = vision_result.get('lat')
+        lng = vision_result.get('lng')
+        address = clues.get('best_address_guess', '') or ''
+        
+        # Extract features
+        n_signs = len(clues.get('street_signs', []) or [])
+        has_postcode = bool(clues.get('postcode'))
+        has_number = bool(re.search(r'\b\d{1,4}\s+(?:rue|avenue|boulevard|street|road|via|calle)', address, re.IGNORECASE) or
+                         re.search(r'^\d{1,4}\s', address))
+        
+        # Distance to city center
+        dist_center = 99.0
+        if lat and lng and city_code:
+            center = CITY_CENTERS.get(city_code, {})
+            c_lat = center.get('lat')
+            c_lng = center.get('lng')
+            if c_lat and c_lng:
+                dlat = math.radians(c_lat - lat)
+                dlon = math.radians(c_lng - lng)
+                a = (math.sin(dlat/2)**2 + 
+                     math.cos(math.radians(lat)) * math.cos(math.radians(c_lat)) * 
+                     math.sin(dlon/2)**2)
+                dist_center = 6371 * 2 * math.asin(min(1.0, math.sqrt(a)))
+        
+        # District-only fallback → always low
+        if vision_result.get('source_detail') == 'vision_district':
+            return 'low', 'district_fallback'
+        
+        # TIER 1: street signs + close to center → 81% precision
+        if n_signs >= 1 and dist_center < 3.0:
+            return 'high', f'signs={n_signs},dist={dist_center:.1f}km'
+        
+        # TIER 2: strong signals but not TIER 1
+        tier2_reasons = []
+        if confidence == 'HIGH':
+            tier2_reasons.append('conf=HIGH')
+        if has_postcode:
+            tier2_reasons.append('postcode')
+        if has_number:
+            tier2_reasons.append('addr_number')
+        if n_signs >= 1:
+            tier2_reasons.append(f'signs={n_signs}')
+        
+        if tier2_reasons:
+            return 'medium', '+'.join(tier2_reasons)
+        
+        # TIER 3: no strong signal
+        return 'low', f'conf={confidence},signs={n_signs},dist={dist_center:.1f}km'
     
     def _cross_validate_with_district(self, addr_lat, addr_lng, clues, city_name, city_code, addr_text=''):
         """
@@ -2546,14 +2769,24 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
             self.log(f"Géocodage: {addr}")
             geo = ocr.geocode_address(addr, city_code=city_code)
             if geo:
+                use_lat, use_lng = geo['lat'], geo['lng']
+                
+                # Si on a une info d'intersection, raffiner les coords
+                int_lat, int_lng, int_street = self._refine_with_intersection(
+                    use_lat, use_lng, hints_collected, city_name, city_code
+                )
+                if int_lat is not None:
+                    use_lat, use_lng = int_lat, int_lng
+                    addr = f"{addr} × {int_street}"  # Enrichir l'adresse affichée
+                
                 # Cross-validation avec les indices de quartier
                 xcheck = self._cross_validate_with_district(
-                    geo['lat'], geo['lng'], clues, city_name, city_code, addr_text=addr
+                    use_lat, use_lng, clues, city_name, city_code, addr_text=addr
                 )
                 
                 result['found'] = True
-                result['lat'] = geo['lat']
-                result['lng'] = geo['lng']
+                result['lat'] = use_lat
+                result['lng'] = use_lng
                 result['address'] = addr
                 if hints_collected:
                     result['geo_hint'] = ' | '.join(hints_collected[:3])
@@ -5385,10 +5618,15 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
                             new_inv['geo_hint'] = vision_result['geo_hint']
                         
                         is_district = vision_result.get('source_detail') == 'vision_district'
-                        is_high_medium = vision_result.get('confidence') in ('HIGH', 'MEDIUM')
+                        
+                        # ML-derived tier classification (trained on 200 samples)
+                        vision_tier, tier_reason = searcher.vision._classify_vision_tier(
+                            vision_result, city_code=city_code
+                        )
                         
                         new_inv['geo_source'] = 'vision_district' if is_district else 'vision'
-                        new_inv['geo_confidence'] = 'low' if is_district else ('medium' if is_high_medium else 'low')
+                        new_inv['geo_confidence'] = vision_tier
+                        new_inv['geo_tier_reason'] = tier_reason
                         new_inv['location_unknown'] = False
                         # District = approximatif → ne pas marquer exhausted, on pourra retenter
                         new_inv['geo_search_exhausted'] = False
@@ -5403,16 +5641,15 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
                             if vision_result.get('geo_hint'):
                                 print(f"      💡 Hint: {vision_result['geo_hint'][:80]}")
                         else:
-                            if is_high_medium:
-                                stats['medium'] += 1
-                            else:
-                                stats['low'] += 1
+                            stats[vision_tier] = stats.get(vision_tier, 0) + 1
+                            tier_icon = {'high': '🟢', 'medium': '🟡', 'low': '🔴'}.get(vision_tier, '?')
                             print(f" ✅ {vision_result['lat']:.6f}, {vision_result['lng']:.6f}")
                             if vision_result.get('address'):
                                 print(f"      📍 {vision_result['address']}")
                         
                         confidence = vision_result.get('confidence', '?')
-                        print(f"      🎯 Confiance: {confidence}")
+                        tier_icon = {'high': '🟢', 'medium': '🟡', 'low': '🔴'}.get(vision_tier, '?')
+                        print(f"      🎯 Confiance: {confidence} → Tier {tier_icon} {vision_tier.upper()} ({tier_reason})")
                         # Afficher le résultat du cross-check si downgrade
                         if vision_result.get('_xcheck_reason'):
                             print(f"      🔍 Cross-check: {vision_result['_xcheck_reason']}")
