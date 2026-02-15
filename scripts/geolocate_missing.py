@@ -274,7 +274,7 @@ CITY_CENTERS = {
     'BTA': {'lat': 42.6973, 'lng': 9.4510, 'name': 'Bastia'},
     # Autres / Spéciaux
     'ELT': {'lat': 29.5577, 'lng': 34.9519, 'name': 'Eilat'},
-    'GRTI': {'lat': 29.0333, 'lng': -13.6333, 'name': 'Graciosa'},
+    'GRTI': {'lat': -2.1500, 'lng': 34.1500, 'name': 'Grumeti'},
     'RDU': {'lat': 50.3543, 'lng': 5.4563, 'name': 'Durbuy'},
     'SPACE': {'lat': 0.0, 'lng': 0.0, 'name': 'Space (ISS)'},
     # Alias supplémentaires Flask
@@ -344,8 +344,8 @@ CITY_MAX_RADIUS = {
     'FTBL': 10000, 'VRS': 10000, 'CAPF': 10000, 'MEN': 10000, 'CON': 10000,
     'VLMO': 10000, 'CAZ': 10000, 'LCT': 10000, 'FRQ': 10000, 'ANZR': 10000,
     'GRU': 10000, 'NOO': 10000,
-    # Îles / zones isolées (rayon 50km)
-    'REUN': 50000, 'BT': 80000, 'GRTI': 20000,
+    # Îles / zones isolées / réserves (rayon 50-100km)
+    'REUN': 50000, 'BT': 80000, 'GRTI': 80000,
 }
 DEFAULT_CITY_RADIUS = 25000  # 25km par défaut
 
@@ -638,13 +638,13 @@ CITY_COUNTRIES = {
     # Switzerland
     'BRN': 'ch', 'BSL': 'ch', 'GNV': 'ch', 'LSN': 'ch', 'ANZR': 'ch',
     # Portugal
-    'LIS': 'pt', 'LX': 'pt', 'LSB': 'pt', 'FAO': 'pt', 'GRTI': 'pt',
+    'LIS': 'pt', 'LX': 'pt', 'LSB': 'pt', 'FAO': 'pt',
     # Other Europe
     'LJU': 'si', 'PRG': 'cz', 'WAR': 'pl', 'IST': 'tr',
     'RVK': 'is', 'HALM': 'se', 'VSB': 'se', 'GRU': 'hr',
     # North Africa / Middle East
     'MRAK': 'ma', 'RBA': 'ma', 'TUN': 'tn', 'TN': 'tn', 'DJBA': 'tn',
-    'ELT': 'il', 'MBSA': 'ke',
+    'ELT': 'il', 'MBSA': 'ke', 'GRTI': 'tz',
     # Asia
     'TK': 'jp', 'TYO': 'jp',
     'HK': 'cn',
