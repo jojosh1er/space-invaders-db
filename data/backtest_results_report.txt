@@ -1,0 +1,46 @@
+BACKTEST GÉOLOCALISATION — RAPPORT
+======================================================================
+Date: 15/02/2026 16:56
+Invaders testés: 15
+
+ID           Ville  Source               Distance Qualité     
+-----------------------------------------------------------------
+BGK_07       BGK    vision                 0.91km OK          
+             hint: cross-check: 6.4km du quartier Sukhumvit
+             réel: (13.744608, 100.533002)  trouvé: (13.742078, 100.524970)
+HK_20        HK     vision                 4.66km ZONE        
+             hint: cross-check: 1.2km du quartier Central/Sheung Wan | quartier
+             réel: (22.322660, 114.168707)  trouvé: (22.281938, 114.158077)
+IST_06       IST    vision                 3.08km ZONE        
+             réel: (41.009667, 28.970029)  trouvé: (41.032003, 28.948293)
+LDN_50       LDN    vision_district        0.11km GOOD        
+             hint: 64 Bedford Square, Bloomsbury, London WC1 | quartier: Blooms
+             réel: (51.518267, -0.130708)  trouvé: (51.518892, -0.131879)
+MARS_30      MARS   vision                 0.69km OK          
+             réel: (43.299187, 5.385070)  trouvé: (43.298203, 5.376628)
+MBSA_04      MBSA   vision                 0.31km GOOD        
+             hint: près de Ndia Kuu Road
+             réel: (-4.061895, 39.671055)  trouvé: (-4.059395, 39.672271)
+MIA_40       MIA    vision                 4.20km ZONE        
+             hint: probablement Biscayne Boulevard | quartier probable: Downtow
+             réel: (25.804277, -80.191246)  trouvé: (25.766971, -80.197775)
+MLB_07       MLB    vision                 0.77km OK          
+             réel: (-37.812050, 144.972172)  trouvé: (-37.816584, 144.965515)
+MPL_10       MPL    vision                 0.01km EXCELLENT   
+             réel: (43.610887, 3.878220)  trouvé: (43.610772, 3.878248)
+NY_100       NY     vision                 3.56km ZONE        
+             réel: (40.747361, -74.005719)  trouvé: (40.719273, -73.985407)
+PA_142       PA     vision                 3.13km ZONE        
+             réel: (48.861689, 2.336823)  trouvé: (48.833744, 2.332292)
+PA_567       PA     vision                 6.19km ZONE        
+             réel: (48.876023, 2.402091)  trouvé: (48.828518, 2.358071)
+RBA_06       RBA    vision                17.22km FAR         
+             hint: quartier probable: Quartier de l'Océan/Bab El Bhar
+             réel: (34.030247, -6.845356)  trouvé: (33.919140, -6.975371)
+ROM_30       ROM    vision                 0.08km EXCELLENT   
+             réel: (41.895535, 12.493413)  trouvé: (41.896095, 12.493934)
+TK_30        TK     vision                 4.31km ZONE        
+             réel: (35.647761, 139.702319)  trouvé: (35.671182, 139.740298)
+
+Moyenne: 3.28km  Médiane: 3.08km  Min: 0.01km  Max: 17.22km
+<1km: 7/15  <3km: 7/15

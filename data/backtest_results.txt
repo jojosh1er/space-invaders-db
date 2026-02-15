@@ -1,0 +1,103 @@
+GÉOLOCALISATION DES INVADERS MANQUANTS
+============================================================
+
+Total: 15
+Trouvés: 15
+HIGH: 0, MEDIUM: 10 (dont 15 Vision), LOW: 5
+
+PA_142 🟡 (MEDIUM)
+   GPS: 48.833744, 2.332292
+   Source: vision
+   Adresse: Catacombes de Paris, 1 avenue du Colonel Henri Rol-Tanguy, 75014 Paris
+   Maps: https://www.google.com/maps?q=48.8337439,2.3322925
+
+PA_567 🟡 (MEDIUM)
+   GPS: 48.828518, 2.358071
+   Source: vision
+   Adresse: Avenue de Choisy, 75013 Paris
+   Maps: https://www.google.com/maps?q=48.8285181,2.3580715
+
+LDN_50 🔴 (LOW)
+   GPS: 51.518892, -0.131879
+   Source: vision_district
+   Adresse: ~Bloomsbury, London
+   💡 Hint: 64 Bedford Square, Bloomsbury, London WC1 | quartier: Bloomsbury or Marylebone | Georgian townhouse, dark glazed brick f
+   Maps: https://www.google.com/maps?q=51.5188919,-0.1318793
+
+ROM_30 🟡 (MEDIUM)
+   GPS: 41.896095, 12.493934
+   Source: vision
+   Adresse: Via Urbana, 00184 Roma, Monti
+   Maps: https://www.google.com/maps?q=41.8960953,12.493934
+
+MARS_30 🟡 (MEDIUM)
+   GPS: 43.298203, 5.376628
+   Source: vision
+   Adresse: Cours Belsunce, 13001 Marseille
+   Maps: https://www.google.com/maps?q=43.2982032,5.3766278
+
+MPL_10 🟡 (MEDIUM)
+   GPS: 43.610772, 3.878248
+   Source: vision
+   Adresse: Place Pétrarque, 34000 Montpellier
+   Maps: https://www.google.com/maps?q=43.6107721,3.8782479
+
+TK_30 🟡 (MEDIUM)
+   GPS: 35.671182, 139.740298
+   Source: vision
+   Adresse: NARA (Nara, 外堀通り, 赤坂二丁目, 赤坂, 港区, 東京都, 100-8968, 日本)
+   Maps: https://www.google.com/maps?q=35.6711822,139.7402983
+
+BGK_07 🔴 (LOW)
+   GPS: 13.742078, 100.524970
+   Source: vision
+   Adresse: SALE (สำนักงานขายสวนหลวงสแควร์, ซอยจุฬาลงกรณ์ 16, แขวงวังใหม่, เขตปทุมวัน, กรุงเทพมหาน)
+   💡 Hint: cross-check: 6.4km du quartier Sukhumvit
+   Maps: https://www.google.com/maps?q=13.7420784,100.5249701
+
+HK_20 🔴 (LOW)
+   GPS: 22.281938, 114.158077
+   Source: vision
+   Adresse: Central, Hong Kong Island
+   💡 Hint: cross-check: 1.2km du quartier Central/Sheung Wan | quartier probable: Central/Sheung Wan
+   Maps: https://www.google.com/maps?q=22.2819377,114.1580765
+
+NY_100 🟡 (MEDIUM)
+   GPS: 40.719273, -73.985407
+   Source: vision
+   Adresse: 152 Rivington Street, New York, NY 10002
+   Maps: https://www.google.com/maps?q=40.7192733,-73.9854073
+
+MIA_40 🔴 (LOW)
+   GPS: 25.766971, -80.197775
+   Source: vision
+   Adresse: Station-service Chevron, Miami
+   💡 Hint: probablement Biscayne Boulevard | quartier probable: Downtown Miami ou Brickell
+   Maps: https://www.google.com/maps?q=25.766971,-80.1977746
+
+MBSA_04 🟡 (MEDIUM)
+   GPS: -4.059395, 39.672271
+   Source: vision
+   Adresse: Old Town, Mombasa Island
+   💡 Hint: près de Ndia Kuu Road
+   Maps: https://www.google.com/maps?q=-4.0593955,39.6722709
+
+RBA_06 🔴 (LOW)
+   GPS: 33.919140, -6.975371
+   Source: vision
+   Adresse: Phare de Rabat
+   💡 Hint: quartier probable: Quartier de l'Océan/Bab El Bhar
+   Maps: https://www.google.com/maps?q=33.9191398,-6.9753709
+
+IST_06 🟡 (MEDIUM)
+   GPS: 41.032003, 28.948293
+   Source: vision
+   Adresse: Balat, Fatih, Istanbul
+   Maps: https://www.google.com/maps?q=41.0320032,28.9482931
+
+MLB_07 🟡 (MEDIUM)
+   GPS: -37.816584, 144.965515
+   Source: vision
+   Adresse: Centre Place, Melbourne CBD 3000
+   Maps: https://www.google.com/maps?q=-37.8165838,144.9655146
+

@@ -1502,6 +1502,8 @@ class VisionAnalyzer:
     """
     
     VISION_MODEL = "claude-sonnet-4-5-20250929"
+    VISION_SHOTS = 3       # Nombre d'appels Vision par image (consensus multi-shot)
+    VISION_TEMPERATURE = 0.7  # Diversité entre shots, scoring+cross-check filtrent
     
     # Prompts spécifiques par pays/ville
     CITY_HINTS = {
@@ -1573,34 +1575,43 @@ Analyse les images fournies et identifie TOUS les indices de localisation visibl
 Si plusieurs images sont fournies, la première est une vue large (contexte) et la seconde un gros plan (détails).
 Croise les indices des deux images.
 
+CONSIGNES:
+- Dans street_signs et shop_signs, reporte le texte lisible. Si un mot est partiellement visible, complète-le si tu es raisonnablement sûr, sinon utilise "..." (ex: "...OST").
+- Pour best_address_guess, donne ta meilleure estimation d'adresse UNIQUE (pas de 'ou').
+- IMPORTANT: Remplis TOUJOURS le champ "district" avec le quartier/arrondissement le plus probable, même si approximatif.
+- confidence: HIGH si tu lis clairement plaque de rue + numéro. MEDIUM si tu identifies une rue ou un lieu nommé. LOW si c'est une estimation à partir du style architectural ou d'indices indirects.
+
 Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
 {{
-  "street_signs": ["texte exact de chaque plaque de rue visible"],
+  "street_signs": ["texte de chaque plaque de rue visible"],
   "building_numbers": ["numéros de bâtiments visibles"],
   "shop_signs": ["NOM COURT de chaque enseigne (ex: 'Café de Flore', pas de description)"],
   "landmarks": ["noms propres de monuments ou bâtiments reconnaissables (pas de descriptions vagues)"],
-  "district": "arrondissement ou quartier si identifiable",
+  "district": "arrondissement ou quartier identifié (OBLIGATOIRE — donne ta meilleure estimation)",
   "postcode": "code postal si visible",
   "metro_bus": ["stations de métro/bus/tram visibles"],
   "architectural_style": "style architectural observé",
   "other_clues": ["tout autre indice de localisation"],
   "best_address_guess": "ta meilleure estimation d'adresse UNIQUE (pas de 'ou', choisis la plus probable)",
-  "confidence": "HIGH/MEDIUM/LOW",
+  "confidence": "HIGH/MEDIUM/LOW (voir critères ci-dessus)",
   "reasoning": "explication courte de ton raisonnement"
 }}"""
     
-    def __init__(self, api_key=None, verbose=False):
+    def __init__(self, api_key=None, verbose=False, n_shots=None):
         self.api_key = api_key or os.environ.get('ANTHROPIC_API_KEY')
         self.verbose = verbose
         self.enabled = False
         self.client = None
+        if n_shots is not None:
+            self.VISION_SHOTS = n_shots
         
         if self.api_key:
             try:
                 import anthropic
                 self.client = anthropic.Anthropic(api_key=self.api_key)
                 self.enabled = True
-                print("   🧠 Claude Vision activé (multi-images + recherche web)")
+                shots_label = f", {self.VISION_SHOTS} shots" if self.VISION_SHOTS > 1 else ""
+                print(f"   🧠 Claude Vision activé (multi-images + recherche web{shots_label})")
             except ImportError:
                 print("   ⚠️ Claude Vision: 'pip install anthropic' requis")
             except Exception as e:
@@ -1692,6 +1703,7 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
             response = self.client.messages.create(
                 model=self.VISION_MODEL,
                 max_tokens=1200,
+                temperature=self.VISION_TEMPERATURE,
                 system=system_prompt,
                 messages=[{
                     "role": "user",
@@ -2018,6 +2030,132 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
         
         return None
     
+    def _cross_validate_with_district(self, addr_lat, addr_lng, clues, city_name, city_code, addr_text=''):
+        """
+        Cross-valide les coordonnées d'une adresse géocodée avec les indices de quartier.
+        
+        Logique:
+        1. Si un district est identifié → le géocoder et comparer
+        2. Si l'adresse provient d'un business/landmark → signal de risque
+        3. Si Vision dit LOW confidence → respecter ce jugement
+        
+        Returns:
+            dict: {
+                'validated': bool,           # True si le cross-check passe
+                'confidence_adjust': str,    # 'keep', 'downgrade', 'upgrade'
+                'reason': str,               # Explication
+                'district_lat': float,       # Coords du district (si géocodé)
+                'district_lng': float,
+                'distance_km': float,        # Distance adresse ↔ district
+            }
+        """
+        import math
+        
+        def _haversine(lat1, lon1, lat2, lon2):
+            R = 6371
+            dlat = math.radians(lat2 - lat1)
+            dlon = math.radians(lon2 - lon1)
+            a = math.sin(dlat/2)**2 + math.cos(math.radians(lat1))*math.cos(math.radians(lat2))*math.sin(dlon/2)**2
+            return R * 2 * math.asin(min(1.0, math.sqrt(a)))
+        
+        verdict = {
+            'validated': False,
+            'confidence_adjust': 'keep',
+            'reason': '',
+            'district_lat': None,
+            'district_lng': None,
+            'distance_km': None,
+        }
+        
+        # ---- CHECK 1: Vision's own confidence ----
+        vision_conf = (clues.get('confidence') or '').upper()
+        if vision_conf == 'LOW':
+            verdict['confidence_adjust'] = 'downgrade'
+            verdict['reason'] = 'Vision confidence LOW'
+            self.log(f"   ⚠️ Cross-check: Vision confidence LOW → downgrade")
+            # Don't return yet, still try district check for better coords
+        
+        # ---- CHECK 2: Address quality (business/landmark vs street) ----
+        has_street_sign = bool(clues.get('street_signs'))
+        has_shop_sign = bool(clues.get('shop_signs'))
+        addr_lower = (addr_text or '').lower()
+        
+        # Heuristic: business/landmark addresses are riskier
+        business_keywords = ['restaurant', 'hotel', 'shop', 'store', 'market', 'bar', 
+                           'café', 'cafe', 'station-service', 'station service',
+                           'gas station', 'petrol station', 'liquor',
+                           'cost', 'net cost', 'phare', 'lighthouse', 'museum', 'musée',
+                           'chevron', 'shell', 'total energies', 'bp ',
+                           'supermarket', 'pharmacy', 'pharmacie', 'boulangerie',
+                           'church', 'église', 'mosque', 'mosquée', 'temple',
+                           'academy', 'théâtre', 'theater', 'cinema']
+        is_business_addr = any(kw in addr_lower for kw in business_keywords)
+        
+        # Nominatim-resolved address from a business name = high hallucination risk
+        if is_business_addr and not has_street_sign:
+            if verdict['confidence_adjust'] != 'downgrade':
+                verdict['confidence_adjust'] = 'downgrade'
+                verdict['reason'] = f'Adresse de type commerce/landmark sans plaque de rue'
+                self.log(f"   ⚠️ Cross-check: adresse business sans plaque → downgrade")
+        
+        # ---- CHECK 3: District cross-validation ----
+        district_name = clues.get('district', '').strip()
+        if not district_name or not city_name:
+            if verdict['confidence_adjust'] == 'keep':
+                # No district to cross-check + no other red flag
+                # If Vision confidence was HIGH/MEDIUM and address has postcode → trust it
+                has_postcode = bool(clues.get('postcode'))
+                if vision_conf in ('HIGH', 'MEDIUM') and (has_street_sign or has_postcode):
+                    verdict['validated'] = True
+                    verdict['reason'] = verdict['reason'] or 'Pas de quartier mais adresse avec plaque/code postal'
+                else:
+                    # No district, no strong signal → keep medium but flag
+                    verdict['validated'] = True  
+                    verdict['reason'] = verdict['reason'] or 'Pas de quartier pour cross-check'
+            return verdict
+        
+        # Geocode the district
+        ocr = ImageOCRAnalyzer(verbose=self.verbose)
+        district_query = f"{district_name}, {city_name}"
+        self.log(f"   🔍 Cross-check quartier: {district_query}")
+        
+        geo_district = ocr.geocode_address(district_query, city_code=city_code)
+        if not geo_district:
+            self.log(f"   ⚠️ Quartier non géocodable: {district_query}")
+            verdict['validated'] = True if verdict['confidence_adjust'] == 'keep' else False
+            verdict['reason'] = verdict['reason'] or f'Quartier "{district_name}" non géocodable'
+            return verdict
+        
+        verdict['district_lat'] = geo_district['lat']
+        verdict['district_lng'] = geo_district['lng']
+        
+        # Compute distance between geocoded address and district center
+        dist_km = _haversine(addr_lat, addr_lng, geo_district['lat'], geo_district['lng'])
+        verdict['distance_km'] = dist_km
+        
+        # Threshold: depends on city density
+        # Dense cities (Paris, London, Tokyo): 2km is already suspicious
+        # Spread cities (LA, Miami, Melbourne): 5km more acceptable
+        large_cities = {'LA', 'MIA', 'MLB', 'SF', 'SD', 'SP', 'NY', 'HK', 'BT'}
+        threshold_km = 5.0 if city_code in large_cities else 3.0
+        
+        if dist_km <= threshold_km:
+            # Address is near the identified district → validated!
+            verdict['validated'] = True
+            if verdict['confidence_adjust'] != 'downgrade':
+                verdict['confidence_adjust'] = 'keep'
+            verdict['reason'] = f'Adresse à {dist_km:.1f}km du quartier "{district_name}" (< {threshold_km}km)'
+            self.log(f"   ✅ Cross-check OK: {dist_km:.1f}km du quartier {district_name}")
+        else:
+            # Address is far from identified district → suspect!
+            verdict['validated'] = False
+            verdict['confidence_adjust'] = 'downgrade'
+            verdict['reason'] = f'Adresse à {dist_km:.1f}km du quartier "{district_name}" (> {threshold_km}km) → suspect'
+            self.log(f"   🚫 Cross-check FAIL: adresse à {dist_km:.1f}km du quartier {district_name} (seuil: {threshold_km}km)")
+        
+        time.sleep(1)  # Rate limit Nominatim
+        return verdict
+    
     def _search_landmarks_web(self, clues, city_name=None, city_code=None):
         """
         Recherche les coordonnées des commerces et landmarks identifiés par Vision.
@@ -2156,16 +2294,174 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
         
         self.log(f"Envoi de {len(images)} image(s) à Claude Vision...")
         
-        # 2. Analyser avec Claude Vision (prompt adapté à la ville)
-        clues = self._call_vision(images, city_code=city_code, city_name=city_name)
-        if not clues:
-            result['error'] = 'Pas de réponse exploitable de Vision'
+        # 2. Analyser avec Claude Vision — multi-shot pour consensus
+        n_shots = self.VISION_SHOTS
+        ocr_for_precheck = ImageOCRAnalyzer(verbose=False)  # Silencieux pour pré-check
+        
+        # Obtenir le centre-ville pour scoring
+        city_center_lat = CITY_CENTERS.get(city_code, {}).get('lat')
+        city_center_lng = CITY_CENTERS.get(city_code, {}).get('lng')
+        
+        import math
+        def _haversine_quick(lat1, lon1, lat2, lon2):
+            R = 6371
+            dlat = math.radians(lat2 - lat1)
+            dlon = math.radians(lon2 - lon1)
+            a = math.sin(dlat/2)**2 + math.cos(math.radians(lat1))*math.cos(math.radians(lat2))*math.sin(dlon/2)**2
+            return R * 2 * math.asin(min(1.0, math.sqrt(a)))
+        
+        shot_results = []  # [(score, clues, geocoded_lat, geocoded_lng, address)]
+        
+        for shot_idx in range(n_shots):
+            shot_label = f"shot {shot_idx+1}/{n_shots}"
+            if shot_idx > 0:
+                time.sleep(1)  # Rate limit entre appels API
+            self.log(f"🎯 Vision {shot_label}...")
+            
+            clues_i = self._call_vision(images, city_code=city_code, city_name=city_name)
+            if not clues_i:
+                self.log(f"   {shot_label}: pas de réponse exploitable")
+                continue
+            
+            # Pré-check rapide: essayer de géocoder best_address_guess
+            score = 0.0
+            geo_lat, geo_lng, geo_addr = None, None, None
+            
+            best_addr = clues_i.get('best_address_guess', '')
+            conf = (clues_i.get('confidence') or 'LOW').upper()
+            district = clues_i.get('district', '')
+            
+            # Score de base selon confiance Vision
+            conf_score = {'HIGH': 3, 'MEDIUM': 2, 'LOW': 1}.get(conf, 0)
+            score += conf_score
+            
+            # Bonus si des plaques de rue sont identifiées (plus fiable)
+            has_street_signs = bool(clues_i.get('street_signs'))
+            if has_street_signs:
+                score += 3
+            
+            # Bonus si code postal visible
+            if clues_i.get('postcode'):
+                score += 1
+            
+            # Tenter le géocodage rapide
+            if best_addr:
+                cleaned, _ = self._clean_address_for_geocoding(best_addr, city_name)
+                addr_to_try = cleaned or best_addr
+                if city_name and city_name.lower() not in addr_to_try.lower():
+                    addr_to_try = f"{addr_to_try}, {city_name}"
+                
+                geo = ocr_for_precheck.geocode_address(addr_to_try, city_code=city_code)
+                if geo:
+                    geo_lat, geo_lng, geo_addr = geo['lat'], geo['lng'], addr_to_try
+                    score += 5  # Bonus majeur: géocodage réussi
+                    
+                    # Pénalité si adresse de type business/landmark sans plaque de rue
+                    business_keywords = ['restaurant', 'hotel', 'shop', 'store', 'market', 'bar',
+                                       'café', 'cafe', 'station-service', 'station service',
+                                       'gas station', 'petrol station', 'liquor',
+                                       'phare', 'lighthouse', 'museum', 'musée',
+                                       'chevron', 'shell', 'academy', 'cinema',
+                                       'church', 'église', 'mosque', 'temple']
+                    if any(kw in addr_to_try.lower() for kw in business_keywords) and not has_street_signs:
+                        score -= 4  # Pénalité forte: business sans plaque = hallucination probable
+                        self.log(f"   ⚠️ {shot_label}: pénalité business sans plaque")
+                    
+                    # Bonus distance au centre (plus proche = meilleur, mais plafonné)
+                    if city_center_lat and city_center_lng:
+                        dist_to_center = _haversine_quick(geo['lat'], geo['lng'], city_center_lat, city_center_lng)
+                        # Bonus modéré: max 3 pts pour <500m, décroissant
+                        score += max(0, 3 - dist_to_center * 0.5)
+                    
+                    # Bonus cohérence avec le district du même shot
+                    if district and city_name:
+                        district_q = f"{district}, {city_name}"
+                        geo_d_check = ocr_for_precheck.geocode_address(district_q, city_code=city_code)
+                        if geo_d_check:
+                            dist_addr_district = _haversine_quick(geo['lat'], geo['lng'], 
+                                                                   geo_d_check['lat'], geo_d_check['lng'])
+                            if dist_addr_district < 3.0:
+                                score += 3  # Bonus: adresse cohérente avec son propre district
+                                self.log(f"   ✓ {shot_label}: adresse à {dist_addr_district:.1f}km du district")
+                            elif dist_addr_district > 5.0:
+                                score -= 2  # Pénalité: adresse incohérente avec son district
+                                self.log(f"   ⚠️ {shot_label}: adresse à {dist_addr_district:.1f}km du district")
+                        time.sleep(1)
+                
+                time.sleep(1)  # Rate limit Nominatim
+            
+            # Sinon essayer le district
+            if not geo_lat and district and city_name:
+                district_query = f"{district}, {city_name}"
+                geo_d = ocr_for_precheck.geocode_address(district_query, city_code=city_code)
+                if geo_d:
+                    geo_lat, geo_lng = geo_d['lat'], geo_d['lng']
+                    geo_addr = f"~{district}"
+                    score += 2  # Bonus modéré: district géocodé
+                time.sleep(1)
+            
+            addr_preview = (best_addr or district or '?')[:50]
+            self.log(f"   {shot_label}: score={score:.1f}, conf={conf}, addr=\"{addr_preview}\"" +
+                     (f", geo={geo_lat:.4f},{geo_lng:.4f}" if geo_lat else ", geo=∅"))
+            
+            shot_results.append({
+                'score': score,
+                'clues': clues_i,
+                'geo_lat': geo_lat,
+                'geo_lng': geo_lng,
+                'geo_addr': geo_addr,
+                'shot': shot_idx + 1,
+            })
+        
+        if not shot_results:
+            result['error'] = f'Aucune réponse exploitable sur {n_shots} shots'
             return result
+        
+        # Sélection du meilleur shot
+        shot_results.sort(key=lambda x: x['score'], reverse=True)
+        best_shot = shot_results[0]
+        clues = best_shot['clues']
+        
+        # Détection de consensus: si 2+ shots géocodent au même endroit (<1km)
+        geocoded_shots = [s for s in shot_results if s['geo_lat'] is not None]
+        consensus_found = False
+        if len(geocoded_shots) >= 2:
+            # Chercher un cluster de 2+ résultats proches
+            for i, s1 in enumerate(geocoded_shots):
+                cluster = [s1]
+                for s2 in geocoded_shots[i+1:]:
+                    if _haversine_quick(s1['geo_lat'], s1['geo_lng'], s2['geo_lat'], s2['geo_lng']) < 1.0:
+                        cluster.append(s2)
+                if len(cluster) >= 2:
+                    # Consensus! Utiliser le meilleur du cluster
+                    cluster.sort(key=lambda x: x['score'], reverse=True)
+                    best_shot = cluster[0]
+                    clues = best_shot['clues']
+                    consensus_found = True
+                    self.log(f"🤝 Consensus: {len(cluster)}/{len(geocoded_shots)} shots à <1km → shot #{best_shot['shot']}")
+                    break
+        
+        if not consensus_found and len(shot_results) > 1:
+            self.log(f"📊 Pas de consensus, meilleur score: shot #{best_shot['shot']} ({best_shot['score']:.1f}pts)")
+        elif len(shot_results) == 1:
+            self.log(f"📊 1 seul shot exploitable: #{best_shot['shot']}")
         
         result['clues'] = clues
         result['confidence'] = clues.get('confidence', 'LOW')
+        result['_n_shots'] = len(shot_results)
+        result['_consensus'] = consensus_found
+        # Résumé des shots pour debug
+        result['_shots_summary'] = [
+            {
+                'shot': s['shot'], 
+                'score': round(s['score'], 1),
+                'addr': (s.get('geo_addr') or s['clues'].get('best_address_guess', '?'))[:60],
+                'geo': f"{s['geo_lat']:.4f},{s['geo_lng']:.4f}" if s['geo_lat'] else None,
+            }
+            for s in shot_results
+        ]
         
-        # Afficher les indices trouvés
+        # Afficher les indices du shot gagnant
         if clues.get('street_signs'):
             self.log(f"🪧 Plaques: {clues['street_signs']}")
         if clues.get('shop_signs'):
@@ -2250,15 +2546,41 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
             self.log(f"Géocodage: {addr}")
             geo = ocr.geocode_address(addr, city_code=city_code)
             if geo:
+                # Cross-validation avec les indices de quartier
+                xcheck = self._cross_validate_with_district(
+                    geo['lat'], geo['lng'], clues, city_name, city_code, addr_text=addr
+                )
+                
                 result['found'] = True
                 result['lat'] = geo['lat']
                 result['lng'] = geo['lng']
                 result['address'] = addr
-                # Stocker le hint s'il existe
                 if hints_collected:
                     result['geo_hint'] = ' | '.join(hints_collected[:3])
-                self.log(f"✅ GPS via adresse: {geo['lat']:.6f}, {geo['lng']:.6f}")
-                return result
+                
+                if xcheck['confidence_adjust'] == 'downgrade':
+                    # Cross-check détecte un risque → downgrade mais GARDER les coords originales
+                    # (le district peut être pire que l'adresse, cf TK_30: 4km→27km si on remplace)
+                    result['_xcheck_reason'] = xcheck['reason']
+                    result['confidence'] = 'LOW'
+                    self.log(f"⚠️ Cross-check downgrade: {xcheck['reason']}")
+                    
+                    # Enrichir le hint avec les infos du cross-check
+                    all_hints = list(hints_collected)
+                    if xcheck.get('distance_km') is not None:
+                        all_hints.append(f"cross-check: {xcheck['distance_km']:.1f}km du quartier {clues.get('district', '?')}")
+                    if clues.get('district'):
+                        all_hints.append(f"quartier probable: {clues['district']}")
+                    result['geo_hint'] = ' | '.join(dict.fromkeys(all_hints[:5]))
+                    
+                    self.log(f"📍 Adresse gardée (LOW): {geo['lat']:.6f}, {geo['lng']:.6f} — {addr}")
+                    return result
+                else:
+                    # Cross-check OK → retourner normalement
+                    self.log(f"✅ GPS via adresse: {geo['lat']:.6f}, {geo['lng']:.6f}")
+                    if xcheck.get('reason'):
+                        self.log(f"   ✓ {xcheck['reason']}")
+                    return result
         
         # Mémoriser les adresses échouées (le fallback quartier en extraira les noms de quartier)
         self._failed_address_variants = addresses_to_try
@@ -2269,13 +2591,32 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
         
         if landmark_candidates:
             best = landmark_candidates[0]
+            addr_text = f"{best.get('source_name', '?')} ({best['display_name'][:80]})"
+            
+            # Cross-validation du landmark avec le quartier
+            xcheck = self._cross_validate_with_district(
+                best['lat'], best['lng'], clues, city_name, city_code, addr_text=addr_text
+            )
+            
             result['found'] = True
             result['lat'] = best['lat']
             result['lng'] = best['lng']
-            result['address'] = f"{best.get('source_name', '?')} ({best['display_name'][:80]})"
+            result['address'] = addr_text
             if hints_collected:
                 result['geo_hint'] = ' | '.join(hints_collected[:3])
-            self.log(f"✅ GPS via {best['type']}: {best['lat']:.6f}, {best['lng']:.6f}")
+            
+            if xcheck['confidence_adjust'] == 'downgrade':
+                result['confidence'] = 'LOW'
+                result['_xcheck_reason'] = xcheck['reason']
+                # Garder les coords du landmark (pas de remplacement aveugle par district)
+                all_hints = list(hints_collected)
+                if xcheck.get('distance_km') is not None:
+                    all_hints.append(f"cross-check: {xcheck['distance_km']:.1f}km du quartier {clues.get('district', '?')}")
+                result['geo_hint'] = ' | '.join(dict.fromkeys(all_hints[:5]))
+                self.log(f"⚠️ GPS via {best['type']}: {best['lat']:.6f}, {best['lng']:.6f} (downgrade: {xcheck['reason']})")
+            else:
+                self.log(f"✅ GPS via {best['type']}: {best['lat']:.6f}, {best['lng']:.6f}")
+            
             return result
         
         # 6. Fallback quartier: géocoder le district/arrondissement identifié
@@ -4238,7 +4579,7 @@ class AroundUsSearcher:
 class InvaderLocationSearcher:
     """Recherche combinée sur plusieurs sources"""
     
-    def __init__(self, visible=False, verbose=False, pnote_file=None, pnote_url=None, flickr=True, anthropic_key=None, no_browser=False, no_lens=False):
+    def __init__(self, visible=False, verbose=False, pnote_file=None, pnote_url=None, flickr=True, anthropic_key=None, no_browser=False, no_lens=False, vision_shots=3):
         self.visible = visible
         self.verbose = verbose
         self.pnote_file = pnote_file
@@ -4246,6 +4587,7 @@ class InvaderLocationSearcher:
         self.flickr_enabled = flickr and not no_browser
         self.anthropic_key = anthropic_key
         self.no_browser = no_browser
+        self.vision_shots = vision_shots
         self.no_lens = no_lens
         self.playwright = None
         self.browser = None
@@ -4293,7 +4635,7 @@ class InvaderLocationSearcher:
             self.pnote = PnoteSearcher(pnote_url=self.pnote_url, verbose=self.verbose)
         
         if self.anthropic_key or os.environ.get('ANTHROPIC_API_KEY'):
-            self.vision = VisionAnalyzer(api_key=self.anthropic_key, verbose=self.verbose)
+            self.vision = VisionAnalyzer(api_key=self.anthropic_key, verbose=self.verbose, n_shots=self.vision_shots)
         
         # Google Lens (expérimental, mode --no-browser uniquement)
         if self.no_browser and not self.no_lens:
@@ -5019,7 +5361,9 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
             if not found_via_image and image_lieu_url and searcher.vision and searcher.vision.enabled:
                 image_close_url = inv.get('image_invader')  # Gros plan mosaïque
                 n_images = "2 images" if image_close_url else "1 image"
-                print(f"   🧠 Claude Vision ({n_images})...", end='', flush=True)
+                n_shots = searcher.vision.VISION_SHOTS if hasattr(searcher.vision, 'VISION_SHOTS') else 1
+                shots_info = f", {n_shots} shots" if n_shots > 1 else ""
+                print(f"   🧠 Claude Vision ({n_images}{shots_info})...", end='', flush=True)
                 vision_result = searcher.vision.analyze(
                     image_lieu_url, city_name, city_code,
                     image_close_url=image_close_url
@@ -5069,6 +5413,17 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
                         
                         confidence = vision_result.get('confidence', '?')
                         print(f"      🎯 Confiance: {confidence}")
+                        # Afficher le résultat du cross-check si downgrade
+                        if vision_result.get('_xcheck_reason'):
+                            print(f"      🔍 Cross-check: {vision_result['_xcheck_reason']}")
+                        if vision_result.get('_n_shots', 1) > 1:
+                            consensus = "✅ consensus" if vision_result.get('_consensus') else "📊 meilleur score"
+                            print(f"      🎯 Multi-shot: {vision_result['_n_shots']} shots, {consensus}")
+                            # Détail des shots en mode verbose
+                            if searcher.verbose and vision_result.get('_shots_summary'):
+                                for ss in vision_result['_shots_summary']:
+                                    geo_str = f"→ {ss['geo']}" if ss['geo'] else "→ ∅"
+                                    print(f"         #{ss['shot']} score={ss['score']:5.1f}  {ss['addr'][:50]}  {geo_str}")
                         found_via_image = True
                 else:
                     # Même en cas d'échec, stocker le hint s'il existe
@@ -5331,6 +5686,8 @@ def main():
                         help='Désactiver la recherche Flickr (scraping)')
     parser.add_argument('--anthropic-key', dest='anthropic_key', default=None,
                         help='Clé API Anthropic pour Claude Vision (ou env ANTHROPIC_API_KEY)')
+    parser.add_argument('--vision-shots', dest='vision_shots', type=int, default=3,
+                        help='Nombre d\'appels Vision par image (défaut: 3, consensus multi-shot)')
     parser.add_argument('--id', dest='invader_id', default=None,
                         help='Chercher un seul invader par son code (ex: PA_1531, LDN_42)')
     parser.add_argument('--retry-failed', dest='retry_failed', action='store_true',
@@ -5834,7 +6191,7 @@ def main():
             json.dump(missing_format, f, indent=2, ensure_ascii=False)
         
         # Lancer le searcher
-        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key, no_browser=args.no_browser, no_lens=getattr(args, "no_lens", False))
+        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key, no_browser=args.no_browser, no_lens=getattr(args, "no_lens", False), vision_shots=getattr(args, "vision_shots", 3))
         try:
             searcher.start()
             print("🌐 Navigateur démarré" if not getattr(searcher, "no_browser", False) else "🤖 Sources HTTP démarrées")
@@ -5871,7 +6228,7 @@ def main():
             return
         
         # Démarrer le searcher
-        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key, no_browser=args.no_browser, no_lens=getattr(args, "no_lens", False))
+        searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key, no_browser=args.no_browser, no_lens=getattr(args, "no_lens", False), vision_shots=getattr(args, "vision_shots", 3))
         try:
             searcher.start()
             print("🌐 Navigateur démarré" if not getattr(searcher, "no_browser", False) else "🤖 Sources HTTP démarrées")
@@ -5970,7 +6327,7 @@ def main():
     results = []
     
     # Initialiser le searcher
-    searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key, no_browser=args.no_browser, no_lens=getattr(args, "no_lens", False))
+    searcher = InvaderLocationSearcher(visible=args.visible, verbose=args.verbose, pnote_file=args.pnote_file, pnote_url=args.pnote_url, flickr=not args.no_flickr, anthropic_key=args.anthropic_key, no_browser=args.no_browser, no_lens=getattr(args, "no_lens", False), vision_shots=getattr(args, "vision_shots", 3))
     
     try:
         searcher.start()
