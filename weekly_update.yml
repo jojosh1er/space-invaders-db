@@ -17,11 +17,16 @@ on:
         required: false
         type: boolean
         default: false
+      skip_geolocate:
+        description: 'Passer l''étape de géolocalisation'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 120  # 2h max (scraping de toutes les villes)
+    timeout-minutes: 150  # 2h30 max (scraping + géolocalisation)
     
     permissions:
       contents: write  # Nécessaire pour push
@@ -41,6 +46,10 @@ jobs:
           pip install -r scripts/requirements.txt
           playwright install chromium
           playwright install-deps
+          # Dépendances géolocalisation (OCR + Vision + Lens)
+          pip install pytesseract anthropic Pillow
+          pip install git+https://github.com/krishna2206/google-lens-python.git
+          sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-fra
       
       - name: 🔍 Scrape & process issues
         env:
@@ -61,6 +70,50 @@ jobs:
           
           python scripts/update_from_spotter.py $ARGS
       
+      - name: 🆕 Détecter les nouveaux invaders
+        id: detect_new
+        run: |
+          # Compter les invaders ajoutés (geo_source=city_center ou location_unknown=true)
+          NEW_COUNT=$(python3 -c "
+          import json
+          with open('data/invaders_master.json') as f:
+              db = json.load(f)
+          new_invaders = [inv for inv in db 
+                         if inv.get('missing_from_github') 
+                         and inv.get('geo_source') == 'city_center'
+                         and not inv.get('geo_search_exhausted')]
+          print(len(new_invaders))
+          ")
+          echo "new_count=$NEW_COUNT" >> $GITHUB_OUTPUT
+          echo "🆕 $NEW_COUNT nouveaux invaders à géolocaliser"
+      
+      - name: 📍 Géolocaliser les nouveaux invaders
+        if: steps.detect_new.outputs.new_count != '0' && github.event.inputs.skip_geolocate != 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          ARGS="--from-master --pnote-url --no-browser"
+          
+          # Ville spécifique si demandée
+          if [ -n "${{ github.event.inputs.city }}" ]; then
+            ARGS="$ARGS --city ${{ github.event.inputs.city }}"
+          fi
+          
+          # Mode verbeux
+          if [ "${{ github.event.inputs.verbose }}" = "true" ]; then
+            ARGS="$ARGS --verbose"
+          fi
+          
+          python scripts/geolocate_missing.py $ARGS
+          
+          # Fusionner les résultats dans le master
+          # --from-master produit invaders_relocalized.json
+          if [ -f "data/invaders_relocalized.json" ]; then
+            python scripts/geolocate_missing.py --merge data/invaders_relocalized.json
+          elif [ -f "data/invaders_geolocated.json" ]; then
+            python scripts/geolocate_missing.py --merge data/invaders_geolocated.json
+          fi
+      
       - name: 📊 Afficher les stats
         run: |
           python3 -c "
@@ -69,9 +122,18 @@ jobs:
               m = json.load(f)
           print(f\"Total: {m['total_invaders']} invaders, {m['total_cities']} villes\")
           print(f\"Statuts: {m['status_counts']}\")
+          
+          # Stats géoloc
+          with open('data/invaders_master.json') as f:
+              db = json.load(f)
+          exhausted = sum(1 for inv in db if inv.get('geo_search_exhausted'))
+          city_center = sum(1 for inv in db if inv.get('geo_source') == 'city_center')
+          unknown = sum(1 for inv in db if inv.get('location_unknown'))
+          print(f'Géoloc: {city_center} au centre-ville, {exhausted} recherche épuisée, {unknown} inconnus')
           "
       
       - name: 📤 Commit & Push
+        id: commit
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "Space Invaders Bot 🛸"
@@ -79,6 +141,10 @@ jobs:
           # Vérifier s'il y a des changements
           if git diff --quiet data/; then
             echo "✅ Aucun changement détecté" >> $GITHUB_STEP_SUMMARY
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "change_count=0" >> $GITHUB_OUTPUT
+            echo "total_invaders=$(python3 -c "import json; print(json.load(open('data/metadata.json'))['total_invaders'])")" >> $GITHUB_OUTPUT
+            echo "total_cities=$(python3 -c "import json; print(json.load(open('data/metadata.json'))['total_cities'])")" >> $GITHUB_OUTPUT
             exit 0
           fi
           
@@ -90,9 +156,14 @@ jobs:
           import json
           from datetime import datetime, timedelta
           cl = json.load(open('data/invaders_changelog.json'))
-          cutoff = (datetime.now() - timedelta(hours=2)).isoformat()
+          cutoff = (datetime.now() - timedelta(hours=3)).isoformat()
           recent = [c for c in cl.get('changes',[]) if c.get('detected_at','') > cutoff]
           m = json.load(open('data/metadata.json'))
+          
+          # Stats géoloc
+          db = json.load(open('data/invaders_master.json'))
+          geolocated = sum(1 for inv in db if inv.get('geo_source') not in (None, 'city_center', 'unknown'))
+          exhausted = sum(1 for inv in db if inv.get('geo_search_exhausted'))
           
           lines = []
           lines.append('## 🛸 Rapport de mise à jour')
@@ -102,6 +173,8 @@ jobs:
           lines.append(f'| **Total invaders** | {m[\"total_invaders\"]} |')
           lines.append(f'| **Villes** | {m[\"total_cities\"]} |')
           lines.append(f'| **Avec coordonnées** | {m.get(\"with_coordinates\", \"?\")} |')
+          lines.append(f'| **Géolocalisés (précis)** | {geolocated} |')
+          lines.append(f'| **Recherche épuisée** | {exhausted} |')
           lines.append(f'| **Changements** | {len(recent)} |')
           lines.append('')
           
@@ -120,11 +193,50 @@ jobs:
           
           with open('summary.md', 'w') as f:
               f.write('\n'.join(lines))
+          
+          # Générer aussi le rapport texte pour le mail
+          txt = []
+          txt.append('RAPPORT DE MISE A JOUR SPACE INVADERS')
+          txt.append('=' * 45)
+          txt.append(f'Date: {datetime.now().strftime(\"%d/%m/%Y %H:%M UTC\")}')
+          txt.append(f'Total invaders: {m[\"total_invaders\"]}')
+          txt.append(f'Villes: {m[\"total_cities\"]}')
+          txt.append(f'Avec coordonnees: {m.get(\"with_coordinates\",\"?\")}')
+          txt.append(f'Geolocalises (precis): {geolocated}')
+          txt.append(f'Recherche epuisee: {exhausted}')
+          txt.append(f'Changements: {len(recent)}')
+          txt.append('')
+          if recent:
+              txt.append('DETAIL DES CHANGEMENTS:')
+              txt.append('-' * 30)
+              for c in recent[:80]:
+                  inv_id = c.get('invader_id', '?')
+                  ctype = c.get('change_type', '?')
+                  old_v = c.get('old_value', '')
+                  new_v = c.get('new_value', '')
+                  src = c.get('source', 'spotter')
+                  if ctype == 'new_invader':
+                      txt.append(f'  + {inv_id} (nouveau, source: {src})')
+                  elif ctype == 'status_update':
+                      txt.append(f'  ~ {inv_id}: {old_v} -> {new_v} ({src})')
+                  else:
+                      txt.append(f'  * {inv_id}: {new_v} ({src})')
+              if len(recent) > 80:
+                  txt.append(f'  ... et {len(recent)-80} autres')
+          with open('/tmp/email_body.txt', 'w') as f:
+              f.write('\n'.join(txt))
+          
           print(len(recent))
           " > /tmp/change_count.txt
           
           CHANGES=$(cat /tmp/change_count.txt)
+          CITIES=$(python3 -c "import json; print(json.load(open('data/metadata.json'))['total_cities'])")
           cat summary.md >> $GITHUB_STEP_SUMMARY
+          
+          echo "has_changes=true" >> $GITHUB_OUTPUT
+          echo "change_count=${CHANGES}" >> $GITHUB_OUTPUT
+          echo "total_invaders=${TOTAL}" >> $GITHUB_OUTPUT
+          echo "total_cities=${CITIES}" >> $GITHUB_OUTPUT
           
           DATE=$(date +"%Y-%m-%d")
           
@@ -132,3 +244,18 @@ jobs:
           git commit -m "🔄 Auto-update ${DATE} - ${TOTAL} invaders, ${CHANGES} changements"
           git pull --rebase origin main
           git push
+      
+      - name: 📧 Notifications email personnalisées
+        if: always()
+        env:
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          EMAIL_CONFIG: ${{ secrets.EMAIL_CONFIG }}
+          HAS_CHANGES: ${{ steps.commit.outputs.has_changes }}
+          CHANGE_COUNT: ${{ steps.commit.outputs.change_count }}
+          TOTAL_INVADERS: ${{ steps.commit.outputs.total_invaders }}
+          TOTAL_CITIES: ${{ steps.commit.outputs.total_cities }}
+          JOB_STATUS: ${{ job.status }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: python scripts/send_notifications.py
