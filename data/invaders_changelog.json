@@ -71,7 +71,23 @@
       "new_value": "OK",
       "detected_at": "2026-02-15T07:12:01.489271",
       "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_800",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "damaged",
+      "detected_at": "2026-02-22T08:13:41.883624",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_958",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-02-22T08:13:41.883629",
+      "source": "invader-spotter.art"
     }
   ],
-  "last_check": "2026-02-15T07:12:01.489272"
+  "last_check": "2026-02-22T08:13:41.883630"
 }
