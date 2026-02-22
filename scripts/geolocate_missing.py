@@ -5936,6 +5936,9 @@ def main():
     parser.add_argument('--backtest', dest='backtest_ids', default=None,
                         help='Mode backtest: IDs séparés par des virgules (ex: PA_142,NY_100,TK_30). '
                              'Compare la géolocalisation avec les coordonnées réelles du master.')
+    parser.add_argument('--address', dest='manual_address', default=None,
+                        help='Géocoder directement une adresse pour un invader (requiert --id). '
+                             'Ex: --id PA_1556 --address "12 Rue de Rivoli, 75004 Paris"')
     
     args = parser.parse_args()
     
@@ -5959,6 +5962,104 @@ def main():
             dry_run=args.dry_run,
             verbose=args.verbose
         )
+        return
+    
+    # =========================================================================
+    # Mode --address: géocoder directement une adresse pour un invader
+    # =========================================================================
+    if args.manual_address:
+        if not args.invader_id:
+            print("❌ --address requiert --id (ex: --id PA_1556 --address \"12 Rue de Rivoli, 75004 Paris\")")
+            return
+        
+        inv_id = args.invader_id.upper().replace('-', '_')
+        address = args.manual_address
+        
+        print(f"📝 GÉOCODAGE MANUEL — {inv_id}")
+        print(f"   Adresse: {address}")
+        print("=" * 60)
+        
+        # Géocoder via Nominatim
+        try:
+            url = "https://nominatim.openstreetmap.org/search"
+            params = {'q': address, 'format': 'json', 'limit': 1}
+            response = requests.get(url, params=params, headers={'User-Agent': 'InvaderHunter/2.0'}, timeout=10)
+            
+            if response.status_code != 200:
+                print(f"   ❌ Erreur HTTP {response.status_code}")
+                return
+            
+            results = response.json()
+            if not results:
+                print(f"   ❌ Adresse non trouvée par Nominatim")
+                print(f"   💡 Essayez une formulation plus simple (ex: \"Rue de Rivoli, Paris\")")
+                return
+            
+            lat = float(results[0]['lat'])
+            lng = float(results[0]['lon'])
+            display_name = results[0].get('display_name', '')
+            
+            print(f"   ✅ Coordonnées: {lat:.6f}, {lng:.6f}")
+            print(f"   📍 {display_name[:80]}")
+            
+        except Exception as e:
+            print(f"   ❌ Erreur géocodage: {e}")
+            return
+        
+        # Charger le master et mettre à jour
+        if not MASTER_FILE.exists():
+            print(f"   ❌ Fichier master non trouvé: {MASTER_FILE}")
+            return
+        
+        with open(_p(MASTER_FILE), 'r', encoding='utf-8') as f:
+            master_db = json.load(f)
+        
+        found = False
+        for inv in master_db:
+            inv_key = (inv.get('id') or inv.get('name', '')).upper().replace('-', '_')
+            if inv_key == inv_id:
+                old_lat = inv.get('lat')
+                old_lng = inv.get('lng')
+                old_source = inv.get('geo_source', '?')
+                
+                inv['lat'] = lat
+                inv['lng'] = lng
+                inv['address'] = address
+                inv['geo_source'] = 'manual'
+                inv['geo_confidence'] = 'medium'
+                inv['location_unknown'] = False
+                inv['geo_search_exhausted'] = False
+                
+                found = True
+                
+                if old_lat and old_lng:
+                    import math
+                    dlat = math.radians(old_lat - lat)
+                    dlon = math.radians(old_lng - lng)
+                    a = math.sin(dlat/2)**2 + math.cos(math.radians(lat))*math.cos(math.radians(old_lat))*math.sin(dlon/2)**2
+                    dist = 6371 * 2 * math.asin(min(1.0, math.sqrt(a)))
+                    print(f"   📊 Ancien: {old_lat:.6f}, {old_lng:.6f} ({old_source}) → Δ {dist:.2f}km")
+                
+                break
+        
+        if not found:
+            print(f"   ❌ Invader {inv_id} non trouvé dans le master")
+            return
+        
+        if args.dry_run:
+            print(f"\n   🧪 DRY-RUN: aucune modification sauvegardée")
+        else:
+            if args.backup:
+                import shutil
+                backup_path = str(MASTER_FILE) + '.bak'
+                shutil.copy2(_p(MASTER_FILE), backup_path)
+                print(f"   💾 Backup: {backup_path}")
+            
+            with open(_p(MASTER_FILE), 'w', encoding='utf-8') as f:
+                json.dump(master_db, f, ensure_ascii=False, indent=2)
+            print(f"\n   ✅ {inv_id} mis à jour dans {MASTER_FILE}")
+            print(f"      geo_source: manual | geo_confidence: medium")
+        
         return
     
     # =========================================================================

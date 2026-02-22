@@ -107,7 +107,10 @@ jobs:
           python scripts/geolocate_missing.py $ARGS
           
           # Fusionner les résultats dans le master
-          if [ -f "data/invaders_geolocated.json" ]; then
+          # --from-master produit invaders_relocalized.json
+          if [ -f "data/invaders_relocalized.json" ]; then
+            python scripts/geolocate_missing.py --merge data/invaders_relocalized.json
+          elif [ -f "data/invaders_geolocated.json" ]; then
             python scripts/geolocate_missing.py --merge data/invaders_geolocated.json
           fi
       

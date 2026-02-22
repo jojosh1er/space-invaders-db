@@ -3,13 +3,14 @@ GÉOLOCALISATION DES INVADERS MANQUANTS
 
 Total: 15
 Trouvés: 15
-HIGH: 0, MEDIUM: 10 (dont 15 Vision), LOW: 5
+HIGH: 2, MEDIUM: 4 (dont 15 Vision), LOW: 9
 
 PA_142 🟡 (MEDIUM)
-   GPS: 48.833744, 2.332292
+   GPS: 48.845126, 2.352309
    Source: vision
-   Adresse: Catacombes de Paris, 1 avenue du Colonel Henri Rol-Tanguy, 75014 Paris
-   Maps: https://www.google.com/maps?q=48.8337439,2.3322925
+   Adresse: 49 Rue Monge, 75005 Paris
+   💡 Hint: Arènes de Lutèce
+   Maps: https://www.google.com/maps?q=48.8451262,2.3523089
 
 PA_567 🟡 (MEDIUM)
    GPS: 48.828518, 2.358071
@@ -17,35 +18,35 @@ PA_567 🟡 (MEDIUM)
    Adresse: Avenue de Choisy, 75013 Paris
    Maps: https://www.google.com/maps?q=48.8285181,2.3580715
 
-LDN_50 🔴 (LOW)
-   GPS: 51.518892, -0.131879
-   Source: vision_district
-   Adresse: ~Bloomsbury, London
-   💡 Hint: 64 Bedford Square, Bloomsbury, London WC1 | quartier: Bloomsbury or Marylebone | Georgian townhouse, dark glazed brick f
-   Maps: https://www.google.com/maps?q=51.5188919,-0.1318793
+LDN_50 🟡 (MEDIUM)
+   GPS: 51.521578, -0.131651
+   Source: vision
+   Adresse: 108 Gower Street, Bloomsbury, London WC1
+   Maps: https://www.google.com/maps?q=51.5215785,-0.1316513
 
-ROM_30 🟡 (MEDIUM)
+ROM_30 🔴 (LOW)
    GPS: 41.896095, 12.493934
    Source: vision
-   Adresse: Via Urbana, 00184 Roma, Monti
+   Adresse: Via Urbana, Rione Monti, Roma
    Maps: https://www.google.com/maps?q=41.8960953,12.493934
 
-MARS_30 🟡 (MEDIUM)
+MARS_30 🟢 (HIGH)
    GPS: 43.298203, 5.376628
    Source: vision
    Adresse: Cours Belsunce, 13001 Marseille
    Maps: https://www.google.com/maps?q=43.2982032,5.3766278
 
-MPL_10 🟡 (MEDIUM)
+MPL_10 🟢 (HIGH)
    GPS: 43.610772, 3.878248
    Source: vision
    Adresse: Place Pétrarque, 34000 Montpellier
    Maps: https://www.google.com/maps?q=43.6107721,3.8782479
 
-TK_30 🟡 (MEDIUM)
+TK_30 🔴 (LOW)
    GPS: 35.671182, 139.740298
    Source: vision
-   Adresse: NARA (Nara, 外堀通り, 赤坂二丁目, 赤坂, 港区, 東京都, 100-8968, 日本)
+   Adresse: Nara
+   💡 Hint: près de d'un studio
    Maps: https://www.google.com/maps?q=35.6711822,139.7402983
 
 BGK_07 🔴 (LOW)
@@ -56,48 +57,47 @@ BGK_07 🔴 (LOW)
    Maps: https://www.google.com/maps?q=13.7420784,100.5249701
 
 HK_20 🔴 (LOW)
-   GPS: 22.281938, 114.158077
+   GPS: 22.286849, 114.150861
    Source: vision
-   Adresse: Central, Hong Kong Island
-   💡 Hint: cross-check: 1.2km du quartier Central/Sheung Wan | quartier probable: Central/Sheung Wan
-   Maps: https://www.google.com/maps?q=22.2819377,114.1580765
+   Adresse: Sheung Wan, Central-Western, Hong Kong Island
+   💡 Hint: cross-check: 0.3km du quartier Central/Sheung Wan | quartier probable: Central/Sheung Wan
+   Maps: https://www.google.com/maps?q=22.286849,114.150861
 
 NY_100 🟡 (MEDIUM)
-   GPS: 40.719273, -73.985407
+   GPS: 40.717401, -73.992235
    Source: vision
-   Adresse: 152 Rivington Street, New York, NY 10002
-   Maps: https://www.google.com/maps?q=40.7192733,-73.9854073
+   Adresse: 94 Eldridge Street, New York, NY 10002
+   Maps: https://www.google.com/maps?q=40.7174012,-73.9922349
 
 MIA_40 🔴 (LOW)
-   GPS: 25.766971, -80.197775
+   GPS: 25.790103, -80.198770
    Source: vision
-   Adresse: Station-service Chevron, Miami
-   💡 Hint: probablement Biscayne Boulevard | quartier probable: Downtown Miami ou Brickell
-   Maps: https://www.google.com/maps?q=25.766971,-80.1977746
+   Adresse: NW 2nd Avenue, Wynwood, Miami
+   Maps: https://www.google.com/maps?q=25.7901032,-80.1987696
 
-MBSA_04 🟡 (MEDIUM)
-   GPS: -4.059395, 39.672271
+MBSA_04 🔴 (LOW)
+   GPS: -4.058748, 39.676167
    Source: vision
-   Adresse: Old Town, Mombasa Island
-   💡 Hint: près de Ndia Kuu Road
-   Maps: https://www.google.com/maps?q=-4.0593955,39.6722709
+   Adresse: Old Town
+   💡 Hint: près de Ndia Kuu Road area, Mombasa
+   Maps: https://www.google.com/maps?q=-4.058748,39.6761668
 
 RBA_06 🔴 (LOW)
    GPS: 33.919140, -6.975371
    Source: vision
    Adresse: Phare de Rabat
-   💡 Hint: quartier probable: Quartier de l'Océan/Bab El Bhar
+   💡 Hint: quartier probable: Quartier de l'Océan / Bord de mer de Rabat
    Maps: https://www.google.com/maps?q=33.9191398,-6.9753709
 
-IST_06 🟡 (MEDIUM)
+IST_06 🔴 (LOW)
    GPS: 41.032003, 28.948293
    Source: vision
    Adresse: Balat, Fatih, Istanbul
    Maps: https://www.google.com/maps?q=41.0320032,28.9482931
 
-MLB_07 🟡 (MEDIUM)
-   GPS: -37.816584, 144.965515
+MLB_07 🔴 (LOW)
+   GPS: -37.817082, 144.965675
    Source: vision
-   Adresse: Centre Place, Melbourne CBD 3000
-   Maps: https://www.google.com/maps?q=-37.8165838,144.9655146
+   Adresse: Degraves Street, Melbourne VIC 3000
+   Maps: https://www.google.com/maps?q=-37.8170819,144.9656752
 

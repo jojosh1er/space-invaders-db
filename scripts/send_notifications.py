@@ -105,6 +105,40 @@ def load_report_data():
         data['exhausted'] = '?'
         data['city_center'] = '?'
 
+    # Rapport de géolocalisation des nouveaux invaders
+    data['geoloc_results'] = []
+    for geoloc_file in ['data/invaders_relocalized.json', 'data/invaders_geolocated.json']:
+        if os.path.exists(geoloc_file):
+            try:
+                with open(geoloc_file) as f:
+                    geoloc_data = json.load(f)
+                for inv in geoloc_data:
+                    inv_id = inv.get('id', '?')
+                    lat = inv.get('lat')
+                    lng = inv.get('lng')
+                    source = inv.get('geo_source', '?')
+                    confidence = inv.get('geo_confidence', '?')
+                    address = inv.get('address', '')
+                    hint = inv.get('geo_hint', '')
+                    conf_icon = {'high': '🟢', 'medium': '🟡', 'low': '🔴'}.get(confidence, '❓')
+
+                    entry = {
+                        'id': inv_id,
+                        'lat': lat,
+                        'lng': lng,
+                        'source': source,
+                        'confidence': confidence,
+                        'conf_icon': conf_icon,
+                        'address': address,
+                        'hint': hint,
+                        'location_unknown': inv.get('location_unknown', True),
+                    }
+                    data['geoloc_results'].append(entry)
+                print(f"📍 {len(data['geoloc_results'])} résultats géoloc chargés depuis {geoloc_file}")
+                break  # Un seul fichier suffit
+            except Exception as e:
+                print(f"⚠️ Erreur lecture {geoloc_file}: {e}")
+
     return data
 
 
@@ -182,6 +216,28 @@ def build_body_summary(report, recipient):
     else:
         lines.append("✅ Aucun changement cette semaine")
 
+    # Section géolocalisation des nouveaux invaders
+    geoloc = report.get('geoloc_results', [])
+    if geoloc:
+        lines.append('')
+        found = [g for g in geoloc if g['source'] not in ('city_center', None, 'unknown')]
+        not_found = [g for g in geoloc if g['source'] in ('city_center', None, 'unknown')]
+
+        lines.append(f"📍 Géolocalisation : {len(found)} localisés / {len(geoloc)} nouveaux")
+        lines.append('')
+
+        if found:
+            lines.append("  Localisés :")
+            for g in found:
+                addr = f" — {g['address'][:50]}" if g['address'] else ''
+                lines.append(f"    {g['conf_icon']} {g['id']} ({g['source']}, {g['confidence'].upper()}){addr}")
+
+        if not_found:
+            lines.append("  Non localisés :")
+            for g in not_found:
+                hint = f" — 💡 {g['hint'][:60]}" if g['hint'] else ''
+                lines.append(f"    🔴 {g['id']}{hint}")
+
     lines.extend([
         '',
         f"→ Rapport détaillé : {report['run_url']}",
@@ -194,11 +250,11 @@ def build_body_summary(report, recipient):
 
 
 def build_body_full(report, recipient):
-    """Corps complet : stats + détail de tous les changements."""
+    """Corps complet : stats + détail de tous les changements + géoloc avec liens Maps."""
     # Commence par le résumé
     body = build_body_summary(report, recipient)
 
-    # Ajoute le détail
+    # Ajoute le détail des changements
     if report['detail_text']:
         body = body.replace(
             '---\nSpace Invaders Bot 🛸',
@@ -206,6 +262,25 @@ def build_body_full(report, recipient):
             + '-' * 40 + '\n'
             + report['detail_text']
             + '\n\n---\nSpace Invaders Bot 🛸'
+        )
+
+    # Ajoute les liens Maps pour les invaders géolocalisés
+    geoloc = report.get('geoloc_results', [])
+    found_with_coords = [g for g in geoloc if g['lat'] and g['lng']
+                         and g['source'] not in ('city_center', None, 'unknown')]
+    if found_with_coords:
+        maps_section = '\n🗺️  LIENS GOOGLE MAPS :\n' + '-' * 40 + '\n'
+        for g in found_with_coords:
+            addr = f"  {g['address'][:60]}" if g['address'] else ''
+            maps_section += f"\n{g['conf_icon']} {g['id']} ({g['source']}, {g['confidence'].upper()})\n"
+            if addr:
+                maps_section += f"  {addr}\n"
+            maps_section += f"  → https://www.google.com/maps?q={g['lat']},{g['lng']}\n"
+        maps_section += '\n'
+
+        body = body.replace(
+            '---\nSpace Invaders Bot 🛸',
+            maps_section + '---\nSpace Invaders Bot 🛸'
         )
 
     return body
