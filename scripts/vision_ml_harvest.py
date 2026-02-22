@@ -119,10 +119,15 @@ def has_any_business_keyword(text):
 
 # ─── Sélection stratifiée ──────────────────────────────────────────────────
 
-def select_invaders(master_db, n=200, cities=None, seed=42):
+def select_invaders(master_db, n=200, cities=None, seed=42, recent_only=False, min_points=None):
     """
     Sélection stratifiée par ville, avec image_lieu requise.
     Priorise la diversité des villes et des niveaux de points.
+    
+    Args:
+        recent_only: Si True, ne garde que les invaders avec status 'active' ou récent
+                     (proxy: points >= 10, ce qui exclut les flashes anciens/détruits)
+        min_points: Seuil minimum de points (proxy de notoriété et fraîcheur des données)
     """
     random.seed(seed)
     
@@ -156,6 +161,21 @@ def select_invaders(master_db, n=200, cities=None, seed=42):
         geo_source = inv.get('geo_source', '')
         if geo_source == 'city_center':
             continue
+        
+        # Filtre récence: exclure les invaders détruits/anciens
+        if recent_only:
+            status = (inv.get('status') or '').lower()
+            if status in ('destroyed', 'détruit', 'removed', 'gone'):
+                continue
+        
+        # Filtre points minimum (proxy de fraîcheur et fiabilité des données)
+        if min_points is not None:
+            pts = inv.get('points', 0)
+            try:
+                if int(pts) < min_points:
+                    continue
+            except (ValueError, TypeError):
+                continue
         
         eligible.append(inv)
     
@@ -236,6 +256,7 @@ def extract_features(invader, clues, geocode_result, city_code):
     district = clues.get('district', '') if clues else ''
     postcode = clues.get('postcode', '') if clues else ''
     best_address = clues.get('best_address_guess', '') if clues else ''
+    address_alternatives = clues.get('address_alternatives', []) if clues else []
     reasoning = clues.get('reasoning', '') if clues else ''
     
     # Nettoyer les listes (parfois Vision renvoie des strings vides)
@@ -354,6 +375,8 @@ def extract_features(invader, clues, geocode_result, city_code):
         
         # Raw text (pour analyse qualitative)
         'best_address_guess': best_address,
+        'address_alternatives': '|'.join(address_alternatives) if isinstance(address_alternatives, list) else str(address_alternatives),
+        'n_alternatives': len(address_alternatives) if isinstance(address_alternatives, list) else 0,
         'district': district,
         'street_signs': '|'.join(street_signs),
         'shop_signs': '|'.join(shop_signs),
@@ -407,7 +430,7 @@ def harvest(invaders, output_file, anthropic_key=None, verbose=False):
         'distance_to_center_km', 'distance_to_district_km',
         'district_geocodes', 'city_coherent',
         'error_km', 'error_class',
-        'best_address_guess', 'district', 'street_signs', 'shop_signs', 'landmarks',
+        'best_address_guess', 'address_alternatives', 'n_alternatives', 'district', 'street_signs', 'shop_signs', 'landmarks',
     ]
     
     write_header = not os.path.exists(output_file) or os.path.getsize(output_file) == 0
@@ -656,6 +679,10 @@ Exemples:
                         help='Afficher les stats d\'un CSV existant et quitter')
     parser.add_argument('--seed', type=int, default=42,
                         help='Seed pour la sélection aléatoire (default: 42)')
+    parser.add_argument('--recent', action='store_true',
+                        help='Ne garder que les invaders actifs (exclut destroyed/removed)')
+    parser.add_argument('--min-points', type=int, default=None,
+                        help='Points minimum (proxy de fraîcheur, ex: 10)')
     parser.add_argument('--verbose', '-v', action='store_true',
                         help='Afficher les détails Vision')
     
@@ -692,7 +719,10 @@ Exemples:
     
     # Sélection
     cities_filter = args.cities.split(',') if args.cities else None
-    selected = select_invaders(master_db, n=args.n, cities=cities_filter, seed=args.seed)
+    selected = select_invaders(
+        master_db, n=args.n, cities=cities_filter, seed=args.seed,
+        recent_only=args.recent, min_points=args.min_points
+    )
     
     # API key
     api_key = args.anthropic_key or os.environ.get('ANTHROPIC_API_KEY')

@@ -1577,9 +1577,57 @@ Croise les indices des deux images.
 
 CONSIGNES:
 - Dans street_signs et shop_signs, reporte le texte lisible. Si un mot est partiellement visible, complète-le si tu es raisonnablement sûr, sinon utilise "..." (ex: "...OST").
-- Pour best_address_guess, donne ta meilleure estimation d'adresse UNIQUE (pas de 'ou').
 - IMPORTANT: Remplis TOUJOURS le champ "district" avec le quartier/arrondissement le plus probable, même si approximatif.
 - confidence: HIGH si tu lis clairement plaque de rue + numéro. MEDIUM si tu identifies une rue ou un lieu nommé. LOW si c'est une estimation à partir du style architectural ou d'indices indirects.
+
+═══ RÈGLES CRITIQUES POUR best_address_guess ═══
+Ce champ sera envoyé TEL QUEL à un géocodeur (Nominatim/OpenStreetMap).
+Il DOIT être une adresse UNIQUE et GÉOCODABLE.
+
+FORMAT IDÉAL: "[numéro] [nom de rue], [code postal] [ville]"
+
+EXEMPLES:
+  ✅ "15 Rue de Rivoli, 75001 Paris"
+  ✅ "2695 NW 2nd Avenue, Miami, FL"
+  ✅ "Via del Governo Vecchio 9, 00186 Roma"
+  ✅ "145 Avenue A, angle E 9th Street, New York"  ← intersection OK
+  ✅ "Shibuya, Tokyo"                              ← si aucune rue identifiable
+
+RÈGLE PRIORITAIRE — PLAQUES DE RUE:
+  Si tu lis une plaque de rue, son nom DOIT apparaître dans best_address_guess.
+  Si tu lis un numéro de bâtiment, il DOIT être inclus aussi.
+  ❌ Plaque "RUE DES ABBESSES" → best_address_guess: "18e arrondissement, Paris"
+  ✅ Plaque "RUE DES ABBESSES" → best_address_guess: "Rue des Abbesses, 75018 Paris"
+
+RÈGLE ENSEIGNES — SHOP SIGNS:
+  Les enseignes commerciales sont de PUISSANTS indices de géolocalisation.
+  Si tu lis une enseigne UNIQUE (pas une chaîne nationale), inclus-la dans best_address_guess.
+  ✅ Enseigne "Le Vaisseau Vert" → best_address_guess: "Le Vaisseau Vert, Paris"
+  ✅ Enseigne "Pink's Hot Dogs" → best_address_guess: "Pink's Hot Dogs, Los Angeles"
+  ❌ Enseigne "Starbucks" ou "McDonald's" → trop commun, ne pas utiliser seul
+
+MOTS STRICTEMENT INTERDITS dans best_address_guess:
+  ❌ "ou" / "or"                       → choisis UNE SEULE adresse
+  ❌ "probablement" / "possibly"       → supprime le doute, garde l'adresse
+  ❌ "secteur" / "zone" / "area"       → supprime, garde rue + ville
+  ❌ "proximité" / "environs" / "abords" → supprime
+  ❌ "entre X et Y"                    → choisis X ou Y
+  ❌ parenthèses explicatives          → pas de "(quartier Gare de Lyon)"
+
+MAUVAIS → BON:
+  ❌ "Rue des Abbesses ou rue Lepic, 18e arrondissement"
+  ✅ "Rue des Abbesses, 75018 Paris"
+
+  ❌ "Centre commercial, probablement Forum des Halles ou Beaugrenelle"
+  ✅ "Forum des Halles, 75001 Paris"
+
+  ❌ "Boulevard Diderot, 75012 Paris (secteur Gare de Lyon)"
+  ✅ "Boulevard Diderot, 75012 Paris"
+
+Si tu hésites entre plusieurs adresses, mets la MEILLEURE dans best_address_guess
+et les alternatives dans address_alternatives.
+
+Si tu ne vois AUCUN nom de rue, mets le lieu-dit ou quartier + ville : "Montmartre, Paris"
 
 Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
 {{
@@ -1592,7 +1640,8 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
   "metro_bus": ["stations de métro/bus/tram visibles"],
   "architectural_style": "style architectural observé",
   "other_clues": ["tout autre indice de localisation"],
-  "best_address_guess": "ta meilleure estimation d'adresse UNIQUE (pas de 'ou', choisis la plus probable)",
+  "best_address_guess": "ADRESSE COURTE UNIQUE GÉOCODABLE — max 60 chars — format: [n°] Rue, [CP] Ville",
+  "address_alternatives": ["autres adresses possibles si hésitation"],
   "confidence": "HIGH/MEDIUM/LOW (voir critères ci-dessus)",
   "reasoning": "explication courte de ton raisonnement"
 }}"""
@@ -2717,6 +2766,15 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
                     if raw_v != cleaned and raw_v not in addresses_to_try:
                         addresses_to_try.append(raw_v)
         
+        # Priorité 1b: address_alternatives de Claude (fallback si best_address échoue)
+        for alt_addr in (clues.get('address_alternatives') or []):
+            if alt_addr and isinstance(alt_addr, str):
+                cleaned, hint = self._clean_address_for_geocoding(alt_addr, city_name)
+                if hint:
+                    hints_collected.append(hint)
+                if cleaned and cleaned not in addresses_to_try:
+                    addresses_to_try.append(cleaned)
+        
         # Priorité 2: plaques de rue + numéros
         for sign in (clues.get('street_signs') or []):
             nums = clues.get('building_numbers') or ['']
@@ -2736,6 +2794,32 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
                 lm_addr = f"{landmark}, {city_name}"
             if lm_addr not in addresses_to_try:
                 addresses_to_try.append(lm_addr)
+        
+        # Priorité 3b: enseignes commerciales uniques → géocoder directement
+        #   "La Maison du Placard, Paris" ou "Pink's Hot Dogs, Los Angeles"
+        #   Les chaînes nationales/internationales sont exclues (trop d'occurrences)
+        CHAIN_NAMES = {
+            'starbucks', 'mcdonalds', "mcdonald's", 'burger king', 'subway', 'kfc',
+            'carrefour', 'monoprix', "monop'", 'franprix', 'sephora', 'zara', 'h&m',
+            'tabac', 'pharmacie', 'boulangerie', 'laverie', 'pressing',
+            '7-eleven', 'lawson', 'familymart', 'chevron', 'goodyear',
+            'costa', 'pret a manger', 'tesco', 'sainsburys',
+        }
+        for shop in (clues.get('shop_signs') or [])[:4]:
+            clean_name = self._clean_shop_name(shop)
+            if not clean_name or len(clean_name) < 4:
+                continue
+            # Skip chains and generic names
+            if clean_name.lower() in CHAIN_NAMES:
+                continue
+            if any(chain in clean_name.lower() for chain in CHAIN_NAMES):
+                continue
+            shop_addr = clean_name
+            if city_name and city_name.lower() not in clean_name.lower():
+                shop_addr = f"{clean_name}, {city_name}"
+            if shop_addr not in addresses_to_try:
+                addresses_to_try.append(shop_addr)
+                self.log(f"🏪 Enseigne candidate: {shop_addr}")
         
         # Priorité 4: extraire les noms de rues et lieux depuis les hints "near/entre"
         #   hint "près de METRO Department Store, Ratchaprarop Road, Bangkok"
