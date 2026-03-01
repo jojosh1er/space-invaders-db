@@ -8,15 +8,15 @@ HIGH: 2, MEDIUM: 2 (dont 4 Vision), LOW: 0
 PA_1556 🟢 (HIGH)
    GPS: 48.845729, 2.348615
    Source: vision
-   Adresse: RUE CLOTILDE, Paris
+   Adresse: 1 Rue Cazotte, 75018 Paris
    💡 Hint: cross-check: 4.6km du quartier 18e arrondissement (Montmartre) | quartier probable: 18e arrondissement (Montmartre)
-   Maps: https://www.google.com/maps?q=48.8457288,2.3486148
+   Maps: https://www.google.com/maps?q=48.8852451,2.3446729
 
 PA_1557 🟡 (MEDIUM)
    GPS: 48.868553, 2.330332
    Source: vision
-   Adresse: 1 rue de la Paix, 75009 Paris
-   Maps: https://www.google.com/maps?q=48.8685535,2.3303318
+   Adresse: 57 Quai des Grands Augustins, 75006 Paris
+   Maps: https://www.google.com/maps?q=48.8558178,2.3406264
 
 PA_1558 🟢 (HIGH)
    GPS: 48.852318, 2.354734
