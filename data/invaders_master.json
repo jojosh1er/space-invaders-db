@@ -5895,15 +5895,16 @@
     "lat": "43.5545326706",
     "lng": "7.1223942715",
     "points": "10",
-    "status": "destroyed",
+    "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/CAZ/CAZ_10-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/CAZ/CAZ_10-septembre2019.jpg",
     "city": "CAZ",
     "landing_date": "16/05/2007",
-    "status_date": "avril 2025",
-    "status_source": "report",
-    "previous_status": "a little damaged",
-    "previous_status_date": "avril 2025"
+    "status_date": "février 2026",
+    "status_source": "Instagram",
+    "previous_status": "destroyed",
+    "previous_status_date": "avril 2025",
+    "status_updated": "2026-03-01T07:05:22.153159"
   },
   {
     "id": "CAZ_11",
@@ -6271,41 +6272,48 @@
     "lat": "42.9992154111",
     "lng": "6.2019604382",
     "points": "30",
-    "status": "destroyed",
+    "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/CAZ/CAZ_38-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/CAZ/CAZ_38-juin2018.jpg",
     "city": "CAZ",
     "landing_date": "21/08/2017",
-    "status_date": "septembre 2023",
-    "status_source": "report"
+    "status_date": "février 2026",
+    "status_source": "Instagram",
+    "previous_status": "destroyed",
+    "previous_status_date": "septembre 2023",
+    "status_updated": "2026-03-01T07:05:22.153320"
   },
   {
     "id": "CAZ_39",
     "lat": "43.0021076234",
     "lng": "6.2029442957",
     "points": "30",
-    "status": "destroyed",
+    "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/CAZ/CAZ_39-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/CAZ/CAZ_39-juin2018.jpg",
     "city": "CAZ",
     "landing_date": "23/08/2017",
-    "status_date": "juillet 2020",
-    "status_source": "report"
+    "status_date": "février 2026",
+    "status_source": "Instagram",
+    "previous_status": "destroyed",
+    "previous_status_date": "juillet 2020",
+    "status_updated": "2026-03-01T07:05:22.153329"
   },
   {
     "id": "CAZ_40",
     "lat": "43.0000187901",
     "lng": "6.2023053479",
     "points": "20",
-    "status": "destroyed",
+    "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/CAZ/CAZ_40-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/CAZ/CAZ_40-juin2018.jpg",
     "city": "CAZ",
     "landing_date": "23/08/2017",
-    "status_date": "septembre 2023",
-    "status_source": "report",
-    "previous_status": "very damaged",
-    "previous_status_date": "septembre 2023"
+    "status_date": "février 2026",
+    "status_source": "Instagram",
+    "previous_status": "destroyed",
+    "previous_status_date": "septembre 2023",
+    "status_updated": "2026-03-01T07:05:22.153337"
   },
   {
     "id": "CCU_01",
@@ -18504,10 +18512,10 @@
     "city": "LDN",
     "landing_date": "15/12/2006",
     "status_date": "février 2026",
-    "previous_status": "OK",
-    "previous_status_date": "mai 2025",
+    "status_source": "report",
     "status_updated": "2026-02-22T15:53:08.682416",
-    "status_source": "report"
+    "previous_status": "OK",
+    "previous_status_date": "mai 2025"
   },
   {
     "id": "LDN_85",
@@ -26990,13 +26998,16 @@
     "lat": "40.7400426521",
     "lng": "-74.0036849028",
     "points": "100",
-    "status": "OK",
+    "status": "damaged",
     "image_invader": "https://www.invader-spotter.art/grosplan/NY/NY_176-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/NY/NY_176-mars2016.jpg",
     "city": "NY",
     "landing_date": "20/11/2015",
-    "status_date": "mars 2016",
-    "status_source": "spott"
+    "status_date": "février 2026",
+    "status_source": "report",
+    "previous_status": "OK",
+    "previous_status_date": "mars 2016",
+    "status_updated": "2026-03-01T07:05:22.162877"
   },
   {
     "id": "NY_177",
@@ -30935,8 +30946,7 @@
     "status_date": "septembre 2019",
     "status_source": "report",
     "geo_source": "community_issue",
-    "geo_confidence": "high",
-    "location_unknown": false
+    "geo_confidence": "high"
   },
   {
     "id": "PA_1126",
@@ -33564,13 +33574,16 @@
     "lat": "48.8199622381",
     "lng": "2.3107025406",
     "points": "50",
-    "status": "OK",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1306-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1306-novembre2017.jpg",
     "city": "PA",
     "landing_date": "10/10/2017",
-    "status_date": "avril 2019",
-    "status_source": "report"
+    "status_date": "février 2026",
+    "status_source": "report",
+    "previous_status": "OK",
+    "previous_status_date": "avril 2019",
+    "status_updated": "2026-03-01T07:05:22.165606"
   },
   {
     "id": "PA_1307",
@@ -34287,8 +34300,7 @@
     "status_date": "septembre 2019",
     "status_source": "report",
     "geo_source": "community_issue",
-    "geo_confidence": "high",
-    "location_unknown": false
+    "geo_confidence": "high"
   },
   {
     "id": "PA_1357",
@@ -37128,8 +37140,7 @@
     "landing_date": "21/01/2026",
     "status_date": "janvier 2026",
     "geo_source": "community_issue",
-    "geo_confidence": "high",
-    "location_unknown": false
+    "geo_confidence": "high"
   },
   {
     "id": "PA_1555",
@@ -52119,13 +52130,16 @@
     "lat": "41.8994581246",
     "lng": "12.4704843731",
     "points": "10",
-    "status": "OK",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/ROM/ROM_47-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/images/ROM/ROM_47-archive.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/ROM/ROM_47-fevrier2026.jpg",
     "city": "ROM",
     "landing_date": "20/07/2010",
-    "status_date": "novembre 2023",
-    "status_source": "report"
+    "status_date": "février 2026",
+    "status_source": "report",
+    "previous_status": "OK",
+    "previous_status_date": "novembre 2023",
+    "status_updated": "2026-03-01T07:05:22.173602"
   },
   {
     "id": "ROM_48",
@@ -53378,9 +53392,9 @@
     "landing_date": "21/07/2011",
     "status_date": "février 2026",
     "status_source": "report",
+    "status_updated": "2026-02-22T15:53:08.696784",
     "previous_status": "OK",
-    "previous_status_date": "octobre 2022",
-    "status_updated": "2026-02-22T15:53:08.696784"
+    "previous_status_date": "octobre 2022"
   },
   {
     "id": "SP_02",
@@ -57534,11 +57548,11 @@
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1556-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1556-fevrier2026.jpg",
     "city": "PA",
+    "landing_date": "19/02/2026",
+    "status_date": "février 2026",
     "geo_source": "manual",
     "geo_confidence": "medium",
-    "address": "1 Rue Cazotte, 75018 Paris",
-    "landing_date": "19/02/2026",
-    "status_date": "février 2026"
+    "address": "1 Rue Cazotte, 75018 Paris"
   },
   {
     "id": "PA_1557",
@@ -57549,11 +57563,11 @@
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1557-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1557-fevrier2026.jpg",
     "city": "PA",
+    "landing_date": "19/02/2026",
+    "status_date": "février 2026",
     "geo_source": "manual",
     "geo_confidence": "medium",
-    "address": "57 Quai des Grands Augustins, 75006 Paris",
-    "landing_date": "19/02/2026",
-    "status_date": "février 2026"
+    "address": "57 Quai des Grands Augustins, 75006 Paris"
   },
   {
     "id": "PA_1558",
@@ -57564,11 +57578,11 @@
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1558-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1558-fevrier2026.jpg",
     "city": "PA",
+    "landing_date": "19/02/2026",
+    "status_date": "février 2026",
     "geo_source": "vision",
     "geo_confidence": "high",
-    "address": "Rue Le Regrattier, 75004 Paris",
-    "landing_date": "19/02/2026",
-    "status_date": "février 2026"
+    "address": "Rue Le Regrattier, 75004 Paris"
   },
   {
     "id": "PA_1559",
@@ -57579,10 +57593,10 @@
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1559-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1559-fevrier2026.jpg",
     "city": "PA",
+    "landing_date": "19/02/2026",
+    "status_date": "février 2026",
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "address": "2 Place de la Contrescarpe, 75005 Paris",
-    "landing_date": "19/02/2026",
-    "status_date": "février 2026"
+    "address": "2 Place de la Contrescarpe, 75005 Paris"
   }
 ]
