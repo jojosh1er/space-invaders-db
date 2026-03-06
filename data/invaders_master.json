@@ -1372,9 +1372,9 @@
     "landing_date": "08/11/2024",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-06T21:35:19.808672",
     "previous_status": "damaged",
-    "previous_status_date": "janvier 2026",
-    "status_updated": "2026-03-06T21:35:19.808672"
+    "previous_status_date": "janvier 2026"
   },
   {
     "id": "BAB_07",
@@ -5986,9 +5986,9 @@
     "landing_date": "18/05/2007",
     "status_date": "février 2026",
     "status_source": "report",
+    "status_updated": "2026-03-06T21:35:19.811076",
     "previous_status": "OK",
-    "previous_status_date": "juillet 2025",
-    "status_updated": "2026-03-06T21:35:19.811076"
+    "previous_status_date": "juillet 2025"
   },
   {
     "id": "CAZ_17",
@@ -10141,9 +10141,9 @@
     "landing_date": "16/12/1999",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-06T21:35:19.812918",
     "previous_status": "OK",
-    "previous_status_date": "août 2022",
-    "status_updated": "2026-03-06T21:35:19.812918"
+    "previous_status_date": "août 2022"
   },
   {
     "id": "GRN_38",
@@ -13380,9 +13380,9 @@
     "landing_date": "28/12/1999",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-06T21:35:19.814358",
     "previous_status": "OK",
-    "previous_status_date": "novembre 2023",
-    "status_updated": "2026-03-06T21:35:19.814358"
+    "previous_status_date": "novembre 2023"
   },
   {
     "id": "LA_08",
@@ -13896,9 +13896,9 @@
     "landing_date": "11/09/2006",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-06T21:35:19.814582",
     "previous_status": "OK",
-    "previous_status_date": "juin 2020",
-    "status_updated": "2026-03-06T21:35:19.814582"
+    "previous_status_date": "juin 2020"
   },
   {
     "id": "LA_135",
@@ -15527,9 +15527,9 @@
     "landing_date": "10/12/2002",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-06T21:35:19.815290",
     "previous_status": "OK",
-    "previous_status_date": "septembre 2024",
-    "status_updated": "2026-03-06T21:35:19.815290"
+    "previous_status_date": "septembre 2024"
   },
   {
     "id": "LA_64",
@@ -15851,9 +15851,9 @@
     "landing_date": "09/12/2003",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-06T21:35:19.815436",
     "previous_status": "OK",
-    "previous_status_date": "décembre 2024",
-    "status_updated": "2026-03-06T21:35:19.815436"
+    "previous_status_date": "décembre 2024"
   },
   {
     "id": "LA_89",
@@ -15878,9 +15878,9 @@
     "landing_date": "09/12/2003",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-06T21:35:19.815449",
     "previous_status": "OK",
-    "previous_status_date": "février 2025",
-    "status_updated": "2026-03-06T21:35:19.815449"
+    "previous_status_date": "février 2025"
   },
   {
     "id": "LA_91",
@@ -41373,14 +41373,13 @@
     "city": "PA",
     "landing_date": "28/10/2001",
     "status_date": "juillet 2020",
-    "status_source": "community_issue",
+    "status_source": "report",
     "status_updated": "2026-03-05T18:46:17Z",
     "status_issue": 8,
     "previous_status": "destroyed",
     "previous_status_date": "juillet 2020",
     "geo_source": "community_issue",
-    "geo_confidence": "high",
-    "location_unknown": false
+    "geo_confidence": "high"
   },
   {
     "id": "PA_449",
@@ -54034,9 +54033,9 @@
     "landing_date": "04/08/2011",
     "status_date": "mars 2026",
     "status_source": "Instagram",
+    "status_updated": "2026-03-06T21:35:19.832928",
     "previous_status": "destroyed",
-    "previous_status_date": "octobre 2017",
-    "status_updated": "2026-03-06T21:35:19.832928"
+    "previous_status_date": "octobre 2017"
   },
   {
     "id": "SP_48",
