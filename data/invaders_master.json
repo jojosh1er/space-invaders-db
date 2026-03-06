@@ -1365,15 +1365,16 @@
     "lat": "43.487173",
     "lng": "-1.556655",
     "points": "20",
-    "status": "damaged",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/BAB/BAB_06-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/BAB/BAB_06-novembre2024.jpg",
     "city": "BAB",
     "landing_date": "08/11/2024",
-    "status_date": "janvier 2026",
+    "status_date": "mars 2026",
     "status_source": "report",
-    "previous_status": "OK",
-    "previous_status_date": "janvier 2026"
+    "previous_status": "damaged",
+    "previous_status_date": "janvier 2026",
+    "status_updated": "2026-03-06T21:35:19.808672"
   },
   {
     "id": "BAB_07",
@@ -5902,9 +5903,9 @@
     "landing_date": "16/05/2007",
     "status_date": "février 2026",
     "status_source": "Instagram",
+    "status_updated": "2026-03-01T07:05:22.153159",
     "previous_status": "destroyed",
-    "previous_status_date": "avril 2025",
-    "status_updated": "2026-03-01T07:05:22.153159"
+    "previous_status_date": "avril 2025"
   },
   {
     "id": "CAZ_11",
@@ -5978,15 +5979,16 @@
     "lat": "43.7376734488",
     "lng": "7.4221604661",
     "points": "20",
-    "status": "OK",
+    "status": "a little damaged",
     "image_invader": "https://www.invader-spotter.art/grosplan/CAZ/CAZ_16-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/CAZ/CAZ_16-septembre2019.jpg",
     "city": "CAZ",
     "landing_date": "18/05/2007",
-    "status_date": "juillet 2025",
+    "status_date": "février 2026",
     "status_source": "report",
-    "previous_status": "a little damaged",
-    "previous_status_date": "juillet 2025"
+    "previous_status": "OK",
+    "previous_status_date": "juillet 2025",
+    "status_updated": "2026-03-06T21:35:19.811076"
   },
   {
     "id": "CAZ_17",
@@ -6279,9 +6281,9 @@
     "landing_date": "21/08/2017",
     "status_date": "février 2026",
     "status_source": "Instagram",
+    "status_updated": "2026-03-01T07:05:22.153320",
     "previous_status": "destroyed",
-    "previous_status_date": "septembre 2023",
-    "status_updated": "2026-03-01T07:05:22.153320"
+    "previous_status_date": "septembre 2023"
   },
   {
     "id": "CAZ_39",
@@ -6295,9 +6297,9 @@
     "landing_date": "23/08/2017",
     "status_date": "février 2026",
     "status_source": "Instagram",
+    "status_updated": "2026-03-01T07:05:22.153329",
     "previous_status": "destroyed",
-    "previous_status_date": "juillet 2020",
-    "status_updated": "2026-03-01T07:05:22.153329"
+    "previous_status_date": "juillet 2020"
   },
   {
     "id": "CAZ_40",
@@ -6311,9 +6313,9 @@
     "landing_date": "23/08/2017",
     "status_date": "février 2026",
     "status_source": "Instagram",
+    "status_updated": "2026-03-01T07:05:22.153337",
     "previous_status": "destroyed",
-    "previous_status_date": "septembre 2023",
-    "status_updated": "2026-03-01T07:05:22.153337"
+    "previous_status_date": "septembre 2023"
   },
   {
     "id": "CCU_01",
@@ -10132,13 +10134,16 @@
     "lat": "45.1924158901",
     "lng": "5.7200730298",
     "points": "10",
-    "status": "OK",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/GRN/GRN_37-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/images/GRN/GRN_37-novembre2021.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/GRN/GRN_37-juin2025.jpg",
     "city": "GRN",
     "landing_date": "16/12/1999",
-    "status_date": "août 2022",
-    "status_source": "Instagram"
+    "status_date": "mars 2026",
+    "status_source": "report",
+    "previous_status": "OK",
+    "previous_status_date": "août 2022",
+    "status_updated": "2026-03-06T21:35:19.812918"
   },
   {
     "id": "GRN_38",
@@ -13368,13 +13373,16 @@
     "lat": "34.1053376419",
     "lng": "-118.3189704586",
     "points": "10",
-    "status": "OK",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/LA/LA_007-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/images/LA/LA_007-archive.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/LA/LA_007-mars2026.jpg",
     "city": "LA",
     "landing_date": "28/12/1999",
-    "status_date": "novembre 2023",
-    "status_source": "FlashInvaders"
+    "status_date": "mars 2026",
+    "status_source": "report",
+    "previous_status": "OK",
+    "previous_status_date": "novembre 2023",
+    "status_updated": "2026-03-06T21:35:19.814358"
   },
   {
     "id": "LA_08",
@@ -13881,13 +13889,16 @@
     "lat": "34.0764837058",
     "lng": "-118.2874859213",
     "points": "50",
-    "status": "OK",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/LA/LA_134-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/images/LA/LA_134-archive.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/LA/LA_134-mars2026.jpg",
     "city": "LA",
     "landing_date": "11/09/2006",
-    "status_date": "juin 2020",
-    "status_source": "report"
+    "status_date": "mars 2026",
+    "status_source": "report",
+    "previous_status": "OK",
+    "previous_status_date": "juin 2020",
+    "status_updated": "2026-03-06T21:35:19.814582"
   },
   {
     "id": "LA_135",
@@ -15509,13 +15520,16 @@
     "lat": "33.9767873128",
     "lng": "-118.4215601858",
     "points": "10",
-    "status": "OK",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/LA/LA_063-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/images/LA/LA_063-septembre2024.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/LA/LA_063-mars2026.jpg",
     "city": "LA",
     "landing_date": "10/12/2002",
-    "status_date": "septembre 2024",
-    "status_source": "report"
+    "status_date": "mars 2026",
+    "status_source": "report",
+    "previous_status": "OK",
+    "previous_status_date": "septembre 2024",
+    "status_updated": "2026-03-06T21:35:19.815290"
   },
   {
     "id": "LA_64",
@@ -15830,15 +15844,16 @@
     "lat": "34.0745552677",
     "lng": "-118.3438610038",
     "points": "20",
-    "status": "OK",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/LA/LA_088-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/images/LA/LA_088-archive.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/LA/LA_088-mars2026.jpg",
     "city": "LA",
     "landing_date": "09/12/2003",
-    "status_date": "décembre 2024",
+    "status_date": "mars 2026",
     "status_source": "report",
-    "previous_status": "destroyed",
-    "previous_status_date": "décembre 2024"
+    "previous_status": "OK",
+    "previous_status_date": "décembre 2024",
+    "status_updated": "2026-03-06T21:35:19.815436"
   },
   {
     "id": "LA_89",
@@ -15856,15 +15871,16 @@
     "lat": "34.0907031683",
     "lng": "-118.3005774631",
     "points": "20",
-    "status": "OK",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/LA/LA_090-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/LA/LA_090-decembre2024.jpg",
     "city": "LA",
     "landing_date": "09/12/2003",
-    "status_date": "février 2025",
+    "status_date": "mars 2026",
     "status_source": "report",
-    "previous_status": "destroyed",
-    "previous_status_date": "février 2025"
+    "previous_status": "OK",
+    "previous_status_date": "février 2025",
+    "status_updated": "2026-03-06T21:35:19.815449"
   },
   {
     "id": "LA_91",
@@ -27005,9 +27021,9 @@
     "landing_date": "20/11/2015",
     "status_date": "février 2026",
     "status_source": "report",
+    "status_updated": "2026-03-01T07:05:22.162877",
     "previous_status": "OK",
-    "previous_status_date": "mars 2016",
-    "status_updated": "2026-03-01T07:05:22.162877"
+    "previous_status_date": "mars 2016"
   },
   {
     "id": "NY_177",
@@ -33581,9 +33597,9 @@
     "landing_date": "10/10/2017",
     "status_date": "février 2026",
     "status_source": "report",
+    "status_updated": "2026-03-01T07:05:22.165606",
     "previous_status": "OK",
-    "previous_status_date": "avril 2019",
-    "status_updated": "2026-03-01T07:05:22.165606"
+    "previous_status_date": "avril 2019"
   },
   {
     "id": "PA_1307",
@@ -37110,7 +37126,7 @@
     "points": 50,
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1552-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/images/PA/PA_1552-septembre2025.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1552-septembre2025.jpg",
     "city": "PA",
     "landing_date": "11/09/2025",
     "status_date": "septembre 2025",
@@ -41348,20 +41364,23 @@
   },
   {
     "id": "PA_448",
-    "lat": "48.8720628477",
-    "lng": "2.3651469112",
+    "lat": 48.872114,
+    "lng": 2.365103,
     "points": "20",
-    "status": "destroyed",
+    "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0448-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0448-decembre2017.jpg",
     "city": "PA",
     "landing_date": "28/10/2001",
     "status_date": "juillet 2020",
-    "status_source": "report",
-    "status_updated": "2026-02-08T06:50:31Z",
-    "status_issue": 1,
+    "status_source": "community_issue",
+    "status_updated": "2026-03-05T18:46:17Z",
+    "status_issue": 8,
     "previous_status": "destroyed",
-    "previous_status_date": "juillet 2020"
+    "previous_status_date": "juillet 2020",
+    "geo_source": "community_issue",
+    "geo_confidence": "high",
+    "location_unknown": false
   },
   {
     "id": "PA_449",
@@ -52137,9 +52156,9 @@
     "landing_date": "20/07/2010",
     "status_date": "février 2026",
     "status_source": "report",
+    "status_updated": "2026-03-01T07:05:22.173602",
     "previous_status": "OK",
-    "previous_status_date": "novembre 2023",
-    "status_updated": "2026-03-01T07:05:22.173602"
+    "previous_status_date": "novembre 2023"
   },
   {
     "id": "ROM_48",
@@ -54008,13 +54027,16 @@
     "lat": "-23.5597953217",
     "lng": "-46.6849900561",
     "points": "50",
-    "status": "destroyed",
+    "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/SP/SP_47-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/images/SP/SP_47-archive.jpg",
     "city": "SP",
     "landing_date": "04/08/2011",
-    "status_date": "octobre 2017",
-    "status_source": "report"
+    "status_date": "mars 2026",
+    "status_source": "Instagram",
+    "previous_status": "destroyed",
+    "previous_status_date": "octobre 2017",
+    "status_updated": "2026-03-06T21:35:19.832928"
   },
   {
     "id": "SP_48",

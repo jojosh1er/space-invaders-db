@@ -159,7 +159,87 @@
       "new_value": "destroyed",
       "detected_at": "2026-03-01T07:05:22.911268",
       "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "BAB_06",
+      "field": "status",
+      "old_value": "damaged",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-06T21:35:22.513762",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "CAZ_16",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "a little damaged",
+      "detected_at": "2026-03-06T21:35:22.513767",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "GRN_37",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-06T21:35:22.513769",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "LA_07",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-06T21:35:22.513770",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "LA_134",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-06T21:35:22.513772",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "LA_63",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-06T21:35:22.513773",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "LA_88",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-06T21:35:22.513775",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "LA_90",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-06T21:35:22.513776",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "SP_47",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "OK",
+      "detected_at": "2026-03-06T21:35:22.513777",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_448",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "OK",
+      "detected_at": "2026-03-06T21:35:22.513779",
+      "source": "github-issue #8"
     }
   ],
-  "last_check": "2026-03-01T07:05:22.911270"
+  "last_check": "2026-03-06T21:35:22.513780"
 }
