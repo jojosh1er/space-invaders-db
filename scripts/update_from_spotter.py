@@ -4293,8 +4293,15 @@ async def main_async():
         
         return
     
+    # Réinitialiser invaders_missing_from_github.json avant tout scraping
+    # pour éviter que les données de la semaine précédente ne persistent
+    # si aucun nouvel invader n'est détecté cette semaine.
+    with open(_p(MISSING_FILE), 'w', encoding='utf-8') as f:
+        json.dump([], f)
+    print(f"🔄 {MISSING_FILE.name} réinitialisé à []")
+
     print("="*60 + "\n🔄 Total Invaders Search - Mise à jour v4\n" + "="*60)
-    
+
     github_db = load_master_file()
     if not github_db: return
     
