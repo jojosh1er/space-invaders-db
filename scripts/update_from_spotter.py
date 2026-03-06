@@ -4293,12 +4293,13 @@ async def main_async():
         
         return
     
-    # Réinitialiser invaders_missing_from_github.json avant tout scraping
-    # pour éviter que les données de la semaine précédente ne persistent
-    # si aucun nouvel invader n'est détecté cette semaine.
-    with open(_p(MISSING_FILE), 'w', encoding='utf-8') as f:
-        json.dump([], f)
-    print(f"🔄 {MISSING_FILE.name} réinitialisé à []")
+    # Réinitialiser les fichiers de sortie avant tout scraping pour éviter
+    # que les données de la semaine précédente ne persistent dans les rapports
+    # et les mails si aucun nouvel invader n'est détecté cette semaine.
+    for _reset_file in [MISSING_FILE, GEOLOCATED_FILE, DATA_DIR / "invaders_relocalized.json"]:
+        with open(_p(_reset_file), 'w', encoding='utf-8') as f:
+            json.dump([], f)
+        print(f"🔄 {_reset_file.name} réinitialisé à []")
 
     print("="*60 + "\n🔄 Total Invaders Search - Mise à jour v4\n" + "="*60)
 
