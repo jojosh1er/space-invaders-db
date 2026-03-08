@@ -239,7 +239,39 @@
       "new_value": "OK",
       "detected_at": "2026-03-06T21:35:22.513779",
       "source": "github-issue #8"
+    },
+    {
+      "invader_id": "PA_1391",
+      "field": "status",
+      "old_value": "hidden",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-08T07:02:46.067437",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_1523",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "hidden",
+      "detected_at": "2026-03-08T07:02:46.067442",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "SP_14",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "OK",
+      "detected_at": "2026-03-08T07:02:46.067444",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "SP_48",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "OK",
+      "detected_at": "2026-03-08T07:02:46.067446",
+      "source": "invader-spotter.art"
     }
   ],
-  "last_check": "2026-03-06T21:35:22.513780"
+  "last_check": "2026-03-08T07:02:46.067447"
 }
