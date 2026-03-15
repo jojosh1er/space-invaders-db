@@ -271,7 +271,95 @@
       "new_value": "OK",
       "detected_at": "2026-03-08T07:02:46.067446",
       "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "LA_100",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-15T07:14:10.714087",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "LA_109",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-15T07:14:10.714092",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "LA_131",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-15T07:14:10.714094",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "LA_204",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "a little damaged",
+      "detected_at": "2026-03-15T07:14:10.714096",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "LA_207",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "damaged",
+      "detected_at": "2026-03-15T07:14:10.714097",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "LA_36",
+      "field": "status",
+      "old_value": "a little damaged",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-15T07:14:10.714098",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "LCT_07",
+      "field": "status",
+      "old_value": "a little damaged",
+      "new_value": "OK",
+      "detected_at": "2026-03-15T07:14:10.714100",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "LDN_178",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-15T07:14:10.714101",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "NY_36",
+      "field": "status",
+      "old_value": "hidden",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-15T07:14:10.714103",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "SP_12",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "OK",
+      "detected_at": "2026-03-15T07:14:10.714104",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "SP_31",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-15T07:14:10.714105",
+      "source": "invader-spotter.art"
     }
   ],
-  "last_check": "2026-03-08T07:02:46.067447"
+  "last_check": "2026-03-15T07:14:10.714107"
 }
