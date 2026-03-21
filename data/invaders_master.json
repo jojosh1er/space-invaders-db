@@ -13433,9 +13433,9 @@
     "landing_date": "08/04/2004",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-15T07:14:09.072169",
     "previous_status": "OK",
-    "previous_status_date": "février 2025",
-    "status_updated": "2026-03-15T07:14:09.072169"
+    "previous_status_date": "février 2025"
   },
   {
     "id": "LA_101",
@@ -13551,9 +13551,9 @@
     "landing_date": "04/06/2005",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-15T07:14:09.072228",
     "previous_status": "OK",
-    "previous_status_date": "septembre 2024",
-    "status_updated": "2026-03-15T07:14:09.072228"
+    "previous_status_date": "septembre 2024"
   },
   {
     "id": "LA_11",
@@ -13863,9 +13863,9 @@
     "landing_date": "09/09/2006",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-15T07:14:09.072358",
     "previous_status": "OK",
-    "previous_status_date": "septembre 2024",
-    "status_updated": "2026-03-15T07:14:09.072358"
+    "previous_status_date": "septembre 2024"
   },
   {
     "id": "LA_132",
@@ -14873,9 +14873,9 @@
     "landing_date": "14/11/2018",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-15T07:14:09.072775",
     "previous_status": "OK",
-    "previous_status_date": "octobre 2019",
-    "status_updated": "2026-03-15T07:14:09.072775"
+    "previous_status_date": "octobre 2019"
   },
   {
     "id": "LA_205",
@@ -14915,9 +14915,9 @@
     "landing_date": "15/11/2018",
     "status_date": "mars 2026",
     "status_source": "FlashInvaders",
+    "status_updated": "2026-03-15T07:14:09.072793",
     "previous_status": "OK",
-    "previous_status_date": "avril 2022",
-    "status_updated": "2026-03-15T07:14:09.072793"
+    "previous_status_date": "avril 2022"
   },
   {
     "id": "LA_208",
@@ -15205,9 +15205,9 @@
     "landing_date": "08/01/2000",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-15T07:14:09.072931",
     "previous_status": "a little damaged",
-    "previous_status_date": "mai 2025",
-    "status_updated": "2026-03-15T07:14:09.072931"
+    "previous_status_date": "mai 2025"
   },
   {
     "id": "LA_37",
@@ -16219,9 +16219,9 @@
     "landing_date": "15/08/2014",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-15T07:14:09.073342",
     "previous_status": "a little damaged",
-    "previous_status_date": "septembre 2025",
-    "status_updated": "2026-03-15T07:14:09.073342"
+    "previous_status_date": "septembre 2025"
   },
   {
     "id": "LCT_08",
@@ -17490,9 +17490,9 @@
     "landing_date": "08/12/2025",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-15T07:14:09.073913",
     "previous_status": "OK",
-    "previous_status_date": "décembre 2025",
-    "status_updated": "2026-03-15T07:14:09.073913"
+    "previous_status_date": "décembre 2025"
   },
   {
     "id": "LDN_179",
@@ -27929,9 +27929,9 @@
     "landing_date": "20/06/2003",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-15T07:14:09.078218",
     "previous_status": "hidden",
-    "previous_status_date": "juillet 2025",
-    "status_updated": "2026-03-15T07:14:09.078218"
+    "previous_status_date": "juillet 2025"
   },
   {
     "id": "NY_37",
@@ -53586,9 +53586,9 @@
     "landing_date": "23/07/2011",
     "status_date": "mars 2026",
     "status_source": "Instagram",
+    "status_updated": "2026-03-15T07:14:09.089286",
     "previous_status": "destroyed",
-    "previous_status_date": "janvier 2022",
-    "status_updated": "2026-03-15T07:14:09.089286"
+    "previous_status_date": "janvier 2022"
   },
   {
     "id": "SP_13",
@@ -53849,9 +53849,9 @@
     "landing_date": "28/07/2011",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-15T07:14:09.089406",
     "previous_status": "OK",
-    "previous_status_date": "mars 2025",
-    "status_updated": "2026-03-15T07:14:09.089406"
+    "previous_status_date": "mars 2025"
   },
   {
     "id": "SP_32",
@@ -57637,8 +57637,7 @@
     "status_date": "février 2026",
     "geo_source": "community_issue",
     "geo_confidence": "high",
-    "address": "Rue Le Regrattier, 75004 Paris",
-    "location_unknown": false
+    "address": "Rue Le Regrattier, 75004 Paris"
   },
   {
     "id": "PA_1559",
@@ -57654,5 +57653,44 @@
     "geo_source": "vision",
     "geo_confidence": "medium",
     "address": "2 Place de la Contrescarpe, 75005 Paris"
+  },
+  {
+    "id": "PA_1560",
+    "status": "OK",
+    "city": "PA",
+    "points": 50,
+    "missing_from_github": true,
+    "added_date": "2026-03-21T08:37:47.094889",
+    "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1560-grosplan.png",
+    "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1560-mars2026.jpg",
+    "lat": 48.871737,
+    "lng": 2.3615073,
+    "geo_source": "vision",
+    "geo_confidence": "low",
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "Marais, 75003 Paris",
+    "geo_hint": "quartier probable: Centre de Paris, probablement 3e, 4e ou 11e arrondissement",
+    "preserved": true,
+    "preserved_date": "2026-03-21T08:39:47.425656"
+  },
+  {
+    "id": "PA_1561",
+    "status": "OK",
+    "city": "PA",
+    "points": 40,
+    "missing_from_github": true,
+    "added_date": "2026-03-21T08:37:47.094913",
+    "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1561-grosplan.png",
+    "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1561-mars2026.jpg",
+    "lat": 48.8736119,
+    "lng": 2.3549099,
+    "geo_source": "vision",
+    "geo_confidence": "medium",
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "Rue du Faubourg Saint-Denis, 75010 Paris",
+    "preserved": true,
+    "preserved_date": "2026-03-21T08:39:47.425671"
   }
 ]

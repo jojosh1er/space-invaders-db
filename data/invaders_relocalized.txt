@@ -1,32 +1,20 @@
 GÉOLOCALISATION DES INVADERS MANQUANTS
 ============================================================
 
-Total: 4
-Trouvés: 4
-HIGH: 2, MEDIUM: 2 (dont 4 Vision), LOW: 0
+Total: 2
+Trouvés: 2
+HIGH: 0, MEDIUM: 1 (dont 2 Vision), LOW: 1
 
-PA_1556 🟢 (HIGH)
-   GPS: 48.845729, 2.348615
+PA_1560 🔴 (LOW)
+   GPS: 48.871737, 2.361507
    Source: vision
-   Adresse: 1 Rue Cazotte, 75018 Paris
-   💡 Hint: cross-check: 4.6km du quartier 18e arrondissement (Montmartre) | quartier probable: 18e arrondissement (Montmartre)
-   Maps: https://www.google.com/maps?q=48.8852451,2.3446729
+   Adresse: Marais, 75003 Paris
+   💡 Hint: quartier probable: Centre de Paris, probablement 3e, 4e ou 11e arrondissement
+   Maps: https://www.google.com/maps?q=48.871737,2.3615073
 
-PA_1557 🟡 (MEDIUM)
-   GPS: 48.868553, 2.330332
+PA_1561 🟡 (MEDIUM)
+   GPS: 48.873612, 2.354910
    Source: vision
-   Adresse: 57 Quai des Grands Augustins, 75006 Paris
-   Maps: https://www.google.com/maps?q=48.8558178,2.3406264
-
-PA_1558 🟢 (HIGH)
-   GPS: 48.852318, 2.354734
-   Source: vision
-   Adresse: Rue Le Regrattier, 75004 Paris
-   Maps: https://www.google.com/maps?q=48.8523181,2.3547338
-
-PA_1559 🟡 (MEDIUM)
-   GPS: 48.844660, 2.349434
-   Source: vision
-   Adresse: 2 Place de la Contrescarpe, 75005 Paris
-   Maps: https://www.google.com/maps?q=48.8446604,2.3494341
+   Adresse: Rue du Faubourg Saint-Denis, 75010 Paris
+   Maps: https://www.google.com/maps?q=48.8736119,2.3549099
 
