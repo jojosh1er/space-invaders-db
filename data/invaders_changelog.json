@@ -375,7 +375,71 @@
       "new_value": "damaged",
       "detected_at": "2026-03-22T07:11:25.758699",
       "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "FTBL_19",
+      "field": "status",
+      "old_value": "a little damaged",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-29T07:22:43.492937",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "FTBL_20",
+      "field": "status",
+      "old_value": "a little damaged",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-29T07:22:43.492942",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "MLB_22",
+      "field": "status",
+      "old_value": "damaged",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-29T07:22:43.492944",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "NY_162",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "damaged",
+      "detected_at": "2026-03-29T07:22:43.492945",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_531",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "damaged",
+      "detected_at": "2026-03-29T07:22:43.492947",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_66",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-29T07:22:43.492948",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_67",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-29T07:22:43.492950",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_68",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-03-29T07:22:43.492952",
+      "source": "invader-spotter.art"
     }
   ],
-  "last_check": "2026-03-22T07:11:25.758700"
+  "last_check": "2026-03-29T07:22:43.492953"
 }
