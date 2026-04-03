@@ -8832,9 +8832,9 @@
     "landing_date": "05/08/2023",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-29T07:22:42.311488",
     "previous_status": "a little damaged",
-    "previous_status_date": "juillet 2025",
-    "status_updated": "2026-03-29T07:22:42.311488"
+    "previous_status_date": "juillet 2025"
   },
   {
     "id": "FTBL_20",
@@ -8848,12 +8848,12 @@
     "landing_date": "05/08/2023",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-29T07:22:42.311502",
     "previous_status": "a little damaged",
     "previous_status_date": "décembre 2025",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true,
-    "status_updated": "2026-03-29T07:22:42.311502"
+    "location_unknown": true
   },
   {
     "id": "FTBL_21",
@@ -23820,9 +23820,9 @@
     "landing_date": "03/11/2002",
     "status_date": "mars 2026",
     "status_source": "Instagram",
+    "status_updated": "2026-03-29T07:22:42.318542",
     "previous_status": "damaged",
-    "previous_status_date": "août 2024",
-    "status_updated": "2026-03-29T07:22:42.318542"
+    "previous_status_date": "août 2024"
   },
   {
     "id": "MLB_23",
@@ -26850,9 +26850,9 @@
     "landing_date": "16/11/2015",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-29T07:22:42.319832",
     "previous_status": "OK",
-    "previous_status_date": "mars 2016",
-    "status_updated": "2026-03-29T07:22:42.319832"
+    "previous_status_date": "mars 2016"
   },
   {
     "id": "NY_163",
@@ -36676,15 +36676,16 @@
     "lat": "48.8336446453",
     "lng": "2.3825679596",
     "points": "30",
-    "status": "destroyed",
+    "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1517-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1517-aout2024.jpg",
     "city": "PA",
     "landing_date": "27/08/2024",
-    "status_date": "décembre 2025",
+    "status_date": "mars 2026",
     "status_source": "report",
-    "previous_status": "OK",
-    "previous_status_date": "décembre 2025"
+    "previous_status": "destroyed",
+    "previous_status_date": "décembre 2025",
+    "status_updated": "2026-04-03T18:46:03.540290"
   },
   {
     "id": "PA_1518",
@@ -42615,9 +42616,9 @@
     "landing_date": "25/12/2003",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-29T07:22:42.326504",
     "previous_status": "OK",
-    "previous_status_date": "avril 2019",
-    "status_updated": "2026-03-29T07:22:42.326504"
+    "previous_status_date": "avril 2019"
   },
   {
     "id": "PA_532",
@@ -44473,9 +44474,9 @@
     "landing_date": "13/06/1998",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-29T07:22:42.327306",
     "previous_status": "OK",
-    "previous_status_date": "août 2019",
-    "status_updated": "2026-03-29T07:22:42.327306"
+    "previous_status_date": "août 2019"
   },
   {
     "id": "PA_660",
@@ -44518,8 +44519,8 @@
   },
   {
     "id": "PA_663",
-    "lat": "48.8810833277",
-    "lng": "2.2894309202",
+    "lat": 48.881055,
+    "lng": 2.289623,
     "points": "20",
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0663-grosplan.png",
@@ -44527,7 +44528,10 @@
     "city": "PA",
     "landing_date": "30/04/2006",
     "status_date": "octobre 2018",
-    "status_source": "spott"
+    "status_source": "spott",
+    "geo_source": "community_issue",
+    "geo_confidence": "high",
+    "location_unknown": false
   },
   {
     "id": "PA_664",
@@ -44618,9 +44622,9 @@
     "landing_date": "13/06/1998",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-29T07:22:42.327370",
     "previous_status": "OK",
-    "previous_status_date": "octobre 2022",
-    "status_updated": "2026-03-29T07:22:42.327370"
+    "previous_status_date": "octobre 2022"
   },
   {
     "id": "PA_670",
@@ -44766,9 +44770,9 @@
     "landing_date": "13/06/1998",
     "status_date": "mars 2026",
     "status_source": "report",
+    "status_updated": "2026-03-29T07:22:42.327436",
     "previous_status": "OK",
-    "previous_status_date": "août 2019",
-    "status_updated": "2026-03-29T07:22:42.327436"
+    "previous_status_date": "août 2019"
   },
   {
     "id": "PA_680",
@@ -45469,7 +45473,7 @@
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0729-decembre2020.jpg",
     "city": "PA",
     "landing_date": "26/04/2007",
-    "status_date": "décembre 2025",
+    "status_date": "mars 2026",
     "status_source": "report"
   },
   {
@@ -46508,16 +46512,16 @@
     "lat": "48.8658734503",
     "lng": "2.3435008421",
     "points": "50",
-    "status": "damaged",
+    "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0800-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0800-avril2015.jpg",
     "city": "PA",
     "landing_date": "25/03/2009",
-    "status_date": "février 2026",
+    "status_date": "mars 2026",
     "status_source": "report",
-    "status_updated": "2026-02-22T08:13:40.993689",
-    "previous_status": "destroyed",
-    "previous_status_date": "janvier 2026"
+    "status_updated": "2026-04-03T18:46:03.544232",
+    "previous_status": "damaged",
+    "previous_status_date": "février 2026"
   },
   {
     "id": "PA_801",
@@ -57706,5 +57710,139 @@
     "geo_source": "manual",
     "geo_confidence": "medium",
     "address": "46 Rue Saint-André des Arts, Paris"
+  },
+  {
+    "id": "PA_1562",
+    "status": "OK",
+    "city": "PA",
+    "points": 100,
+    "missing_from_github": true,
+    "added_date": "2026-04-03T18:46:03.549683",
+    "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1562-grosplan.png",
+    "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1562-avril2026.jpg",
+    "lat": 48.8901928,
+    "lng": 2.393712,
+    "geo_source": "vision",
+    "geo_confidence": "medium",
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "Musée de la musique, 75019 Paris",
+    "geo_hint": "cross-check: 0.3km du quartier Parc de la Villette, 19e arrondissement | quartier probable: Parc de la Villette, 19e arrondissement",
+    "preserved": true,
+    "preserved_date": "2026-04-03T18:52:18.153765"
+  },
+  {
+    "id": "PA_1563",
+    "status": "OK",
+    "city": "PA",
+    "points": 20,
+    "missing_from_github": true,
+    "added_date": "2026-04-03T18:46:03.549692",
+    "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1563-grosplan.png",
+    "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1563-avril2026.jpg",
+    "lat": 48.8761457,
+    "lng": 2.2635999,
+    "geo_source": "vision",
+    "geo_confidence": "medium",
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "Fondation Louis Vuitton, 75116 Paris",
+    "preserved": true,
+    "preserved_date": "2026-04-03T18:52:18.153775"
+  },
+  {
+    "id": "PA_1564",
+    "status": "OK",
+    "city": "PA",
+    "points": 40,
+    "missing_from_github": true,
+    "added_date": "2026-04-03T18:46:03.549696",
+    "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1564-grosplan.png",
+    "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1564-avril2026.jpg",
+    "lat": 48.8886357,
+    "lng": 2.3901364,
+    "geo_source": "vision",
+    "geo_confidence": "medium",
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "Parc de la Villette, 75019 Paris",
+    "preserved": true,
+    "preserved_date": "2026-04-03T18:52:18.153778"
+  },
+  {
+    "id": "PA_1565",
+    "status": "OK",
+    "city": "PA",
+    "points": 40,
+    "missing_from_github": true,
+    "added_date": "2026-04-03T18:46:03.549698",
+    "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1565-grosplan.png",
+    "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1565-avril2026.jpg",
+    "lat": 48.8919213,
+    "lng": 2.3941386,
+    "geo_source": "vision",
+    "geo_confidence": "medium",
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "Philharmonie de Paris, 75019 Paris",
+    "preserved": true,
+    "preserved_date": "2026-04-03T18:52:18.153780"
+  },
+  {
+    "id": "PA_1566",
+    "status": "OK",
+    "city": "PA",
+    "points": 30,
+    "missing_from_github": true,
+    "added_date": "2026-04-03T18:46:03.549701",
+    "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1566-grosplan.png",
+    "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1566-avril2026.jpg",
+    "lat": 48.8895501,
+    "lng": 2.3931894,
+    "geo_source": "vision",
+    "geo_confidence": "medium",
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "221 Avenue Jean Jaurès, 75019 Paris",
+    "preserved": true,
+    "preserved_date": "2026-04-03T18:52:18.153782"
+  },
+  {
+    "id": "PA_1567",
+    "status": "OK",
+    "city": "PA",
+    "points": 20,
+    "missing_from_github": true,
+    "added_date": "2026-04-03T18:46:03.549703",
+    "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1567-grosplan.png",
+    "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1567-avril2026.jpg",
+    "lat": 48.8895501,
+    "lng": 2.3931894,
+    "geo_source": "vision",
+    "geo_confidence": "medium",
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "221 Avenue Jean Jaurès, 75019 Paris",
+    "preserved": true,
+    "preserved_date": "2026-04-03T18:52:18.153784"
+  },
+  {
+    "id": "PA_1568",
+    "status": "OK",
+    "city": "PA",
+    "points": 100,
+    "missing_from_github": true,
+    "added_date": "2026-04-03T18:46:03.549705",
+    "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1568-grosplan.png",
+    "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1568-avril2026.jpg",
+    "lat": 48.8300059,
+    "lng": 2.3768474,
+    "geo_source": "vision",
+    "geo_confidence": "medium",
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "Bibliothèque François Mitterrand, 75013 Paris",
+    "preserved": true,
+    "preserved_date": "2026-04-03T18:52:18.153786"
   }
 ]

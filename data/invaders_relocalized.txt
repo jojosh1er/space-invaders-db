@@ -1,20 +1,50 @@
 GÉOLOCALISATION DES INVADERS MANQUANTS
 ============================================================
 
-Total: 2
-Trouvés: 2
-HIGH: 0, MEDIUM: 1 (dont 2 Vision), LOW: 1
+Total: 7
+Trouvés: 7
+HIGH: 0, MEDIUM: 7 (dont 7 Vision), LOW: 0
 
-PA_1560 🔴 (LOW)
-   GPS: 48.871737, 2.361507
+PA_1562 🟡 (MEDIUM)
+   GPS: 48.890193, 2.393712
    Source: vision
-   Adresse: Marais, 75003 Paris
-   💡 Hint: quartier probable: Centre de Paris, probablement 3e, 4e ou 11e arrondissement
-   Maps: https://www.google.com/maps?q=48.871737,2.3615073
+   Adresse: Musée de la musique, 75019 Paris
+   💡 Hint: cross-check: 0.3km du quartier Parc de la Villette, 19e arrondissement | quartier probable: Parc de la Villette, 19e arr
+   Maps: https://www.google.com/maps?q=48.8901928,2.393712
 
-PA_1561 🟡 (MEDIUM)
-   GPS: 48.873612, 2.354910
+PA_1563 🟡 (MEDIUM)
+   GPS: 48.876146, 2.263600
    Source: vision
-   Adresse: Rue du Faubourg Saint-Denis, 75010 Paris
-   Maps: https://www.google.com/maps?q=48.8736119,2.3549099
+   Adresse: Fondation Louis Vuitton, 75116 Paris
+   Maps: https://www.google.com/maps?q=48.8761457,2.2635999
+
+PA_1564 🟡 (MEDIUM)
+   GPS: 48.888636, 2.390136
+   Source: vision
+   Adresse: Parc de la Villette, 75019 Paris
+   Maps: https://www.google.com/maps?q=48.8886357,2.3901364
+
+PA_1565 🟡 (MEDIUM)
+   GPS: 48.891921, 2.394139
+   Source: vision
+   Adresse: Philharmonie de Paris, 75019 Paris
+   Maps: https://www.google.com/maps?q=48.8919213,2.3941386
+
+PA_1566 🟡 (MEDIUM)
+   GPS: 48.889550, 2.393189
+   Source: vision
+   Adresse: 221 Avenue Jean Jaurès, 75019 Paris
+   Maps: https://www.google.com/maps?q=48.8895501,2.3931894
+
+PA_1567 🟡 (MEDIUM)
+   GPS: 48.889550, 2.393189
+   Source: vision
+   Adresse: 221 Avenue Jean Jaurès, 75019 Paris
+   Maps: https://www.google.com/maps?q=48.8895501,2.3931894
+
+PA_1568 🟡 (MEDIUM)
+   GPS: 48.830006, 2.376847
+   Source: vision
+   Adresse: Bibliothèque François Mitterrand, 75013 Paris
+   Maps: https://www.google.com/maps?q=48.8300059,2.3768474
 
