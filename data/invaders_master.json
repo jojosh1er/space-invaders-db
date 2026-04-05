@@ -10562,10 +10562,10 @@
     "points": "10",
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/GRU/GRU_02-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/photos/GRU/GRU_02-aout2025.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/GRU/GRU_02-mars2026.jpg",
     "city": "GRU",
     "landing_date": "03/04/2012",
-    "status_date": "août 2025",
+    "status_date": "mars 2026",
     "status_source": "report"
   },
   {
@@ -13499,13 +13499,16 @@
     "lat": "34.0472930452",
     "lng": "-118.2460235148",
     "points": "20",
-    "status": "a little damaged",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/LA/LA_105-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/LA/LA_105-archive.jpg",
     "city": "LA",
     "landing_date": "03/06/2005",
-    "status_date": "septembre 2024",
-    "status_source": "FlashInvaders"
+    "status_date": "avril 2026",
+    "status_source": "report",
+    "previous_status": "a little damaged",
+    "previous_status_date": "septembre 2024",
+    "status_updated": "2026-04-05T07:23:35.496253"
   },
   {
     "id": "LA_106",
@@ -38026,14 +38029,15 @@
     "lat": "48.8420180677",
     "lng": "2.3496901917",
     "points": "50",
-    "status": "damaged",
+    "status": "a little damaged",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0213-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0213-decembre2018.jpg",
     "city": "PA",
     "landing_date": "30/08/1999",
-    "status_date": "novembre 2025",
-    "previous_status": "destroyed",
-    "previous_status_date": "novembre 2025"
+    "status_date": "avril 2026",
+    "previous_status": "damaged",
+    "previous_status_date": "novembre 2025",
+    "status_updated": "2026-04-05T07:23:35.506498"
   },
   {
     "id": "PA_214",
@@ -46899,7 +46903,7 @@
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0827-juin2016.jpg",
     "city": "PA",
     "landing_date": "21/03/2010",
-    "status_date": "février 2025",
+    "status_date": "avril 2026",
     "status_source": "report",
     "previous_status": "OK",
     "previous_status_date": "février 2025"
@@ -57722,7 +57726,8 @@
     "geo_source": "community_issue",
     "geo_confidence": "high",
     "address": "Musée de la musique, 75019 Paris",
-    "location_unknown": false
+    "landing_date": "31/03/2026",
+    "status_date": "avril 2026"
   },
   {
     "id": "PA_1563",
@@ -57736,7 +57741,8 @@
     "geo_source": "community_issue",
     "geo_confidence": "high",
     "address": "Musée de la musique, 75019 Paris",
-    "location_unknown": false
+    "landing_date": "31/03/2026",
+    "status_date": "avril 2026"
   },
   {
     "id": "PA_1564",
@@ -57750,7 +57756,8 @@
     "geo_source": "community_issue",
     "geo_confidence": "high",
     "address": "Parc de la Villette, 75019 Paris",
-    "location_unknown": false
+    "landing_date": "31/03/2026",
+    "status_date": "avril 2026"
   },
   {
     "id": "PA_1565",
@@ -57764,7 +57771,8 @@
     "geo_source": "community_issue",
     "geo_confidence": "high",
     "address": "Philharmonie de Paris, 75019 Paris",
-    "location_unknown": false
+    "landing_date": "31/03/2026",
+    "status_date": "avril 2026"
   },
   {
     "id": "PA_1566",
@@ -57778,7 +57786,8 @@
     "geo_source": "community_issue",
     "geo_confidence": "high",
     "address": "Philharmonie de Paris, 75019 Paris",
-    "location_unknown": false
+    "landing_date": "31/03/2026",
+    "status_date": "avril 2026"
   },
   {
     "id": "PA_1567",
@@ -57792,7 +57801,8 @@
     "geo_source": "community_issue",
     "geo_confidence": "high",
     "address": "Philharmonie de Paris, 75019 Paris",
-    "location_unknown": false
+    "landing_date": "31/03/2026",
+    "status_date": "avril 2026"
   },
   {
     "id": "PA_1568",
@@ -57806,6 +57816,7 @@
     "geo_source": "community_issue",
     "geo_confidence": "high",
     "address": "Musée de la musique, 75019 Paris",
-    "location_unknown": false
+    "landing_date": "31/03/2026",
+    "status_date": "avril 2026"
   }
 ]
