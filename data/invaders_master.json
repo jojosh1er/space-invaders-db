@@ -1846,13 +1846,16 @@
     "lat": "43.487834",
     "lng": "-1.554834",
     "points": "20",
-    "status": "OK",
+    "status": "hidden",
     "image_invader": "https://www.invader-spotter.art/grosplan/BAB/BAB_42-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/BAB/BAB_42-novembre2024.jpg",
     "city": "BAB",
     "landing_date": "13/11/2024",
-    "status_date": "novembre 2024",
-    "status_source": "report"
+    "status_date": "avril 2026",
+    "status_source": "report",
+    "previous_status": "OK",
+    "previous_status_date": "novembre 2024",
+    "status_updated": "2026-04-12T07:32:22.709597"
   },
   {
     "id": "BAB_43",
@@ -6185,11 +6188,11 @@
     "points": "30",
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/CAZ/CAZ_31-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/photos/CAZ/CAZ_31-septembre2019.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/CAZ/CAZ_31-mars2026.jpg",
     "city": "CAZ",
     "landing_date": "24/05/2007",
-    "status_date": "juin 2025",
-    "status_source": "FlashInvaders"
+    "status_date": "mars 2026",
+    "status_source": "report"
   },
   {
     "id": "CAZ_32",
@@ -13506,9 +13509,9 @@
     "landing_date": "03/06/2005",
     "status_date": "avril 2026",
     "status_source": "report",
+    "status_updated": "2026-04-05T07:23:35.496253",
     "previous_status": "a little damaged",
-    "previous_status_date": "septembre 2024",
-    "status_updated": "2026-04-05T07:23:35.496253"
+    "previous_status_date": "septembre 2024"
   },
   {
     "id": "LA_106",
@@ -17546,13 +17549,16 @@
     "lat": "51.5009151",
     "lng": "-0.1181788",
     "points": 30,
-    "status": "OK",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/LDN/LDN_181-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/LDN/LDN_181-decembre2025.jpg",
     "city": "LDN",
     "landing_date": "09/12/2025",
-    "status_date": "décembre 2025",
-    "status_source": "report"
+    "status_date": "avril 2026",
+    "status_source": "report",
+    "previous_status": "OK",
+    "previous_status_date": "décembre 2025",
+    "status_updated": "2026-04-12T07:32:22.716774"
   },
   {
     "id": "LDN_182",
@@ -23816,16 +23822,16 @@
     "lat": "-37.8171650186",
     "lng": "144.9651248871",
     "points": "30",
-    "status": "destroyed",
+    "status": "a little damaged",
     "image_invader": "https://www.invader-spotter.art/grosplan/MLB/MLB_22-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/MLB/MLB_22-fevrier2019.jpg",
     "city": "MLB",
     "landing_date": "03/11/2002",
-    "status_date": "mars 2026",
-    "status_source": "Instagram",
-    "status_updated": "2026-03-29T07:22:42.318542",
-    "previous_status": "damaged",
-    "previous_status_date": "août 2024"
+    "status_date": "avril 2026",
+    "status_source": "FlashInvaders",
+    "status_updated": "2026-04-12T07:32:22.720666",
+    "previous_status": "destroyed",
+    "previous_status_date": "mars 2026"
   },
   {
     "id": "MLB_23",
@@ -33015,14 +33021,17 @@
     "lat": "48.8604520502",
     "lng": "2.3524150317",
     "points": "50",
-    "status": "OK",
+    "status": "hidden",
     "hint": "Inside the Centre Pompidou, look around the library",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1265-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1265-mars2017.jpg",
     "city": "PA",
     "landing_date": "07/02/2017",
-    "status_date": "mars 2017",
-    "status_source": "spott"
+    "status_date": "avril 2026",
+    "status_source": "spott",
+    "previous_status": "OK",
+    "previous_status_date": "mars 2017",
+    "status_updated": "2026-04-12T07:32:22.724855"
   },
   {
     "id": "PA_1266",
@@ -38035,9 +38044,9 @@
     "city": "PA",
     "landing_date": "30/08/1999",
     "status_date": "avril 2026",
+    "status_updated": "2026-04-05T07:23:35.506498",
     "previous_status": "damaged",
-    "previous_status_date": "novembre 2025",
-    "status_updated": "2026-04-05T07:23:35.506498"
+    "previous_status_date": "novembre 2025"
   },
   {
     "id": "PA_214",
@@ -48795,8 +48804,8 @@
   },
   {
     "id": "PA_959",
-    "lat": "48.8637081586",
-    "lng": "2.363038474",
+    "lat": 48.863828,
+    "lng": 2.362887,
     "points": "20",
     "status": "damaged",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0959-grosplan.png",
@@ -48804,7 +48813,10 @@
     "city": "PA",
     "landing_date": "24/04/2011",
     "status_date": "décembre 2018",
-    "status_source": "spott"
+    "status_source": "spott",
+    "geo_source": "community_issue",
+    "geo_confidence": "high",
+    "location_unknown": false
   },
   {
     "id": "PA_96",
@@ -57723,11 +57735,11 @@
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1562-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1562-avril2026.jpg",
     "city": "PA",
+    "landing_date": "31/03/2026",
+    "status_date": "avril 2026",
     "geo_source": "community_issue",
     "geo_confidence": "high",
-    "address": "Musée de la musique, 75019 Paris",
-    "landing_date": "31/03/2026",
-    "status_date": "avril 2026"
+    "address": "Musée de la musique, 75019 Paris"
   },
   {
     "id": "PA_1563",
@@ -57738,11 +57750,11 @@
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1563-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1563-avril2026.jpg",
     "city": "PA",
+    "landing_date": "31/03/2026",
+    "status_date": "avril 2026",
     "geo_source": "community_issue",
     "geo_confidence": "high",
-    "address": "Musée de la musique, 75019 Paris",
-    "landing_date": "31/03/2026",
-    "status_date": "avril 2026"
+    "address": "Musée de la musique, 75019 Paris"
   },
   {
     "id": "PA_1564",
@@ -57753,11 +57765,11 @@
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1564-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1564-avril2026.jpg",
     "city": "PA",
+    "landing_date": "31/03/2026",
+    "status_date": "avril 2026",
     "geo_source": "community_issue",
     "geo_confidence": "high",
-    "address": "Parc de la Villette, 75019 Paris",
-    "landing_date": "31/03/2026",
-    "status_date": "avril 2026"
+    "address": "Parc de la Villette, 75019 Paris"
   },
   {
     "id": "PA_1565",
@@ -57768,11 +57780,11 @@
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1565-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1565-avril2026.jpg",
     "city": "PA",
+    "landing_date": "31/03/2026",
+    "status_date": "avril 2026",
     "geo_source": "community_issue",
     "geo_confidence": "high",
-    "address": "Philharmonie de Paris, 75019 Paris",
-    "landing_date": "31/03/2026",
-    "status_date": "avril 2026"
+    "address": "Philharmonie de Paris, 75019 Paris"
   },
   {
     "id": "PA_1566",
@@ -57783,11 +57795,11 @@
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1566-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1566-avril2026.jpg",
     "city": "PA",
+    "landing_date": "31/03/2026",
+    "status_date": "avril 2026",
     "geo_source": "community_issue",
     "geo_confidence": "high",
-    "address": "Philharmonie de Paris, 75019 Paris",
-    "landing_date": "31/03/2026",
-    "status_date": "avril 2026"
+    "address": "Philharmonie de Paris, 75019 Paris"
   },
   {
     "id": "PA_1567",
@@ -57798,11 +57810,11 @@
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1567-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1567-avril2026.jpg",
     "city": "PA",
+    "landing_date": "31/03/2026",
+    "status_date": "avril 2026",
     "geo_source": "community_issue",
     "geo_confidence": "high",
-    "address": "Philharmonie de Paris, 75019 Paris",
-    "landing_date": "31/03/2026",
-    "status_date": "avril 2026"
+    "address": "Philharmonie de Paris, 75019 Paris"
   },
   {
     "id": "PA_1568",
@@ -57813,10 +57825,10 @@
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1568-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1568-avril2026.jpg",
     "city": "PA",
+    "landing_date": "31/03/2026",
+    "status_date": "avril 2026",
     "geo_source": "community_issue",
     "geo_confidence": "high",
-    "address": "Musée de la musique, 75019 Paris",
-    "landing_date": "31/03/2026",
-    "status_date": "avril 2026"
+    "address": "Musée de la musique, 75019 Paris"
   }
 ]
