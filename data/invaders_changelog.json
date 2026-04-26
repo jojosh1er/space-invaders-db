@@ -583,7 +583,87 @@
       "new_value": "OK",
       "detected_at": "2026-04-19T07:38:17.818859",
       "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "AIX_07",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "hidden",
+      "detected_at": "2026-04-26T07:47:33.654105",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "BRL_09",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "OK",
+      "detected_at": "2026-04-26T07:47:33.654110",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "BTA_20",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "OK",
+      "detected_at": "2026-04-26T07:47:33.654112",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "BTA_24",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "OK",
+      "detected_at": "2026-04-26T07:47:33.654114",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "GNV_08",
+      "field": "status",
+      "old_value": "damaged",
+      "new_value": "OK",
+      "detected_at": "2026-04-26T07:47:33.654116",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "LSN_16",
+      "field": "status",
+      "old_value": "damaged",
+      "new_value": "a little damaged",
+      "detected_at": "2026-04-26T07:47:33.654118",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_300",
+      "field": "status",
+      "old_value": "damaged",
+      "new_value": "destroyed",
+      "detected_at": "2026-04-26T07:47:33.654119",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_632",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "damaged",
+      "detected_at": "2026-04-26T07:47:33.654121",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_920",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "damaged",
+      "detected_at": "2026-04-26T07:47:33.654122",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "VRS_09",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "a little damaged",
+      "detected_at": "2026-04-26T07:47:33.654124",
+      "source": "invader-spotter.art"
     }
   ],
-  "last_check": "2026-04-19T07:38:17.818860"
+  "last_check": "2026-04-26T07:47:33.654125"
 }
