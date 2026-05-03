@@ -1,0 +1,893 @@
+{
+  "BGK_08": {
+    "fetched_at": "2026-05-02T19:10:37.894046",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Bangkok, Thailand",
+    "confidence": "MEDIUM",
+    "granularity": "PARIS_ONLY",
+    "direct_geotag": {
+      "name": "Bangkok, Thailand",
+      "lat": 13.742984887797,
+      "lng": 100.55050191789,
+      "address": ""
+    }
+  },
+  "BGK_22": {
+    "fetched_at": "2026-05-02T19:10:50.523817",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Bangkok, Thailand",
+    "confidence": "MEDIUM",
+    "granularity": "PARIS_ONLY",
+    "direct_geotag": {
+      "name": "Bangkok, Thailand",
+      "lat": 13.742984887797,
+      "lng": 100.55050191789,
+      "address": ""
+    }
+  },
+  "BGK_46": {
+    "fetched_at": "2026-05-02T19:11:09.194257",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Environs de Charan Sanitwong / Bang Phlat, Bangkok (près d'un centre Metro Mall / passerelle piétonne)",
+    "confidence": "LOW",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Bangkok",
+      "lat": 13.7522222222,
+      "lng": 100.493888889,
+      "address": ""
+    }
+  },
+  "HK_15": {
+    "fetched_at": "2026-05-02T19:37:30.803098",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "PMQ 元創方, 35 Aberdeen Street, Central, Hong Kong",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "PMQ 元創方",
+      "lat": 22.283297722569,
+      "lng": 114.15197106491,
+      "address": "35 Aberdeen Street , Central 中環鴨巴甸街35號"
+    }
+  },
+  "BT_01": {
+    "fetched_at": "2026-05-02T19:16:26.758626",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Bhoutan (zone Thimphu / Paro) — coordonnées approximatives 27.47234, 89.63795",
+    "confidence": "LOW",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Bhutan འབྲུག་རྒྱལ་ཁབ་",
+      "lat": 27.4723424,
+      "lng": 89.6379529,
+      "address": ""
+    }
+  },
+  "BT_03": {
+    "fetched_at": "2026-05-02T19:16:43.411811",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Bhoutan (ville indéterminée entre Paro et Thimphou)",
+    "confidence": "LOW",
+    "granularity": "UNKNOWN",
+    "direct_geotag": {
+      "name": "Bhutan འབྲུག་རྒྱལ་ཁབ་",
+      "lat": 27.4723424,
+      "lng": 89.6379529,
+      "address": ""
+    }
+  },
+  "BT_05": {
+    "fetched_at": "2026-05-02T19:18:25.427184",
+    "posts_count": 2,
+    "corroborated_street": null,
+    "best_address": "Probablement Dochula Pass, route Thimphu-Punakha, Bhoutan",
+    "confidence": "LOW",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Bhutan འབྲུག་རྒྱལ་ཁབ་",
+      "lat": 27.4723424,
+      "lng": 89.6379529,
+      "address": ""
+    }
+  },
+  "BT_06": {
+    "fetched_at": "2026-05-02T19:18:43.889052",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Bhoutan (probablement région de Paro ou Thimphou)",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Rue Béranger",
+      "lat": 48.8658,
+      "lng": 2.36375,
+      "address": ""
+    }
+  },
+  "BT_08": {
+    "fetched_at": "2026-05-02T19:18:57.388484",
+    "posts_count": 2,
+    "corroborated_street": null,
+    "best_address": "Paro, Bhoutan (environs du C.M Shop / Zangto Restaurant & Bar)",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Bhutan འབྲུག་རྒྱལ་ཁབ་",
+      "lat": 27.4723424,
+      "lng": 89.6379529,
+      "address": ""
+    }
+  },
+  "BT_10": {
+    "fetched_at": "2026-05-02T19:19:10.597544",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Paro (région), Bhoutan",
+    "confidence": "LOW",
+    "granularity": "PARIS_ONLY",
+    "direct_geotag": {
+      "name": "Bhutan འབྲུག་རྒྱལ་ཁབ་",
+      "lat": 27.4723424,
+      "lng": 89.6379529,
+      "address": ""
+    }
+  },
+  "DHK_02": {
+    "fetched_at": "2026-05-02T19:19:31.042386",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "DNCC Market, Gulshan-2, Dhaka, Bangladesh",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Dacca, Dhaka, Bangladesh",
+      "lat": 23.7231,
+      "lng": 90.4086,
+      "address": ""
+    }
+  },
+  "DHK_03": {
+    "fetched_at": "2026-05-02T19:23:25.996007",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Environs de l'Imperial International School Dhaka (IISD), Dhaka, Bangladesh",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Dhaka, Bangladesh",
+      "lat": 23.8622113,
+      "lng": 90.3989765,
+      "address": ""
+    }
+  },
+  "DHK_04": {
+    "fetched_at": "2026-05-02T19:23:38.054332",
+    "posts_count": 2,
+    "corroborated_street": null,
+    "best_address": "Environs de Gulshan Central Masjid, Gulshan, Dhaka, Bangladesh",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Dhaka, Bangladesh",
+      "lat": 23.8622113,
+      "lng": 90.3989765,
+      "address": ""
+    }
+  },
+  "DHK_06": {
+    "fetched_at": "2026-05-02T19:26:55.020539",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Dhanmondi (Ward 15 area), Dhaka, Bangladesh",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Dhaka, Bangladesh",
+      "lat": 23.8622113,
+      "lng": 90.3989765,
+      "address": ""
+    }
+  },
+  "FTBL_20": {
+    "fetched_at": "2026-05-02T19:27:13.606711",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Forêt de Fontainebleau, près d'un étang (env. 48.40499, 2.70119), 77300 Fontainebleau",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Fontainebleau",
+      "lat": 48.40499,
+      "lng": 2.70119,
+      "address": ""
+    }
+  },
+  "GRTI_01": {
+    "fetched_at": "2026-05-02T19:27:26.471914",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Réserve de Grumeti, Serengeti, Tanzanie",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": null
+  },
+  "GRTI_02": {
+    "fetched_at": "2026-05-02T19:27:36.912052",
+    "posts_count": 2,
+    "corroborated_street": null,
+    "best_address": "Réserve naturelle du Grumeti, Tanzanie",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": null
+  },
+  "GRTI_03": {
+    "fetched_at": "2026-05-02T19:27:46.386761",
+    "posts_count": 2,
+    "corroborated_street": null,
+    "best_address": "Grumeti Reserve, Serengeti, Tanzanie",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": null
+  },
+  "GRTI_04": {
+    "fetched_at": "2026-05-02T19:31:38.078329",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Parc national / réserve en Tanzanie (probablement Serengeti ou écosystème associé)",
+    "confidence": "LOW",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Worldwide",
+      "lat": 48.871747171552,
+      "lng": 2.3337642475984,
+      "address": ""
+    }
+  },
+  "GRTI_05": {
+    "fetched_at": "2026-05-02T19:32:17.621506",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "GRTI_06": {
+    "fetched_at": "2026-05-02T19:33:02.911395",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "GRTI_07": {
+    "fetched_at": "2026-05-02T19:37:05.627014",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Singita Grumeti Reserves, Serengeti, Tanzanie",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Singita Grumeti Reserves, Serengeti, Tanzania",
+      "lat": -2.121194353331,
+      "lng": 34.611052660101,
+      "address": ""
+    }
+  },
+  "GRTI_08": {
+    "fetched_at": "2026-05-02T19:37:17.219370",
+    "posts_count": 2,
+    "corroborated_street": null,
+    "best_address": "Grumeti, Tanzanie",
+    "confidence": "MEDIUM",
+    "granularity": "PARIS_ONLY",
+    "direct_geotag": null
+  },
+  "IST_15": {
+    "fetched_at": "2026-05-02T19:37:46.149611",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Quartier de Fatih (péninsule historique), Istanbul",
+    "confidence": "LOW",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Istanbul",
+      "lat": 41.007932,
+      "lng": 28.978144,
+      "address": ""
+    }
+  },
+  "IST_16": {
+    "fetched_at": "2026-05-02T19:38:02.752251",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Quartier de Fatih (péninsule historique), Istanbul",
+    "confidence": "LOW",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Istanbul",
+      "lat": 41.007932,
+      "lng": 28.978144,
+      "address": ""
+    }
+  },
+  "IST_19": {
+    "fetched_at": "2026-05-02T19:38:21.611987",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Fatih (péninsule historique), Istanbul, Turquie",
+    "confidence": "LOW",
+    "granularity": "PARIS_ONLY",
+    "direct_geotag": {
+      "name": "Istanbul",
+      "lat": 41.007932,
+      "lng": 28.978144,
+      "address": ""
+    }
+  },
+  "KAT_04": {
+    "fetched_at": "2026-05-02T19:39:08.181335",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Centre historique de Katmandou, environs d'Ikha Pokhari / Thamel-Durbar Square, Katmandou, Népal",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Katmandou",
+      "lat": 27.713776,
+      "lng": 85.310244,
+      "address": ""
+    }
+  },
+  "KAT_14": {
+    "fetched_at": "2026-05-02T19:39:28.268025",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Quartier de Bangemudha / Thamel Marg (Kwabahal), Kathmandu, Népal",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Katmandou",
+      "lat": 27.713776,
+      "lng": 85.310244,
+      "address": ""
+    }
+  },
+  "KAT_21": {
+    "fetched_at": "2026-05-02T19:39:50.886512",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Vieille ville de Katmandou, secteur autour de 27.7137°N, 85.3102°E (probablement quartier de Naghal/Thahiti/Kel Tole, entre Thamel et Durbar Square)",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Katmandou",
+      "lat": 27.713776,
+      "lng": 85.310244,
+      "address": ""
+    }
+  },
+  "LSN_03": {
+    "fetched_at": "2026-05-02T19:43:30.269224",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": null,
+    "confidence": null,
+    "granularity": null,
+    "direct_geotag": {
+      "name": "Lausanne, Switzerland",
+      "lat": 46.520255202398,
+      "lng": 6.630797960959,
+      "address": ""
+    }
+  },
+  "LSN_06": {
+    "fetched_at": "2026-05-02T19:43:30.281696",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": null,
+    "confidence": null,
+    "granularity": null,
+    "direct_geotag": {
+      "name": "Lausanne, Switzerland",
+      "lat": 46.520255202398,
+      "lng": 6.630797960959,
+      "address": ""
+    }
+  },
+  "MBSA_06": {
+    "fetched_at": "2026-05-02T19:43:46.972371",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Environs de Moi Avenue / Old Town, Mombasa, Kenya",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Mombasa",
+      "lat": -4.05,
+      "lng": 39.6667,
+      "address": ""
+    }
+  },
+  "MBSA_08": {
+    "fetched_at": "2026-05-02T19:43:59.955064",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Environs de Destiny Restaurant, Mombasa, Kenya",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Mombasa",
+      "lat": -4.05,
+      "lng": 39.6667,
+      "address": ""
+    }
+  },
+  "MIA_85": {
+    "fetched_at": "2026-05-02T19:47:19.726586",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Miami, Florida",
+    "confidence": "LOW",
+    "granularity": "PARIS_ONLY",
+    "direct_geotag": {
+      "name": "Miami, Florida",
+      "lat": 25.7752,
+      "lng": -80.192,
+      "address": ""
+    }
+  },
+  "MLB_06": {
+    "fetched_at": "2026-05-02T19:47:36.610294",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Laneway près d'Elizabeth Street, Melbourne CBD, VIC 3000, Australia",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Melbourne, Australia",
+      "lat": -37.815987763559,
+      "lng": 144.9685118889,
+      "address": ""
+    }
+  },
+  "MLB_17": {
+    "fetched_at": "2026-05-02T19:50:28.298556",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Melbourne CBD (centre-ville), au nord de la Yarra River, Victoria, Australia",
+    "confidence": "LOW",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Melbourne, Australia",
+      "lat": -37.815987763559,
+      "lng": 144.9685118889,
+      "address": ""
+    }
+  },
+  "MPL_13": {
+    "fetched_at": "2026-05-02T19:50:42.145323",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Centre historique de Montpellier, environs de la Rue Foch / Place de la Comédie, 34000 Montpellier",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Montpellier",
+      "lat": 43.6119,
+      "lng": 3.8772,
+      "address": ""
+    }
+  },
+  "MPL_20": {
+    "fetched_at": "2026-05-02T19:50:55.061425",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Rue Foch, 34000 Montpellier",
+    "confidence": "MEDIUM",
+    "granularity": "STREET",
+    "direct_geotag": {
+      "name": "Montpellier",
+      "lat": 43.6119,
+      "lng": 3.8772,
+      "address": ""
+    }
+  },
+  "MPL_37": {
+    "fetched_at": "2026-05-02T19:51:12.099211",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Quais du port de Sète (vieux port / canal), 34200 Sète",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Sète, France",
+      "lat": 43.4,
+      "lng": 3.68333,
+      "address": ""
+    }
+  },
+  "NY_190": {
+    "fetched_at": "2026-05-02T19:51:29.851663",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Tunnel/station désaffectée du métro MTA, Lower Manhattan, New York, NY (environs 40.713, -74.006)",
+    "confidence": "LOW",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "New York City, N.Y.",
+      "lat": 40.712701423445,
+      "lng": -74.005891084671,
+      "address": ""
+    }
+  },
+  "NY_192": {
+    "fetched_at": "2026-05-02T19:51:46.104552",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Environs de l'ancien CBGB / Bowery, East Village, Manhattan, New York",
+    "confidence": "LOW",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "New York",
+      "lat": 40.728783333333,
+      "lng": -73.997208333333,
+      "address": ""
+    }
+  },
+  "NY_198": {
+    "fetched_at": "2026-05-02T19:52:31.649773",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Tunnel du métro de New York (NYC Subway), zone Midtown Manhattan (~40.756, -73.987)",
+    "confidence": "LOW",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "New York Subway",
+      "lat": 40.755923352547,
+      "lng": -73.986816689523,
+      "address": ""
+    }
+  },
+  "NY_199": {
+    "fetched_at": "2026-05-02T19:52:48.244942",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "New York, NY",
+    "confidence": "LOW",
+    "granularity": "PARIS_ONLY",
+    "direct_geotag": {
+      "name": "New York",
+      "lat": 40.728783333333,
+      "lng": -73.997208333333,
+      "address": ""
+    }
+  },
+  "NY_201": {
+    "fetched_at": "2026-05-02T19:53:23.526045",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Lower East Side / East Village, Manhattan, New York (env. 40.72878, -73.99721)",
+    "confidence": "LOW",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "New York",
+      "lat": 40.728783333333,
+      "lng": -73.997208333333,
+      "address": ""
+    }
+  },
+  "NY_202": {
+    "fetched_at": "2026-05-02T19:53:41.735667",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Tunnel/station fantôme du NYC Subway, New York",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "New York",
+      "lat": 40.7142,
+      "lng": -74.0064,
+      "address": ""
+    }
+  },
+  "NY_203": {
+    "fetched_at": "2026-05-02T19:57:39.103986",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "New York, NY",
+    "confidence": "LOW",
+    "granularity": "PARIS_ONLY",
+    "direct_geotag": {
+      "name": "New York",
+      "lat": 40.728783333333,
+      "lng": -73.997208333333,
+      "address": ""
+    }
+  },
+  "NY_204": {
+    "fetched_at": "2026-05-02T20:01:33.804490",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "New York, NY",
+    "confidence": "LOW",
+    "granularity": "PARIS_ONLY",
+    "direct_geotag": {
+      "name": "New York",
+      "lat": 40.728783333333,
+      "lng": -73.997208333333,
+      "address": ""
+    }
+  },
+  "NY_209": {
+    "fetched_at": "2026-05-02T20:01:50.530635",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Tunnel du métro de New York (abandonné/actif), probablement sous Manhattan — emplacement non public",
+    "confidence": "LOW",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "New York City, N.Y.",
+      "lat": 40.712701423445,
+      "lng": -74.005891084671,
+      "address": ""
+    }
+  },
+  "NY_210": {
+    "fetched_at": "2026-05-02T20:02:06.019799",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "New York City, USA",
+    "confidence": "LOW",
+    "granularity": "PARIS_ONLY",
+    "direct_geotag": {
+      "name": "Rue Béranger",
+      "lat": 48.8658,
+      "lng": 2.36375,
+      "address": ""
+    }
+  },
+  "NY_211": {
+    "fetched_at": "2026-05-02T20:02:24.323613",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Tunnel de métro désaffecté, probablement aux abords du Brooklyn Bridge / Lower Manhattan, New York, NY",
+    "confidence": "LOW",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "New York",
+      "lat": 40.728783333333,
+      "lng": -73.997208333333,
+      "address": ""
+    }
+  },
+  "NY_213": {
+    "fetched_at": "2026-05-02T20:02:38.685310",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Station de métro NYC, environs de Midtown Manhattan (~40.7608, -73.9837), New York",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "New York",
+      "lat": 40.728783333333,
+      "lng": -73.997208333333,
+      "address": ""
+    }
+  },
+  "POTI_53": {
+    "fetched_at": "2026-05-02T20:06:18.036805",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": null,
+    "confidence": null,
+    "granularity": null,
+    "direct_geotag": {
+      "name": "Ciudad Potosi, Potosi, Bolivia",
+      "lat": -19.587318374,
+      "lng": -65.7515847509,
+      "address": ""
+    }
+  },
+  "RBA_03": {
+    "fetched_at": "2026-05-02T20:06:18.330132",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": null,
+    "confidence": null,
+    "granularity": null,
+    "direct_geotag": {
+      "name": "Rabat",
+      "lat": 33.9865,
+      "lng": -6.8517,
+      "address": ""
+    }
+  },
+  "RBA_11": {
+    "fetched_at": "2026-05-02T20:06:18.667635",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": null,
+    "confidence": null,
+    "granularity": null,
+    "direct_geotag": {
+      "name": "Rabat",
+      "lat": 33.9865,
+      "lng": -6.8517,
+      "address": ""
+    }
+  },
+  "RTD_26": {
+    "fetched_at": "2026-05-02T20:06:18.953172",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": null,
+    "confidence": null,
+    "granularity": null,
+    "direct_geotag": {
+      "name": "Rotterdam,Netherland",
+      "lat": -6.20875889813,
+      "lng": 106.818336996,
+      "address": ""
+    }
+  },
+  "SPACE_01 ": {
+    "fetched_at": "2026-05-02T20:07:40.485363",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "TK_05": {
+    "fetched_at": "2026-05-02T20:07:41.465346",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": null,
+    "confidence": null,
+    "granularity": null,
+    "direct_geotag": {
+      "name": "Tokyo, Japan",
+      "lat": 33.8281807,
+      "lng": -116.5184749,
+      "address": ""
+    }
+  },
+  "TK_24": {
+    "fetched_at": "2026-05-02T20:07:41.799474",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": null,
+    "confidence": null,
+    "granularity": null,
+    "direct_geotag": {
+      "name": "Tokyo, Japan",
+      "lat": 33.8281807,
+      "lng": -116.5184749,
+      "address": ""
+    }
+  },
+  "TK_26": {
+    "fetched_at": "2026-05-02T20:10:41.647265",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": null,
+    "confidence": null,
+    "granularity": null,
+    "direct_geotag": {
+      "name": "Tokyo, Japan",
+      "lat": 33.8281807,
+      "lng": -116.5184749,
+      "address": ""
+    }
+  },
+  "TK_28": {
+    "fetched_at": "2026-05-02T20:10:41.661766",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": null,
+    "confidence": null,
+    "granularity": null,
+    "direct_geotag": {
+      "name": "Arcueil",
+      "lat": 48.80653,
+      "lng": 2.33715,
+      "address": ""
+    }
+  },
+  "TK_44": {
+    "fetched_at": "2026-05-02T20:10:42.026930",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": null,
+    "confidence": null,
+    "granularity": null,
+    "direct_geotag": {
+      "name": "Tokyo, Japan",
+      "lat": 33.8281807,
+      "lng": -116.5184749,
+      "address": ""
+    }
+  },
+  "TK_60": {
+    "fetched_at": "2026-05-02T20:10:42.341087",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": null,
+    "confidence": null,
+    "granularity": null,
+    "direct_geotag": {
+      "name": "Tokyo Japan",
+      "lat": 35.656091,
+      "lng": 139.736009,
+      "address": ""
+    }
+  },
+  "TK_61": {
+    "fetched_at": "2026-05-02T20:14:59.454292",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": null,
+    "confidence": null,
+    "granularity": null,
+    "direct_geotag": {
+      "name": "Tokyo Japan",
+      "lat": 35.656091,
+      "lng": 139.736009,
+      "address": ""
+    }
+  },
+  "TK_66": {
+    "fetched_at": "2026-05-02T20:14:59.784849",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": null,
+    "confidence": null,
+    "granularity": null,
+    "direct_geotag": {
+      "name": "somewhere in the world",
+      "lat": 36.563168,
+      "lng": 31.888983,
+      "address": ""
+    }
+  },
+  "TK_75": {
+    "fetched_at": "2026-05-02T20:15:00.111840",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": null,
+    "confidence": null,
+    "granularity": null,
+    "direct_geotag": {
+      "name": "Tokyo Japan",
+      "lat": 35.656091,
+      "lng": 139.736009,
+      "address": ""
+    }
+  },
+  "VRN_02": {
+    "fetched_at": "2026-05-02T20:15:00.466648",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": null,
+    "confidence": null,
+    "granularity": null,
+    "direct_geotag": {
+      "name": "World",
+      "lat": 43.7166,
+      "lng": -79.3407,
+      "address": ""
+    }
+  },
+  "VRN_13": {
+    "fetched_at": "2026-05-02T20:18:49.331360",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": null,
+    "confidence": null,
+    "granularity": null,
+    "direct_geotag": {
+      "name": "Worldwide",
+      "lat": 48.871747171552,
+      "lng": 2.3337642475984,
+      "address": ""
+    }
+  }
+}

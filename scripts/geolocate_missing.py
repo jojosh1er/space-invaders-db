@@ -115,6 +115,7 @@ DATA_DIR = REPO_DIR / "data"
 
 MASTER_FILE = DATA_DIR / "invaders_master.json"
 MISSING_FILE = DATA_DIR / "invaders_missing_from_github.json"
+INSTAGRAM_CACHE_FILE = DATA_DIR / "instagram_cache.json"
 
 def _p(path):
     """Convertit un Path en string pour les fonctions qui attendent str."""
@@ -1283,6 +1284,9 @@ class ImageOCRAnalyzer:
         2. Si échec: requête free-form (q=) avec ville en suffixe
         3. Validation des coordonnées contre la ville attendue
         """
+        # Nominatim impose 1 req/s — sans ce sleep les réponses sont
+        # silencieusement ignorées quand on enchaîne plusieurs appels.
+        time.sleep(1.2)
         city_name = None
         country_code = None
         if city_code:
@@ -1351,9 +1355,60 @@ class ImageOCRAnalyzer:
                     return geo
         except Exception as e:
             self.log(f"Erreur geocode free-form: {e}")
-        
+
+        # ── Niveau 3 : Fuzzy Overpass (Paris uniquement) ─────────────────
+        # Nominatim a échoué sur les deux passes → tenter le match flou
+        # sur les rues OSM de l'arrondissement.
+        if city_code == 'PA':
+            try:
+                fuzzy_result = self._geocode_fuzzy_paris(address)
+                if fuzzy_result:
+                    self.log(f"Fuzzy geocode: {fuzzy_result['lat']:.5f}, "
+                             f"{fuzzy_result['lng']:.5f} [{fuzzy_result.get('matched_name','')}]")
+                    return fuzzy_result
+            except Exception as e:
+                self.log(f"Fuzzy geocode erreur: {e}")
+
         return None
     
+    def _geocode_fuzzy_paris(self, address: str):
+        """
+        Fallback fuzzy pour Paris : quand Nominatim échoue, on cherche la rue
+        la plus proche dans OSM via Overpass + RapidFuzz.
+        Délègue à fuzzy_street_geocoder.geocode_with_fuzzy_fallback().
+        """
+        try:
+            from fuzzy_street_geocoder import geocode_with_fuzzy_fallback
+        except ImportError:
+            # Chercher dans le même dossier que geolocate_missing
+            import importlib.util, pathlib
+            script_dir = pathlib.Path(__file__).parent
+            spec = importlib.util.spec_from_file_location(
+                "fuzzy_street_geocoder",
+                script_dir / "fuzzy_street_geocoder.py"
+            )
+            if spec is None:
+                self.log("fuzzy_street_geocoder.py introuvable")
+                return None
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            geocode_with_fuzzy_fallback = mod.geocode_with_fuzzy_fallback
+
+        result = geocode_with_fuzzy_fallback(address, verbose=self.verbose)
+        if not result:
+            return None
+        # Ne conserver que si confiance > 0.1 (= pas juste centroïde arrondissement)
+        if result.get('confidence', 0) <= 0.1:
+            self.log(f"Fuzzy: confiance trop basse ({result['confidence']}) — skip")
+            return None
+        return {
+            'lat': result['lat'],
+            'lng': result['lon'],
+            'display_name': result.get('matched_name', ''),
+            'geo_source': 'fuzzy_overpass',
+            'confidence': result['confidence'],
+        }
+
     def _pick_best_nominatim_result(self, results, city_code=None):
         """
         Parmi les résultats Nominatim, choisit le meilleur.
@@ -1501,7 +1556,7 @@ class VisionAnalyzer:
     Coût: ~0.003-0.006€ par invader (1-2 images Sonnet)
     """
     
-    VISION_MODEL = "claude-sonnet-4-5-20250929"
+    VISION_MODEL = "claude-opus-4-7"
     VISION_SHOTS = 3       # Nombre d'appels Vision par image (consensus multi-shot)
     VISION_TEMPERATURE = 0.7  # Diversité entre shots, scoring+cross-check filtrent
     
@@ -1749,16 +1804,17 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
                 "text": "Analyse ces images et identifie tous les indices de localisation."
             })
             
-            response = self.client.messages.create(
+            # temperature est deprecated pour les modèles Opus 4.7+
+            _no_temp_models = ('claude-opus-4-7', 'claude-opus-4-8', 'claude-opus-5')
+            _api_kwargs = dict(
                 model=self.VISION_MODEL,
                 max_tokens=1200,
-                temperature=self.VISION_TEMPERATURE,
                 system=system_prompt,
-                messages=[{
-                    "role": "user",
-                    "content": content
-                }]
+                messages=[{"role": "user", "content": content}]
             )
+            if not any(self.VISION_MODEL.startswith(m) for m in _no_temp_models):
+                _api_kwargs['temperature'] = self.VISION_TEMPERATURE
+            response = self.client.messages.create(**_api_kwargs)
             
             raw = response.content[0].text.strip()
             self.log(f"Réponse brute: {raw[:300]}...")
@@ -4945,6 +5001,16 @@ class InvaderLocationSearcher:
         
         # Sources sans navigateur (toujours initialisées)
         self.ocr_analyzer = ImageOCRAnalyzer(self.verbose)
+
+        # Charger instagram_cache.json (source 0 — prioritaire sur Vision)
+        self.instagram_cache = {}
+        if INSTAGRAM_CACHE_FILE.exists():
+            try:
+                with open(_p(INSTAGRAM_CACHE_FILE), 'r', encoding='utf-8') as f:
+                    self.instagram_cache = json.load(f)
+                print(f"   📸 Instagram cache chargé ({len(self.instagram_cache)} entrées)")
+            except Exception as e:
+                print(f"   ⚠️  Instagram cache illisible: {e}")
         
         if self.pnote_file:
             self.pnote = PnoteSearcher(pnote_file=self.pnote_file, verbose=self.verbose)
@@ -5579,7 +5645,66 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
             ocr_result = None
             image_lieu_url = inv.get('image_lieu')
             city_name = CITY_CENTERS.get(city_code, {}).get('name', city_code)
-            
+
+            # ── Source 0 : Instagram cache (prioritaire sur EXIF/OCR/Lens/Vision) ──
+            ig_entry = searcher.instagram_cache.get(inv_id) if hasattr(searcher, 'instagram_cache') else None
+            ig_found = False
+            if ig_entry and not ig_entry.get('parse_error'):
+                # Cas 1 : géotag direct disponible
+                geotag = ig_entry.get('direct_geotag') or {}
+                gt_lat = geotag.get('lat')
+                gt_lng = geotag.get('lng')
+                if gt_lat and gt_lng and abs(float(gt_lat)) > 0.001:
+                    new_inv['lat'] = round(float(gt_lat), 7)
+                    new_inv['lng'] = round(float(gt_lng), 7)
+                    new_inv['geo_source'] = 'instagram_geotag'
+                    new_inv['geo_confidence'] = ig_entry.get('confidence', 'medium').lower() or 'medium'
+                    new_inv['geo_hint'] = ig_entry.get('best_address') or geotag.get('name', '')
+                    new_inv['location_unknown'] = False
+                    new_inv['geo_search_exhausted'] = False
+                    stats['found'] += 1
+                    stats.setdefault('instagram', 0)
+                    stats['instagram'] += 1
+                    print(f"   📸 Instagram géotag: {new_inv['lat']:.5f}, {new_inv['lng']:.5f}")
+                    if new_inv['geo_hint']:
+                        print(f"      📍 {new_inv['geo_hint'][:80]}")
+                    ig_found = True
+
+                # Cas 2 : adresse Vision corroborée (STREET+, HIGH/MEDIUM) → géocoder
+                if not ig_found:
+                    best_addr = ig_entry.get('best_address')
+                    conf = (ig_entry.get('confidence') or '').upper()
+                    gran = ig_entry.get('granularity') or ''
+                    addr_usable = (
+                        best_addr and
+                        gran in ('EXACT_ADDRESS', 'STREET', 'BLOCK') and
+                        conf in ('HIGH', 'MEDIUM')
+                    )
+                    if addr_usable and searcher.ocr_analyzer:
+                        print(f"   📸 Instagram Vision addr: {best_addr[:60]}…")
+                        geo = searcher.ocr_analyzer.geocode_address(best_addr, city_code=city_code)
+                        if geo and geo.get('lat'):
+                            new_inv['lat'] = geo['lat']
+                            new_inv['lng'] = geo['lng']
+                            new_inv['address'] = best_addr
+                            new_inv['geo_source'] = 'instagram_vision'
+                            new_inv['geo_confidence'] = conf.lower()
+                            new_inv['geo_hint'] = best_addr
+                            new_inv['location_unknown'] = False
+                            new_inv['geo_search_exhausted'] = False
+                            stats['found'] += 1
+                            stats.setdefault('instagram', 0)
+                            stats['instagram'] += 1
+                            print(f"   ✅ Instagram Vision géocodé: {geo['lat']:.5f}, {geo['lng']:.5f}")
+                            ig_found = True
+                        else:
+                            print(f"   ⚠️  Instagram Vision: géocodage échoué pour {best_addr[:50]!r}")
+
+            if ig_found:
+                results.append(new_inv)
+                time.sleep(args.pause)
+                continue  # Skip EXIF/OCR/Lens/Vision
+
             if image_lieu_url:
                 print(f"   🖼️  Tentative EXIF sur image_lieu...")
                 exif_result = extract_gps_from_image_url(image_lieu_url, verbose=searcher.verbose)
@@ -6860,6 +6985,7 @@ def main():
     print(f"\n📍 Résultats:")
     print(f"   GPS trouvés:           {stats['found']} ({100*stats['found']/max(1,stats['searched']):.1f}%)")
     print(f"   - via AroundUs:        {stats['found_aroundus']}")
+    print(f"   - via Instagram cache: {stats.get('instagram', 0)}")
     print(f"   - via IlluminateArt:   {stats['found_illuminate']}")
     print(f"   - Les deux sources:    {stats['found_both']}")
     print(f"   - via Pnote.eu:       {stats['found_pnote']}")

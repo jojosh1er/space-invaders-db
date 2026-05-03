@@ -136,7 +136,7 @@ def _distinctive_token(street_name: str) -> str:
     return STREET_TYPE_RE.sub("", street_name).strip().lower()
 
 
-def fuzzy_match_street(vision_street: str, candidates: list, threshold: int = 85):
+def fuzzy_match_street(vision_street: str, candidates: list, threshold: int = 75):
     """
     Match sur le token distinctif (sans 'Rue/Avenue/...') pour éviter que
     le score soit gonflé par les mots communs.
