@@ -47,7 +47,7 @@ jobs:
           playwright install chromium
           playwright install-deps
           # Dépendances géolocalisation (OCR + Vision + Lens)
-          pip install pytesseract anthropic Pillow
+          pip install pytesseract anthropic Pillow rapidfuzz
           pip install git+https://github.com/krishna2206/google-lens-python.git
           sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-fra
       
