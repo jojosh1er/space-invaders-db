@@ -3121,8 +3121,8 @@
   },
   {
     "id": "BGK_06",
-    "lat": 13.7597346,
-    "lng": 100.498954,
+    "lat": 13.7429849,
+    "lng": 100.5505019,
     "points": "10",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/BGK/BGK_06-grosplan.png",
@@ -3130,9 +3130,11 @@
     "city": "BGK",
     "landing_date": "08/07/2005",
     "status_date": "mars 2006",
-    "geo_source": "vision",
-    "geo_confidence": "medium",
-    "address": "Swensen's (Swensen's, 74, ถนนรามบุตรี, แขวงตลาดยอด, เขตพระนคร, กรุงเทพมหานคร, 10200, ประเทศ)"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "Swensen's (Swensen's, 74, ถนนรามบุตรี, แขวงตลาดยอด, เขตพระนคร, กรุงเทพมหานคร, 10200, ประเทศ)",
+    "location_unknown": false,
+    "geo_hint": "Environs de Sao Ching Cha / Old Town, Bangkok (près de 13.74298, 100.55050)"
   },
   {
     "id": "BGK_07",
@@ -3210,8 +3212,8 @@
   },
   {
     "id": "BGK_12",
-    "lat": 13.7042169,
-    "lng": 100.5028259,
+    "lat": 13.7522,
+    "lng": 100.494,
     "points": "10",
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/BGK/BGK_12-grosplan.png",
@@ -3222,14 +3224,16 @@
     "status_source": "report",
     "previous_status": "hidden",
     "previous_status_date": "février 2025",
-    "geo_source": "vision",
-    "geo_confidence": "medium",
-    "address": "Asiatique The Riverfront (Asiatique The Riverfront, ซอยเจริญกรุง 74/3, บ้านใหม่, แขวงวัดพระยาไกร, เขตบางคอ)"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "Asiatique The Riverfront (Asiatique The Riverfront, ซอยเจริญกรุง 74/3, บ้านใหม่, แขวงวัดพระยาไกร, เขตบางคอ)",
+    "location_unknown": false,
+    "geo_hint": "Environs du Phenix Mall, Ratchaprarop Road / quartier de Pratunam, Bangkok"
   },
   {
     "id": "BGK_13",
-    "lat": 13.7373019,
-    "lng": 100.5605753,
+    "lat": 13.7522222,
+    "lng": 100.4938889,
     "points": "20",
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/BGK/BGK_13-grosplan.png",
@@ -3238,9 +3242,11 @@
     "landing_date": "10/07/2005",
     "status_date": "novembre 2025",
     "status_source": "FlashInvaders",
-    "geo_source": "vision",
-    "geo_confidence": "low",
-    "address": "commerciale"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "commerciale",
+    "location_unknown": false,
+    "geo_hint": "Sous la passerelle piétonne devant The Platinum Fashion Mall, Petchaburi Road, quartier de Pratunam, Bangkok"
   },
   {
     "id": "BGK_14",
@@ -3382,8 +3388,8 @@
   },
   {
     "id": "BGK_23",
-    "lat": 13.7218099,
-    "lng": 100.5818548,
+    "lat": 13.7522222,
+    "lng": 100.4938889,
     "points": "10",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/BGK/BGK_23-grosplan.png",
@@ -3394,9 +3400,11 @@
     "status_source": "report",
     "previous_status": "OK",
     "previous_status_date": "février 2025",
-    "geo_source": "vision",
+    "geo_source": "instagram_geotag",
     "geo_confidence": "medium",
-    "address": "Sukhumvit Road"
+    "address": "Sukhumvit Road",
+    "location_unknown": false,
+    "geo_hint": "Bangkok, Thaïlande"
   },
   {
     "id": "BGK_24",
@@ -4205,8 +4213,8 @@
   },
   {
     "id": "BRL_08",
-    "lat": 52.5106807,
-    "lng": 13.419484,
+    "lat": 52.5002549,
+    "lng": 13.3415305,
     "points": "20",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/BRL/BRL_08-grosplan.png",
@@ -4214,9 +4222,11 @@
     "city": "BRL",
     "landing_date": "11/05/2002",
     "status_date": "avril 2024",
-    "geo_source": "vision",
-    "geo_confidence": "medium",
-    "address": "TRESOR (Tresor Berlin, 70, Köpenicker Straße, Luisenstadt, Mitte, Berlin, 10179, Deutsch)"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "TRESOR (Tresor Berlin, 70, Köpenicker Straße, Luisenstadt, Mitte, Berlin, 10179, Deutsch)",
+    "location_unknown": false,
+    "geo_hint": "Environs de l'ancien club Tresor, Leipziger Straße, 10117 Berlin-Mitte"
   },
   {
     "id": "BRL_09",
@@ -5656,8 +5666,8 @@
   },
   {
     "id": "BT_02",
-    "lat": 27.6685526,
-    "lng": 89.7089548,
+    "lat": 27.45,
+    "lng": 90.5,
     "points": "40",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/BT/BT_02-grosplan.png",
@@ -5666,9 +5676,14 @@
     "landing_date": "21/01/2018",
     "status_date": "mai 2018",
     "status_source": "report",
-    "geo_source": "vision",
+    "geo_source": "instagram_geotag",
     "geo_confidence": "medium",
-    "address": "Punakha, Bhutan -"
+    "address": "Punakha, Bhutan -",
+    "location_unknown": false,
+    "geo_hint": "Bhoutan",
+    "geo_search_exhausted": false,
+    "preserved": true,
+    "preserved_date": "2026-05-03T10:59:55.694802"
   },
   {
     "id": "BT_03",
@@ -5735,8 +5750,8 @@
   },
   {
     "id": "BT_07",
-    "lat": 27.4894287,
-    "lng": 89.6350207,
+    "lat": 48.8717472,
+    "lng": 2.3337642,
     "points": "40",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/BT/BT_07-grosplan.png",
@@ -5745,9 +5760,11 @@
     "landing_date": "25/01/2018",
     "status_date": "mai 2018",
     "status_source": "report",
-    "geo_source": "vision",
-    "geo_confidence": "medium",
-    "address": "Tashichho Dzong (བཀྲ་ཤིས་ཆོས་རྫོང, 216, Chhodzong Lam NE, Kawang Chhodzong, Zilungkha, Chang Gewo)"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "Tashichho Dzong (བཀྲ་ཤིས་ཆོས་རྫོང, 216, Chhodzong Lam NE, Kawang Chhodzong, Zilungkha, Chang Gewo)",
+    "location_unknown": false,
+    "geo_hint": "Environs du Punakha Dzong, Punakha, Bhoutan"
   },
   {
     "id": "BT_08",
@@ -5799,8 +5816,8 @@
   },
   {
     "id": "BT_11",
-    "lat": 27.4739354,
-    "lng": 89.6387223,
+    "lat": 35.5584,
+    "lng": 139.3657,
     "points": "40",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/BT/BT_11-grosplan.png",
@@ -5809,9 +5826,11 @@
     "landing_date": "26/01/2018",
     "status_date": "mai 2018",
     "status_source": "flash",
-    "geo_source": "vision",
-    "geo_confidence": "medium",
-    "address": "Bhutan Post (Bhutan Post, 196, Chang Lam SE, Chang Gewog, ཐིམ་ཕུག, ཐིམ་ཕུ་རྫོང་ཁག་, 11001, འབ)"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "Bhutan Post (Bhutan Post, 196, Chang Lam SE, Chang Gewog, ཐིམ་ཕུག, ཐིམ་ཕུ་རྫོང་ཁག་, 11001, འབ)",
+    "location_unknown": false,
+    "geo_hint": "Paro, Bhoutan"
   },
   {
     "id": "BXL_01",
@@ -8041,8 +8060,8 @@
   },
   {
     "id": "DHK_01",
-    "lat": 23.8567993,
-    "lng": 90.6473346,
+    "lat": 23.8622113,
+    "lng": 90.3989765,
     "points": "20",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/DHK/DHK_01-grosplan.png",
@@ -8051,9 +8070,11 @@
     "landing_date": "28/10/2003",
     "status_date": "février 2024",
     "status_source": "report",
-    "geo_source": "ocr",
-    "geo_confidence": "medium",
-    "address": "R. GROUP, Dhaka"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "R. GROUP, Dhaka",
+    "location_unknown": false,
+    "geo_hint": "Environs de Pearisima Market, Gulshan-2, Dhaka 1212, Bangladesh"
   },
   {
     "id": "DHK_02",
@@ -9269,8 +9290,8 @@
   },
   {
     "id": "DJN_12",
-    "lat": 36.32928,
-    "lng": 127.42704,
+    "lat": 36.3464,
+    "lng": 127.4013,
     "points": "0",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/DJN/DJN_12-grosplan.png",
@@ -9281,9 +9302,11 @@
     "status_source": "Naver",
     "previous_status": "unknown",
     "previous_status_date": "avril 2025",
-    "geo_source": "vision",
-    "geo_confidence": "low",
-    "address": "Eunhaeng-dong, Jung-gu, Daejeon"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "medium",
+    "address": "Eunhaeng-dong, Jung-gu, Daejeon",
+    "location_unknown": false,
+    "geo_hint": "Quartier de Yuseong-gu (probablement Gung-dong, zone universitaire/commerçante), Daejeon"
   },
   {
     "id": "DJN_13",
@@ -9762,8 +9785,8 @@
   },
   {
     "id": "FRQ_01",
-    "lat": 43.9600323868,
-    "lng": 5.780965756,
+    "lat": 43.959752,
+    "lng": 5.7808538,
     "points": "30",
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/FRQ/FRQ_01-grosplan.png",
@@ -9772,9 +9795,14 @@
     "landing_date": "08/04/2017",
     "status_date": "octobre 2019",
     "status_source": "report",
-    "geo_source": "pnote",
+    "geo_source": "vision",
     "geo_confidence": "medium",
-    "address": "5, Rue Louis Andrieux, Forcalquier, 04300"
+    "address": "Place du Bourguet, 04300 Forcalquier",
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "geo_hint": "quartier probable: Centre-ville de Forcalquier",
+    "preserved": true,
+    "preserved_date": "2026-05-03T10:59:55.694814"
   },
   {
     "id": "FRQ_02",
@@ -11960,8 +11988,8 @@
   },
   {
     "id": "GRTI_01",
-    "lat": 29.0333,
-    "lng": -13.6333,
+    "lat": -2.1282189,
+    "lng": 34.4140291,
     "points": "30",
     "status": "unknown",
     "image_invader": "https://www.invader-spotter.art/grosplan/GRTI/GRTI_01-grosplan.png",
@@ -11969,14 +11997,18 @@
     "city": "GRTI",
     "landing_date": "24/01/2015",
     "previous_status": "unknown",
-    "geo_source": "city_center",
+    "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": true
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "Grumeti Game Reserve, Serengeti, Tanzania",
+    "preserved": true,
+    "preserved_date": "2026-05-03T10:59:55.694817"
   },
   {
     "id": "GRTI_02",
-    "lat": 29.0333,
-    "lng": -13.6333,
+    "lat": -2.1282189,
+    "lng": 34.4140291,
     "points": "30",
     "status": "unknown",
     "image_invader": "https://www.invader-spotter.art/grosplan/GRTI/GRTI_02-grosplan.png",
@@ -11984,14 +12016,18 @@
     "city": "GRTI",
     "landing_date": "24/01/2015",
     "previous_status": "unknown",
-    "geo_source": "city_center",
+    "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": true
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "Grumeti Game Reserve, Serengeti, Tanzania",
+    "preserved": true,
+    "preserved_date": "2026-05-03T10:59:55.694819"
   },
   {
     "id": "GRTI_03",
-    "lat": 29.0333,
-    "lng": -13.6333,
+    "lat": -2.1282189,
+    "lng": 34.4140291,
     "points": "30",
     "status": "unknown",
     "image_invader": "https://www.invader-spotter.art/grosplan/GRTI/GRTI_03-grosplan.png",
@@ -11999,9 +12035,14 @@
     "city": "GRTI",
     "landing_date": "25/01/2015",
     "previous_status": "unknown",
-    "geo_source": "city_center",
-    "geo_confidence": "low",
-    "location_unknown": true
+    "geo_source": "instagram_vision",
+    "geo_confidence": "medium",
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "Grumeti Reserve, Serengeti, Tanzanie",
+    "geo_hint": "Grumeti Reserve, Serengeti, Tanzanie",
+    "preserved": true,
+    "preserved_date": "2026-05-03T10:59:55.694820"
   },
   {
     "id": "GRTI_04",
@@ -12019,8 +12060,8 @@
   },
   {
     "id": "GRTI_05",
-    "lat": 29.0333,
-    "lng": -13.6333,
+    "lat": -2.1282189,
+    "lng": 34.4140291,
     "points": "30",
     "status": "unknown",
     "image_invader": "https://www.invader-spotter.art/grosplan/GRTI/GRTI_05-grosplan.png",
@@ -12028,14 +12069,19 @@
     "city": "GRTI",
     "landing_date": "26/01/2015",
     "previous_status": "unknown",
-    "geo_source": "city_center",
+    "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": true
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "Grumeti Game Reserve, Serengeti, Tanzania",
+    "geo_hint": "quartier probable: Grumeti Game Reserve, Serengeti",
+    "preserved": true,
+    "preserved_date": "2026-05-03T10:59:55.694822"
   },
   {
     "id": "GRTI_06",
-    "lat": 29.0333,
-    "lng": -13.6333,
+    "lat": -2.1282189,
+    "lng": 34.4140291,
     "points": "30",
     "status": "unknown",
     "image_invader": "https://www.invader-spotter.art/grosplan/GRTI/GRTI_06-grosplan.png",
@@ -12043,9 +12089,14 @@
     "city": "GRTI",
     "landing_date": "26/01/2015",
     "previous_status": "unknown",
-    "geo_source": "city_center",
+    "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": true
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "Grumeti Game Reserve, Serengeti, Tanzania",
+    "geo_hint": "quartier probable: Grumeti Game Reserve, Serengeti",
+    "preserved": true,
+    "preserved_date": "2026-05-03T10:59:55.694824"
   },
   {
     "id": "GRTI_07",
@@ -12063,8 +12114,8 @@
   },
   {
     "id": "GRTI_08",
-    "lat": 29.0333,
-    "lng": -13.6333,
+    "lat": -2.1051372,
+    "lng": 33.8293311,
     "points": "30",
     "status": "unknown",
     "image_invader": "https://www.invader-spotter.art/grosplan/GRTI/GRTI_08-grosplan.png",
@@ -12072,9 +12123,14 @@
     "city": "GRTI",
     "landing_date": "27/01/2015",
     "previous_status": "unknown",
-    "geo_source": "city_center",
+    "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": true
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "Grumeti, Mara Region, Tanzania",
+    "geo_hint": "quartier probable: Grumeti / Mwanza area, Tanzania",
+    "preserved": true,
+    "preserved_date": "2026-05-03T10:59:55.694826"
   },
   {
     "id": "GRU_01",
@@ -14117,17 +14173,19 @@
   },
   {
     "id": "IST_03",
-    "lat": 41.0065157,
-    "lng": 28.9759773,
+    "lat": 41.007932,
+    "lng": 28.978144,
     "points": "0",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/IST/IST_03-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/images/IST/IST_03-archive.jpg",
     "city": "IST",
     "landing_date": "17/09/2003",
-    "geo_source": "vision",
-    "geo_confidence": "medium",
-    "address": "Sultanahmet Meydanı, Fatih, Istanbul"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "Sultanahmet Meydanı, Fatih, Istanbul",
+    "location_unknown": false,
+    "geo_hint": "Sultanahmet Meydanı (Place Sultanahmet), près de Sainte-Sophie, Fatih, Istanbul"
   },
   {
     "id": "IST_04",
@@ -14404,8 +14462,8 @@
   },
   {
     "id": "KAT_02",
-    "lat": 27.7166578,
-    "lng": 85.3127015,
+    "lat": 27.7224136,
+    "lng": 85.3573445,
     "points": "10",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/KAT/KAT_02-grosplan.png",
@@ -14416,9 +14474,11 @@
     "status_source": "report",
     "previous_status": "OK",
     "previous_status_date": "décembre 2025",
-    "geo_source": "vision",
-    "geo_confidence": "medium",
-    "address": "Thamel, Kathmandu"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "Thamel, Kathmandu",
+    "location_unknown": false,
+    "geo_hint": "Vieille ville de Kathmandu, entre Thamel et Durbar Square (~27.7137, 85.3110), Népal"
   },
   {
     "id": "KAT_03",
@@ -14468,8 +14528,8 @@
   },
   {
     "id": "KAT_06",
-    "lat": 27.7166578,
-    "lng": 85.3127015,
+    "lat": 27.713776,
+    "lng": 85.310244,
     "points": "10",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/KAT/KAT_06-grosplan.png",
@@ -14478,9 +14538,11 @@
     "landing_date": "29/02/2008",
     "status_date": "novembre 2025",
     "status_source": "report",
-    "geo_source": "vision",
-    "geo_confidence": "low",
-    "address": "Thamel, Kathmandu"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "Thamel, Kathmandu",
+    "location_unknown": false,
+    "geo_hint": "Environs de Katmandou Durbar Square / Ikha Pokhari, vieille ville de Katmandou, Népal"
   },
   {
     "id": "KAT_07",
@@ -14694,7 +14756,8 @@
     "landing_date": "03/03/2008",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "address": "Thamel, Kathmandu"
+    "address": "Thamel, Kathmandu",
+    "geo_hint": "Environs de Siddhi Ganesh High School, Katmandou, Népal"
   },
   {
     "id": "KAT_21",
@@ -14756,7 +14819,8 @@
     "landing_date": "04/03/2008",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "address": "Thamel, Kathmandu, Népal"
+    "address": "Thamel, Kathmandu, Népal",
+    "geo_hint": "Environs d'Ikha Pokhari, Katmandou, Népal"
   },
   {
     "id": "KAT_25",
@@ -25577,8 +25641,8 @@
   },
   {
     "id": "MBSA_09",
-    "lat": -4.0479801,
-    "lng": 39.6705404,
+    "lat": -4.05,
+    "lng": 39.6667,
     "points": "0",
     "status": "unknown",
     "image_invader": "https://www.invader-spotter.art/grosplan/MBSA/MBSA_09-grosplan.png",
@@ -25586,9 +25650,11 @@
     "city": "MBSA",
     "landing_date": "21/01/2006",
     "previous_status": "unknown",
-    "geo_source": "vision",
-    "geo_confidence": "low",
-    "address": "Mombasa"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "medium",
+    "address": "Mombasa",
+    "location_unknown": false,
+    "geo_hint": "Old Town / environs de Fort Jesus Museum, Mombasa, Kenya"
   },
   {
     "id": "MBSA_10",
@@ -26833,8 +26899,8 @@
   },
   {
     "id": "MIA_76",
-    "lat": 25.7915624,
-    "lng": -80.1457725,
+    "lat": 25.7752,
+    "lng": -80.192,
     "points": "0",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/MIA/MIA_76-grosplan.png",
@@ -26845,14 +26911,16 @@
     "status_source": "spott",
     "previous_status": "very damaged",
     "previous_status_date": "mars 2016",
-    "geo_source": "vision",
+    "geo_source": "instagram_geotag",
     "geo_confidence": "medium",
-    "address": "Venetian Causeway, Miami Beach, FL 33139"
+    "address": "Venetian Causeway, Miami Beach, FL 33139",
+    "location_unknown": false,
+    "geo_hint": "Miami, Florida"
   },
   {
     "id": "MIA_77",
-    "lat": 25.7912515,
-    "lng": -80.1299081,
+    "lat": 25.7752,
+    "lng": -80.192,
     "points": "0",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/MIA/MIA_77-grosplan.png",
@@ -26861,9 +26929,11 @@
     "landing_date": "01/12/2012",
     "status_date": "mars 2016",
     "status_source": "spott",
-    "geo_source": "vision",
+    "geo_source": "instagram_geotag",
     "geo_confidence": "medium",
-    "address": "Collins Avenue, Miami Beach, FL"
+    "address": "Collins Avenue, Miami Beach, FL",
+    "location_unknown": false,
+    "geo_hint": "Miami, Florida"
   },
   {
     "id": "MIA_78",
@@ -26943,8 +27013,8 @@
   },
   {
     "id": "MIA_83",
-    "lat": 25.772339,
-    "lng": -80.1906261,
+    "lat": 25.7752,
+    "lng": -80.192,
     "points": "0",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/MIA/MIA_83-grosplan.png",
@@ -26953,9 +27023,11 @@
     "landing_date": "09/12/2012",
     "status_date": "mars 2016",
     "status_source": "spott",
-    "geo_source": "vision",
-    "geo_confidence": "low",
-    "address": "Downtown Miami"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "medium",
+    "address": "Downtown Miami",
+    "location_unknown": false,
+    "geo_hint": "Miami, Florida, USA"
   },
   {
     "id": "MIA_84",
@@ -27021,8 +27093,8 @@
   },
   {
     "id": "MLB_03",
-    "lat": -37.8138383,
-    "lng": 144.9644426,
+    "lat": -37.8159878,
+    "lng": 144.9685119,
     "points": "0",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/MLB/MLB_03-grosplan.png",
@@ -27031,9 +27103,11 @@
     "landing_date": "29/10/2002",
     "status_date": "décembre 2023",
     "status_source": "report",
-    "geo_source": "vision",
-    "geo_confidence": "medium",
-    "address": "Bourke Street Mall (Bourke Street Mall, East End Theatre District, Melbourne, City of Melbourne, Vic)"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "Bourke Street Mall (Bourke Street Mall, East End Theatre District, Melbourne, City of Melbourne, Vic)",
+    "location_unknown": false,
+    "geo_hint": "Bourke Street Mall (entre Myer et David Jones / Melbourne GPO), Melbourne VIC 3000"
   },
   {
     "id": "MLB_04",
@@ -27142,8 +27216,8 @@
   },
   {
     "id": "MLB_11",
-    "lat": -37.7999187,
-    "lng": 144.9842634,
+    "lat": -37.8159878,
+    "lng": 144.9685119,
     "points": "0",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/MLB/MLB_11-grosplan.png",
@@ -27152,9 +27226,11 @@
     "landing_date": "30/10/2002",
     "status_date": "décembre 2023",
     "status_source": "report",
-    "geo_source": "vision",
-    "geo_confidence": "medium",
-    "address": "Friends of the Earth (Friends of the Earth, 312, Smith Street, Collingwood, Melbourne, City of Yarra, )"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "Friends of the Earth (Friends of the Earth, 312, Smith Street, Collingwood, Melbourne, City of Yarra, )",
+    "location_unknown": false,
+    "geo_hint": "Friends of the Earth Food Co-op & Cafe, 312 Smith Street, Collingwood VIC 3066, Melbourne"
   },
   {
     "id": "MLB_12",
@@ -27188,8 +27264,8 @@
   },
   {
     "id": "MLB_14",
-    "lat": -37.7679583,
-    "lng": 144.9261346,
+    "lat": -37.8159878,
+    "lng": 144.9685119,
     "points": "10",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/MLB/MLB_14-grosplan.png",
@@ -27198,9 +27274,11 @@
     "landing_date": "01/11/2002",
     "status_date": "décembre 2023",
     "status_source": "report",
-    "geo_source": "vision",
-    "geo_confidence": "medium",
-    "address": "Beyond (Beyond Rest Moonee Ponds, 14, Hinkins Street, Moonee Ponds, Melbourne, City of M)"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "Beyond (Beyond Rest Moonee Ponds, 14, Hinkins Street, Moonee Ponds, Melbourne, City of M)",
+    "location_unknown": false,
+    "geo_hint": "Intersection Albert Street & Peel Street, Windsor VIC 3181, Melbourne"
   },
   {
     "id": "MLB_15",
@@ -27296,8 +27374,8 @@
   },
   {
     "id": "MLB_21",
-    "lat": -37.8177396,
-    "lng": 144.9691559,
+    "lat": -37.8159878,
+    "lng": 144.9685119,
     "points": "0",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/MLB/MLB_21-grosplan.png",
@@ -27306,9 +27384,11 @@
     "landing_date": "03/11/2002",
     "status_date": "décembre 2023",
     "status_source": "report",
-    "geo_source": "vision",
-    "geo_confidence": "medium",
-    "address": "Federation Square (Federation Square, Swanston Street, Melbourne, City of Melbourne, Victoria, 3000)"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "Federation Square (Federation Square, Swanston Street, Melbourne, City of Melbourne, Victoria, 3000)",
+    "location_unknown": false,
+    "geo_hint": "Hamer Hall, Arts Centre Melbourne, 100 St Kilda Road, Southbank VIC 3006, Melbourne, Australia"
   },
   {
     "id": "MLB_22",
@@ -28042,8 +28122,8 @@
   },
   {
     "id": "MPL_16",
-    "lat": 43.6140579,
-    "lng": 3.8765306,
+    "lat": 43.6119,
+    "lng": 3.8772,
     "points": "0",
     "status": "unknown",
     "image_invader": "https://www.invader-spotter.art/grosplan/MPL/MPL_16-grosplan.png",
@@ -28051,9 +28131,11 @@
     "city": "MPL",
     "landing_date": "04/08/1999",
     "previous_status": "unknown",
-    "geo_source": "vision",
-    "geo_confidence": "low",
-    "address": "Centre historique de Montpellier"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "Centre historique de Montpellier",
+    "location_unknown": false,
+    "geo_hint": "Centre historique de Montpellier, environs de la Rue Foch, 34000 Montpellier"
   },
   {
     "id": "MPL_17",
@@ -28403,8 +28485,8 @@
   },
   {
     "id": "MPL_40",
-    "lat": 43.6064198,
-    "lng": 3.9244828,
+    "lat": 43.6119,
+    "lng": 3.8772,
     "points": "0",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/MPL/MPL_40-grosplan.png",
@@ -28412,9 +28494,11 @@
     "city": "MPL",
     "landing_date": "03/07/2001",
     "status_date": "avril 2024",
-    "geo_source": "vision",
-    "geo_confidence": "medium",
-    "address": "Centre commercial Odysseum, Montpellier"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "Centre commercial Odysseum, Montpellier",
+    "location_unknown": false,
+    "geo_hint": "Environs de la Rue Foch, centre historique, 34000 Montpellier"
   },
   {
     "id": "MPL_41",
@@ -31312,8 +31396,8 @@
   },
   {
     "id": "NY_193",
-    "lat": 40.6887606,
-    "lng": -74.0014368,
+    "lat": 40.7287833,
+    "lng": -73.9972083,
     "points": "10",
     "status": "damaged",
     "image_invader": "https://www.invader-spotter.art/grosplan/NY/NY_193-grosplan.png",
@@ -31322,9 +31406,11 @@
     "landing_date": "10/05/2016",
     "status_date": "octobre 2024",
     "status_source": "report",
-    "geo_source": "vision",
-    "geo_confidence": "low",
-    "address": "Brooklyn waterfront district"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "medium",
+    "address": "Brooklyn waterfront district",
+    "location_unknown": false,
+    "geo_hint": "Environs de SoHo / Lower Manhattan (~40.7288, -73.9972), New York"
   },
   {
     "id": "NY_194",
@@ -31344,8 +31430,8 @@
   },
   {
     "id": "NY_195",
-    "lat": 40.6650985,
-    "lng": -73.9746661,
+    "lat": 40.7608165,
+    "lng": -73.9836682,
     "points": "50",
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/NY/NY_195-grosplan.png",
@@ -31354,9 +31440,11 @@
     "landing_date": "10/05/2016",
     "status_date": "mai 2025",
     "status_source": "report",
-    "geo_source": "vision",
-    "geo_confidence": "low",
-    "address": "Industrial area in Brooklyn"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "Industrial area in Brooklyn",
+    "location_unknown": false,
+    "geo_hint": "Tunnels du métro de New York (NYC Subway), Manhattan, New York"
   },
   {
     "id": "NY_196",
@@ -31435,8 +31523,8 @@
   },
   {
     "id": "NY_200",
-    "lat": 40.7159357,
-    "lng": -73.9868057,
+    "lat": 40.7559234,
+    "lng": -73.9868167,
     "points": "40",
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/NY/NY_200-grosplan.png",
@@ -31445,9 +31533,11 @@
     "landing_date": "12/05/2016",
     "status_date": "septembre 2025",
     "status_source": "report",
-    "geo_source": "vision",
-    "geo_confidence": "low",
-    "address": "Lower East Side, Manhattan"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "Lower East Side, Manhattan",
+    "location_unknown": false,
+    "geo_hint": "Tunnel du métro de New York (NYC Subway), probablement secteur Midtown Manhattan (~40.75592, -73.98682 d'après géotag [2])"
   },
   {
     "id": "NY_201",
@@ -31528,8 +31618,8 @@
   },
   {
     "id": "NY_206",
-    "lat": 40.7159357,
-    "lng": -73.9868057,
+    "lat": 40.7287833,
+    "lng": -73.9972083,
     "points": "50",
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/NY/NY_206-grosplan.png",
@@ -31538,14 +31628,16 @@
     "landing_date": "15/05/2016",
     "status_date": "mars 2019",
     "status_source": "YouTube",
-    "geo_source": "vision",
-    "geo_confidence": "low",
-    "address": "Lower East Side, Manhattan -"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "medium",
+    "address": "Lower East Side, Manhattan -",
+    "location_unknown": false,
+    "geo_hint": "Environs de DUMBO / Brooklyn Bridge area, Brooklyn, New York"
   },
   {
     "id": "NY_207",
-    "lat": 40.7163717,
-    "lng": -73.9875854,
+    "lat": 40.7142,
+    "lng": -74.0064,
     "points": "40",
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/NY/NY_207-grosplan.png",
@@ -31554,9 +31646,11 @@
     "landing_date": "15/05/2016",
     "status_date": "avril 2023",
     "status_source": "report",
-    "geo_source": "vision",
-    "geo_confidence": "low",
-    "address": "du Lower East Side, Manhattan"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "medium",
+    "address": "du Lower East Side, Manhattan",
+    "location_unknown": false,
+    "geo_hint": "Station de métro désaffectée / tunnel du subway, New York City (probablement Lower Manhattan, secteur City Hall / Lower East Side)"
   },
   {
     "id": "NY_208",
@@ -31637,17 +31731,19 @@
   },
   {
     "id": "NY_212",
-    "lat": 40.7057498,
-    "lng": -73.9962765,
+    "lat": 40.7142,
+    "lng": -74.0064,
     "points": "50",
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/NY/NY_212-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/NY/NY_212-archive.jpg",
     "city": "NY",
     "landing_date": "17/05/2016",
-    "geo_source": "vision",
-    "geo_confidence": "low",
-    "address": "Brooklyn"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "Brooklyn",
+    "location_unknown": false,
+    "geo_hint": "Tunnel du métro de New York (NYC Subway), localisation précise non divulguée"
   },
   {
     "id": "NY_213",
@@ -31666,8 +31762,8 @@
   },
   {
     "id": "NY_214",
-    "lat": 40.7845272,
-    "lng": -73.9846601,
+    "lat": 40.7127014,
+    "lng": -74.0058911,
     "points": "50",
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/NY/NY_214-grosplan.png",
@@ -31676,14 +31772,16 @@
     "landing_date": "18/05/2016",
     "status_date": "avril 2022",
     "status_source": "report",
-    "geo_source": "vision",
+    "geo_source": "instagram_geotag",
     "geo_confidence": "medium",
-    "address": "Freedom Tunnel, West Side, Manhattan, New York"
+    "address": "Freedom Tunnel, West Side, Manhattan, New York",
+    "location_unknown": false,
+    "geo_hint": "Tunnel désaffecté du NYC Subway, Lower Manhattan, New York, NY"
   },
   {
     "id": "NY_215",
-    "lat": 40.7102904,
-    "lng": -74.0049373,
+    "lat": 40.7127014,
+    "lng": -74.0058911,
     "points": "40",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/NY/NY_215-grosplan.png",
@@ -31694,9 +31792,11 @@
     "status_source": "report",
     "previous_status": "OK",
     "previous_status_date": "avril 2025",
-    "geo_source": "vision",
-    "geo_confidence": "low",
-    "address": "Lower Manhattan"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "medium",
+    "address": "Lower Manhattan",
+    "location_unknown": false,
+    "geo_hint": "Lower Manhattan (environs de City Hall / Brooklyn Bridge), New York, NY"
   },
   {
     "id": "NY_216",
@@ -58892,8 +58992,8 @@
   },
   {
     "id": "RBA_19",
-    "lat": 34.0140137,
-    "lng": -6.8480362,
+    "lat": 33.9865,
+    "lng": -6.8517,
     "points": "50",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/RBA/RBA_19-grosplan.png",
@@ -58902,9 +59002,11 @@
     "landing_date": "18/03/2017",
     "status_date": "décembre 2018",
     "status_source": "spott",
-    "geo_source": "vision",
-    "geo_confidence": "medium",
-    "address": "minaret (Pharmacie du Minaret صيدلية المنارة, Avenue Hassan II شارع الحسن الثاني, Océan ⵍ)"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "minaret (Pharmacie du Minaret صيدلية المنارة, Avenue Hassan II شارع الحسن الثاني, Océan ⵍ)",
+    "location_unknown": false,
+    "geo_hint": "Médina de Rabat, à proximité immédiate d'un hôtel et d'une mosquée à toit vert, Rabat, Maroc"
   },
   {
     "id": "RBA_20",
@@ -60811,8 +60913,8 @@
   },
   {
     "id": "SD_04",
-    "lat": 32.6385133,
-    "lng": -117.0496996,
+    "lat": 32.7163883,
+    "lng": -117.1723633,
     "points": "30",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/SD/SD_04-grosplan.png",
@@ -60821,9 +60923,11 @@
     "landing_date": "03/06/2010",
     "status_date": "octobre 2022",
     "status_source": "StreetView",
-    "geo_source": "vision",
-    "geo_confidence": "medium",
-    "address": "Sprint (Sprint, 386, East H Street, Chula Vista, San Diego County, California, 91910, Un)"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "Sprint (Sprint, 386, East H Street, Chula Vista, San Diego County, California, 91910, Un)",
+    "location_unknown": false,
+    "geo_hint": "Downtown San Diego, environs d'un Sprint store, San Diego, CA"
   },
   {
     "id": "SD_05",
@@ -61320,12 +61424,17 @@
     "landing_date": "05/08/2012",
     "geo_source": "city_center",
     "geo_confidence": "low",
-    "location_unknown": true
+    "location_unknown": true,
+    "geo_search_exhausted": true,
+    "geo_search_date": "2026-05-03T10:58:17.897300",
+    "geo_hint": "Stratosphère, Espace | zone de lancement supposée | quartier: Stratosphère / haute altitude (pas de localisation terrestre identifiable) | Aucune architecture — vue aérienne depuis un ballon stratosphérique",
+    "preserved": true,
+    "preserved_date": "2026-05-03T10:59:55.694831"
   },
   {
     "id": "SPACE_02",
-    "lat": 45.0799046,
-    "lng": 7.5990066,
+    "lat": 16.2110759,
+    "lng": -61.6305933,
     "points": "100",
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/SPACE/SPACE_02-grosplan.png",
@@ -61334,9 +61443,11 @@
     "landing_date": "12/03/2015",
     "status_date": "décembre 2020",
     "status_source": "report",
-    "geo_source": "vision",
-    "geo_confidence": "medium",
-    "address": "International Space Station (International Space Station, Via Alessandro Manzoni, Borgata Paradiso, Collegno,)"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "International Space Station (International Space Station, Via Alessandro Manzoni, Borgata Paradiso, Collegno,)",
+    "location_unknown": false,
+    "geo_hint": "International Space Station (ISS), orbite terrestre basse"
   },
   {
     "id": "SP_01",
@@ -63081,17 +63192,21 @@
   },
   {
     "id": "TK_26",
-    "lat": 35.6762,
-    "lng": 139.6503,
+    "lat": 33.8281807,
+    "lng": -116.5184749,
     "points": "10",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/TK/TK_026-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/images/TK/TK_026-archive.jpg",
     "city": "TK",
     "landing_date": "24/09/1999",
-    "geo_source": "city_center",
-    "geo_confidence": "low",
-    "location_unknown": true
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "medium",
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "geo_hint": "Tokyo, Japan",
+    "preserved": true,
+    "preserved_date": "2026-05-03T10:59:55.694833"
   },
   {
     "id": "TK_27",
@@ -63494,7 +63609,8 @@
     "landing_date": "09/09/2001",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "address": "Tokyo, nord-est ("
+    "address": "Tokyo, nord-est (",
+    "geo_hint": "Tokyo, Japan"
   },
   {
     "id": "TK_56",
@@ -63600,8 +63716,8 @@
   },
   {
     "id": "TK_63",
-    "lat": 35.6607185,
-    "lng": 139.698659,
+    "lat": 35.656091,
+    "lng": 139.736009,
     "points": "10",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/TK/TK_063-grosplan.png",
@@ -63610,9 +63726,11 @@
     "landing_date": "11/09/2001",
     "status_date": "octobre 2022",
     "status_source": "StreetView",
-    "geo_source": "vision",
-    "geo_confidence": "medium",
-    "address": "Swatch (Swatch, スペイン坂, 宇田川町, 神南, 渋谷区, 東京都, 150-0042, 日本)"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "Swatch (Swatch, スペイン坂, 宇田川町, 神南, 渋谷区, 東京都, 150-0042, 日本)",
+    "location_unknown": false,
+    "geo_hint": "Shibuya Center-gai (渋谷センター街), entrée près du Swatch store, Udagawacho, Shibuya-ku, Tokyo"
   },
   {
     "id": "TK_64",
@@ -63655,17 +63773,19 @@
   },
   {
     "id": "TK_67",
-    "lat": 35.6080799,
-    "lng": 139.3271929,
+    "lat": 35.656091,
+    "lng": 139.736009,
     "points": "10",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/TK/TK_067-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/images/TK/TK_067-archive.jpg",
     "city": "TK",
     "landing_date": "12/09/2001",
-    "geo_source": "ocr",
+    "geo_source": "instagram_geotag",
     "geo_confidence": "medium",
-    "address": "AV Vie, Tokyo"
+    "address": "AV Vie, Tokyo",
+    "location_unknown": false,
+    "geo_hint": "Tokyo, Japon"
   },
   {
     "id": "TK_68",
@@ -63714,17 +63834,19 @@
   },
   {
     "id": "TK_71",
-    "lat": 35.7025408,
-    "lng": 139.6953853,
+    "lat": 35.656091,
+    "lng": 139.736009,
     "points": "20",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/TK/TK_071-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/images/TK/TK_071-archive.jpg",
     "city": "TK",
     "landing_date": "13/09/2001",
-    "geo_source": "vision",
-    "geo_confidence": "low",
-    "address": "Shinjuku, Tokyo"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "medium",
+    "address": "Shinjuku, Tokyo",
+    "location_unknown": false,
+    "geo_hint": "Tokyo, Japon"
   },
   {
     "id": "TK_72",
@@ -63824,8 +63946,8 @@
   },
   {
     "id": "TK_79",
-    "lat": 35.6295706,
-    "lng": 139.703338,
+    "lat": 35.656091,
+    "lng": 139.736009,
     "points": "0",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/TK/TK_079-grosplan.png",
@@ -63834,9 +63956,11 @@
     "landing_date": "27/10/2010",
     "status_date": "décembre 2024",
     "status_source": "StreetView",
-    "geo_source": "vision",
-    "geo_confidence": "medium",
-    "address": "Times (Times Parking, 元競馬場通り, 下目黒五丁目, 下目黒, 目黒区, 東京都, 153-0064, 日本)"
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "address": "Times (Times Parking, 元競馬場通り, 下目黒五丁目, 下目黒, 目黒区, 東京都, 153-0064, 日本)",
+    "location_unknown": false,
+    "geo_hint": "Environs de THE H.W. DOG & CO., 1-13-2 Tomigaya, Shibuya-ku, Tokyo"
   },
   {
     "id": "TK_80",
@@ -64293,8 +64417,8 @@
   },
   {
     "id": "VLMO_01",
-    "lat": 45.455321525,
-    "lng": 6.4505635988,
+    "lat": 45.4693448,
+    "lng": 6.4496615,
     "points": "30",
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/VLMO/VLMO_01-grosplan.png",
@@ -64303,9 +64427,14 @@
     "landing_date": "05/08/2017",
     "status_date": "septembre 2017",
     "status_source": "spott",
-    "geo_source": "pnote",
+    "geo_source": "vision",
     "geo_confidence": "medium",
-    "address": "Route de Crève-Cœur, Les Avanchers-Valmorel, 73260"
+    "address": "Valmorel, 73260 Les Avanchers-Valmorel",
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "geo_hint": "quartier probable: Valmorel, station de ski, Tarentaise",
+    "preserved": true,
+    "preserved_date": "2026-05-03T10:59:55.694836"
   },
   {
     "id": "VLMO_02",

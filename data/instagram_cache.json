@@ -251,12 +251,12 @@
     }
   },
   "GRTI_05": {
-    "fetched_at": "2026-05-02T19:32:17.621506",
+    "fetched_at": "2026-05-03T08:35:52.821650",
     "posts_count": 0,
     "corroborated_street": null
   },
   "GRTI_06": {
-    "fetched_at": "2026-05-02T19:33:02.911395",
+    "fetched_at": "2026-05-03T08:36:02.965322",
     "posts_count": 0,
     "corroborated_street": null
   },
@@ -732,7 +732,7 @@
     }
   },
   "SPACE_01 ": {
-    "fetched_at": "2026-05-02T20:07:40.485363",
+    "fetched_at": "2026-05-03T10:25:29.002454",
     "posts_count": 0,
     "corroborated_street": null
   },
@@ -887,6 +887,669 @@
       "name": "Worldwide",
       "lat": 48.871747171552,
       "lng": 2.3337642475984,
+      "address": ""
+    }
+  },
+  "BGK_06": {
+    "fetched_at": "2026-05-03T07:57:49.808795",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Environs de Sao Ching Cha / Old Town, Bangkok (près de 13.74298, 100.55050)",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Bangkok, Thailand",
+      "lat": 13.742984887797,
+      "lng": 100.55050191789,
+      "address": ""
+    }
+  },
+  "BGK_12": {
+    "fetched_at": "2026-05-03T08:01:45.028635",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Environs du Phenix Mall, Ratchaprarop Road / quartier de Pratunam, Bangkok",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Bangkok",
+      "lat": 13.7522,
+      "lng": 100.494,
+      "address": ""
+    }
+  },
+  "BGK_13": {
+    "fetched_at": "2026-05-03T08:05:51.970667",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Sous la passerelle piétonne devant The Platinum Fashion Mall, Petchaburi Road, quartier de Pratunam, Bangkok",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Bangkok",
+      "lat": 13.7522222222,
+      "lng": 100.493888889,
+      "address": ""
+    }
+  },
+  "BGK_23": {
+    "fetched_at": "2026-05-03T08:09:44.932718",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Bangkok, Thaïlande",
+    "confidence": "LOW",
+    "granularity": "PARIS_ONLY",
+    "direct_geotag": {
+      "name": "Bangkok",
+      "lat": 13.7522222222,
+      "lng": 100.493888889,
+      "address": ""
+    }
+  },
+  "BRL_08": {
+    "fetched_at": "2026-05-03T08:12:58.847171",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Environs de l'ancien club Tresor, Leipziger Straße, 10117 Berlin-Mitte",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Berlin, Deutschland",
+      "lat": 52.50025492,
+      "lng": 13.34153048,
+      "address": ""
+    }
+  },
+  "BT_02": {
+    "fetched_at": "2026-05-03T08:17:17.880399",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Bhoutan",
+    "confidence": "MEDIUM",
+    "granularity": "PARIS_ONLY",
+    "direct_geotag": {
+      "name": "Bhoutan",
+      "lat": 27.45,
+      "lng": 90.5,
+      "address": ""
+    }
+  },
+  "BT_04": {
+    "fetched_at": "2026-05-03T08:18:16.824836",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "BT_07": {
+    "fetched_at": "2026-05-03T08:22:25.449231",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Environs du Punakha Dzong, Punakha, Bhoutan",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Worldwide",
+      "lat": 48.871747171552,
+      "lng": 2.3337642475984,
+      "address": ""
+    }
+  },
+  "BT_09": {
+    "fetched_at": "2026-05-03T08:23:35.576522",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "BT_11": {
+    "fetched_at": "2026-05-03T08:27:27.607637",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Paro, Bhoutan",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Sagamihara-shi, Kanagawa, Japan",
+      "lat": 35.5584,
+      "lng": 139.3657,
+      "address": ""
+    }
+  },
+  "DHK_01": {
+    "fetched_at": "2026-05-03T08:30:05.872915",
+    "posts_count": 2,
+    "corroborated_street": null,
+    "best_address": "Environs de Pearisima Market, Gulshan-2, Dhaka 1212, Bangladesh",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Dhaka, Bangladesh",
+      "lat": 23.8622113,
+      "lng": 90.3989765,
+      "address": ""
+    }
+  },
+  "DHK_05": {
+    "fetched_at": "2026-05-03T08:31:30.528107",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "DJN_12": {
+    "fetched_at": "2026-05-03T08:34:37.690040",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Quartier de Yuseong-gu (probablement Gung-dong, zone universitaire/commerçante), Daejeon",
+    "confidence": "LOW",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Daejeon",
+      "lat": 36.3464,
+      "lng": 127.4013,
+      "address": ""
+    }
+  },
+  "HK_11": {
+    "fetched_at": "2026-05-03T08:40:28.882817",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": null,
+    "confidence": "LOW",
+    "granularity": "UNKNOWN",
+    "direct_geotag": null
+  },
+  "IST_03": {
+    "fetched_at": "2026-05-03T08:44:28.137503",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Sultanahmet Meydanı (Place Sultanahmet), près de Sainte-Sophie, Fatih, Istanbul",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Istanbul",
+      "lat": 41.007932,
+      "lng": 28.978144,
+      "address": ""
+    }
+  },
+  "KAT_02": {
+    "fetched_at": "2026-05-03T08:48:40.479647",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Vieille ville de Kathmandu, entre Thamel et Durbar Square (~27.7137, 85.3110), Népal",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Kathmandu, Nepal",
+      "lat": 27.722413619841,
+      "lng": 85.357344502185,
+      "address": ""
+    }
+  },
+  "KAT_06": {
+    "fetched_at": "2026-05-03T08:52:25.530072",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Environs de Katmandou Durbar Square / Ikha Pokhari, vieille ville de Katmandou, Népal",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Katmandou",
+      "lat": 27.713776,
+      "lng": 85.310244,
+      "address": ""
+    }
+  },
+  "KAT_20": {
+    "fetched_at": "2026-05-03T08:55:28.051783",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Environs de Siddhi Ganesh High School, Katmandou, Népal",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Katmandou",
+      "lat": 46.125980218499,
+      "lng": 3.4288454766331,
+      "address": ""
+    }
+  },
+  "KAT_24": {
+    "fetched_at": "2026-05-03T08:58:40.284692",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Environs d'Ikha Pokhari, Katmandou, Népal",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Katmandou",
+      "lat": 46.125980218499,
+      "lng": 3.4288454766331,
+      "address": ""
+    }
+  },
+  "MBSA_01": {
+    "fetched_at": "2026-05-03T08:59:54.959878",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "MBSA_02": {
+    "fetched_at": "2026-05-03T09:00:44.246487",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "MBSA_09": {
+    "fetched_at": "2026-05-03T09:03:48.525255",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Old Town / environs de Fort Jesus Museum, Mombasa, Kenya",
+    "confidence": "LOW",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Mombasa",
+      "lat": -4.05,
+      "lng": 39.6667,
+      "address": ""
+    }
+  },
+  "MIA_76": {
+    "fetched_at": "2026-05-03T09:06:57.883286",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Miami, Florida",
+    "confidence": "LOW",
+    "granularity": "PARIS_ONLY",
+    "direct_geotag": {
+      "name": "Miami, Florida",
+      "lat": 25.7752,
+      "lng": -80.192,
+      "address": ""
+    }
+  },
+  "MIA_77": {
+    "fetched_at": "2026-05-03T09:10:19.905194",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Miami, Florida",
+    "confidence": "LOW",
+    "granularity": "PARIS_ONLY",
+    "direct_geotag": {
+      "name": "Miami, Florida",
+      "lat": 25.7752,
+      "lng": -80.192,
+      "address": ""
+    }
+  },
+  "MIA_78": {
+    "fetched_at": "2026-05-03T09:11:51.222322",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "MIA_83": {
+    "fetched_at": "2026-05-03T09:15:04.094894",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Miami, Florida, USA",
+    "confidence": "LOW",
+    "granularity": "PARIS_ONLY",
+    "direct_geotag": {
+      "name": "Miami, Florida",
+      "lat": 25.7752,
+      "lng": -80.192,
+      "address": ""
+    }
+  },
+  "MLB_01": {
+    "fetched_at": "2026-05-03T09:16:11.421300",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "MLB_03": {
+    "fetched_at": "2026-05-03T09:19:27.330368",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Bourke Street Mall (entre Myer et David Jones / Melbourne GPO), Melbourne VIC 3000",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Melbourne, Australia",
+      "lat": -37.815987763559,
+      "lng": 144.9685118889,
+      "address": ""
+    }
+  },
+  "MLB_04": {
+    "fetched_at": "2026-05-03T09:20:34.341291",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "MLB_11": {
+    "fetched_at": "2026-05-03T09:23:14.202302",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Friends of the Earth Food Co-op & Cafe, 312 Smith Street, Collingwood VIC 3066, Melbourne",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Melbourne, Australia",
+      "lat": -37.815987763559,
+      "lng": 144.9685118889,
+      "address": ""
+    }
+  },
+  "MLB_14": {
+    "fetched_at": "2026-05-03T09:27:17.356494",
+    "posts_count": 4,
+    "corroborated_street": "ALBERT ST",
+    "best_address": "Intersection Albert Street & Peel Street, Windsor VIC 3181, Melbourne",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Melbourne, Australia",
+      "lat": -37.815987763559,
+      "lng": 144.9685118889,
+      "address": ""
+    }
+  },
+  "MLB_15": {
+    "fetched_at": "2026-05-03T09:28:48.949487",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "MLB_21": {
+    "fetched_at": "2026-05-03T09:32:26.527083",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Hamer Hall, Arts Centre Melbourne, 100 St Kilda Road, Southbank VIC 3006, Melbourne, Australia",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Melbourne, Australia",
+      "lat": -37.815987763559,
+      "lng": 144.9685118889,
+      "address": ""
+    }
+  },
+  "MPL_16": {
+    "fetched_at": "2026-05-03T09:35:56.770267",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Centre historique de Montpellier, environs de la Rue Foch, 34000 Montpellier",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Montpellier",
+      "lat": 43.6119,
+      "lng": 3.8772,
+      "address": ""
+    }
+  },
+  "MPL_40": {
+    "fetched_at": "2026-05-03T09:39:15.040572",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Environs de la Rue Foch, centre historique, 34000 Montpellier",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Montpellier",
+      "lat": 43.6119,
+      "lng": 3.8772,
+      "address": ""
+    }
+  },
+  "NY_191": {
+    "fetched_at": "2026-05-03T09:40:20.143032",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "NY_193": {
+    "fetched_at": "2026-05-03T09:43:44.268698",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Environs de SoHo / Lower Manhattan (~40.7288, -73.9972), New York",
+    "confidence": "LOW",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "New York",
+      "lat": 40.728783333333,
+      "lng": -73.997208333333,
+      "address": ""
+    }
+  },
+  "NY_194": {
+    "fetched_at": "2026-05-03T09:44:55.976289",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "NY_195": {
+    "fetched_at": "2026-05-03T09:48:30.331827",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Tunnels du métro de New York (NYC Subway), Manhattan, New York",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "New York City",
+      "lat": 40.760816466582,
+      "lng": -73.983668220737,
+      "address": ""
+    }
+  },
+  "NY_196": {
+    "fetched_at": "2026-05-03T09:49:14.582104",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "NY_197": {
+    "fetched_at": "2026-05-03T09:49:56.651894",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "NY_200": {
+    "fetched_at": "2026-05-03T09:53:50.560009",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Tunnel du métro de New York (NYC Subway), probablement secteur Midtown Manhattan (~40.75592, -73.98682 d'après géotag [2])",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "New York Subway",
+      "lat": 40.755923352547,
+      "lng": -73.986816689523,
+      "address": ""
+    }
+  },
+  "NY_206": {
+    "fetched_at": "2026-05-03T09:57:42.978704",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Environs de DUMBO / Brooklyn Bridge area, Brooklyn, New York",
+    "confidence": "LOW",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "New York",
+      "lat": 40.728783333333,
+      "lng": -73.997208333333,
+      "address": ""
+    }
+  },
+  "NY_207": {
+    "fetched_at": "2026-05-03T10:01:58.522798",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Station de métro désaffectée / tunnel du subway, New York City (probablement Lower Manhattan, secteur City Hall / Lower East Side)",
+    "confidence": "LOW",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "New York",
+      "lat": 40.7142,
+      "lng": -74.0064,
+      "address": ""
+    }
+  },
+  "NY_208": {
+    "fetched_at": "2026-05-03T10:03:04.122479",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "NY_212": {
+    "fetched_at": "2026-05-03T10:06:39.915106",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Tunnel du métro de New York (NYC Subway), localisation précise non divulguée",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "New York",
+      "lat": 40.7142,
+      "lng": -74.0064,
+      "address": ""
+    }
+  },
+  "NY_214": {
+    "fetched_at": "2026-05-03T10:10:27.370928",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Tunnel désaffecté du NYC Subway, Lower Manhattan, New York, NY",
+    "confidence": "LOW",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "New York City, N.Y.",
+      "lat": 40.712701423445,
+      "lng": -74.005891084671,
+      "address": ""
+    }
+  },
+  "NY_215": {
+    "fetched_at": "2026-05-03T10:15:04.435832",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Lower Manhattan (environs de City Hall / Brooklyn Bridge), New York, NY",
+    "confidence": "LOW",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "New York City, N.Y.",
+      "lat": 40.712701423445,
+      "lng": -74.005891084671,
+      "address": ""
+    }
+  },
+  "NY_22": {
+    "fetched_at": "2026-05-03T10:16:39.380807",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "RBA_19": {
+    "fetched_at": "2026-05-03T10:20:49.916400",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Médina de Rabat, à proximité immédiate d'un hôtel et d'une mosquée à toit vert, Rabat, Maroc",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Rabat",
+      "lat": 33.9865,
+      "lng": -6.8517,
+      "address": ""
+    }
+  },
+  "SD_04": {
+    "fetched_at": "2026-05-03T10:24:32.825642",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Downtown San Diego, environs d'un Sprint store, San Diego, CA",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "San Diego, California",
+      "lat": 32.716388333333,
+      "lng": -117.17236333333,
+      "address": ""
+    }
+  },
+  "SPACE_02": {
+    "fetched_at": "2026-05-03T10:29:32.759348",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "International Space Station (ISS), orbite terrestre basse",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "ISS Station Spatiale Internationale",
+      "lat": 16.211075928126,
+      "lng": -61.630593337505,
+      "address": ""
+    }
+  },
+  "TK_49": {
+    "fetched_at": "2026-05-03T10:31:07.690841",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "TK_55": {
+    "fetched_at": "2026-05-03T10:34:32.254495",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Tokyo, Japan",
+    "confidence": "LOW",
+    "granularity": "PARIS_ONLY",
+    "direct_geotag": {
+      "name": "Tokyo, Japan",
+      "lat": 33.8281807,
+      "lng": -116.5184749,
+      "address": ""
+    }
+  },
+  "TK_63": {
+    "fetched_at": "2026-05-03T10:37:46.600790",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Shibuya Center-gai (渋谷センター街), entrée près du Swatch store, Udagawacho, Shibuya-ku, Tokyo",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Tokyo Japan",
+      "lat": 35.656091,
+      "lng": 139.736009,
+      "address": ""
+    }
+  },
+  "TK_67": {
+    "fetched_at": "2026-05-03T10:40:50.931275",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Tokyo, Japon",
+    "confidence": "LOW",
+    "granularity": "PARIS_ONLY",
+    "direct_geotag": {
+      "name": "Tokyo Japan",
+      "lat": 35.656091,
+      "lng": 139.736009,
+      "address": ""
+    }
+  },
+  "TK_71": {
+    "fetched_at": "2026-05-03T10:44:23.989462",
+    "posts_count": 4,
+    "corroborated_street": null,
+    "best_address": "Tokyo, Japon",
+    "confidence": "LOW",
+    "granularity": "PARIS_ONLY",
+    "direct_geotag": {
+      "name": "Tokyo Japan",
+      "lat": 35.656091,
+      "lng": 139.736009,
+      "address": ""
+    }
+  },
+  "TK_79": {
+    "fetched_at": "2026-05-03T10:48:29.778405",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Environs de THE H.W. DOG & CO., 1-13-2 Tomigaya, Shibuya-ku, Tokyo",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Tokyo Japan",
+      "lat": 35.656091,
+      "lng": 139.736009,
       "address": ""
     }
   }
