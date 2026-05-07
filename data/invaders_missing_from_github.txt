@@ -1,37 +1,17 @@
 Invaders présents sur invader-spotter.art mais absents de GitHub
-Généré le 2026-04-03 18:46:05.917620
+Généré le 2026-05-07 19:39:38.736715
 ============================================================
 
-Total: 7 invaders sans géolocalisation
+Total: 2 invaders sans géolocalisation
 
 
-PA (7 invaders)
+PA (2 invaders)
 ----------------------------------------
-  • PA_1562
-    📅 Posé le: 31/03/2026
-    📆 Statut: avril 2026
-    📷 https://www.invader-spotter.art/grosplan/PA/PA_1562-grosplan.png
-  • PA_1563
-    📅 Posé le: 31/03/2026
-    📆 Statut: avril 2026
-    📷 https://www.invader-spotter.art/grosplan/PA/PA_1563-grosplan.png
-  • PA_1564
-    📅 Posé le: 31/03/2026
-    📆 Statut: avril 2026
-    📷 https://www.invader-spotter.art/grosplan/PA/PA_1564-grosplan.png
-  • PA_1565
-    📅 Posé le: 31/03/2026
-    📆 Statut: avril 2026
-    📷 https://www.invader-spotter.art/grosplan/PA/PA_1565-grosplan.png
-  • PA_1566
-    📅 Posé le: 31/03/2026
-    📆 Statut: avril 2026
-    📷 https://www.invader-spotter.art/grosplan/PA/PA_1566-grosplan.png
-  • PA_1567
-    📅 Posé le: 31/03/2026
-    📆 Statut: avril 2026
-    📷 https://www.invader-spotter.art/grosplan/PA/PA_1567-grosplan.png
-  • PA_1568
-    📅 Posé le: 31/03/2026
-    📆 Statut: avril 2026
-    📷 https://www.invader-spotter.art/grosplan/PA/PA_1568-grosplan.png
+  • PA_1569
+    📅 Posé le: 06/05/2026
+    📆 Statut: mai 2026
+    📷 https://www.invader-spotter.art/grosplan/PA/PA_1569-grosplan.png
+  • PA_1570
+    📅 Posé le: 06/05/2026
+    📆 Statut: mai 2026
+    📷 https://www.invader-spotter.art/grosplan/PA/PA_1570-grosplan.png

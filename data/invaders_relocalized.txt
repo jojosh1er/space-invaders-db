@@ -1,50 +1,24 @@
 GÉOLOCALISATION DES INVADERS MANQUANTS
 ============================================================
 
-Total: 7
-Trouvés: 7
-HIGH: 0, MEDIUM: 7 (dont 7 Vision), LOW: 0
+Total: 3
+Trouvés: 2
+HIGH: 1, MEDIUM: 1 (dont 2 Vision), LOW: 1
 
-PA_1562 🟡 (MEDIUM)
-   GPS: 48.890193, 2.393712
-   Source: vision
-   Adresse: Musée de la musique, 75019 Paris
-   💡 Hint: cross-check: 0.3km du quartier Parc de la Villette, 19e arrondissement | quartier probable: Parc de la Villette, 19e arr
-   Maps: https://www.google.com/maps?q=48.8901928,2.393712
+SPACE_01  🔴 (LOW)
+   Source: city_center
+   💡 Hint: Miami, Florida, USA | quartier: Stratosphère / haute altitude (vol ballon) | Aucune architecture visible — vue aérienne 
+   ⚠️ Localisation approximative
 
-PA_1563 🟡 (MEDIUM)
-   GPS: 48.876146, 2.263600
+PA_1569 🟢 (HIGH)
+   GPS: 48.863166, 2.366705
    Source: vision
-   Adresse: Fondation Louis Vuitton, 75116 Paris
-   Maps: https://www.google.com/maps?q=48.8761457,2.2635999
+   Adresse: Boulevard du Temple, 75011 Paris
+   Maps: https://www.google.com/maps?q=48.8631656,2.3667046
 
-PA_1564 🟡 (MEDIUM)
-   GPS: 48.888636, 2.390136
+PA_1570 🟡 (MEDIUM)
+   GPS: 48.858165, 2.352532
    Source: vision
-   Adresse: Parc de la Villette, 75019 Paris
-   Maps: https://www.google.com/maps?q=48.8886357,2.3901364
-
-PA_1565 🟡 (MEDIUM)
-   GPS: 48.891921, 2.394139
-   Source: vision
-   Adresse: Philharmonie de Paris, 75019 Paris
-   Maps: https://www.google.com/maps?q=48.8919213,2.3941386
-
-PA_1566 🟡 (MEDIUM)
-   GPS: 48.889550, 2.393189
-   Source: vision
-   Adresse: 221 Avenue Jean Jaurès, 75019 Paris
-   Maps: https://www.google.com/maps?q=48.8895501,2.3931894
-
-PA_1567 🟡 (MEDIUM)
-   GPS: 48.889550, 2.393189
-   Source: vision
-   Adresse: 221 Avenue Jean Jaurès, 75019 Paris
-   Maps: https://www.google.com/maps?q=48.8895501,2.3931894
-
-PA_1568 🟡 (MEDIUM)
-   GPS: 48.830006, 2.376847
-   Source: vision
-   Adresse: Bibliothèque François Mitterrand, 75013 Paris
-   Maps: https://www.google.com/maps?q=48.8300059,2.3768474
+   Adresse: 52 Rue de la Verrerie, 75004 Paris
+   Maps: https://www.google.com/maps?q=48.8581654,2.3525318
 
