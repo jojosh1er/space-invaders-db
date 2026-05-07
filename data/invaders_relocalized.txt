@@ -1,24 +1,14 @@
 GÉOLOCALISATION DES INVADERS MANQUANTS
 ============================================================
 
-Total: 3
-Trouvés: 2
-HIGH: 1, MEDIUM: 1 (dont 2 Vision), LOW: 1
+Total: 1
+Trouvés: 1
+HIGH: 0, MEDIUM: 0, LOW: 0
 
-SPACE_01  🔴 (LOW)
-   Source: city_center
-   💡 Hint: Miami, Florida, USA | quartier: Stratosphère / haute altitude (vol ballon) | Aucune architecture visible — vue aérienne 
-   ⚠️ Localisation approximative
-
-PA_1569 🟢 (HIGH)
-   GPS: 48.863166, 2.366705
-   Source: vision
-   Adresse: Boulevard du Temple, 75011 Paris
-   Maps: https://www.google.com/maps?q=48.8631656,2.3667046
-
-PA_1570 🟡 (MEDIUM)
-   GPS: 48.858165, 2.352532
-   Source: vision
-   Adresse: 52 Rue de la Verrerie, 75004 Paris
-   Maps: https://www.google.com/maps?q=48.8581654,2.3525318
+PA_1570 🟢 (HIGH)
+   GPS: 48.858011, 2.352670
+   Source: instagram_vision
+   Adresse: 61 Rue de la Verrerie, 75004 Paris
+   💡 Hint: 61 Rue de la Verrerie, 75004 Paris
+   Maps: https://www.google.com/maps?q=48.8580107,2.3526699
 

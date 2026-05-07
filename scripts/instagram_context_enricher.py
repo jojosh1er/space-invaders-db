@@ -1018,17 +1018,120 @@ def main():
         print(f"  [{i}] @{post['user']} ({post['likes']} likes){geo_str}")
         print(f"      → {post['image_path']}")
 
-    if args.no_vision or not args.official_image:
-        print("\n⏭️  Skip Vision (pas d'image officielle ou --no-vision)")
+    if args.no_vision:
+        print("\n⏭️  Skip Vision (--no-vision)")
         return
+
+    # Résoudre l'image officielle : --official-image ou fallback master JSON
+    official_image = args.official_image
+    if not official_image:
+        try:
+            master = load_master()
+            inv = next((x for x in master if x.get('id') == args.invader), None)
+            if inv:
+                official_image = inv.get('image_lieu') or inv.get('image_invader')
+                if official_image:
+                    print(f"\n📖 image_lieu depuis master : {official_image[:70]}…")
+        except Exception as e:
+            print(f"\n⚠️  Impossible de lire le master : {e}")
+
+    if not official_image:
+        print("\n⏭️  Skip Vision (pas d'image — utilise --official-image)")
+        return
+
 
     if not posts:
         print("\n❌ Aucun post — pas d'enrichissement possible")
         return
 
     print("\n🧠 Analyse Claude Vision multi-image…")
-    result = analyze_with_vision(args.invader, args.official_image, posts)
+    result = analyze_with_vision(args.invader, official_image, posts)
     print(json.dumps(result, indent=2, ensure_ascii=False))
+
+    # Mise à jour master si résultat utilisable
+    if result and not result.get('parse_error'):
+        _gran = result.get('granularity', '')
+        _conf = result.get('confidence', '')
+        _addr = result.get('address')
+        _usable = (
+            _gran in ('EXACT_ADDRESS', 'STREET', 'BLOCK')
+            and _conf in ('HIGH', 'MEDIUM')
+            and _addr
+        )
+        if _usable:
+            try:
+                _master = load_master()
+                _master_path = find_master_json()
+                _idx = next((i for i, x in enumerate(_master)
+                             if x.get('id') == args.invader), None)
+                if _idx is not None:
+                    _master[_idx]['geo_hint'] = _addr
+                    _master[_idx]['geo_source'] = 'instagram_vision'
+                    _master[_idx]['geo_confidence'] = _conf.lower()
+                    _master[_idx]['location_unknown'] = False
+                    _master[_idx].pop('instagram_vision_pending', None)
+                    # Géocoder l'adresse pour obtenir les coords GPS
+                    _geo = None
+                    try:
+                        import importlib.util as _ilu2, pathlib as _pl2
+                        _geo_path = _pl2.Path(__file__).parent / 'geolocate_missing.py'
+                        if _geo_path.exists():
+                            _spec2 = _ilu2.spec_from_file_location('_gm2', _geo_path)
+                            _mod2 = _ilu2.module_from_spec(_spec2)
+                            _spec2.loader.exec_module(_mod2)
+                            _ocr = _mod2.ImageOCRAnalyzer(verbose=False)
+                            city_code = args.invader.rsplit('_', 1)[0]
+                            _geo = _ocr.geocode_address(_addr, city_code=city_code)
+                    except Exception as _ge:
+                        print(f'  ⚠️  Géocodage échoué : {_ge}')
+
+                    if _geo and _geo.get('lat'):
+                        _master[_idx]['lat'] = _geo['lat']
+                        _master[_idx]['lng'] = _geo['lng']
+                        _master[_idx]['address'] = _addr
+                        _master[_idx]['geo_source'] = 'instagram_vision'
+                        print(f'\n✅ Master mis à jour → {_gran}/{_conf}')
+                        print(f'   📍 {_addr}')
+                        print(f'   🌐 {_geo["lat"]:.6f}, {_geo["lng"]:.6f}')
+                    else:
+                        # Pas de coords → abaisser confiance pour que geolocate_missing
+                        # --from-master reprenne cet invader (filtre instagram_hint_pending)
+                        _master[_idx]['geo_confidence'] = 'medium'
+                        print(f'\n✅ Master mis à jour → geo_hint posé (géocodage à faire)')
+                        print(f'   📍 {_addr}')
+                        print(f'   ⚠️  Coords GPS non disponibles — lance geolocate_missing --from-master')
+                    # Mettre à jour instagram_cache.json pour que
+                    # geolocate_missing puisse utiliser le résultat comme source 0
+                    try:
+                        _cache_path = _master_path.parent / 'instagram_cache.json'
+                        _ig_cache = {}
+                        if _cache_path.exists():
+                            with open(_cache_path, encoding='utf-8') as _cf:
+                                _ig_cache = json.load(_cf)
+                        _ig_cache[args.invader] = {
+                            'fetched_at': datetime.now().isoformat(),
+                            'posts_count': len(posts),
+                            'best_address': _addr,
+                            'confidence': _conf,
+                            'granularity': _gran,
+                            'corroborated_street': (
+                                result.get('evidence', {}).get('street_plates', [None])[0]
+                                if result.get('evidence', {}).get('street_plates') else None
+                            ),
+                            'direct_geotag': None,
+                        }
+                        with open(_cache_path, 'w', encoding='utf-8') as _cf:
+                            json.dump(_ig_cache, _cf, indent=2, ensure_ascii=False)
+                        print(f'   📁 instagram_cache.json mis à jour')
+                    except Exception as _ce:
+                        print(f'   ⚠️  Cache Instagram non mis à jour : {_ce}')
+                    save_master(_master, _master_path)
+                else:
+                    print(f'\n⚠️  {args.invader} non trouvé dans le master')
+            except Exception as e:
+                print(f'\n⚠️  Mise à jour master échouée : {e}')
+        else:
+            print(f'\n⏭️  Master non mis à jour ({_gran}/{_conf} insuffisant)')
 
 
 if __name__ == "__main__":

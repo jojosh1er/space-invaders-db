@@ -5658,7 +5658,7 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
                     new_inv['lat'] = round(float(gt_lat), 7)
                     new_inv['lng'] = round(float(gt_lng), 7)
                     new_inv['geo_source'] = 'instagram_geotag'
-                    new_inv['geo_confidence'] = ig_entry.get('confidence', 'medium').lower() or 'medium'
+                    new_inv['geo_confidence'] = (ig_entry.get('confidence') or 'medium').lower()
                     new_inv['geo_hint'] = ig_entry.get('best_address') or geotag.get('name', '')
                     new_inv['location_unknown'] = False
                     new_inv['geo_search_exhausted'] = False
@@ -5683,6 +5683,32 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
                     if addr_usable and searcher.ocr_analyzer:
                         print(f"   📸 Instagram Vision addr: {best_addr[:60]}…")
                         geo = searcher.ocr_analyzer.geocode_address(best_addr, city_code=city_code)
+
+                        # Si échec sur adresse intersection (Angle X et Y / X, Y)
+                        # → essayer chaque composant séparément
+                        if not (geo and geo.get('lat')):
+                            import re as _re
+                            _parts = _re.split(
+                                r'\s+[Ee][Tt]\s+|\s*/\s*|\s+[\u2013-]\s+|^[Aa]ngle\s+',
+                                best_addr,
+                                flags=_re.IGNORECASE
+                            )
+                            _parts = [p.strip() for p in _parts if len(p.strip()) > 5]
+                            # Ajouter code postal si pas déjà présent
+                            _cp = ''
+                            _cp_m = _re.search(r'7[0-9]{4}', best_addr)
+                            if _cp_m:
+                                _cp = f", {_cp_m.group(0)} Paris"
+                            for _part in _parts:
+                                if _re.search(r'7[0-9]{4}', _part):
+                                    _try = _part
+                                else:
+                                    _try = _part + _cp
+                                print(f"   📸 Retry composant: {_try[:50]}")
+                                geo = searcher.ocr_analyzer.geocode_address(_try, city_code=city_code)
+                                if geo and geo.get('lat'):
+                                    break
+
                         if geo and geo.get('lat'):
                             new_inv['lat'] = geo['lat']
                             new_inv['lng'] = geo['lng']
@@ -5702,7 +5728,7 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
 
             if ig_found:
                 results.append(new_inv)
-                time.sleep(args.pause)
+                time.sleep(pause)
                 continue  # Skip EXIF/OCR/Lens/Vision
 
             if image_lieu_url:
@@ -6647,6 +6673,15 @@ def main():
                 if inv.get('geo_search_exhausted') and not args.retry_failed:
                     return False, 'search_exhausted_skip'
                 return True, 'very_low_confidence'
+
+            # Enrichissement Instagram : geo_hint textuel à géocoder
+            # instagram_cache a fourni une adresse mais les coords sont encore
+            # celles du geotag generique — repasser pour affiner via Nominatim/fuzzy
+            if (inv.get('geo_source') in ('instagram_vision', 'instagram_geotag')
+                    and inv.get('geo_hint')
+                    and inv.get('geo_confidence') in ('medium', 'low')
+                    and not inv.get('geo_search_exhausted')):
+                return True, 'instagram_hint_pending'
             
             # Coordonnées = centre-ville connu
             city = inv.get('city', '').upper()

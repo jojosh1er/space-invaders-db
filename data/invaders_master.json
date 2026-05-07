@@ -66326,15 +66326,16 @@
     "added_date": "2026-05-07T19:39:37.757678",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1569-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1569-mai2026.jpg",
-    "lat": 48.8631656,
-    "lng": 2.3667046,
-    "geo_source": "vision",
+    "lat": 48.8656255,
+    "lng": 2.3673925,
+    "geo_source": "instagram_vision",
     "geo_confidence": "high",
     "location_unknown": false,
     "geo_search_exhausted": false,
-    "address": "Boulevard du Temple, 75011 Paris",
+    "address": "Angle Passage du Jeu de Boules et Boulevard Voltaire, 75011 Paris",
     "preserved": true,
-    "preserved_date": "2026-05-07T19:43:00.568477"
+    "preserved_date": "2026-05-07T22:25:58.038258",
+    "geo_hint": "Angle Passage du Jeu de Boules et Boulevard Voltaire, 75011 Paris"
   },
   {
     "id": "PA_1570",
@@ -66345,14 +66346,15 @@
     "added_date": "2026-05-07T19:39:37.757687",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1570-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1570-mai2026.jpg",
-    "lat": 48.8581654,
-    "lng": 2.3525318,
-    "geo_source": "vision",
-    "geo_confidence": "medium",
+    "lat": 48.8580107,
+    "lng": 2.3526699,
+    "geo_source": "instagram_vision",
+    "geo_confidence": "high",
     "location_unknown": false,
     "geo_search_exhausted": false,
-    "address": "52 Rue de la Verrerie, 75004 Paris",
+    "address": "61 Rue de la Verrerie, 75004 Paris",
     "preserved": true,
-    "preserved_date": "2026-05-07T19:43:00.568480"
+    "preserved_date": "2026-05-07T22:28:32.677035",
+    "geo_hint": "61 Rue de la Verrerie, 75004 Paris"
   }
 ]

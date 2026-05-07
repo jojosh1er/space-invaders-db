@@ -1552,5 +1552,23 @@
       "lng": 139.736009,
       "address": ""
     }
+  },
+  "PA_1569": {
+    "fetched_at": "2026-05-07T22:20:58.476125",
+    "posts_count": 5,
+    "best_address": "Angle Passage du Jeu de Boules et Boulevard Voltaire, 75011 Paris",
+    "confidence": "HIGH",
+    "granularity": "EXACT_ADDRESS",
+    "corroborated_street": "PASSAGE DU JEU DE BOULES",
+    "direct_geotag": null
+  },
+  "PA_1570": {
+    "fetched_at": "2026-05-07T22:27:34.250803",
+    "posts_count": 5,
+    "best_address": "61 Rue de la Verrerie, 75004 Paris",
+    "confidence": "HIGH",
+    "granularity": "EXACT_ADDRESS",
+    "corroborated_street": null,
+    "direct_geotag": null
   }
 }
