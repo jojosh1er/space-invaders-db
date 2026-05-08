@@ -17,3 +17,6 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+data/invaders_relocalized.json
+data/invaders_relocalized.txt
+data/_tmp_poorly_located.json
