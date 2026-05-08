@@ -3,12 +3,11 @@ GÉOLOCALISATION DES INVADERS MANQUANTS
 
 Total: 1
 Trouvés: 1
-HIGH: 0, MEDIUM: 0, LOW: 0
+HIGH: 1, MEDIUM: 0 (dont 1 Vision), LOW: 0
 
-PA_1570 🟢 (HIGH)
-   GPS: 48.858011, 2.352670
-   Source: instagram_vision
-   Adresse: 61 Rue de la Verrerie, 75004 Paris
-   💡 Hint: 61 Rue de la Verrerie, 75004 Paris
-   Maps: https://www.google.com/maps?q=48.8580107,2.3526699
+PA_1569 🟢 (HIGH)
+   GPS: 48.863166, 2.366705
+   Source: vision
+   Adresse: Boulevard du Temple, 75011 Paris
+   Maps: https://www.google.com/maps?q=48.8631656,2.3667046
 

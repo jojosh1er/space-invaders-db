@@ -196,6 +196,155 @@ def get_client() -> Client:
 
 # ─── Scraping hashtag ──────────────────────────────────────────────────────
 
+
+def _overpass_intersection(street_a: str, street_b: str,
+                            arrdt: int = None, city_code: str = 'PA') -> dict:
+    """
+    Trouve le nœud d'intersection exact entre deux rues via Overpass API.
+    Plus précis que géocoder une rue seule (qui donne le milieu de la rue).
+    """
+    PARIS_BBOX = {
+        75001: (48.855,2.338,48.865,2.355), 75002: (48.862,2.344,48.870,2.356),
+        75003: (48.859,2.352,48.867,2.365), 75004: (48.849,2.348,48.860,2.362),
+        75005: (48.843,2.344,48.855,2.358), 75006: (48.846,2.332,48.856,2.347),
+        75007: (48.849,2.296,48.860,2.325), 75008: (48.866,2.295,48.879,2.324),
+        75009: (48.874,2.330,48.885,2.351), 75010: (48.869,2.348,48.882,2.372),
+        75011: (48.854,2.361,48.869,2.393), 75012: (48.837,2.372,48.858,2.407),
+        75013: (48.819,2.344,48.843,2.380), 75014: (48.820,2.308,48.843,2.346),
+        75015: (48.827,2.276,48.855,2.320), 75016: (48.845,2.245,48.880,2.290),
+        75017: (48.877,2.295,48.897,2.338), 75018: (48.878,2.322,48.898,2.365),
+        75019: (48.873,2.362,48.899,2.403), 75020: (48.854,2.386,48.879,2.415),
+    }
+
+    import re as _re2
+    def _key(name):
+        name = _re2.sub(
+            r'^(rue|boulevard|avenue|passage|impasse|allée|square|place|voie|chemin|quai|villa)\s+',
+            '', name.lower().strip())
+        return name[:30]
+
+    key_a = _key(street_a)
+    key_b = _key(street_b)
+
+    if arrdt and arrdt in PARIS_BBOX:
+        s, w, n, e = PARIS_BBOX[arrdt]
+        bbox = f"{s},{w},{n},{e}"
+    else:
+        bbox = "48.815,2.224,48.902,2.470"
+
+    query = f"""
+[out:json][timeout:20];
+(way["name"~"{key_a}",i]({bbox});)->.a;
+(way["name"~"{key_b}",i]({bbox});)->.b;
+node(w.a)(w.b);
+out body;
+"""
+    try:
+        time.sleep(1.0)
+        resp = requests.post(
+            'https://overpass-api.de/api/interpreter',
+            data={'data': query},
+            headers={'User-Agent': 'SpaceInvaderGeocoder/1.0'},
+            timeout=25,
+        )
+        if resp.status_code != 200:
+            return None
+        elements = resp.json().get('elements', [])
+        if not elements:
+            return None
+        lats = [e['lat'] for e in elements if 'lat' in e]
+        lngs = [e['lon'] for e in elements if 'lon' in e]
+        if not lats:
+            return None
+        lat = sum(lats) / len(lats)
+        lng = sum(lngs) / len(lngs)
+        print(f"  🔀 Intersection trouvée ({len(elements)} nœud(s)) : {lat:.6f}, {lng:.6f}")
+        return {'lat': lat, 'lng': lng}
+    except Exception as e:
+        print(f"  ⚠️  Overpass intersection : {e}")
+        return None
+
+
+
+def _nominatim_query(address: str, city_code: str = 'PA') -> dict | None:
+    """
+    Géocode une adresse via Nominatim.
+    Gère les adresses intersection en décomposant si nécessaire.
+    Retourne {'lat': float, 'lng': float} ou None.
+    """
+    import re
+    import urllib.parse
+
+    # Mapping city_code → countrycodes Nominatim
+    COUNTRY_MAP = {
+        'PA': 'fr', 'LYO': 'fr', 'MRS': 'fr', 'BDX': 'fr', 'TLS': 'fr',
+        'MPL': 'fr', 'FTBL': 'fr', 'LSN': 'ch', 'LDN': 'gb', 'IST': 'tr',
+        'BGK': 'th', 'HK': 'hk', 'TK': 'jp', 'NY': 'us', 'MIA': 'us',
+        'MLB': 'au', 'KAT': 'np', 'BT': 'bt', 'DHK': 'bd', 'MBSA': 'ke',
+        'GRTI': 'tz', 'ROM': 'it', 'BCN': 'es', 'MAD': 'es',
+    }
+    country = COUNTRY_MAP.get(city_code, '')
+    headers = {'User-Agent': 'SpaceInvaderGeocoder/1.0 (https://github.com/jojosh1er/space-invaders-db)'}
+
+    def _query(q):
+        time.sleep(2.0)  # respecter le rate limit Nominatim (403 si trop rapide)
+        params = {'q': q, 'format': 'json', 'limit': 3}
+        if country:
+            params['countrycodes'] = country
+        try:
+            resp = requests.get('https://nominatim.openstreetmap.org/search',
+                                params=params, headers=headers, timeout=10)
+            if resp.status_code == 200:
+                results = resp.json()
+                if results:
+                    r = results[0]
+                    return {'lat': float(r['lat']), 'lng': float(r['lon'])}
+                else:
+                    print(f'  ⚠️  Nominatim 0 résultat pour: {q[:50]}')
+            else:
+                print(f'  ⚠️  Nominatim HTTP {resp.status_code} pour: {q[:50]}')
+        except Exception as _e:
+            print(f'  ⚠️  Nominatim exception: {_e} pour: {q[:50]}')
+        return None
+
+    # Essai 1 : adresse complète
+    geo = _query(address)
+    if geo:
+        return geo
+
+    # Essai 2 : décomposer les intersections (Angle X et Y, X / Y, X - Y)
+    parts = re.split(
+        r'\s+et\s+|\s*/\s*|\s+[-\u2013]\s+|^[Aa]ngle\s+',
+        address,
+        flags=re.IGNORECASE
+    )
+    parts = [p.strip() for p in parts if len(p.strip()) > 5]
+
+    if len(parts) >= 2:
+        # Essai 2a : nœud d'intersection exact via Overpass (plus précis que rue seule)
+        cp_m = re.search(r'7[0-9]{4}', address)
+        _arrdt = int(cp_m.group(0)) if cp_m else None
+        geo = _overpass_intersection(parts[0], parts[1], arrdt=_arrdt, city_code=city_code)
+        if geo:
+            return geo
+
+    # Essai 2b : géocoder chaque composant séparément via Nominatim
+    cp_match = re.search(r'7[0-9]{4}', address)
+    cp_suffix = f", {cp_match.group(0)} Paris" if cp_match else ''
+
+    for part in parts:
+        if re.search(r'\d{4,5}', part):
+            candidate = part
+        else:
+            candidate = part + cp_suffix
+        geo = _query(candidate)
+        if geo:
+            return geo
+
+    return None
+
+
+
 def _web_search_hashtag(session_id: str, hashtag: str, limit: int):
     """
     Recherche les posts d'un hashtag via l'API web Instagram (sessionid cookie).
@@ -423,12 +572,19 @@ Géotags Instagram disponibles (signal fort si présents) :
 
 CONSIGNES SUPPLÉMENTAIRES POUR LA CORROBORATION :
 - Applique la procédure habituelle en 2 étapes (extraction preuves → inférence).
+- **PRIORITÉ ABSOLUE : l'image officielle (image 1) prime sur toutes les autres.**
+  Si elle contient des indices de localisation (enseignes, plaques, numéros),
+  ces indices définissent l'emplacement de CET invader. Les photos Instagram
+  peuvent montrer d'autres invaders posés le même jour — ne les utilise que
+  pour corroborer l'image officielle, jamais pour la contredire.
 - Corrobore entre les images : un indice est plus fiable s'il apparaît sur \
-  ≥2 photos. Note-le dans street_plates / shop_signs / other_landmarks.
+  ≥2 photos ET est cohérent avec l'image officielle.
+- Si les photos Instagram montrent un lieu différent de l'image officielle,
+  indique-le dans reasoning et fais confiance à l'image officielle.
 - Si les photos Instagram ne montrent que la mosaïque en gros plan sans \
   contexte de rue, indique-le dans reasoning et baisse la granularité.
 - Si un géotag Instagram est disponible, mentionne-le dans other_landmarks \
-  et remonte la confiance d'un cran si cohérent avec les indices visuels.
+  et remonte la confiance d'un cran si cohérent avec l'image officielle.
 
 Applique la procédure en 2 étapes et réponds en JSON strict."""
 
@@ -1070,18 +1226,64 @@ def main():
                     _master[_idx]['geo_confidence'] = _conf.lower()
                     _master[_idx]['location_unknown'] = False
                     _master[_idx].pop('instagram_vision_pending', None)
-                    # Géocoder l'adresse pour obtenir les coords GPS
+                    # Géocoder via ImageOCRAnalyzer de geolocate_missing
                     _geo = None
                     try:
-                        import importlib.util as _ilu2, pathlib as _pl2
+                        import importlib.util as _ilu2, pathlib as _pl2, re as _re2
                         _geo_path = _pl2.Path(__file__).parent / 'geolocate_missing.py'
+                        city_code = args.invader.rsplit('_', 1)[0]
+                        print(f'  🌍 Géocodage : {_addr[:60]}…')
+
                         if _geo_path.exists():
                             _spec2 = _ilu2.spec_from_file_location('_gm2', _geo_path)
                             _mod2 = _ilu2.module_from_spec(_spec2)
                             _spec2.loader.exec_module(_mod2)
-                            _ocr = _mod2.ImageOCRAnalyzer(verbose=False)
-                            city_code = args.invader.rsplit('_', 1)[0]
-                            _geo = _ocr.geocode_address(_addr, city_code=city_code)
+                            _ocr = _mod2.ImageOCRAnalyzer(verbose=True)
+
+                            # Pré-traiter les adresses intersection
+                            # (Angle X et Y, X / Y, X - Y)
+                            _addr_clean = _re2.sub(
+                                r'(?i)^angle\s+', '', _addr.strip()
+                            )
+                            _sep = _re2.search(
+                                r' et | / | - |, ', _addr_clean
+                            )
+                            _cp_m = _re2.search(r'7[0-9]{4}', _addr)
+                            _cp_str = f", {_cp_m.group(0)} Paris" if _cp_m else ', Paris'
+
+                            if _sep:
+                                # Séparer les composants
+                                _parts3 = [p.strip() for p in
+                                           _re2.split(r' et | / | - ', _addr_clean)
+                                           if len(p.strip()) > 5]
+                                # Nettoyer le code postal du 2e composant
+                                _parts3 = [_re2.sub(r',?\s*7[0-9]{4}.*$', '', p).strip()
+                                           for p in _parts3]
+
+                                # 1. Overpass : nœud d'intersection exact
+                                if len(_parts3) >= 2:
+                                    _cp_int = int(_cp_m.group(0)) if _cp_m else None
+                                    _geo = _overpass_intersection(
+                                        _parts3[0], _parts3[1],
+                                        arrdt=_cp_int, city_code=city_code
+                                    )
+
+                                # 2. Géocoder chaque composant séparément
+                                if not _geo:
+                                    for _part in _parts3:
+                                        _cand = _part + _cp_str
+                                        print(f'  📍 Essai composant: {_cand[:50]}')
+                                        _geo = _ocr.geocode_address(
+                                            _cand, city_code=city_code
+                                        )
+
+                                        if _geo and _geo.get('lat'):
+                                            print(f'  📍 Composant géocodé: {_cand[:50]}')
+                                            break
+                            else:
+                                _geo = _ocr.geocode_address(_addr, city_code=city_code)
+                        else:
+                            _geo = _nominatim_query(_addr, city_code=city_code)
                     except Exception as _ge:
                         print(f'  ⚠️  Géocodage échoué : {_ge}')
 
