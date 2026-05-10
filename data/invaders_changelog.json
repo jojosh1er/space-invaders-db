@@ -943,7 +943,47 @@
       "new_value": "destroyed",
       "detected_at": "2026-05-07T19:39:38.741466",
       "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "BGK_05",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-05-10T08:30:02.143436",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "FTBL_36",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-05-10T08:30:02.143440",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "LA_07",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "OK",
+      "detected_at": "2026-05-10T08:30:02.143462",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "NY_176",
+      "field": "status",
+      "old_value": "damaged",
+      "new_value": "destroyed",
+      "detected_at": "2026-05-10T08:30:02.143463",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_1275",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "hidden",
+      "detected_at": "2026-05-10T08:30:02.143465",
+      "source": "invader-spotter.art"
     }
   ],
-  "last_check": "2026-05-07T19:39:38.741468"
+  "last_check": "2026-05-10T08:30:02.143466"
 }
