@@ -3116,11 +3116,11 @@
     "landing_date": "08/07/2005",
     "status_date": "mai 2026",
     "status_source": "report",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-05-10T08:30:00.749278",
     "previous_status": "OK",
     "previous_status_date": "novembre 2025",
-    "status_updated": "2026-05-10T08:30:00.749278"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "BGK_06",
@@ -10386,11 +10386,11 @@
     "landing_date": "08/08/2023",
     "status_date": "mai 2026",
     "status_source": "report",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-05-10T08:30:00.752370",
     "previous_status": "OK",
     "previous_status_date": "février 2026",
-    "status_updated": "2026-05-10T08:30:00.752370"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "FTBL_37",
@@ -16417,10 +16417,10 @@
     "points": "50",
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/LA/LA_165-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/photos/LA/LA_165-avril2025.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/LA/LA_165-mai2026.jpg",
     "city": "LA",
     "landing_date": "13/04/2011",
-    "status_date": "avril 2025",
+    "status_date": "mai 2026",
     "status_source": "report",
     "geo_source": "flashinvaders",
     "geo_confidence": "high"
@@ -38021,12 +38021,12 @@
     "city": "PA",
     "landing_date": "11/04/2017",
     "status_date": "mai 2026",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_source": "report",
+    "status_updated": "2026-05-10T08:30:00.762680",
     "previous_status": "OK",
     "previous_status_date": "avril 2022",
-    "status_updated": "2026-05-10T08:30:00.762680",
-    "status_source": "report"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "PA_1276",
@@ -47955,16 +47955,16 @@
     "lat": "48.8513978546",
     "lng": "2.3380376243",
     "points": "30",
-    "status": "hidden",
+    "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0473-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0473-mars2015.jpg",
     "city": "PA",
     "landing_date": "01/04/2002",
     "status_date": "octobre 2022",
     "status_source": "report",
-    "status_updated": "2026-02-09T17:48:27.114964",
+    "status_updated": "2026-05-17T08:38:46.346795",
     "status_issue": 4,
-    "previous_status": "OK",
+    "previous_status": "hidden",
     "previous_status_date": "octobre 2022",
     "geo_source": "flashinvaders",
     "geo_confidence": "high"
@@ -49376,15 +49376,18 @@
     "lat": "48.8387624649",
     "lng": "2.3965384885",
     "points": "20",
-    "status": "a little damaged",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0559-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0559-janvier2016.jpg",
     "city": "PA",
     "landing_date": "22/08/2004",
-    "status_date": "juillet 2024",
+    "status_date": "mai 2026",
     "status_source": "report",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "previous_status": "a little damaged",
+    "previous_status_date": "juillet 2024",
+    "status_updated": "2026-05-17T08:38:46.347315"
   },
   {
     "id": "PA_56",
@@ -49436,15 +49439,18 @@
     "lat": "48.8923573479",
     "lng": "2.3399361592",
     "points": "20",
-    "status": "OK",
+    "status": "hidden",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0562-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0562-decembre2017.jpg",
     "city": "PA",
     "landing_date": "10/09/2004",
-    "status_date": "septembre 2019",
+    "status_date": "mai 2026",
     "status_source": "report",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "previous_status": "OK",
+    "previous_status_date": "septembre 2019",
+    "status_updated": "2026-05-17T08:38:46.347339"
   },
   {
     "id": "PA_563",
@@ -52951,15 +52957,18 @@
     "lat": "48.8667567972",
     "lng": "2.3131409942",
     "points": "20",
-    "status": "destroyed",
+    "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0773-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0773-avril2025.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0773-mai2026.jpg",
     "city": "PA",
     "landing_date": "13/06/2008",
-    "status_date": "avril 2025",
-    "status_source": "report",
+    "status_date": "mai 2026",
+    "status_source": "Instagram",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "previous_status": "destroyed",
+    "previous_status_date": "avril 2025",
+    "status_updated": "2026-05-17T08:38:46.348622"
   },
   {
     "id": "PA_774",
@@ -59218,15 +59227,18 @@
     "lat": "48.1136095012",
     "lng": "-1.6808401318",
     "points": "30",
-    "status": "OK",
+    "status": "a little damaged",
     "image_invader": "https://www.invader-spotter.art/grosplan/RN/RN_02-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/RN/RN_02-mars2015.jpg",
     "city": "RN",
     "landing_date": "28/08/2008",
-    "status_date": "mars 2015",
-    "status_source": "spott",
+    "status_date": "mai 2026",
+    "status_source": "report",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "previous_status": "OK",
+    "previous_status_date": "mars 2015",
+    "status_updated": "2026-05-17T08:38:46.350976"
   },
   {
     "id": "RN_03",
@@ -60485,15 +60497,18 @@
     "lat": "51.9197575277",
     "lng": "4.465478533",
     "points": "10",
-    "status": "OK",
+    "status": "a little damaged",
     "image_invader": "https://www.invader-spotter.art/grosplan/RTD/RTD_07-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/images/RTD/RTD_07-juillet2019.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/RTD/RTD_07-mai2026.jpg",
     "city": "RTD",
     "landing_date": "01/11/2001",
-    "status_date": "juin 2020",
+    "status_date": "mai 2026",
     "status_source": "report",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "previous_status": "OK",
+    "previous_status_date": "juin 2020",
+    "status_updated": "2026-05-17T08:38:46.351449"
   },
   {
     "id": "RTD_08",
@@ -61279,18 +61294,19 @@
     "lat": 37.5732296012,
     "lng": 126.9864299698,
     "points": "30",
-    "status": "OK",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/SL/SL_12-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/images/SL/SL_12-avril2025.jpg",
     "city": "SL",
     "landing_date": "22/10/2024",
-    "status_date": "septembre 2025",
+    "status_date": "mai 2026",
     "status_source": "report",
-    "previous_status": "destroyed",
+    "previous_status": "OK",
     "previous_status_date": "septembre 2025",
     "geo_source": "pnote",
     "geo_confidence": "medium",
-    "address": "5-26, 인사동4길, 서울특별시, 03148"
+    "address": "5-26, 인사동4길, 서울특별시, 03148",
+    "status_updated": "2026-05-17T08:38:46.351769"
   },
   {
     "id": "SL_13",
@@ -66331,11 +66347,11 @@
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1569-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1569-mai2026.jpg",
     "city": "PA",
+    "landing_date": "06/05/2026",
+    "status_date": "mai 2026",
     "geo_source": "instagram_vision",
     "geo_confidence": "high",
-    "address": "Angle Passage du Jeu de Boules / Boulevard Voltaire, 75011 Paris",
-    "landing_date": "06/05/2026",
-    "status_date": "mai 2026"
+    "address": "Angle Passage du Jeu de Boules / Boulevard Voltaire, 75011 Paris"
   },
   {
     "id": "PA_1570",
@@ -66346,10 +66362,10 @@
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1570-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1570-mai2026.jpg",
     "city": "PA",
+    "landing_date": "06/05/2026",
+    "status_date": "mai 2026",
     "geo_source": "instagram_vision",
     "geo_confidence": "high",
-    "address": "61 Rue de la Verrerie, 75004 Paris",
-    "landing_date": "06/05/2026",
-    "status_date": "mai 2026"
+    "address": "61 Rue de la Verrerie, 75004 Paris"
   }
 ]
