@@ -1570,5 +1570,226 @@
     "granularity": "BLOCK",
     "corroborated_street": "PASSAGE DU JEU DE BOULES",
     "direct_geotag": null
+  },
+  "PA_1571": {
+    "fetched_at": "2026-05-24T13:54:48.926485",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Parc de la Villette (près de la Cité des sciences et de l'industrie), 75019 Paris",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Parc de la Villette",
+      "lat": 48.893055555556,
+      "lng": 2.3908333333333,
+      "address": ""
+    }
+  },
+  "PA_1572": {
+    "fetched_at": "2026-05-24T13:56:20.107810",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "PA_1573": {
+    "fetched_at": "2026-05-24T14:00:04.216852",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Sous-marin Argonaute, Parc de la Villette, 75019 Paris",
+    "confidence": "HIGH",
+    "granularity": "EXACT_ADDRESS",
+    "direct_geotag": {
+      "name": "Parc de la Villette",
+      "lat": 48.893055555556,
+      "lng": 2.3908333333333,
+      "address": ""
+    }
+  },
+  "PA_1574": {
+    "fetched_at": "2026-05-24T14:04:12.488554",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Parc de la Villette, près de la Géode / Cité des Sciences, 75019 Paris",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Parc de la Villette",
+      "lat": 48.893055555556,
+      "lng": 2.3908333333333,
+      "address": ""
+    }
+  },
+  "PA_1575": {
+    "fetched_at": "2026-05-24T14:07:52.711586",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Parc de la Villette (près de la Géode / Cité des Sciences), 75019 Paris",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Parc de la Villette",
+      "lat": 48.893055555556,
+      "lng": 2.3908333333333,
+      "address": ""
+    }
+  },
+  "PA_1576": {
+    "fetched_at": "2026-05-24T14:12:21.028370",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Parc de la Villette (bord du canal de l'Ourcq, près d'une passerelle), 75019 Paris",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Parc de la Villette",
+      "lat": 48.893055555556,
+      "lng": 2.3908333333333,
+      "address": ""
+    }
+  },
+  "PA_1577": {
+    "fetched_at": "2026-05-24T14:13:48.704013",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "PA_1578": {
+    "fetched_at": "2026-05-24T14:17:33.471269",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Folie rouge près de la passerelle, Parc de la Villette, 75019 Paris",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Parc de la Villette",
+      "lat": 48.893055555556,
+      "lng": 2.3908333333333,
+      "address": ""
+    }
+  },
+  "PA_1579": {
+    "fetched_at": "2026-05-24T14:18:34.227326",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "PA_1580": {
+    "fetched_at": "2026-05-24T14:21:53.682922",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Le Trabendo, Parc de la Villette, 75019 Paris",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Parc de la Villette",
+      "lat": 48.893055555556,
+      "lng": 2.3908333333333,
+      "address": ""
+    }
+  },
+  "PA_1581": {
+    "fetched_at": "2026-05-24T14:26:30.451583",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Jardin des Bambous, Parc de la Villette, 75019 Paris",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Parc de la Villette",
+      "lat": 48.893055555556,
+      "lng": 2.3908333333333,
+      "address": ""
+    }
+  },
+  "PA_1582": {
+    "fetched_at": "2026-05-24T14:31:00.995024",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Parc de la Villette, près de la passerelle sur le Canal de l'Ourcq, 75019 Paris",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Parc de la Villette",
+      "lat": 48.893055555556,
+      "lng": 2.3908333333333,
+      "address": ""
+    }
+  },
+  "PA_1583": {
+    "fetched_at": "2026-05-24T14:32:12.157706",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "PA_1584": {
+    "fetched_at": "2026-05-24T14:33:00.861786",
+    "posts_count": 0,
+    "corroborated_street": null
+  },
+  "PA_1585": {
+    "fetched_at": "2026-05-24T14:36:51.497293",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Parc de la Villette, aux abords du canal de l'Ourcq, 75019 Paris",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Parc de la Villette",
+      "lat": 48.893055555556,
+      "lng": 2.3908333333333,
+      "address": ""
+    }
+  },
+  "PA_1586": {
+    "fetched_at": "2026-05-24T14:40:59.672950",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Little Villette, Parc de la Villette, 75019 Paris",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Parc de la Villette",
+      "lat": 48.893055555556,
+      "lng": 2.3908333333333,
+      "address": ""
+    }
+  },
+  "PA_1587": {
+    "fetched_at": "2026-05-24T14:44:40.671171",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Parc de la Villette, 75019 Paris (à proximité d'un pavillon en pierre, côté Grande Halle / prairie)",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Parc de la Villette",
+      "lat": 48.893055555556,
+      "lng": 2.3908333333333,
+      "address": ""
+    }
+  },
+  "PA_1588": {
+    "fetched_at": "2026-05-24T14:48:57.066609",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Parc de la Villette, près de la Grande Halle, 75019 Paris",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Parc de la Villette",
+      "lat": 48.893055555556,
+      "lng": 2.3908333333333,
+      "address": ""
+    }
+  },
+  "PA_1589": {
+    "fetched_at": "2026-05-24T14:53:06.761748",
+    "posts_count": 5,
+    "corroborated_street": null,
+    "best_address": "Jardin des Bambous, Parc de la Villette, 75019 Paris",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "direct_geotag": {
+      "name": "Parc de la Villette",
+      "lat": 48.893055555556,
+      "lng": 2.3908333333333,
+      "address": ""
+    }
   }
 }

@@ -66380,11 +66380,12 @@
     "added_date": "2026-05-24T11:40:01.808793",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1571-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1571-mai2026.jpg",
-    "lat": 48.8566,
-    "lng": 2.3522,
-    "geo_source": "city_center",
-    "geo_confidence": "very_low",
-    "location_unknown": true
+    "lat": 48.8930556,
+    "lng": 2.3908333,
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "location_unknown": false,
+    "geo_hint": "Parc de la Villette (près de la Cité des sciences et de l'industrie), 75019 Paris"
   },
   {
     "id": "PA_1572",
@@ -66395,11 +66396,15 @@
     "added_date": "2026-05-24T11:40:01.808804",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1572-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1572-mai2026.jpg",
-    "lat": 48.8566,
-    "lng": 2.3522,
-    "geo_source": "city_center",
-    "geo_confidence": "very_low",
-    "location_unknown": true
+    "lat": 48.8886357,
+    "lng": 2.3901364,
+    "geo_source": "vision",
+    "geo_confidence": "medium",
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "Parc de la Villette, 75019 Paris",
+    "preserved": true,
+    "preserved_date": "2026-05-24T15:01:06.361810"
   },
   {
     "id": "PA_1573",
@@ -66410,11 +66415,12 @@
     "added_date": "2026-05-24T11:40:01.808808",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1573-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1573-mai2026.jpg",
-    "lat": 48.8566,
-    "lng": 2.3522,
-    "geo_source": "city_center",
-    "geo_confidence": "very_low",
-    "location_unknown": true
+    "lat": 48.8930556,
+    "lng": 2.3908333,
+    "geo_source": "instagram_vision",
+    "geo_confidence": "high",
+    "location_unknown": false,
+    "geo_hint": "Sous-marin Argonaute, Parc de la Villette, 75019 Paris"
   },
   {
     "id": "PA_1574",
@@ -66425,11 +66431,12 @@
     "added_date": "2026-05-24T11:40:01.808811",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1574-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1574-mai2026.jpg",
-    "lat": 48.8566,
-    "lng": 2.3522,
-    "geo_source": "city_center",
-    "geo_confidence": "very_low",
-    "location_unknown": true
+    "lat": 48.8930556,
+    "lng": 2.3908333,
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "location_unknown": false,
+    "geo_hint": "Parc de la Villette, près de la Géode / Cité des Sciences, 75019 Paris"
   },
   {
     "id": "PA_1575",
@@ -66440,11 +66447,12 @@
     "added_date": "2026-05-24T11:40:01.808813",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1575-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1575-mai2026.jpg",
-    "lat": 48.8566,
-    "lng": 2.3522,
-    "geo_source": "city_center",
-    "geo_confidence": "very_low",
-    "location_unknown": true
+    "lat": 48.8930556,
+    "lng": 2.3908333,
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "location_unknown": false,
+    "geo_hint": "Parc de la Villette (près de la Géode / Cité des Sciences), 75019 Paris"
   },
   {
     "id": "PA_1576",
@@ -66455,11 +66463,12 @@
     "added_date": "2026-05-24T11:40:01.808815",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1576-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1576-mai2026.jpg",
-    "lat": 48.8566,
-    "lng": 2.3522,
-    "geo_source": "city_center",
-    "geo_confidence": "very_low",
-    "location_unknown": true
+    "lat": 48.8930556,
+    "lng": 2.3908333,
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "location_unknown": false,
+    "geo_hint": "Parc de la Villette (bord du canal de l'Ourcq, près d'une passerelle), 75019 Paris"
   },
   {
     "id": "PA_1577",
@@ -66470,11 +66479,15 @@
     "added_date": "2026-05-24T11:40:01.808817",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1577-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1577-mai2026.jpg",
-    "lat": 48.8566,
-    "lng": 2.3522,
-    "geo_source": "city_center",
-    "geo_confidence": "very_low",
-    "location_unknown": true
+    "lat": 48.8886357,
+    "lng": 2.3901364,
+    "geo_source": "vision",
+    "geo_confidence": "medium",
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "Parc de la Villette, 75019 Paris",
+    "preserved": true,
+    "preserved_date": "2026-05-24T14:59:59.125122"
   },
   {
     "id": "PA_1578",
@@ -66485,11 +66498,12 @@
     "added_date": "2026-05-24T11:40:01.808820",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1578-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1578-mai2026.jpg",
-    "lat": 48.8566,
-    "lng": 2.3522,
-    "geo_source": "city_center",
-    "geo_confidence": "very_low",
-    "location_unknown": true
+    "lat": 48.8930556,
+    "lng": 2.3908333,
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "location_unknown": false,
+    "geo_hint": "Folie rouge près de la passerelle, Parc de la Villette, 75019 Paris"
   },
   {
     "id": "PA_1579",
@@ -66515,11 +66529,12 @@
     "added_date": "2026-05-24T11:40:01.808824",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1580-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1580-mai2026.jpg",
-    "lat": 48.8566,
-    "lng": 2.3522,
-    "geo_source": "city_center",
-    "geo_confidence": "very_low",
-    "location_unknown": true
+    "lat": 48.8930556,
+    "lng": 2.3908333,
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "location_unknown": false,
+    "geo_hint": "Le Trabendo, Parc de la Villette, 75019 Paris"
   },
   {
     "id": "PA_1581",
@@ -66530,11 +66545,12 @@
     "added_date": "2026-05-24T11:40:01.808826",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1581-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1581-mai2026.jpg",
-    "lat": 48.8566,
-    "lng": 2.3522,
-    "geo_source": "city_center",
-    "geo_confidence": "very_low",
-    "location_unknown": true
+    "lat": 48.8930556,
+    "lng": 2.3908333,
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "location_unknown": false,
+    "geo_hint": "Jardin des Bambous, Parc de la Villette, 75019 Paris"
   },
   {
     "id": "PA_1582",
@@ -66545,11 +66561,12 @@
     "added_date": "2026-05-24T11:40:01.808829",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1582-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1582-mai2026.jpg",
-    "lat": 48.8566,
-    "lng": 2.3522,
-    "geo_source": "city_center",
-    "geo_confidence": "very_low",
-    "location_unknown": true
+    "lat": 48.8930556,
+    "lng": 2.3908333,
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "location_unknown": false,
+    "geo_hint": "Parc de la Villette, près de la passerelle sur le Canal de l'Ourcq, 75019 Paris"
   },
   {
     "id": "PA_1583",
@@ -66560,11 +66577,16 @@
     "added_date": "2026-05-24T11:40:01.808831",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1583-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1583-mai2026.jpg",
-    "lat": 48.8566,
-    "lng": 2.3522,
-    "geo_source": "city_center",
-    "geo_confidence": "very_low",
-    "location_unknown": true
+    "lat": 48.8825182,
+    "lng": 2.3703448,
+    "geo_source": "vision",
+    "geo_confidence": "low",
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "Place de la Bataille de Stalingrad, 75019 Paris",
+    "geo_hint": "cross-check: 1.3km du quartier 19e arrondissement, Paris | quartier probable: 19e arrondissement, Paris",
+    "preserved": true,
+    "preserved_date": "2026-05-24T15:03:46.586685"
   },
   {
     "id": "PA_1584",
@@ -66575,11 +66597,15 @@
     "added_date": "2026-05-24T11:40:01.808833",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1584-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1584-mai2026.jpg",
-    "lat": 48.8566,
-    "lng": 2.3522,
-    "geo_source": "city_center",
-    "geo_confidence": "very_low",
-    "location_unknown": true
+    "lat": 48.8883703,
+    "lng": 2.3794062,
+    "geo_source": "vision",
+    "geo_confidence": "medium",
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "Pont de Crimée, 75019 Paris",
+    "preserved": true,
+    "preserved_date": "2026-05-24T15:05:39.379239"
   },
   {
     "id": "PA_1585",
@@ -66590,11 +66616,12 @@
     "added_date": "2026-05-24T11:40:01.808835",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1585-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1585-mai2026.jpg",
-    "lat": 48.8566,
-    "lng": 2.3522,
-    "geo_source": "city_center",
-    "geo_confidence": "very_low",
-    "location_unknown": true
+    "lat": 48.8930556,
+    "lng": 2.3908333,
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "location_unknown": false,
+    "geo_hint": "Parc de la Villette, aux abords du canal de l'Ourcq, 75019 Paris"
   },
   {
     "id": "PA_1586",
@@ -66605,11 +66632,12 @@
     "added_date": "2026-05-24T11:40:01.808837",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1586-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1586-mai2026.jpg",
-    "lat": 48.8566,
-    "lng": 2.3522,
-    "geo_source": "city_center",
-    "geo_confidence": "very_low",
-    "location_unknown": true
+    "lat": 48.8930556,
+    "lng": 2.3908333,
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "location_unknown": false,
+    "geo_hint": "Little Villette, Parc de la Villette, 75019 Paris"
   },
   {
     "id": "PA_1587",
@@ -66620,11 +66648,12 @@
     "added_date": "2026-05-24T11:40:01.808839",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1587-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1587-mai2026.jpg",
-    "lat": 48.8566,
-    "lng": 2.3522,
-    "geo_source": "city_center",
-    "geo_confidence": "very_low",
-    "location_unknown": true
+    "lat": 48.8930556,
+    "lng": 2.3908333,
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "location_unknown": false,
+    "geo_hint": "Parc de la Villette, 75019 Paris (à proximité d'un pavillon en pierre, côté Grande Halle / prairie)"
   },
   {
     "id": "PA_1588",
@@ -66635,11 +66664,12 @@
     "added_date": "2026-05-24T11:40:01.808841",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1588-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1588-mai2026.jpg",
-    "lat": 48.8566,
-    "lng": 2.3522,
-    "geo_source": "city_center",
-    "geo_confidence": "very_low",
-    "location_unknown": true
+    "lat": 48.8930556,
+    "lng": 2.3908333,
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "location_unknown": false,
+    "geo_hint": "Parc de la Villette, près de la Grande Halle, 75019 Paris"
   },
   {
     "id": "PA_1589",
@@ -66650,10 +66680,11 @@
     "added_date": "2026-05-24T11:40:01.808843",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1589-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1589-mai2026.jpg",
-    "lat": 48.8566,
-    "lng": 2.3522,
-    "geo_source": "city_center",
-    "geo_confidence": "very_low",
-    "location_unknown": true
+    "lat": 48.8930556,
+    "lng": 2.3908333,
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "high",
+    "location_unknown": false,
+    "geo_hint": "Jardin des Bambous, Parc de la Villette, 75019 Paris"
   }
 ]
