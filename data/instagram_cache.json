@@ -732,7 +732,7 @@
     }
   },
   "SPACE_01 ": {
-    "fetched_at": "2026-05-03T10:25:29.002454",
+    "fetched_at": "2026-05-31T11:26:05.757169",
     "posts_count": 0,
     "corroborated_street": null
   },
@@ -877,12 +877,12 @@
     }
   },
   "VRN_13": {
-    "fetched_at": "2026-05-02T20:18:49.331360",
+    "fetched_at": "2026-05-31T11:26:19.201861",
     "posts_count": 5,
     "corroborated_street": null,
-    "best_address": null,
-    "confidence": null,
-    "granularity": null,
+    "best_address": "Ghats de Varanasi (proximité Shiv Ganga Silk Factory), Varanasi, Uttar Pradesh, Inde",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
     "direct_geotag": {
       "name": "Worldwide",
       "lat": 48.871747171552,
@@ -1791,5 +1791,41 @@
       "lng": 2.3908333333333,
       "address": ""
     }
+  },
+  "PA_1590": {
+    "fetched_at": "2026-05-31T12:06:58.170299",
+    "posts_count": 5,
+    "best_address": "Grande Halle de la Villette (exposition Beyond the Streets), 211 Avenue Jean Jaurès, 75019 Paris",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "corroborated_street": null,
+    "direct_geotag": null
+  },
+  "PA_1592": {
+    "fetched_at": "2026-05-31T11:40:41.386855",
+    "posts_count": 5,
+    "best_address": "Environs de la Rue Adolphe Mille / Porte de Pantin, 75019 Paris",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "corroborated_street": null,
+    "direct_geotag": null
+  },
+  "PA_1593": {
+    "fetched_at": "2026-05-31T11:47:41.391195",
+    "posts_count": 5,
+    "best_address": "Porte Chaumont / Porte de Pantin, 75019 Paris (environs du Parc de la Villette)",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "corroborated_street": null,
+    "direct_geotag": null
+  },
+  "PA_1591": {
+    "fetched_at": "2026-05-31T11:54:01.788625",
+    "posts_count": 5,
+    "best_address": "Pathé La Villette, au pied de la Géode, Parc de la Villette, 75019 Paris",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "corroborated_street": null,
+    "direct_geotag": null
   }
 }
