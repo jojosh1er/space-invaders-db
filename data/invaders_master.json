@@ -1347,10 +1347,10 @@
     "points": "10",
     "status": "damaged",
     "image_invader": "https://www.invader-spotter.art/grosplan/AVI/AVI_32-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/photos/AVI/AVI_32-novembre2025.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/AVI/AVI_32-juin2026.jpg",
     "city": "AVI",
     "landing_date": "31/05/2000",
-    "status_date": "juin 2025",
+    "status_date": "juin 2026",
     "status_source": "report",
     "previous_status": "a little damaged",
     "previous_status_date": "juin 2025",
@@ -1695,11 +1695,11 @@
     "landing_date": "09/11/2024",
     "status_date": "mai 2026",
     "status_source": "report",
+    "status_updated": "2026-06-07T09:13:52.044408",
     "previous_status": "destroyed",
     "previous_status_date": "février 2025",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high",
-    "status_updated": "2026-06-07T09:13:52.044408"
+    "geo_confidence": "high"
   },
   {
     "id": "BAB_14",
@@ -4024,11 +4024,11 @@
     "landing_date": "21/09/2002",
     "status_date": "juin 2026",
     "status_source": "Instagram",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-06-07T09:13:52.045304",
     "previous_status": "destroyed",
     "previous_status_date": "août 2023",
-    "status_updated": "2026-06-07T09:13:52.045304"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "BRC_13",
@@ -10084,17 +10084,18 @@
     "lat": "48.4493026392",
     "lng": "2.7597302372",
     "points": "20",
-    "status": "OK",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/FTBL/FTBL_17-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/FTBL/FTBL_17-juin2023.jpg",
     "city": "FTBL",
     "landing_date": "31/05/2023",
-    "status_date": "juin 2025",
-    "status_source": "FlashInvaders",
-    "previous_status": "destroyed",
+    "status_date": "juin 2026",
+    "status_source": "report",
+    "previous_status": "OK",
     "previous_status_date": "juin 2025",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "status_updated": "2026-06-14T09:47:19.223696"
   },
   {
     "id": "FTBL_18",
@@ -14037,11 +14038,11 @@
     "landing_date": "08/05/2015",
     "status_date": "mai 2026",
     "status_source": "report",
+    "status_updated": "2026-06-07T09:13:52.049557",
     "previous_status": "OK",
     "previous_status_date": "novembre 2025",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high",
-    "status_updated": "2026-06-07T09:13:52.049557"
+    "geo_confidence": "high"
   },
   {
     "id": "HK_96",
@@ -20045,10 +20046,10 @@
     "points": 50,
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/LDN/LDN_175-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/images/LDN/LDN_175-decembre2025.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/LDN/LDN_175-mai2026.jpg",
     "city": "LDN",
     "landing_date": "08/12/2025",
-    "status_date": "décembre 2025",
+    "status_date": "mai 2026",
     "status_source": "report",
     "geo_source": "flashinvaders",
     "geo_confidence": "high"
@@ -28929,11 +28930,11 @@
     "landing_date": "10/04/2023",
     "status_date": "juin 2026",
     "status_source": "report",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-06-07T09:13:52.055221",
     "previous_status": "OK",
     "previous_status_date": "avril 2023",
-    "status_updated": "2026-06-07T09:13:52.055221"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "MUN_16",
@@ -38765,15 +38766,18 @@
     "lat": "48.8732406444",
     "lng": "2.3530172201",
     "points": "40",
-    "status": "OK",
+    "status": "hidden",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1318-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1318-decembre2017.jpg",
     "city": "PA",
     "landing_date": "02/11/2017",
-    "status_date": "novembre 2019",
+    "status_date": "juin 2026",
     "status_source": "report",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "previous_status": "OK",
+    "previous_status_date": "novembre 2019",
+    "status_updated": "2026-06-14T09:47:19.235195"
   },
   {
     "id": "PA_1319",
@@ -40427,14 +40431,17 @@
     "lat": "48.8428634365",
     "lng": "2.3622599302",
     "points": "30",
-    "status": "a little damaged",
+    "status": "damaged",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1417-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1417-aout2019.jpg",
     "city": "PA",
     "landing_date": "31/07/2019",
-    "status_date": "septembre 2020",
+    "status_date": "juin 2026",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "previous_status": "a little damaged",
+    "previous_status_date": "septembre 2020",
+    "status_updated": "2026-06-14T09:47:19.235888"
   },
   {
     "id": "PA_1418",
@@ -48847,11 +48854,11 @@
     "landing_date": "17/08/2003",
     "status_date": "juin 2026",
     "status_source": "report",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-06-07T09:13:52.062885",
     "previous_status": "OK",
     "previous_status_date": "septembre 2017",
-    "status_updated": "2026-06-07T09:13:52.062885"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "PA_527",
@@ -55913,11 +55920,11 @@
     "landing_date": "03/04/2011",
     "status_date": "juin 2026",
     "status_source": "report",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-06-07T09:13:52.065599",
     "previous_status": "OK",
     "previous_status_date": "octobre 2019",
-    "status_updated": "2026-06-07T09:13:52.065599"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "PA_95",
