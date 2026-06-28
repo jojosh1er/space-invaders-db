@@ -1247,7 +1247,39 @@
       "new_value": "destroyed",
       "detected_at": "2026-06-21T10:03:40.063791",
       "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "HK_88",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-06-28T09:04:52.793162",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "LDN_179",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "a little damaged",
+      "detected_at": "2026-06-28T09:04:52.793168",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_1037",
+      "field": "status",
+      "old_value": "damaged",
+      "new_value": "destroyed",
+      "detected_at": "2026-06-28T09:04:52.793171",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_299",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "a little damaged",
+      "detected_at": "2026-06-28T09:04:52.793172",
+      "source": "invader-spotter.art"
     }
   ],
-  "last_check": "2026-06-21T10:03:40.063792"
+  "last_check": "2026-06-28T09:04:52.793173"
 }
