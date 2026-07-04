@@ -13934,11 +13934,11 @@
     "landing_date": "07/05/2015",
     "status_date": "juin 2026",
     "status_source": "report",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-06-28T09:04:52.021242",
     "previous_status": "OK",
     "previous_status_date": "novembre 2017",
-    "status_updated": "2026-06-28T09:04:52.021242"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "HK_89",
@@ -20120,11 +20120,11 @@
     "landing_date": "08/12/2025",
     "status_date": "juin 2026",
     "status_source": "report",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-06-28T09:04:52.023476",
     "previous_status": "OK",
     "previous_status_date": "décembre 2025",
-    "status_updated": "2026-06-28T09:04:52.023476"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "LDN_18",
@@ -34065,12 +34065,12 @@
     "city": "PA",
     "landing_date": "22/07/2012",
     "status_date": "juin 2026",
+    "status_source": "report",
+    "status_updated": "2026-06-28T09:04:52.028483",
     "previous_status": "damaged",
     "previous_status_date": "mai 2026",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high",
-    "status_updated": "2026-06-28T09:04:52.028483",
-    "status_source": "report"
+    "geo_confidence": "high"
   },
   {
     "id": "PA_1038",
@@ -45091,11 +45091,11 @@
     "landing_date": "15/07/2000",
     "status_date": "juin 2026",
     "status_source": "Instagram",
+    "status_updated": "2026-06-28T09:04:52.032482",
     "previous_status": "OK",
     "previous_status_date": "mai 2025",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high",
-    "status_updated": "2026-06-28T09:04:52.032482"
+    "geo_confidence": "high"
   },
   {
     "id": "PA_30",
@@ -66758,17 +66758,77 @@
   },
   {
     "id": "PA_1594",
-    "lat": 48.866042,
-    "lng": 2.3153496,
+    "lat": 48.866313,
+    "lng": 2.314741,
     "points": 40,
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1594-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1594-juin2026.jpg",
     "city": "PA",
+    "landing_date": "17/06/2026",
+    "status_date": "juin 2026",
+    "geo_source": "community_issue",
+    "geo_confidence": "high",
+    "address": "Petit Palais, Avenue Winston Churchill, 75008 Paris",
+    "location_unknown": false
+  },
+  {
+    "id": "PA_1595",
+    "status": "OK",
+    "city": "PA",
+    "points": 20,
+    "missing_from_github": true,
+    "added_date": "2026-07-04T05:20:41.931075",
+    "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1595-grosplan.png",
+    "image_lieu": "https://www.invader-spotter.art/images/PA/PA_1595-juillet2026.jpg",
+    "lat": 48.8534951,
+    "lng": 2.3483915,
+    "geo_source": "vision",
+    "geo_confidence": "low",
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "Paris",
+    "geo_hint": "quartier probable: Paris (indéterminé, possiblement 11e ou 20e arrondissement)",
+    "preserved": true,
+    "preserved_date": "2026-07-04T05:23:45.350915"
+  },
+  {
+    "id": "PA_1596",
+    "status": "OK",
+    "city": "PA",
+    "points": 40,
+    "missing_from_github": true,
+    "added_date": "2026-07-04T05:20:41.931091",
+    "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1596-grosplan.png",
+    "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1596-juillet2026.jpg",
+    "lat": 48.8898938,
+    "lng": 2.3940699,
     "geo_source": "vision",
     "geo_confidence": "medium",
-    "address": "Petit Palais, Avenue Winston Churchill, 75008 Paris",
-    "landing_date": "17/06/2026",
-    "status_date": "juin 2026"
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "Cité de la Musique, 221 Avenue Jean Jaurès, 75019 Paris",
+    "preserved": true,
+    "preserved_date": "2026-07-04T05:23:45.350929"
+  },
+  {
+    "id": "PA_1597",
+    "status": "OK",
+    "city": "PA",
+    "points": 30,
+    "missing_from_github": true,
+    "added_date": "2026-07-04T05:20:41.931095",
+    "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1597-grosplan.png",
+    "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1597-juillet2026.jpg",
+    "lat": 48.8737363,
+    "lng": 2.3894231,
+    "geo_source": "vision",
+    "geo_confidence": "medium",
+    "location_unknown": false,
+    "geo_search_exhausted": false,
+    "address": "15 Rue des Pyrénées, 75020 Paris",
+    "geo_hint": "cross-check: 1.2km du quartier 20e arrondissement, Paris | quartier probable: 20e arrondissement, Paris",
+    "preserved": true,
+    "preserved_date": "2026-07-04T05:23:45.350932"
   }
 ]
