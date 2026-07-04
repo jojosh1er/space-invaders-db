@@ -1827,5 +1827,23 @@
     "granularity": "BLOCK",
     "corroborated_street": null,
     "direct_geotag": null
+  },
+  "PA_1595": {
+    "fetched_at": "2026-07-04T07:30:23.281966",
+    "posts_count": 5,
+    "best_address": "Devant 'la Sardine à lire', près du 4 (Paris 17e)",
+    "confidence": "HIGH",
+    "granularity": "BLOCK",
+    "corroborated_street": null,
+    "direct_geotag": null
+  },
+  "PA_1597": {
+    "fetched_at": "2026-07-04T07:40:30.675842",
+    "posts_count": 5,
+    "best_address": "Environs de l'Avenue Daumesnil / Faubourg Saint-Antoine, 75012 Paris",
+    "confidence": "MEDIUM",
+    "granularity": "BLOCK",
+    "corroborated_street": null,
+    "direct_geotag": null
   }
 }
