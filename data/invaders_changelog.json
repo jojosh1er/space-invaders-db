@@ -1279,7 +1279,23 @@
       "new_value": "a little damaged",
       "detected_at": "2026-06-28T09:04:52.793172",
       "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "BGK_49",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-07-05T09:06:01.336797",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "GNV_08",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "a little damaged",
+      "detected_at": "2026-07-05T09:06:01.336802",
+      "source": "invader-spotter.art"
     }
   ],
-  "last_check": "2026-06-28T09:04:52.793173"
+  "last_check": "2026-07-05T09:06:01.336804"
 }
