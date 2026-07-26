@@ -10594,11 +10594,11 @@
     "landing_date": "18/09/2000",
     "status_date": "juillet 2026",
     "status_source": "report",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-07-19T08:29:38.841882",
     "previous_status": "destroyed",
     "previous_status_date": "juillet 2024",
-    "status_updated": "2026-07-19T08:29:38.841882"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "GNV_03",
@@ -10679,11 +10679,11 @@
     "landing_date": "19/09/2000",
     "status_date": "juillet 2026",
     "status_source": "report",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-07-19T08:29:38.841914",
     "previous_status": "destroyed",
     "previous_status_date": "septembre 2024",
-    "status_updated": "2026-07-19T08:29:38.841914"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "GNV_08",
@@ -10801,11 +10801,11 @@
     "landing_date": "20/09/2000",
     "status_date": "juillet 2026",
     "status_source": "report",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-07-19T08:29:38.841962",
     "previous_status": "destroyed",
     "previous_status_date": "septembre 2024",
-    "status_updated": "2026-07-19T08:29:38.841962"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "GNV_15",
@@ -10819,11 +10819,11 @@
     "landing_date": "20/09/2000",
     "status_date": "juillet 2026",
     "status_source": "report",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-07-19T08:29:38.841969",
     "previous_status": "destroyed",
     "previous_status_date": "octobre 2024",
-    "status_updated": "2026-07-19T08:29:38.841969"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "GNV_16",
@@ -11079,11 +11079,11 @@
     "landing_date": "23/09/2000",
     "status_date": "juillet 2026",
     "status_source": "report",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-07-19T08:29:38.842078",
     "previous_status": "destroyed",
     "previous_status_date": "septembre 2024",
-    "status_updated": "2026-07-19T08:29:38.842078"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "GNV_32",
@@ -11097,11 +11097,11 @@
     "landing_date": "23/09/2000",
     "status_date": "juillet 2026",
     "status_source": "report",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-07-19T08:29:38.842087",
     "previous_status": "destroyed",
     "previous_status_date": "septembre 2024",
-    "status_updated": "2026-07-19T08:29:38.842087"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "GNV_33",
@@ -19489,15 +19489,18 @@
     "lat": "51.5101849948",
     "lng": "-0.1341123325",
     "points": "10",
-    "status": "hidden",
+    "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/LDN/LDN_014-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/LDN/LDN_014-juillet2022.jpg",
     "city": "LDN",
     "landing_date": "08/06/1999",
-    "status_date": "novembre 2023",
+    "status_date": "juillet 2026",
     "status_source": "report",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "previous_status": "hidden",
+    "previous_status_date": "novembre 2023",
+    "status_updated": "2026-07-26T08:40:57.034477"
   },
   {
     "id": "LDN_140",
@@ -21971,15 +21974,18 @@
     "lat": "46.0573664243",
     "lng": "14.5168781979",
     "points": "10",
-    "status": "damaged",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/LJU/LJU_19-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/photos/LJU/LJU_19-avril2026.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/LJU/LJU_19-juillet2026.jpg",
     "city": "LJU",
     "landing_date": "15/03/2006",
-    "status_date": "avril 2026",
+    "status_date": "juillet 2026",
     "status_source": "report",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "previous_status": "damaged",
+    "previous_status_date": "avril 2026",
+    "status_updated": "2026-07-26T08:40:57.035183"
   },
   {
     "id": "LJU_20",
@@ -28981,11 +28987,11 @@
     "points": "30",
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/MUN/MUN_16-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/images/MUN/MUN_16-avril2023.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/MUN/MUN_16-juillet2026.jpg",
     "city": "MUN",
     "landing_date": "10/04/2023",
-    "status_date": "août 2025",
-    "status_source": "FlashInvaders",
+    "status_date": "juillet 2026",
+    "status_source": "report",
     "geo_source": "flashinvaders",
     "geo_confidence": "high"
   },
@@ -40132,11 +40138,11 @@
     "landing_date": "10/04/2019",
     "status_date": "juillet 2026",
     "status_source": "report",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-07-19T08:29:38.853814",
     "previous_status": "OK",
     "previous_status_date": "mai 2019",
-    "status_updated": "2026-07-19T08:29:38.853814"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "PA_1398",
@@ -43143,11 +43149,11 @@
     "landing_date": "26/04/1999",
     "status_date": "juillet 2026",
     "status_source": "report",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-07-19T08:29:38.855044",
     "previous_status": "OK",
     "previous_status_date": "avril 2023",
-    "status_updated": "2026-07-19T08:29:38.855044"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "PA_18",
@@ -48420,16 +48426,19 @@
     "lat": "49.0067372003",
     "lng": "2.528123547",
     "points": "50",
-    "status": "OK",
+    "status": "destroyed",
     "hint": "Have a safe flight!",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0497-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0497-mai2023.jpg",
     "city": "PA",
     "landing_date": "26/07/2002",
-    "status_date": "mai 2023",
+    "status_date": "juillet 2026",
     "status_source": "report",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "previous_status": "OK",
+    "previous_status_date": "mai 2023",
+    "status_updated": "2026-07-26T08:40:57.043078"
   },
   {
     "id": "PA_498",
@@ -56028,16 +56037,16 @@
     "lat": "48.8681330232",
     "lng": "2.3247567574",
     "points": "20",
-    "status": "hidden",
+    "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0952-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0952-mai2019.jpg",
     "city": "PA",
     "landing_date": "03/04/2011",
-    "status_date": "juin 2026",
+    "status_date": "juillet 2026",
     "status_source": "report",
-    "status_updated": "2026-06-21T10:03:38.784772",
-    "previous_status": "OK",
-    "previous_status_date": "mai 2019",
+    "status_updated": "2026-07-26T08:40:57.045366",
+    "previous_status": "hidden",
+    "previous_status_date": "juin 2026",
     "geo_source": "flashinvaders",
     "geo_confidence": "high"
   },
@@ -60154,10 +60163,10 @@
     "points": "20",
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/ROM/ROM_53-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/photos/ROM/ROM_53-septembre2024.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/ROM/ROM_53-juillet2026.jpg",
     "city": "ROM",
     "landing_date": "20/07/2010",
-    "status_date": "septembre 2024",
+    "status_date": "juillet 2026",
     "status_source": "report",
     "geo_source": "flashinvaders",
     "geo_confidence": "high"
@@ -65581,11 +65590,11 @@
     "landing_date": "10/06/2006",
     "status_date": "juillet 2026",
     "status_source": "report",
+    "status_updated": "2026-07-19T08:29:38.864419",
     "previous_status": "OK",
     "previous_status_date": "août 2025",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high",
-    "status_updated": "2026-07-19T08:29:38.864419"
+    "geo_confidence": "high"
   },
   {
     "id": "WN_15",
@@ -66202,11 +66211,11 @@
     "landing_date": "10/09/2008",
     "status_date": "juillet 2026",
     "status_source": "report",
+    "status_updated": "2026-07-19T08:29:38.864676",
     "previous_status": "OK",
     "previous_status_date": "août 2025",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high",
-    "status_updated": "2026-07-19T08:29:38.864676"
+    "geo_confidence": "high"
   },
   {
     "id": "WN_55",
@@ -66842,8 +66851,7 @@
     "status_source": "report",
     "geo_source": "community_issue",
     "geo_confidence": "high",
-    "address": "213 Avenue Jean Jaurès 75019 Paris France",
-    "location_unknown": false
+    "address": "213 Avenue Jean Jaurès 75019 Paris France"
   },
   {
     "id": "PA_1597",
