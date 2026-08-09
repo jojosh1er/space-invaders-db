@@ -3202,15 +3202,18 @@
     "lat": "13.7280598815",
     "lng": "100.5330549014",
     "points": "20",
-    "status": "OK",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/BGK/BGK_11-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/images/BGK/BGK_11-archive.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/BGK/BGK_11-aout2026.jpg",
     "city": "BGK",
     "landing_date": "10/07/2005",
-    "status_date": "novembre 2025",
+    "status_date": "août 2026",
     "status_source": "report",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "previous_status": "OK",
+    "previous_status_date": "novembre 2025",
+    "status_updated": "2026-08-09T07:08:39.274055"
   },
   {
     "id": "BGK_12",
@@ -3444,11 +3447,11 @@
     "landing_date": "14/07/2005",
     "status_date": "juillet 2026",
     "status_source": "report",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-08-02T08:37:35.000351",
     "previous_status": "OK",
     "previous_status_date": "novembre 2024",
-    "status_updated": "2026-08-02T08:37:35.000351"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "BGK_27",
@@ -21475,14 +21478,18 @@
     "lat": "51.5147750256",
     "lng": "-0.1370560683",
     "points": "20",
-    "status": "OK",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/LDN/LDN_091-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/LDN/LDN_091-mai2025.jpg",
     "city": "LDN",
     "landing_date": "17/12/2006",
-    "status_date": "mai 2025",
+    "status_date": "août 2026",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "previous_status": "OK",
+    "previous_status_date": "mai 2025",
+    "status_updated": "2026-08-09T07:08:39.280971",
+    "status_source": "report"
   },
   {
     "id": "LDN_92",
@@ -22442,17 +22449,18 @@
     "lat": "46.5204606136",
     "lng": "6.6300038883",
     "points": "10",
-    "status": "OK",
+    "status": "a little damaged",
     "image_invader": "https://www.invader-spotter.art/grosplan/LSN/LSN_08-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/LSN/LSN_08-avril2023.jpg",
     "city": "LSN",
     "landing_date": "05/07/2000",
-    "status_date": "juillet 2025",
+    "status_date": "août 2026",
     "status_source": "report",
-    "previous_status": "a little damaged",
+    "previous_status": "OK",
     "previous_status_date": "juillet 2025",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "status_updated": "2026-08-09T07:08:39.281331"
   },
   {
     "id": "LSN_09",
@@ -28897,10 +28905,10 @@
     "points": "50",
     "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/MUN/MUN_10-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/images/MUN/MUN_10-avril2023.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/MUN/MUN_10-aout2026.jpg",
     "city": "MUN",
     "landing_date": "09/04/2023",
-    "status_date": "avril 2023",
+    "status_date": "août 2026",
     "status_source": "report",
     "geo_source": "flashinvaders",
     "geo_confidence": "high"
@@ -54522,11 +54530,11 @@
     "landing_date": "22/05/2010",
     "status_date": "juillet 2026",
     "status_source": "report",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-08-02T08:37:35.018518",
     "previous_status": "a little damaged",
     "previous_status_date": "février 2021",
-    "status_updated": "2026-08-02T08:37:35.018518"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "PA_861",
@@ -59462,11 +59470,11 @@
     "landing_date": "10/07/2010",
     "status_date": "juillet 2026",
     "status_source": "report",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-08-02T08:37:35.020323",
     "previous_status": "OK",
     "previous_status_date": "novembre 2023",
-    "status_updated": "2026-08-02T08:37:35.020323"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "ROM_07",
@@ -62866,15 +62874,18 @@
     "lat": "35.7024151662",
     "lng": "139.6654419064",
     "points": "30",
-    "status": "OK",
+    "status": "a little damaged",
     "image_invader": "https://www.invader-spotter.art/grosplan/TK/TK_127-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/images/TK/TK_127-archive.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/TK/TK_127-aout2026.jpg",
     "city": "TK",
     "landing_date": "19/05/2014",
-    "status_date": "juillet 2019",
+    "status_date": "août 2026",
     "status_source": "report",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "previous_status": "OK",
+    "previous_status_date": "juillet 2019",
+    "status_updated": "2026-08-09T07:08:39.295765"
   },
   {
     "id": "TK_128",
