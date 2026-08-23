@@ -2324,11 +2324,11 @@
     "landing_date": "15/11/2024",
     "status_date": "août 2026",
     "status_source": "report",
+    "status_updated": "2026-08-16T06:54:17.637032",
     "previous_status": "damaged",
     "previous_status_date": "janvier 2026",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high",
-    "status_updated": "2026-08-16T06:54:17.637032"
+    "geo_confidence": "high"
   },
   {
     "id": "BAB_55",
@@ -5539,15 +5539,18 @@
     "lat": "42.8175078446",
     "lng": "9.4866042499",
     "points": "10",
-    "status": "damaged",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/BTA/BTA_27-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/BTA/BTA_27-fevrier2021.jpg",
     "city": "BTA",
     "landing_date": "24/09/2005",
-    "status_date": "janvier 2021",
+    "status_date": "août 2026",
     "status_source": "report",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "previous_status": "damaged",
+    "previous_status_date": "janvier 2021",
+    "status_updated": "2026-08-23T06:55:07.365837"
   },
   {
     "id": "BTA_28",
@@ -10085,11 +10088,11 @@
     "landing_date": "31/05/2023",
     "status_date": "août 2026",
     "status_source": "report",
+    "status_updated": "2026-08-16T06:54:17.639650",
     "previous_status": "a little damaged",
     "previous_status_date": "juin 2025",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high",
-    "status_updated": "2026-08-16T06:54:17.639650"
+    "geo_confidence": "high"
   },
   {
     "id": "FTBL_17",
@@ -13480,11 +13483,11 @@
     "landing_date": "22/01/2014",
     "status_date": "août 2026",
     "status_source": "report",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-08-16T06:54:17.640607",
     "previous_status": "a little damaged",
     "previous_status_date": "novembre 2017",
-    "status_updated": "2026-08-16T06:54:17.640607"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "HK_55",
@@ -47349,17 +47352,18 @@
     "lat": "48.8472884738",
     "lng": "2.4142008803",
     "points": "10",
-    "status": "OK",
+    "status": "damaged",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0431-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0431-fevrier2021.jpg",
     "city": "PA",
     "landing_date": "29/07/2001",
-    "status_date": "mars 2025",
-    "status_source": "Instagram",
-    "previous_status": "destroyed",
+    "status_date": "août 2026",
+    "status_source": "report",
+    "previous_status": "OK",
     "previous_status_date": "mars 2025",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "status_updated": "2026-08-23T06:55:07.384096"
   },
   {
     "id": "PA_432",
@@ -49717,11 +49721,11 @@
     "landing_date": "27/11/2004",
     "status_date": "août 2025",
     "status_source": "Instagram",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-08-16T06:54:17.651127",
     "previous_status": "destroyed",
     "previous_status_date": "mars 2025",
-    "status_updated": "2026-08-16T06:54:17.651127"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "PA_573",
@@ -51571,15 +51575,18 @@
     "lat": "48.8659184929",
     "lng": "2.3701102343",
     "points": "30",
-    "status": "damaged",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0683-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0683-avril2015.jpg",
     "city": "PA",
     "landing_date": "18/08/2006",
-    "status_date": "janvier 2024",
+    "status_date": "août 2026",
     "status_source": "report",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "previous_status": "damaged",
+    "previous_status_date": "janvier 2024",
+    "status_updated": "2026-08-23T06:55:07.385797"
   },
   {
     "id": "PA_684",
@@ -63271,15 +63278,15 @@
     "points": "0",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/TK/TK_028-grosplan.png",
+    "image_lieu": "https://www.invader-spotter.art/photos/TK/TK_028-archive.jpg",
     "city": "TK",
     "landing_date": "25/09/1999",
-    "previous_status": "unknown",
-    "geo_source": "instagram_geotag",
-    "geo_confidence": "medium",
-    "status_updated": "2026-08-16T06:54:17.655165",
     "status_date": "septembre 2023",
     "status_source": "StreetView",
-    "image_lieu": "https://www.invader-spotter.art/photos/TK/TK_028-archive.jpg"
+    "status_updated": "2026-08-16T06:54:17.655165",
+    "previous_status": "unknown",
+    "geo_source": "instagram_geotag",
+    "geo_confidence": "medium"
   },
   {
     "id": "TK_29",
