@@ -1688,16 +1688,16 @@
     "lat": "43.383152",
     "lng": "-1.663514",
     "points": "30",
-    "status": "OK",
+    "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/BAB/BAB_13-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/images/BAB/BAB_13-novembre2024.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/BAB/BAB_13-aout2026.jpg",
     "city": "BAB",
     "landing_date": "09/11/2024",
-    "status_date": "mai 2026",
+    "status_date": "septembre 2026",
     "status_source": "report",
-    "status_updated": "2026-06-07T09:13:52.044408",
-    "previous_status": "destroyed",
-    "previous_status_date": "février 2025",
+    "status_updated": "2026-09-06T10:27:14.989737",
+    "previous_status": "OK",
+    "previous_status_date": "mai 2026",
     "geo_source": "flashinvaders",
     "geo_confidence": "high"
   },
@@ -29069,7 +29069,7 @@
     "image_lieu": "https://www.invader-spotter.art/photos/NA/NA_02-mars2015.jpg",
     "city": "NA",
     "landing_date": "21/04/2001",
-    "status_date": "février 2018",
+    "status_date": "septembre 2026",
     "status_source": "report",
     "geo_source": "flashinvaders",
     "geo_confidence": "high"
@@ -31965,11 +31965,11 @@
     "landing_date": "27/02/2000",
     "status_date": "août 2026",
     "status_source": "report",
-    "geo_source": "flashinvaders",
-    "geo_confidence": "high",
+    "status_updated": "2026-08-30T11:30:25.586724",
     "previous_status": "OK",
     "previous_status_date": "novembre 2021",
-    "status_updated": "2026-08-30T11:30:25.586724"
+    "geo_source": "flashinvaders",
+    "geo_confidence": "high"
   },
   {
     "id": "NY_30",
@@ -33504,11 +33504,11 @@
     "landing_date": "03/10/1998",
     "status_date": "août 2026",
     "status_source": "report",
+    "status_updated": "2026-08-30T11:30:25.587282",
     "previous_status": "damaged",
     "previous_status_date": "août 2025",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high",
-    "status_updated": "2026-08-30T11:30:25.587282"
+    "geo_confidence": "high"
   },
   {
     "id": "PA_1000",
@@ -39301,17 +39301,18 @@
     "lat": "48.8490959306",
     "lng": "2.3674071442",
     "points": "20",
-    "status": "destroyed",
+    "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_1346-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1346-juin2018.jpg",
     "city": "PA",
     "landing_date": "07/03/2018",
-    "status_date": "avril 2025",
-    "status_source": "report",
-    "previous_status": "OK",
+    "status_date": "septembre 2026",
+    "status_source": "Instagram",
+    "previous_status": "destroyed",
     "previous_status_date": "avril 2025",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "status_updated": "2026-09-06T10:27:15.004473"
   },
   {
     "id": "PA_1347",
@@ -44208,15 +44209,18 @@
     "lat": "48.8444294616",
     "lng": "2.4069231054",
     "points": "20",
-    "status": "destroyed",
+    "status": "OK",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0242-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0242-juillet2019.jpg",
     "city": "PA",
     "landing_date": "29/11/1999",
-    "status_date": "octobre 2024",
-    "status_source": "report",
+    "status_date": "août 2026",
+    "status_source": "FlashInvaders",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "previous_status": "destroyed",
+    "previous_status_date": "octobre 2024",
+    "status_updated": "2026-09-06T10:27:15.006329"
   },
   {
     "id": "PA_243",
@@ -45108,11 +45112,11 @@
     "landing_date": "14/07/2000",
     "status_date": "août 2026",
     "status_source": "Instagram",
+    "status_updated": "2026-08-30T11:30:25.591397",
     "previous_status": "OK",
     "previous_status_date": "mai 2025",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high",
-    "status_updated": "2026-08-30T11:30:25.591397"
+    "geo_confidence": "high"
   },
   {
     "id": "PA_297",
@@ -65585,11 +65589,11 @@
     "landing_date": "08/06/2006",
     "status_date": "août 2026",
     "status_source": "report",
+    "status_updated": "2026-08-30T11:30:25.598937",
     "previous_status": "OK",
     "previous_status_date": "août 2025",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high",
-    "status_updated": "2026-08-30T11:30:25.598937"
+    "geo_confidence": "high"
   },
   {
     "id": "WN_12",

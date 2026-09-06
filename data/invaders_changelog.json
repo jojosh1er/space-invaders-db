@@ -1647,7 +1647,31 @@
       "new_value": "a little damaged",
       "detected_at": "2026-08-30T11:30:26.410472",
       "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "BAB_13",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-09-06T10:27:15.672434",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_1346",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "OK",
+      "detected_at": "2026-09-06T10:27:15.672440",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_242",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "OK",
+      "detected_at": "2026-09-06T10:27:15.672442",
+      "source": "invader-spotter.art"
     }
   ],
-  "last_check": "2026-08-30T11:30:26.410474"
+  "last_check": "2026-09-06T10:27:15.672444"
 }
