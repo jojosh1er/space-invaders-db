@@ -1,21 +1,73 @@
 Invaders présents sur invader-spotter.art mais absents de GitHub
-Généré le 2026-07-04 05:20:43.532458
+Généré le 2026-09-12 11:21:47.524054
 ============================================================
 
-Total: 3 invaders sans géolocalisation
+Total: 16 invaders sans géolocalisation
 
 
-PA (3 invaders)
+STK (16 invaders)
 ----------------------------------------
-  • PA_1595
-    📅 Posé le: 01/07/2026
-    📆 Statut: juillet 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/PA/PA_1595-grosplan.png
-  • PA_1596
-    📅 Posé le: 01/07/2026
-    📆 Statut: juillet 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/PA/PA_1596-grosplan.png
-  • PA_1597
-    📅 Posé le: 01/07/2026
-    📆 Statut: juillet 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/PA/PA_1597-grosplan.png
+  • STK_01
+    📅 Posé le: 07/09/2026
+    📆 Statut: septembre 2026 (report)
+    📷 https://www.invader-spotter.art/grosplan/STK/STK_01-grosplan.png
+  • STK_02
+    📅 Posé le: 07/09/2026
+    📆 Statut: septembre 2026 (report)
+    📷 https://www.invader-spotter.art/grosplan/STK/STK_02-grosplan.png
+  • STK_03
+    📅 Posé le: 07/09/2026
+    📆 Statut: septembre 2026 (report)
+    📷 https://www.invader-spotter.art/grosplan/STK/STK_03-grosplan.png
+  • STK_04
+    📅 Posé le: 07/09/2026
+    📆 Statut: septembre 2026 (report)
+    📷 https://www.invader-spotter.art/grosplan/STK/STK_04-grosplan.png
+  • STK_05
+    📅 Posé le: 07/09/2026
+    📆 Statut: septembre 2026 (report)
+    📷 https://www.invader-spotter.art/grosplan/STK/STK_05-grosplan.png
+  • STK_06
+    📅 Posé le: 07/09/2026
+    📆 Statut: septembre 2026 (report)
+    📷 https://www.invader-spotter.art/grosplan/STK/STK_06-grosplan.png
+  • STK_07
+    📅 Posé le: 07/09/2026
+    📆 Statut: septembre 2026 (report)
+    📷 https://www.invader-spotter.art/grosplan/STK/STK_07-grosplan.png
+  • STK_08
+    📅 Posé le: 07/09/2026
+    📆 Statut: septembre 2026 (report)
+    📷 https://www.invader-spotter.art/grosplan/STK/STK_08-grosplan.png
+  • STK_09
+    📅 Posé le: 07/09/2026
+    📆 Statut: september 2026 (report)
+    📷 https://www.invader-spotter.art/grosplan/STK/STK_09-grosplan.png
+  • STK_10
+    📅 Posé le: 07/09/2026
+    📆 Statut: septembre 2026 (report)
+    📷 https://www.invader-spotter.art/grosplan/STK/STK_10-grosplan.png
+  • STK_13
+    📅 Posé le: 07/09/2026
+    📆 Statut: septembre 2026 (report)
+    📷 https://www.invader-spotter.art/grosplan/STK/STK_13-grosplan.png
+  • STK_14
+    📅 Posé le: 07/09/2026
+    📆 Statut: septembre 2026 (report)
+    📷 https://www.invader-spotter.art/grosplan/STK/STK_14-grosplan.png
+  • STK_16
+    📅 Posé le: 07/09/2026
+    📆 Statut: septembre 2026 (report)
+    📷 https://www.invader-spotter.art/grosplan/STK/STK_16-grosplan.png
+  • STK_17
+    📅 Posé le: 07/09/2026
+    📆 Statut: septembre 2026 (report)
+    📷 https://www.invader-spotter.art/grosplan/STK/STK_17-grosplan.png
+  • STK_18
+    📅 Posé le: 07/09/2026
+    📆 Statut: septembre 2026 (report)
+    📷 https://www.invader-spotter.art/grosplan/STK/STK_18-grosplan.png
+  • STK_19
+    📅 Posé le: 07/09/2026
+    📆 Statut: september 2026 (report)
+    📷 https://www.invader-spotter.art/grosplan/STK/STK_19-grosplan.png
