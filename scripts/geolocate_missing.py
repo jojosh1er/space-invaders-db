@@ -158,6 +158,7 @@ CITY_NAMES = {
     'LYO': 'Lyon', 'BDX': 'Bordeaux', 'AMI': 'Amiens', 'LIL': 'Lille',
     'NCE': 'Nice', 'TLS': 'Toulouse', 'BRC': 'Barcelona', 'MAD': 'Madrid',
     'BRL': 'Berlin', 'AMS': 'Amsterdam', 'VEN': 'Venice', 'FLR': 'Florence',
+    'STK': 'Stockholm', 'HALM': 'Halmstad', 'VSB': 'Visby',
 }
 
 # Centres des villes (fallback si aucune géolocalisation trouvée)
@@ -245,6 +246,7 @@ CITY_CENTERS = {
     'RVK': {'lat': 64.1466, 'lng': -21.9426, 'name': 'Reykjavik'},
     'HALM': {'lat': 56.6745, 'lng': 12.8578, 'name': 'Halmstad'},
     'VSB': {'lat': 57.6349, 'lng': 18.2948, 'name': 'Visby'},
+    'STK': {'lat': 59.3293, 'lng': 18.0686, 'name': 'Stockholm'},
     'GRU': {'lat': 43.2615, 'lng': 17.0186, 'name': 'Gruž'},
     # Africa
     'MRAK': {'lat': 31.6295, 'lng': -7.9811, 'name': 'Marrakech'},
@@ -642,7 +644,7 @@ CITY_COUNTRIES = {
     'LIS': 'pt', 'LX': 'pt', 'LSB': 'pt', 'FAO': 'pt',
     # Other Europe
     'LJU': 'si', 'PRG': 'cz', 'WAR': 'pl', 'IST': 'tr',
-    'RVK': 'is', 'HALM': 'se', 'VSB': 'se', 'GRU': 'hr',
+    'RVK': 'is', 'HALM': 'se', 'VSB': 'se', 'STK': 'se', 'GRU': 'hr',
     # North Africa / Middle East
     'MRAK': 'ma', 'RBA': 'ma', 'TUN': 'tn', 'TN': 'tn', 'DJBA': 'tn',
     'ELT': 'il', 'MBSA': 'ke', 'GRTI': 'tz',

@@ -256,7 +256,7 @@ CITY_CODES = {
     "RA": "RA", "ROM": "ROM", "TK": "TK", "MBSA": "MBSA",
     "MRAK": "MRAK", "RBA": "RBA", "CCU": "CCU", "KAT": "KAT",
     "AMS": "AMS", "NOO": "NOO", "RTD": "RTD", "FAO": "FAO", "LJU": "LJU",
-    "HALM": "HALM", "VSB": "VSB",
+    "HALM": "HALM", "VSB": "VSB", "STK": "STK",
     "ANZR": "ANZR", "BSL": "BSL", "BRN": "BRN", "GNV": "GNV", "LSN": "LSN",
     "GRTI": "GRTI", "BGK": "BGK", "DJBA": "DJBA", "IST": "IST",
 }
@@ -282,6 +282,8 @@ CITY_NAMES = {
     # Autres
     "ROM": "Rome", "BRC": "Barcelone", "AMS": "Amsterdam", "WN": "Vienne",
     "LJU": "Ljubljana", "IST": "Istanbul", "RAV": "Ravenne",
+    # Suède
+    "STK": "Stockholm", "HALM": "Halmstad", "VSB": "Visby",
 }
 
 
@@ -752,6 +754,7 @@ def geocode_manual_addresses(manual_addresses, verbose=False):
         'RVK': {'lat': 64.1466, 'lng': -21.9426, 'name': 'Reykjavik'},
         'HALM': {'lat': 56.6745, 'lng': 12.8578, 'name': 'Halmstad'},
         'VSB': {'lat': 57.6349, 'lng': 18.2948, 'name': 'Visby'},
+        'STK': {'lat': 59.3293, 'lng': 18.0686, 'name': 'Stockholm'},
         'GRU': {'lat': 43.2615, 'lng': 17.0186, 'name': 'Gruž'},
         # Africa
         'MRAK': {'lat': 31.6295, 'lng': -7.9811, 'name': 'Marrakech'},
