@@ -232,6 +232,10 @@ CITY_CENTERS = {
     'IST': {'lat': 41.0082, 'lng': 28.9784, 'name': 'Istanbul'},
     'RAV': {'lat': 44.4184, 'lng': 12.2035, 'name': 'Ravenna'},
     'VRN': {'lat': 45.4384, 'lng': 10.9916, 'name': 'Verona'},
+    # Suède
+    'STK': {'lat': 59.3293, 'lng': 18.0686, 'name': 'Stockholm'},
+    'HALM': {'lat': 56.6745, 'lng': 12.8578, 'name': 'Halmstad'},
+    'VSB': {'lat': 57.6349, 'lng': 18.2948, 'name': 'Visby'},
 }
 
 # Mapping des codes ville
@@ -4395,6 +4399,10 @@ async def main_async():
             'BRC': {'lat': 41.3851, 'lng': 2.1734, 'name': 'Barcelona'},
             'RA': {'lat': 44.4184, 'lng': 12.2035, 'name': 'Ravenna'},
             'RAV': {'lat': 44.4184, 'lng': 12.2035, 'name': 'Ravenna'},
+            # Suède
+            'STK': {'lat': 59.3293, 'lng': 18.0686, 'name': 'Stockholm'},
+            'HALM': {'lat': 56.6745, 'lng': 12.8578, 'name': 'Halmstad'},
+            'VSB': {'lat': 57.6349, 'lng': 18.2948, 'name': 'Visby'},
         }
         
         # Créer un index des invaders déjà dans updated_db
