@@ -2,15 +2,19 @@
 """
 requeue_weak_geolocations.py
 
-Repasse en 'very_low' / location_unknown les entrees geolocalisees qui ne
+Repasse en location_unknown les entrees geolocalisees qui ne
 portent pas d'adresse au niveau de la rue -- typiquement un centroide de
 quartier renvoye par Nominatim faute de mieux.
 
-Motif : is_poorly_located() dans geolocate_missing.py ne rattrape que
-geo_confidence == 'very_low', jamais 'low'. Une entree ecrite en 'low' avec
-location_unknown=False est donc definitivement figee : ni --from-master ni
---retry-failed ne la reprendront. Ce script les remet dans le vivier tout en
-conservant leurs coordonnees approximatives, pour qu'elles restent affichables.
+Motif : une entree ecrite avec location_unknown=False est definitivement
+figee -- ni --from-master ni --retry-failed ne la reprendront. Ce script les
+remet dans le vivier tout en conservant leurs coordonnees approximatives,
+pour qu'elles restent affichables.
+
+Le tier est laisse a 'low' et non abaisse a 'very_low' : is_poorly_located()
+declenche sur location_unknown seul, alors que merge_with_updated() refuse
+d'ecraser une entree existante par un tier strictement inferieur. Abaisser le
+tier ferait silencieusement sauter ces entrees a la fusion.
 
 Deux regles de detection, volontairement independantes de la langue :
 
@@ -129,7 +133,7 @@ def main():
         print("\nRien a retrograder.")
         return
 
-    print(f"\nA retrograder en very_low / location_unknown : {len(flagged)}")
+    print(f"\nA remettre dans le vivier (location_unknown) : {len(flagged)}")
     for inv_id, rules in sorted(flagged.items()):
         e = next(x for x in entries if x.get("id") == inv_id)
         print(f"  {inv_id:<8} {e.get('geo_confidence'):<7} "
@@ -146,7 +150,11 @@ def main():
 
     for e in entries:
         if e.get("id") in flagged:
-            e["geo_confidence"] = "very_low"
+            # 'low' et non 'very_low' : is_poorly_located() declenche sur
+            # location_unknown seul, alors que merge_with_updated() refuse
+            # d'ecraser une entree existante avec un tier inferieur. 'low'
+            # passe la fusion tout en restant dans le vivier de reprise.
+            e["geo_confidence"] = "low"
             e["location_unknown"] = True
             e["geo_search_exhausted"] = False
             e["geo_requeue_reason"] = "; ".join(flagged[e["id"]])

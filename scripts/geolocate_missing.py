@@ -6029,6 +6029,25 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
     return results
 
 
+def _has_usable_coords(inv):
+    """
+    True si l'invader porte une position exploitable.
+
+    Une entree absente, vide, non numerique ou a (0, 0) est consideree comme
+    sans position : le point (0, 0) est au large du golfe de Guinee, jamais une
+    localisation reelle. Sert a decider, lors d'une fusion, si l'entree
+    existante merite d'etre protegee par son niveau de confiance.
+    """
+    lat, lng = inv.get('lat'), inv.get('lng')
+    if lat is None or lng is None or lat == '' or lng == '':
+        return False
+    try:
+        lat, lng = float(lat), float(lng)
+    except (TypeError, ValueError):
+        return False
+    return not (abs(lat) < 0.001 and abs(lng) < 0.001)
+
+
 def merge_with_updated(geolocated_file, updated_file=None, backup=False, dry_run=False, verbose=False):
     """
     Fusionne les invaders géolocalisés avec invaders_master.json
@@ -6081,8 +6100,24 @@ def merge_with_updated(geolocated_file, updated_file=None, backup=False, dry_run
             
             old_conf = old_inv.get('geo_confidence', 'low')
             new_conf = geo_inv.get('geo_confidence', 'low')
-            
-            if confidence_order.get(new_conf, 0) >= confidence_order.get(old_conf, 0):
+
+            # Une entree master sans position exploitable (absente ou 0,0) n'a
+            # pas de geo_confidence : le .get() lui attribuait 'low' par defaut,
+            # ce qui la rendait plus "fiable" qu'une geolocalisation very_low et
+            # bloquait definitivement toute correction. On compare donc d'abord
+            # la presence de coordonnees, la confiance ensuite.
+            old_usable = _has_usable_coords(old_inv)
+            new_usable = _has_usable_coords(geo_inv)
+
+            if not new_usable:
+                accept, why = False, 'nouvelle position vide'
+            elif not old_usable:
+                accept, why = True, 'ancienne position absente/0,0'
+            else:
+                accept = confidence_order.get(new_conf, 0) >= confidence_order.get(old_conf, 0)
+                why = 'confiance'
+
+            if accept:
                 updated_db[idx]['lat'] = geo_inv['lat']
                 updated_db[idx]['lng'] = geo_inv['lng']
                 updated_db[idx]['geo_source'] = geo_inv.get('geo_source')
@@ -6099,7 +6134,9 @@ def merge_with_updated(geolocated_file, updated_file=None, backup=False, dry_run
                 updated_db[idx]['preserved_date'] = datetime.now().isoformat()
                 updated += 1
                 if verbose:
-                    print(f"   🔄 {geo_id}: {old_conf} → {new_conf}")
+                    print(f"   🔄 {geo_id}: {old_conf} → {new_conf} ({why})")
+            elif verbose:
+                print(f"   ⏭️  {geo_id}: conservé ({why}, {old_conf} ≥ {new_conf})")
         else:
             # Ajouter
             geo_inv['preserved'] = True
