@@ -6968,10 +6968,10 @@
     "points": "50",
     "status": "destroyed",
     "image_invader": "https://www.invader-spotter.art/grosplan/CAZ/CAZ_22-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/images/CAZ/CAZ_22-archive.jpg",
+    "image_lieu": "https://www.invader-spotter.art/photos/CAZ/CAZ_22-septembre2026.jpg",
     "city": "CAZ",
     "landing_date": "20/05/2007",
-    "status_date": "juillet 2017",
+    "status_date": "septembre 2026",
     "status_source": "report",
     "geo_source": "flashinvaders",
     "geo_confidence": "high"
@@ -38321,7 +38321,7 @@
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_1288-septembre2018.jpg",
     "city": "PA",
     "landing_date": "20/07/2017",
-    "status_date": "octobre 2023",
+    "status_date": "septembre 2026",
     "status_source": "report",
     "previous_status": "very damaged",
     "previous_status_date": "octobre 2023",
@@ -54292,15 +54292,18 @@
     "lat": "48.8723874329",
     "lng": "2.3098338879",
     "points": "30",
-    "status": "OK",
+    "status": "hidden",
     "image_invader": "https://www.invader-spotter.art/grosplan/PA/PA_0845-grosplan.png",
     "image_lieu": "https://www.invader-spotter.art/photos/PA/PA_0845-mars2019.jpg",
     "city": "PA",
     "landing_date": "18/04/2010",
-    "status_date": "mai 2019",
+    "status_date": "septembre 2026",
     "status_source": "report",
     "geo_source": "flashinvaders",
-    "geo_confidence": "high"
+    "geo_confidence": "high",
+    "previous_status": "OK",
+    "previous_status_date": "mai 2019",
+    "status_updated": "2026-09-13T11:19:07.264877"
   },
   {
     "id": "PA_846",
@@ -66932,12 +66935,7 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "address": "Norrmalm, Stockholm",
-    "geo_search_exhausted": false,
-    "geo_hint": "cross-check: 0.0km du quartier Norrmalm, Stockholm | quartier probable: Norrmalm, Stockholm",
-    "preserved": true,
-    "preserved_date": "2026-09-13T10:31:55.935387"
+    "address": "Norrmalm, Stockholm"
   },
   {
     "id": "STK_02",
@@ -67001,12 +66999,7 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "address": "Norrmalm, Stockholm",
-    "geo_search_exhausted": false,
-    "geo_hint": "cross-check: 0.0km du quartier Norrmalm | quartier probable: Norrmalm",
-    "preserved": true,
-    "preserved_date": "2026-09-13T10:31:55.935421"
+    "address": "Norrmalm, Stockholm"
   },
   {
     "id": "STK_06",
@@ -67022,11 +67015,7 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "address": "Götgatan 60, 118 26 Stockholm",
-    "geo_search_exhausted": false,
-    "preserved": true,
-    "preserved_date": "2026-09-13T10:31:55.935427"
+    "address": "Götgatan 60, 118 26 Stockholm"
   },
   {
     "id": "STK_07",
@@ -67106,12 +67095,7 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "address": "Gamla Stan, Stockholm",
-    "geo_search_exhausted": false,
-    "geo_hint": "cross-check: 0.0km du quartier Gamla Stan | quartier probable: Gamla Stan",
-    "preserved": true,
-    "preserved_date": "2026-09-13T10:31:55.935434"
+    "address": "Gamla Stan, Stockholm"
   },
   {
     "id": "STK_14",
@@ -67127,12 +67111,7 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "address": "Västerlånggatan, Gamla Stan, 111 29 Stockholm",
-    "geo_search_exhausted": false,
-    "geo_hint": "cross-check: 0.1km du quartier Gamla Stan | quartier probable: Gamla Stan",
-    "preserved": true,
-    "preserved_date": "2026-09-13T10:31:55.935439"
+    "address": "Västerlånggatan, Gamla Stan, 111 29 Stockholm"
   },
   {
     "id": "STK_16",
@@ -67148,12 +67127,7 @@
     "status_source": "report",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "address": "Gamla Stan, Stockholm",
-    "geo_search_exhausted": false,
-    "geo_hint": "cross-check: 0.0km du quartier Gamla Stan | quartier probable: Gamla Stan",
-    "preserved": true,
-    "preserved_date": "2026-09-13T10:31:55.935444"
+    "address": "Gamla Stan, Stockholm"
   },
   {
     "id": "STK_17",
@@ -67205,60 +67179,50 @@
   },
   {
     "id": "STK_11",
-    "status": "destroyed",
-    "city": "STK",
-    "points": 0,
-    "missing_from_github": true,
-    "added_date": "2026-09-13T10:22:07.345242",
-    "image_invader": "https://www.invader-spotter.art/grosplan/STK/STK_11-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/photos/STK/STK_11-septembre2026-1.jpg",
     "lat": 59.3164664,
     "lng": 18.0718586,
+    "points": 0,
+    "status": "destroyed",
+    "image_invader": "https://www.invader-spotter.art/grosplan/STK/STK_11-grosplan.png",
+    "image_lieu": "https://www.invader-spotter.art/photos/STK/STK_11-septembre2026-1.jpg",
+    "city": "STK",
     "geo_source": "vision",
     "geo_confidence": "high",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
     "address": "Högbergsgatan 37, 116 20 Stockholm",
-    "preserved": true,
-    "preserved_date": "2026-09-13T10:31:55.935449"
+    "landing_date": "07/09/2026",
+    "status_date": "septembre 2026",
+    "status_source": "report"
   },
   {
     "id": "STK_12",
-    "status": "destroyed",
-    "city": "STK",
-    "points": 0,
-    "missing_from_github": true,
-    "added_date": "2026-09-13T10:22:07.345262",
-    "image_invader": "https://www.invader-spotter.art/grosplan/STK/STK_12-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/photos/STK/STK_12-septembre2026-2.jpg",
     "lat": 59.3251172,
     "lng": 18.0710935,
+    "points": 0,
+    "status": "destroyed",
+    "image_invader": "https://www.invader-spotter.art/grosplan/STK/STK_12-grosplan.png",
+    "image_lieu": "https://www.invader-spotter.art/photos/STK/STK_12-septembre2026-2.jpg",
+    "city": "STK",
     "geo_source": "ocr",
     "geo_confidence": "medium",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
     "address": "7 hae ee Sea soa, Stockholm",
-    "preserved": true,
-    "preserved_date": "2026-09-13T10:31:55.935453"
+    "landing_date": "07/09/2026",
+    "status_date": "september 2026",
+    "status_source": "report"
   },
   {
     "id": "STK_15",
-    "status": "destroyed",
-    "city": "STK",
-    "points": 0,
-    "missing_from_github": true,
-    "added_date": "2026-09-13T10:22:07.345266",
-    "image_invader": "https://www.invader-spotter.art/grosplan/STK/STK_15-grosplan.png",
-    "image_lieu": "https://www.invader-spotter.art/photos/STK/STK_15-septembre2026-1.jpg",
     "lat": 59.3264531,
     "lng": 18.0686379,
+    "points": 0,
+    "status": "destroyed",
+    "image_invader": "https://www.invader-spotter.art/grosplan/STK/STK_15-grosplan.png",
+    "image_lieu": "https://www.invader-spotter.art/photos/STK/STK_15-septembre2026-1.jpg",
+    "city": "STK",
     "geo_source": "vision",
     "geo_confidence": "low",
-    "location_unknown": false,
-    "geo_search_exhausted": false,
     "address": "Västerlånggatan 2, 111 29 Stockholm",
-    "geo_hint": "cross-check: 0.2km du quartier Gamla Stan | quartier probable: Gamla Stan",
-    "preserved": true,
-    "preserved_date": "2026-09-13T10:31:55.935457"
+    "landing_date": "07/09/2026",
+    "status_date": "septembre 2026",
+    "status_source": "report"
   }
 ]

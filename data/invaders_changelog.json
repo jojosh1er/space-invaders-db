@@ -1671,7 +1671,15 @@
       "new_value": "OK",
       "detected_at": "2026-09-06T10:27:15.672442",
       "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_845",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "hidden",
+      "detected_at": "2026-09-13T11:19:08.122601",
+      "source": "invader-spotter.art"
     }
   ],
-  "last_check": "2026-09-06T10:27:15.672444"
+  "last_check": "2026-09-13T11:19:08.122605"
 }
