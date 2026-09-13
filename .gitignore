@@ -20,3 +20,15 @@ Thumbs.db
 data/invaders_relocalized.json
 data/invaders_relocalized.txt
 data/_tmp_poorly_located.json
+# Sauvegardes et fichiers temporaires
+*.bak-*
+*.backup.*
+*.patch
+_tmp_*.json
+# Brouillons et archives locaux
+*.mov
+*.rtf
+*.rtfd/
+*.zip
+flask_app_V*.py
+features_v*.csv
