@@ -1,0 +1,49 @@
+BACKTEST GÉOLOCALISATION — RAPPORT
+======================================================================
+Date: 13/09/2026 10:35
+Invaders testés: 16
+
+ID           Ville  Source               Distance Qualité     
+-----------------------------------------------------------------
+GNV_01       GNV    vision                 0.01km EXCELLENT   
+             réel: (46.203984, 6.136437)  trouvé: (46.204056, 6.136598)
+GNV_06       GNV    vision                 0.05km EXCELLENT   
+             réel: (46.199561, 6.139526)  trouvé: (46.199750, 6.138937)
+GRN_01       GRN    vision                 0.00km EXCELLENT   
+             hint: quartier probable: Centre-ville, quais de l'Isère
+             réel: (45.192686, 5.724109)  trouvé: (45.192695, 5.724154)
+GRN_19       GRN    vision                 0.01km EXCELLENT   
+             hint: intersection: Rue Lamartine, 38000 Grenoble
+             réel: (45.188024, 5.724992)  trouvé: (45.187962, 5.724885)
+LA_164       LA     vision                15.35km FAR         
+             réel: (34.110544, -118.191165)  trouvé: (34.083748, -118.354735)
+LA_95        LA     vision                 0.10km GOOD        
+             réel: (34.040481, -118.443421)  trouvé: (34.039875, -118.442549)
+LDN_171      LDN    vision                 0.36km GOOD        
+             hint: cross-check: 0.7km du quartier Shoreditch | quartier probabl
+             réel: (51.521586, -0.075557)  trouvé: (51.524017, -0.072088)
+LDN_47       LDN    vision                 0.75km OK          
+             hint: cross-check: 0.3km du quartier Kensington / Notting Hill | q
+             réel: (51.516870, -0.205352)  trouvé: (51.511104, -0.199795)
+LJU_09       LJU    vision                 0.20km GOOD        
+             hint: quartier probable: Center (Center district), Ljubljana
+             réel: (46.051989, 14.507388)  trouvé: (46.050168, 14.507029)
+LJU_15       LJU    vision                 0.07km EXCELLENT   
+             réel: (46.049310, 14.505227)  trouvé: (46.049811, 14.505683)
+MARS_17      MARS   vision                 8.92km ZONE        
+             hint: quartier probable: Marseille, quartier probablement central 
+             réel: (43.361132, 5.312751)  trouvé: (43.296399, 5.377789)
+MARS_76      MARS   vision                 0.54km OK          
+             hint: quartier probable: 3e arrondissement, quartier Saint-Charles
+             réel: (43.302399, 5.383088)  trouvé: (43.302165, 5.376440)
+PA_1162      PA     vision                 0.01km EXCELLENT   
+             réel: (48.862114, 2.348622)  trouvé: (48.862198, 2.348549)
+PA_410       PA     vision                 0.03km EXCELLENT   
+             réel: (48.868382, 2.388171)  trouvé: (48.868521, 2.388483)
+ROM_53       ROM    vision                 0.38km GOOD        
+             réel: (41.878709, 12.478947)  trouvé: (41.881804, 12.476913)
+ROM_72       ROM    vision                21.29km FAR         
+             réel: (41.827894, 12.674172)  trouvé: (41.929178, 12.456005)
+
+Moyenne: 3.00km  Médiane: 0.20km  Min: 0.00km  Max: 21.29km
+<1km: 13/16  <3km: 13/16

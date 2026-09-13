@@ -92,6 +92,43 @@ NEEDS_INSTAGRAM_SOURCES = frozenset({
     'city_center', 'vision_district', None, 'unknown', ''
 })
 
+# Referentiel des villes : on reutilise celui de geolocate_missing.py plutot
+# que d'en recopier un enieme. Le depot en comptait deja quatre pour les
+# centres et deux pour les pays, tous divergents -- c'est precisement ce qui
+# a laisse Stockholm invisible du pipeline. Repli minimal si l'import echoue
+# (script deplace, dependance manquante) : mieux vaut un code brut qu'un plantage.
+try:
+    sys.path.insert(0, str(Path(__file__).parent))
+    from geolocate_missing import CITY_NAMES as _CITY_NAMES
+    from geolocate_missing import CITY_COUNTRIES as _CITY_COUNTRIES
+except Exception as _e:  # pragma: no cover
+    print(f"⚠️  Referentiel villes indisponible ({_e}) — repli sur les codes bruts")
+    _CITY_NAMES, _CITY_COUNTRIES = {}, {}
+
+
+def city_label(city_code: str) -> str:
+    """Nom lisible d'une ville ('STK' -> 'Stockholm'), pour le prompt Vision.
+
+    Passer le code brut au modele le prive de tout ancrage geographique : il
+    ignore que STK designe la Suede et cherche des indices au hasard.
+    """
+    if not city_code:
+        return "unknown"
+    return _CITY_NAMES.get(city_code.upper(), city_code)
+
+
+def city_country(city_code: str) -> str:
+    """Code pays ISO d'une ville, pour le filtre countrycodes de Nominatim.
+
+    Nominatim attend de l'ISO 3166-1 alpha-2. Le referentiel partage utilise
+    'uk' pour les villes britanniques, qui n'est pas un code ISO ('gb' l'est) :
+    on normalise ici plutot que de propager un filtre probablement inoperant.
+    """
+    if not city_code:
+        return ''
+    code = _CITY_COUNTRIES.get(city_code.upper(), '')
+    return {'uk': 'gb'}.get(code, code)
+
 load_dotenv(SECRETS_PATH)
 
 
@@ -275,7 +312,9 @@ def _nominatim_query(address: str, city_code: str = 'PA') -> dict | None:
     import re
     import urllib.parse
 
-    # Mapping city_code → countrycodes Nominatim
+    # Mapping city_code → countrycodes Nominatim.
+    # Sert de repli uniquement : le referentiel partagé (CITY_COUNTRIES de
+    # geolocate_missing) fait foi et couvre bien plus de villes.
     COUNTRY_MAP = {
         'PA': 'fr', 'LYO': 'fr', 'MRS': 'fr', 'BDX': 'fr', 'TLS': 'fr',
         'MPL': 'fr', 'FTBL': 'fr', 'LSN': 'ch', 'LDN': 'gb', 'IST': 'tr',
@@ -283,7 +322,7 @@ def _nominatim_query(address: str, city_code: str = 'PA') -> dict | None:
         'MLB': 'au', 'KAT': 'np', 'BT': 'bt', 'DHK': 'bd', 'MBSA': 'ke',
         'GRTI': 'tz', 'ROM': 'it', 'BCN': 'es', 'MAD': 'es',
     }
-    country = COUNTRY_MAP.get(city_code, '')
+    country = city_country(city_code) or COUNTRY_MAP.get(city_code, '')
     headers = {'User-Agent': 'SpaceInvaderGeocoder/1.0 (https://github.com/jojosh1er/space-invaders-db)'}
 
     def _query(q):
@@ -929,7 +968,7 @@ def run_batch(args):
         if image_lieu and not args.no_vision:
             try:
                 # Enrichir city_name avec le géotag si disponible
-                city_ctx = inv.get('city', 'unknown')
+                city_ctx = city_label(inv.get('city', ''))
                 if direct_geotag and direct_geotag.get('name'):
                     city_ctx = f"{city_ctx} ({direct_geotag['name']})"
                 vision_result = analyze_with_vision(inv_id, image_lieu, posts,

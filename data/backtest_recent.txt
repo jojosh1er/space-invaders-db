@@ -1,0 +1,110 @@
+GÉOLOCALISATION DES INVADERS MANQUANTS
+============================================================
+
+Total: 16
+Trouvés: 16
+HIGH: 4, MEDIUM: 11 (dont 16 Vision), LOW: 1
+
+PA_1162 🟡 (MEDIUM)
+   GPS: 48.862198, 2.348549
+   Source: vision
+   Adresse: 16 Rue Pierre Lescot, 75001 Paris
+   Maps: https://www.google.com/maps?q=48.862198,2.3485488
+
+PA_410 🟡 (MEDIUM)
+   GPS: 48.868521, 2.388483
+   Source: vision
+   Adresse: 2 Rue de la Mare, 75020 Paris
+   Maps: https://www.google.com/maps?q=48.8685208,2.3884832
+
+LDN_47 🟡 (MEDIUM)
+   GPS: 51.511104, -0.199795
+   Source: vision
+   Adresse: 216 Kensington Park Road, London W11
+   💡 Hint: cross-check: 0.3km du quartier Kensington / Notting Hill | quartier probable: Kensington / Notting Hill
+   Maps: https://www.google.com/maps?q=51.5111038,-0.1997951
+
+LDN_171 🟡 (MEDIUM)
+   GPS: 51.524017, -0.072088
+   Source: vision
+   Adresse: Bacon Street, London E1 6LF
+   💡 Hint: cross-check: 0.7km du quartier Shoreditch | quartier probable: Shoreditch
+   Maps: https://www.google.com/maps?q=51.5240175,-0.0720883
+
+LA_164 🟡 (MEDIUM)
+   GPS: 34.083748, -118.354735
+   Source: vision
+   Adresse: 7565 Melrose Avenue, Los Angeles, CA 90046
+   Maps: https://www.google.com/maps?q=34.0837479,-118.354735
+
+LA_95 🟡 (MEDIUM)
+   GPS: 34.039875, -118.442549
+   Source: vision
+   Adresse: 2062 Sawtelle Blvd, Los Angeles, CA 90025
+   Maps: https://www.google.com/maps?q=34.0398748,-118.442549
+
+ROM_72 🟡 (MEDIUM)
+   GPS: 41.929178, 12.456005
+   Source: vision
+   Adresse: Foro Italico, 00135 Roma
+   Maps: https://www.google.com/maps?q=41.9291779,12.4560048
+
+ROM_53 🟢 (HIGH)
+   GPS: 41.881804, 12.476913
+   Source: vision
+   Adresse: Via Marmorata, 00153 Roma
+   Maps: https://www.google.com/maps?q=41.8818037,12.4769128
+
+GNV_06 🟢 (HIGH)
+   GPS: 46.199750, 6.138937
+   Source: vision
+   Adresse: Rue de la Muse, 1207 Genève
+   Maps: https://www.google.com/maps?q=46.1997495,6.1389374
+
+GNV_01 🟢 (HIGH)
+   GPS: 46.204056, 6.136598
+   Source: vision
+   Adresse: Place des Volontaires 4, 1204 Genève
+   Maps: https://www.google.com/maps?q=46.204056,6.1365976
+
+MARS_76 🟡 (MEDIUM)
+   GPS: 43.302165, 5.376440
+   Source: vision
+   Adresse: Boulevard Charles Nédelec, 13003 Marseille
+   💡 Hint: quartier probable: 3e arrondissement, quartier Saint-Charles / Belle de Mai
+   Maps: https://www.google.com/maps?q=43.3021647,5.3764401
+
+MARS_17 🔴 (LOW)
+   GPS: 43.296399, 5.377789
+   Source: vision
+   Adresse: Marseille
+   💡 Hint: quartier probable: Marseille, quartier probablement central (1er-6e arrondissement)
+   Maps: https://www.google.com/maps?q=43.2963986,5.3777888
+
+GRN_01 🟡 (MEDIUM)
+   GPS: 45.192695, 5.724154
+   Source: vision
+   Adresse: Pont Marius Gontard, 38000 Grenoble
+   💡 Hint: quartier probable: Centre-ville, quais de l'Isère
+   Maps: https://www.google.com/maps?q=45.1926954,5.7241543
+
+GRN_19 🟢 (HIGH)
+   GPS: 45.187962, 5.724885
+   Source: vision
+   Adresse: Cours Lafontaine, 38000 Grenoble × Rue Lamartine, 38000 Grenoble
+   💡 Hint: intersection: Rue Lamartine, 38000 Grenoble
+   Maps: https://www.google.com/maps?q=45.1879622,5.724885199999999
+
+LJU_09 🟡 (MEDIUM)
+   GPS: 46.050168, 14.507029
+   Source: vision
+   Adresse: Mestni trg, 1000 Ljubljana
+   💡 Hint: quartier probable: Center (Center district), Ljubljana
+   Maps: https://www.google.com/maps?q=46.0501678,14.5070293
+
+LJU_15 🟡 (MEDIUM)
+   GPS: 46.049811, 14.505683
+   Source: vision
+   Adresse: Cankarjevo nabrežje, 1000 Ljubljana
+   Maps: https://www.google.com/maps?q=46.0498108,14.505683
+

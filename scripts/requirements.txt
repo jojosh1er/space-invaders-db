@@ -1,5 +1,40 @@
+# Dependances des scripts space-invaders-db.
+#
+# Tout est declare ici, y compris ce qui etait auparavant installe en dur dans
+# weekly_update.yml. Cette dispersion avait laisse beautifulsoup4 manquer sans
+# que personne le voie, puis opencv-python et numpy, jamais installes, ce qui
+# degradait le pretraitement OCR sans aucun message.
+#
+# beautifulsoup4 et google-lens-python ont ete retires le 13/09/2026 avec le
+# scraper Google Lens : Google ne sert plus de resultats en HTML statique.
+#
+# Les imports optionnels sont sous try/except dans le code : leur absence
+# degrade sans planter. C'est precisement pourquoi ils doivent etre declares.
+#
+# Les versions ci-dessous sont des planchers prudents, pas des versions
+# validees. Pour figer un etat reproductible, faire un pip freeze depuis un
+# environnement qui tourne, plutot que de se fier a ces bornes.
+
+# ─── Socle (imports non gardes) ──────────────────────────────────────────────
 playwright>=1.40.0
 requests>=2.28.0
+urllib3
 
-# Optionnels (pour geolocate_missing.py - fallbacks EXIF/OCR)
-# pip install Pillow pytesseract opencv-python numpy
+# ─── Geolocalisation : Vision ────────────────────────────────────────────────
+anthropic
+
+# ─── Geolocalisation : EXIF et OCR ───────────────────────────────────────────
+Pillow
+pytesseract
+opencv-python
+numpy
+
+# ─── Geocodage flou (fuzzy_street_geocoder) ──────────────────────────────────
+rapidfuzz
+
+# ─── Enrichissement Instagram ────────────────────────────────────────────────
+instagrapi
+python-dotenv
+
+# Dependance systeme, hors pip :
+#   apt-get install -y tesseract-ocr tesseract-ocr-fra

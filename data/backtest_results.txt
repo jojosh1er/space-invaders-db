@@ -1,103 +1,162 @@
 GÉOLOCALISATION DES INVADERS MANQUANTS
 ============================================================
 
-Total: 15
-Trouvés: 15
-HIGH: 2, MEDIUM: 4 (dont 15 Vision), LOW: 9
+Total: 24
+Trouvés: 24
+HIGH: 4, MEDIUM: 14 (dont 1 EXIF, 23 Vision), LOW: 6
 
-PA_142 🟡 (MEDIUM)
-   GPS: 48.845126, 2.352309
+PA_1122 🟡 (MEDIUM)
+   GPS: 48.841135, 2.369772
    Source: vision
-   Adresse: 49 Rue Monge, 75005 Paris
-   💡 Hint: Arènes de Lutèce
-   Maps: https://www.google.com/maps?q=48.8451262,2.3523089
+   Adresse: 34 Quai d'Austerlitz, 75013 Paris
+   Maps: https://www.google.com/maps?q=48.8411347,2.3697716
 
-PA_567 🟡 (MEDIUM)
-   GPS: 48.828518, 2.358071
+PA_540 🟢 (HIGH)
+   GPS: 48.868101, 2.381037
    Source: vision
-   Adresse: Avenue de Choisy, 75013 Paris
-   Maps: https://www.google.com/maps?q=48.8285181,2.3580715
+   Adresse: Impasse Questre, 75011 Paris
+   Maps: https://www.google.com/maps?q=48.8681008,2.3810373
 
-LDN_50 🟡 (MEDIUM)
-   GPS: 51.521578, -0.131651
+LDN_142 🟡 (MEDIUM)
+   GPS: 51.566121, -0.107718
    Source: vision
-   Adresse: 108 Gower Street, Bloomsbury, London WC1
-   Maps: https://www.google.com/maps?q=51.5215785,-0.1316513
+   Adresse: The Arts Building, Morris Place, N4 3JG London
+   Maps: https://www.google.com/maps?q=51.5661206,-0.107718
 
-ROM_30 🔴 (LOW)
-   GPS: 41.896095, 12.493934
+LDN_120 🔴 (LOW)
+   GPS: 51.524903, -0.081720
    Source: vision
-   Adresse: Via Urbana, Rione Monti, Roma
-   Maps: https://www.google.com/maps?q=41.8960953,12.493934
+   Adresse: Shoreditch, London
+   💡 Hint: cross-check: 0.0km du quartier Shoreditch | quartier probable: Shoreditch
+   Maps: https://www.google.com/maps?q=51.5249032,-0.0817203
 
-MARS_30 🟢 (HIGH)
-   GPS: 43.298203, 5.376628
+LA_07 🟡 (MEDIUM)
+   GPS: 34.105406, -118.318950
    Source: vision
-   Adresse: Cours Belsunce, 13001 Marseille
-   Maps: https://www.google.com/maps?q=43.2982032,5.3766278
+   Adresse: 5925 Franklin Ave, Los Angeles, CA 90028
+   Maps: https://www.google.com/maps?q=34.1054057,-118.3189498
 
-MPL_10 🟢 (HIGH)
-   GPS: 43.610772, 3.878248
+LA_211 🔴 (LOW)
+   GPS: 34.108876, -118.336589
    Source: vision
-   Adresse: Place Pétrarque, 34000 Montpellier
-   Maps: https://www.google.com/maps?q=43.6107721,3.8782479
+   Adresse: Highland Avenue, Hollywood, Los Angeles, CA
+   💡 Hint: Hollywood Bowl | cross-check: 4.5km du quartier Hollywood / Los Feliz | quartier probable: Hollywood / Los Feliz
+   Maps: https://www.google.com/maps?q=34.1088764,-118.3365889
 
-TK_30 🔴 (LOW)
-   GPS: 35.671182, 139.740298
+ROM_61 🟢 (HIGH)
+   GPS: 41.889313, 12.475914
    Source: vision
-   Adresse: Nara
-   💡 Hint: près de d'un studio
-   Maps: https://www.google.com/maps?q=35.6711822,139.7402983
+   Adresse: Via della Lungaretta 121, 00153 Roma
+   Maps: https://www.google.com/maps?q=41.8893129,12.4759135
 
-BGK_07 🔴 (LOW)
-   GPS: 13.742078, 100.524970
+ROM_50 🟡 (MEDIUM)
+   GPS: 41.883513, 12.479256
    Source: vision
-   Adresse: SALE (สำนักงานขายสวนหลวงสแควร์, ซอยจุฬาลงกรณ์ 16, แขวงวังใหม่, เขตปทุมวัน, กรุงเทพมหาน)
-   💡 Hint: cross-check: 6.4km du quartier Sukhumvit
-   Maps: https://www.google.com/maps?q=13.7420784,100.5249701
+   Adresse: Piazza di Sant'Alessio, 00153 Roma
+   💡 Hint: quartier probable: Municipio I - Centro Storico / Aventino
+   Maps: https://www.google.com/maps?q=41.8835127,12.4792556
 
-HK_20 🔴 (LOW)
-   GPS: 22.286849, 114.150861
+BXL_37 🟡 (MEDIUM)
+   GPS: 50.848894, 4.347108
    Source: vision
-   Adresse: Sheung Wan, Central-Western, Hong Kong Island
-   💡 Hint: cross-check: 0.3km du quartier Central/Sheung Wan | quartier probable: Central/Sheung Wan
-   Maps: https://www.google.com/maps?q=22.286849,114.150861
+   Adresse: Rue des Chartreux 9, 1000 Bruxelles
+   Maps: https://www.google.com/maps?q=50.8488935,4.3471082
 
-NY_100 🟡 (MEDIUM)
-   GPS: 40.717401, -73.992235
+BXL_07 🟢 (HIGH)
+   GPS: 50.830637, 4.363985
    Source: vision
-   Adresse: 94 Eldridge Street, New York, NY 10002
-   Maps: https://www.google.com/maps?q=40.7174012,-73.9922349
+   Adresse: Rue de l'Arbre Bénit, 1000 Bruxelles
+   Maps: https://www.google.com/maps?q=50.8306371,4.3639847
 
-MIA_40 🔴 (LOW)
-   GPS: 25.790103, -80.198770
+GNV_08 🟡 (MEDIUM)
+   GPS: 46.203917, 6.146111
    Source: vision
-   Adresse: NW 2nd Avenue, Wynwood, Miami
-   Maps: https://www.google.com/maps?q=25.7901032,-80.1987696
+   Adresse: Place de la Fusterie, 1204 Genève
+   💡 Hint: quartier probable: Cité-Centre / Rues-Basses
+   Maps: https://www.google.com/maps?q=46.2039166,6.1461106
 
-MBSA_04 🔴 (LOW)
-   GPS: -4.058748, 39.676167
-   Source: vision
-   Adresse: Old Town
-   💡 Hint: près de Ndia Kuu Road area, Mombasa
-   Maps: https://www.google.com/maps?q=-4.058748,39.6761668
+GNV_25 🟡 (MEDIUM)
+   GPS: 46.208567, 6.141058
+   Source: exif_image_lieu
+   Maps: https://www.google.com/maps?q=46.20856666666667,6.1410583333333335
 
-RBA_06 🔴 (LOW)
-   GPS: 33.919140, -6.975371
+MARS_23 🟡 (MEDIUM)
+   GPS: 43.231564, 5.442107
    Source: vision
-   Adresse: Phare de Rabat
-   💡 Hint: quartier probable: Quartier de l'Océan / Bord de mer de Rabat
-   Maps: https://www.google.com/maps?q=33.9191398,-6.9753709
+   Adresse: Campus de Luminy, 13288 Marseille
+   💡 Hint: cross-check: 5.3km du quartier 8e arrondissement, Marseille | quartier probable: 8e arrondissement, Marseille
+   Maps: https://www.google.com/maps?q=43.2315644,5.4421073
 
-IST_06 🔴 (LOW)
-   GPS: 41.032003, 28.948293
+MARS_84 🔴 (LOW)
+   GPS: 43.295083, 5.382806
    Source: vision
-   Adresse: Balat, Fatih, Istanbul
-   Maps: https://www.google.com/maps?q=41.0320032,28.9482931
+   Adresse: Cours Julien, 13006 Marseille
+   💡 Hint: quartier probable: Le Panier ou Cours Julien, Marseille
+   Maps: https://www.google.com/maps?q=43.295083,5.3828064
 
-MLB_07 🔴 (LOW)
-   GPS: -37.817082, 144.965675
+GRN_36 🟡 (MEDIUM)
+   GPS: 45.141877, 5.717959
    Source: vision
-   Adresse: Degraves Street, Melbourne VIC 3000
-   Maps: https://www.google.com/maps?q=-37.8170819,144.9656752
+   Adresse: Place de la Libération, 38130 Échirolles
+   Maps: https://www.google.com/maps?q=45.1418768,5.7179593
+
+GRN_47 🟡 (MEDIUM)
+   GPS: 45.193012, 5.728268
+   Source: vision
+   Adresse: Place Saint-André, 38000 Grenoble
+   💡 Hint: cross-check: 0.1km du quartier Centre-ville (Hyper-centre), Grenoble | quartier probable: Centre-ville (Hyper-centre), G
+   Maps: https://www.google.com/maps?q=45.1930122,5.7282681
+
+MPL_04 🟡 (MEDIUM)
+   GPS: 43.611337, 3.878628
+   Source: vision
+   Adresse: Rue de l'Aiguillerie, 34000 Montpellier
+   Maps: https://www.google.com/maps?q=43.6113368,3.8786278
+
+MPL_05 🟡 (MEDIUM)
+   GPS: 43.612233, 3.879083
+   Source: vision
+   Adresse: 51 Rue de l'Aiguillerie, 34000 Montpellier
+   Maps: https://www.google.com/maps?q=43.612233,3.8790833
+
+DJBA_26 🔴 (LOW)
+   GPS: 33.728696, 10.855758
+   Source: vision
+   Adresse: Guellala, Djerba, Tunisie
+   💡 Hint: quartier probable: zone rurale de Djerba, probablement près de Guellala ou Sedouikech
+   Maps: https://www.google.com/maps?q=33.7286958,10.8557577
+
+DJBA_58 🔴 (LOW)
+   GPS: 33.869901, 10.857652
+   Source: vision
+   Adresse: École primaire, Houmt Souk, Djerba
+   💡 Hint: cross-check: 13.5km du quartier Djerba | quartier probable: Djerba
+   Maps: https://www.google.com/maps?q=33.8699006,10.8576521
+
+POTI_46 🔴 (LOW)
+   GPS: -19.583952, -65.752528
+   Source: vision
+   Adresse: Calle Quijarro, Potosí
+   💡 Hint: quartier probable: Centro Histórico
+   Maps: https://www.google.com/maps?q=-19.5839517,-65.7525277
+
+POTI_41 🟢 (HIGH)
+   GPS: -19.592165, -65.753422
+   Source: vision
+   Adresse: Calle Nogales 5, Potosí
+   Maps: https://www.google.com/maps?q=-19.5921647,-65.7534215
+
+LJU_04 🟡 (MEDIUM)
+   GPS: 46.058254, 14.510534
+   Source: vision
+   Adresse: Center, 1000 Ljubljana
+   💡 Hint: quartier probable: Center (Center District), Ljubljana
+   Maps: https://www.google.com/maps?q=46.0582538,14.5105343
+
+LJU_32 🟡 (MEDIUM)
+   GPS: 46.050168, 14.507029
+   Source: vision
+   Adresse: Mestni trg, 1000 Ljubljana
+   💡 Hint: quartier probable: Center (Staro mesto)
+   Maps: https://www.google.com/maps?q=46.0501678,14.5070293
 
