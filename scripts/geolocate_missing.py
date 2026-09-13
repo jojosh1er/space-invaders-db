@@ -2783,6 +2783,35 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
         result['confidence'] = clues.get('confidence', 'LOW')
         result['_n_shots'] = len(shot_results)
         result['_consensus'] = consensus_found
+
+        # Dispersion entre shots : ecart maximal, en km, entre les positions
+        # geocodees des differents shots.
+        #
+        # Motif : le multi-shot coute n_shots appels par invader et ne produit
+        # aujourd'hui aucune information exploitable, parce qu'a temperature 0.7
+        # les reponses sont quasi identiques -- PA_1122 a obtenu un consensus
+        # 3/3 sur une adresse fausse de 6,2 km. Le consensus mesure donc la
+        # reproductibilite du prompt, pas la justesse.
+        #
+        # On persiste la dispersion pour pouvoir repondre plus tard, sur
+        # donnees, a deux questions ouvertes : est-ce qu'un desaccord entre
+        # shots predit une erreur ? et si la dispersion est systematiquement
+        # nulle, les shots supplementaires sont-ils un cout pur, auquel cas un
+        # shot unique diviserait la facture Vision par trois ?
+        #
+        # La valeur est calculee ici puis jetee jusqu'a present : la collecter
+        # ne coute rien, et c'est la seule facon de trancher autrement qu'a
+        # l'intuition. Champ purement observationnel : rien ne le consomme.
+        geo_pts = [(s['geo_lat'], s['geo_lng']) for s in shot_results
+                   if s['geo_lat'] is not None and s['geo_lng'] is not None]
+        if len(geo_pts) >= 2:
+            spread = max(_haversine_quick(a[0], a[1], b[0], b[1])
+                         for i, a in enumerate(geo_pts) for b in geo_pts[i + 1:])
+            result['_shots_spread_km'] = round(spread, 4)
+        else:
+            result['_shots_spread_km'] = None
+        result['_shots_geocoded'] = len(geo_pts)
+
         # Résumé des shots pour debug
         result['_shots_summary'] = [
             {
@@ -5359,6 +5388,16 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
                                   if isinstance(s, str) and s.strip()]
                         if _shops:
                             new_inv['vision_shop_signs'] = _shops[:6]
+
+                        # Observationnel : dispersion entre shots, pour mesurer
+                        # plus tard si le desaccord predit l'erreur (cf. le
+                        # commentaire dans l'analyse multi-shot).
+                        if vision_result.get('_shots_spread_km') is not None:
+                            new_inv['vision_shots_spread_km'] = vision_result['_shots_spread_km']
+                        if vision_result.get('_n_shots'):
+                            new_inv['vision_shots'] = vision_result['_n_shots']
+                        if vision_result.get('_consensus') is not None:
+                            new_inv['vision_consensus'] = bool(vision_result['_consensus'])
                         
                         is_district = vision_result.get('source_detail') == 'vision_district'
                         

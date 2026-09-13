@@ -17,7 +17,7 @@ index 5eb5b3e..f7c2080 100644
        
        - name: 🔍 Scrape & process issues
 diff --git a/scripts/geolocate_missing.py b/scripts/geolocate_missing.py
-index b27bee9..d483735 100644
+index b27bee9..3f8cea8 100644
 --- a/scripts/geolocate_missing.py
 +++ b/scripts/geolocate_missing.py
 @@ -13,7 +13,7 @@ Sources (par ordre de priorité):
@@ -66,7 +66,43 @@ index b27bee9..d483735 100644
      # Spain
      'BCN': 'es', 'BRC': 'es', 'MLGA': 'es', 'BBO': 'es', 'MAD': 'es',
      # Italy
-@@ -3175,473 +3178,6 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
+@@ -2780,6 +2783,35 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
+         result['confidence'] = clues.get('confidence', 'LOW')
+         result['_n_shots'] = len(shot_results)
+         result['_consensus'] = consensus_found
++
++        # Dispersion entre shots : ecart maximal, en km, entre les positions
++        # geocodees des differents shots.
++        #
++        # Motif : le multi-shot coute n_shots appels par invader et ne produit
++        # aujourd'hui aucune information exploitable, parce qu'a temperature 0.7
++        # les reponses sont quasi identiques -- PA_1122 a obtenu un consensus
++        # 3/3 sur une adresse fausse de 6,2 km. Le consensus mesure donc la
++        # reproductibilite du prompt, pas la justesse.
++        #
++        # On persiste la dispersion pour pouvoir repondre plus tard, sur
++        # donnees, a deux questions ouvertes : est-ce qu'un desaccord entre
++        # shots predit une erreur ? et si la dispersion est systematiquement
++        # nulle, les shots supplementaires sont-ils un cout pur, auquel cas un
++        # shot unique diviserait la facture Vision par trois ?
++        #
++        # La valeur est calculee ici puis jetee jusqu'a present : la collecter
++        # ne coute rien, et c'est la seule facon de trancher autrement qu'a
++        # l'intuition. Champ purement observationnel : rien ne le consomme.
++        geo_pts = [(s['geo_lat'], s['geo_lng']) for s in shot_results
++                   if s['geo_lat'] is not None and s['geo_lng'] is not None]
++        if len(geo_pts) >= 2:
++            spread = max(_haversine_quick(a[0], a[1], b[0], b[1])
++                         for i, a in enumerate(geo_pts) for b in geo_pts[i + 1:])
++            result['_shots_spread_km'] = round(spread, 4)
++        else:
++            result['_shots_spread_km'] = None
++        result['_shots_geocoded'] = len(geo_pts)
++
+         # Résumé des shots pour debug
+         result['_shots_summary'] = [
+             {
+@@ -3175,473 +3207,6 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
          return result
  
  
@@ -540,7 +576,7 @@ index b27bee9..d483735 100644
  class PnoteSearcher:
      """
      Recherche dans la base pnote.eu (fichier JSON local ou fetch URL).
-@@ -4973,7 +4509,6 @@ class InvaderLocationSearcher:
+@@ -4973,7 +4538,6 @@ class InvaderLocationSearcher:
          self.pnote = None
          self.flickr = None
          self.vision = None
@@ -548,7 +584,7 @@ index b27bee9..d483735 100644
      
      def start(self):
          """Démarre les sources. En mode --no-browser, pas de Playwright."""
-@@ -4999,7 +4534,7 @@ class InvaderLocationSearcher:
+@@ -4999,7 +4563,7 @@ class InvaderLocationSearcher:
              if self.flickr_enabled:
                  self.flickr = FlickrScraper(self.page, self.verbose)
          else:
@@ -557,7 +593,7 @@ index b27bee9..d483735 100644
          
          # Sources sans navigateur (toujours initialisées)
          self.ocr_analyzer = ImageOCRAnalyzer(self.verbose)
-@@ -5022,14 +4557,6 @@ class InvaderLocationSearcher:
+@@ -5022,14 +4586,6 @@ class InvaderLocationSearcher:
          if self.anthropic_key or os.environ.get('ANTHROPIC_API_KEY'):
              self.vision = VisionAnalyzer(api_key=self.anthropic_key, verbose=self.verbose, n_shots=self.vision_shots)
          
@@ -572,7 +608,7 @@ index b27bee9..d483735 100644
      def stop(self):
          """Arrête le navigateur"""
          if self.browser:
-@@ -5648,7 +5175,7 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
+@@ -5648,7 +5204,7 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
              image_lieu_url = inv.get('image_lieu')
              city_name = CITY_CENTERS.get(city_code, {}).get('name', city_code)
  
@@ -581,7 +617,7 @@ index b27bee9..d483735 100644
              ig_entry = searcher.instagram_cache.get(inv_id) if hasattr(searcher, 'instagram_cache') else None
              ig_found = False
              if ig_entry and not ig_entry.get('parse_error'):
-@@ -5731,7 +5258,7 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
+@@ -5731,7 +5287,7 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
              if ig_found:
                  results.append(new_inv)
                  time.sleep(pause)
@@ -590,7 +626,7 @@ index b27bee9..d483735 100644
  
              if image_lieu_url:
                  print(f"   🖼️  Tentative EXIF sur image_lieu...")
-@@ -5783,50 +5310,18 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
+@@ -5783,50 +5339,18 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
                          else:
                              print(f"      ❌ {ocr_result.get('error', 'Non trouvé')}")
              
@@ -652,7 +688,7 @@ index b27bee9..d483735 100644
              vision_result = None
              if not found_via_image and image_lieu_url and searcher.vision and searcher.vision.enabled:
                  image_close_url = inv.get('image_invader')  # Gros plan mosaïque
-@@ -5853,6 +5348,17 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
+@@ -5853,6 +5377,27 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
                          new_inv['address'] = vision_result.get('address')
                          if vision_result.get('geo_hint'):
                              new_inv['geo_hint'] = vision_result['geo_hint']
@@ -667,10 +703,20 @@ index b27bee9..d483735 100644
 +                                  if isinstance(s, str) and s.strip()]
 +                        if _shops:
 +                            new_inv['vision_shop_signs'] = _shops[:6]
++
++                        # Observationnel : dispersion entre shots, pour mesurer
++                        # plus tard si le desaccord predit l'erreur (cf. le
++                        # commentaire dans l'analyse multi-shot).
++                        if vision_result.get('_shots_spread_km') is not None:
++                            new_inv['vision_shots_spread_km'] = vision_result['_shots_spread_km']
++                        if vision_result.get('_n_shots'):
++                            new_inv['vision_shots'] = vision_result['_n_shots']
++                        if vision_result.get('_consensus') is not None:
++                            new_inv['vision_consensus'] = bool(vision_result['_consensus'])
                          
                          is_district = vision_result.get('source_detail') == 'vision_district'
                          
-@@ -6029,6 +5535,25 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
+@@ -6029,6 +5574,25 @@ def process_missing_invaders(missing_file, output_file, searcher, city_filter=No
      return results
  
  
@@ -696,7 +742,7 @@ index b27bee9..d483735 100644
  def merge_with_updated(geolocated_file, updated_file=None, backup=False, dry_run=False, verbose=False):
      """
      Fusionne les invaders géolocalisés avec invaders_master.json
-@@ -6081,8 +5606,24 @@ def merge_with_updated(geolocated_file, updated_file=None, backup=False, dry_run
+@@ -6081,8 +5645,24 @@ def merge_with_updated(geolocated_file, updated_file=None, backup=False, dry_run
              
              old_conf = old_inv.get('geo_confidence', 'low')
              new_conf = geo_inv.get('geo_confidence', 'low')
@@ -723,7 +769,7 @@ index b27bee9..d483735 100644
                  updated_db[idx]['lat'] = geo_inv['lat']
                  updated_db[idx]['lng'] = geo_inv['lng']
                  updated_db[idx]['geo_source'] = geo_inv.get('geo_source')
-@@ -6099,7 +5640,9 @@ def merge_with_updated(geolocated_file, updated_file=None, backup=False, dry_run
+@@ -6099,7 +5679,9 @@ def merge_with_updated(geolocated_file, updated_file=None, backup=False, dry_run
                  updated_db[idx]['preserved_date'] = datetime.now().isoformat()
                  updated += 1
                  if verbose:
@@ -734,7 +780,7 @@ index b27bee9..d483735 100644
          else:
              # Ajouter
              geo_inv['preserved'] = True
-@@ -6167,9 +5710,9 @@ def main():
+@@ -6167,9 +5749,9 @@ def main():
      parser.add_argument('--retry-failed', dest='retry_failed', action='store_true',
                          help='Relancer la recherche des invaders marqués geo_search_exhausted')
      parser.add_argument('--no-browser', dest='no_browser', action='store_true',
