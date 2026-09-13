@@ -46,9 +46,10 @@ jobs:
           pip install -r scripts/requirements.txt
           playwright install chromium
           playwright install-deps
-          # Dépendances géolocalisation (OCR + Vision + Lens)
-          pip install pytesseract anthropic Pillow rapidfuzz
-          pip install git+https://github.com/krishna2206/google-lens-python.git
+          # Toutes les dependances Python sont dans scripts/requirements.txt,
+          # y compris celles qui etaient installees en dur ici. Ne pas en
+          # rajouter sur cette ligne : une dependance invisible du fichier est
+          # une dependance qui finit par manquer sans qu'on le remarque.
           sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-fra
       
       - name: 🔍 Scrape & process issues
