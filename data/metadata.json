@@ -1,20 +1,20 @@
 {
-  "last_updated": "2026-09-13T11:19:08.122074",
+  "last_updated": "2026-09-20T10:48:43.954998",
   "version": "1.0.0",
-  "total_invaders": 4432,
+  "total_invaders": 4433,
   "total_cities": 89,
-  "with_coordinates": 4431,
+  "with_coordinates": 4432,
   "without_coordinates": 1,
   "status_counts": {
-    "OK": 2444,
-    "destroyed": 1502,
+    "OK": 2446,
+    "destroyed": 1501,
     "a little damaged": 221,
-    "damaged": 216,
-    "hidden": 26,
+    "damaged": 217,
+    "hidden": 25,
     "unknown": 23
   },
   "cities": {
-    "PA": 1597,
+    "PA": 1598,
     "NY": 219,
     "LA": 214,
     "LDN": 193,
