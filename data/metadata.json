@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-09-20T10:48:43.954998",
+  "last_updated": "2026-09-27T11:36:30.869182",
   "version": "1.0.0",
   "total_invaders": 4433,
   "total_cities": 89,
   "with_coordinates": 4432,
   "without_coordinates": 1,
   "status_counts": {
-    "OK": 2446,
-    "destroyed": 1501,
-    "a little damaged": 221,
-    "damaged": 217,
-    "hidden": 25,
+    "OK": 2443,
+    "destroyed": 1502,
+    "a little damaged": 220,
+    "damaged": 218,
+    "hidden": 27,
     "unknown": 23
   },
   "cities": {
