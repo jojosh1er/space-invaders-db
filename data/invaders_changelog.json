@@ -1759,7 +1759,79 @@
       "new_value": "destroyed",
       "detected_at": "2026-09-27T11:36:30.869940",
       "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "MAN_08",
+      "field": "status",
+      "old_value": "damaged",
+      "new_value": "a little damaged",
+      "detected_at": "2026-10-04T11:59:45.390938",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_1103",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "hidden",
+      "detected_at": "2026-10-04T11:59:45.390941",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_207",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "OK",
+      "detected_at": "2026-10-04T11:59:45.390942",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_239",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-10-04T11:59:45.390943",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_267",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "OK",
+      "detected_at": "2026-10-04T11:59:45.390944",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_343",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "OK",
+      "detected_at": "2026-10-04T11:59:45.390945",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "PA_692",
+      "field": "status",
+      "old_value": "destroyed",
+      "new_value": "OK",
+      "detected_at": "2026-10-04T11:59:45.390946",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "RTD_14",
+      "field": "status",
+      "old_value": "hidden",
+      "new_value": "destroyed",
+      "detected_at": "2026-10-04T11:59:45.390947",
+      "source": "invader-spotter.art"
+    },
+    {
+      "invader_id": "STK_13",
+      "field": "status",
+      "old_value": "OK",
+      "new_value": "destroyed",
+      "detected_at": "2026-10-04T11:59:45.390948",
+      "source": "invader-spotter.art"
     }
   ],
-  "last_check": "2026-09-27T11:36:30.869941"
+  "last_check": "2026-10-04T11:59:45.390948"
 }
