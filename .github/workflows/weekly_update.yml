@@ -57,7 +57,11 @@ jobs:
           GITHUB_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
-          ARGS="--headless --add-missing"
+          # --discover-new interroge villes.php et scrape les villes absentes des
+          # dictionnaires. Sans lui, la liste scrapee vaut github_cities UNION
+          # CITY_CODES : une invasion dans une ville nouvelle (Stockholm en
+          # septembre, la Laponie en octobre) reste invisible indefiniment.
+          ARGS="--headless --add-missing --discover-new"
           
           # Ville spécifique si demandée
           if [ -n "${{ github.event.inputs.city }}" ]; then

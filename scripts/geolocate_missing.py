@@ -353,6 +353,40 @@ CITY_MAX_RADIUS = {
 DEFAULT_CITY_RADIUS = 25000  # 25km par défaut
 
 
+# Repli automatique pour les villes absentes des dictionnaires manuels.
+# Voir city_registry.py : le nom de la ville est toujours connu (il vient de
+# villes.php), donc Nominatim peut en deriver centre, pays et rayon. Les
+# dictionnaires cures gardent la priorite absolue.
+try:
+    import city_registry as _registry
+except Exception as _e:  # pragma: no cover
+    _registry = None
+
+
+def _city_meta(city_code):
+    """Centre derive pour une ville absente de CITY_CENTERS, ou None."""
+    if not city_code or _registry is None:
+        return None
+    return _registry.center_for(city_code, CITY_NAMES.get(city_code, city_code),
+                                CITY_CENTERS)
+
+
+def city_country_code(city_code):
+    """Code pays ISO d'une ville, sans defaut implicite.
+
+    Renvoie '' quand rien n'est connu. L'ancien `CITY_COUNTRIES.get(code, 'fr')`
+    envoyait countrycodes=fr a Nominatim pour des adresses suedoises ou
+    finlandaises : zero resultat, ou pire un faux positif sur une rue francaise
+    homonyme. Une absence de filtre vaut mieux qu'un filtre faux.
+    """
+    if not city_code:
+        return ''
+    if _registry is None:
+        return CITY_COUNTRIES.get(city_code, '')
+    return _registry.country_for(city_code, CITY_NAMES.get(city_code, city_code),
+                                 CITY_COUNTRIES)
+
+
 def validate_city_coherence(lat, lng, city_code, verbose=False):
     """
     Vérifie que les coordonnées trouvées sont cohérentes avec la ville attendue.
@@ -373,10 +407,14 @@ def validate_city_coherence(lat, lng, city_code, verbose=False):
         'warning': None,
     }
     
-    if not city_code or city_code not in CITY_CENTERS:
+    if not city_code:
         return result
-    
-    city = CITY_CENTERS[city_code]
+    city = CITY_CENTERS.get(city_code) or _city_meta(city_code)
+    if not city:
+        # Ville inconnue et Nominatim muet : aucun garde-fou possible. On
+        # laisse passer plutot que de rejeter a l'aveugle, mais rien n'est
+        # valide pour autant.
+        return result
     result['city_name'] = city['name']
     
     # Cas spécial: ISS / Space
@@ -386,7 +424,19 @@ def validate_city_coherence(lat, lng, city_code, verbose=False):
     
     center_lat = city['lat']
     center_lng = city['lng']
-    max_radius = CITY_MAX_RADIUS.get(city_code, DEFAULT_CITY_RADIUS)
+    # Rayon : le dictionnaire cure, sinon la demi-diagonale de la bounding box
+    # administrative rendue par Nominatim, sinon le defaut. Pour une region
+    # etendue (Laponie : ~344 km) ce rayon est enorme et le controle ne
+    # rejettera que les erreurs grossieres — c'est la realite du terrain, et
+    # c'est preferable a 25 km qui ecarteraient des coordonnees valides.
+    # ATTENTION aux unites : CITY_MAX_RADIUS, DEFAULT_CITY_RADIUS et
+    # calculate_distance sont en METRES, alors que city_registry rend un
+    # radius_km en kilometres. Omettre la conversion compare 344 km a 344 m et
+    # rejette tout.
+    _derived = city.get('radius_km')
+    max_radius = (CITY_MAX_RADIUS.get(city_code)
+                  or (_derived * 1000 if _derived else None)
+                  or DEFAULT_CITY_RADIUS)
     result['max_radius'] = max_radius
     
     distance = calculate_distance(lat, lng, center_lat, center_lng)
@@ -668,7 +718,7 @@ CITY_COUNTRIES = {
 
 def get_address_patterns_for_city(city_code):
     """Retourne les patterns d'adresses appropriés pour une ville"""
-    country = CITY_COUNTRIES.get(city_code, 'fr')  # Par défaut français
+    country = city_country_code(city_code)
     
     if country == 'uk':
         return UK_ADDRESS_PATTERNS + FRENCH_ADDRESS_PATTERNS  # UK en priorité
@@ -1011,7 +1061,7 @@ class ImageOCRAnalyzer:
         Exemples UK: "SPRING", "GARDENS", "SW1" → "SPRING GARDENS SW1"
         """
         candidates = []  # (score, address)
-        country = CITY_COUNTRIES.get(city_code, 'fr')
+        country = city_country_code(city_code)
         
         # Séparer en lignes puis en mots
         lines = [l.strip() for l in text.upper().split('\n') if l.strip()]
@@ -1298,7 +1348,7 @@ class ImageOCRAnalyzer:
             city_info = CITY_CENTERS.get(city_code)
             if city_info:
                 city_name = city_info.get('name')
-            country = CITY_COUNTRIES.get(city_code, 'fr')
+            country = city_country_code(city_code)
             country_map = {
                 'fr': 'fr', 'uk': 'gb', 'us': 'us', 'it': 'it', 'es': 'es',
                 'de': 'de', 'nl': 'nl', 'jp': 'jp', 'cn': 'cn', 'th': 'th',
@@ -1498,7 +1548,7 @@ class ImageOCRAnalyzer:
         
         # 2. Extraire le texte via OCR avec prétraitement
         # Choisir la langue selon le pays
-        country = CITY_COUNTRIES.get(city_code, 'fr') if city_code else 'fr'
+        country = city_country_code(city_code) if city_code else 'fr'
         if country == 'uk' or country == 'us':
             lang = 'eng'  # Anglais en priorité
         else:
@@ -3164,7 +3214,7 @@ Réponds UNIQUEMENT avec un JSON valide (pas de markdown, pas de ```):
                         'limit': 3,
                         'addressdetails': 1,
                     }
-                    country = CITY_COUNTRIES.get(city_code, '')
+                    country = city_country_code(city_code)
                     country_map = {
                         'fr': 'fr', 'uk': 'gb', 'us': 'us', 'it': 'it', 'es': 'es',
                         'de': 'de', 'nl': 'nl', 'jp': 'jp', 'cn': 'cn', 'th': 'th',

@@ -670,6 +670,32 @@ def geocode_address_sync(address, city_name=None):
     return None
 
 
+# Repli automatique pour les villes absentes des dictionnaires manuels : sans
+# lui, toute ville nouvelle (Stockholm en septembre, la Laponie en octobre)
+# produit des mosaiques en lat=0, lng=0 sans geo_source, que le gate detect_new
+# du workflow ignore ensuite silencieusement.
+try:
+    import city_registry as _registry
+except Exception:  # pragma: no cover
+    _registry = None
+
+
+def resolve_city_center(city_code, curated):
+    """Centre d'une ville : dictionnaire cure d'abord, Nominatim en repli.
+
+    Renvoie None si rien n'est connu — l'appelant doit alors s'abstenir de
+    poser des coordonnees plutot que d'ecrire (0, 0), qui est un point au
+    large du golfe de Guinee et que l'app Flask ecarte silencieusement.
+    """
+    hit = (curated or {}).get(city_code)
+    if hit:
+        return dict(hit, source='curated')
+    if _registry is None:
+        return None
+    return _registry.center_for(city_code, CITY_NAMES.get(city_code, city_code),
+                                curated or {})
+
+
 def geocode_manual_addresses(manual_addresses, verbose=False):
     """Géocode toutes les adresses manuelles avec standardisation préalable"""
     
@@ -4507,18 +4533,30 @@ async def main_async():
                     new_inv['location_unknown'] = False
                     if geo_data.get('address'):
                         new_inv['address'] = geo_data['address']
-                elif city_code and city_code in city_centers:
-                    # Fallback: centre de la ville
-                    new_inv['lat'] = city_info['lat']
-                    new_inv['lng'] = city_info['lng']
-                    new_inv['geo_source'] = 'city_center'
-                    new_inv['geo_confidence'] = 'very_low'
-                    new_inv['location_unknown'] = True
-                    unknown_count += 1
                 else:
-                    new_inv['lat'] = 0
-                    new_inv['lng'] = 0
-                    new_inv['location_unknown'] = True
+                    # Repli : centre de la ville. Le dictionnaire local d'abord,
+                    # puis Nominatim via city_registry pour une ville nouvelle.
+                    # Sans ce second recours, Stockholm puis la Laponie sont
+                    # sorties en (0, 0) — un point au large du golfe de Guinee
+                    # que load_database() de l'app Flask ecarte en silence, et
+                    # qui prive l'entree du marqueur geo_source='city_center'
+                    # sur lequel le gate detect_new du workflow s'appuie.
+                    center = resolve_city_center(city_code, city_centers) if city_code else None
+                    if center:
+                        new_inv['lat'] = center['lat']
+                        new_inv['lng'] = center['lng']
+                        new_inv['geo_source'] = 'city_center'
+                        new_inv['geo_confidence'] = 'very_low'
+                        new_inv['location_unknown'] = True
+                        if center.get('source') == 'nominatim':
+                            new_inv['geo_hint'] = (
+                                f"centre derive de Nominatim pour {center.get('name', city_code)}"
+                                f" (rayon {center.get('radius_km', '?')} km) — ville absente"
+                                f" des dictionnaires manuels")
+                    else:
+                        new_inv['lat'] = 0
+                        new_inv['lng'] = 0
+                        new_inv['location_unknown'] = True
                     unknown_count += 1
                 
                 updated_db.append(new_inv)
