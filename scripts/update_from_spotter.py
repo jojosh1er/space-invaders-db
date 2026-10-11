@@ -234,6 +234,13 @@ CITY_CENTERS = {
     'VRN': {'lat': 45.4384, 'lng': 10.9916, 'name': 'Verona'},
     # Suède
     'STK': {'lat': 59.3293, 'lng': 18.0686, 'name': 'Stockholm'},
+    # Laponie — PROVISOIRE, a resserrer quand les 35+ mosaiques seront localisees.
+    # L'invasion est a cheval sur au moins deux pays : LAP_02 pointe Rovaniemi
+    # (FI), LAP_17 le Hornavan Hotell a Arjeplog (SE), 426 km plus a l'ouest.
+    # Enveloppe de la Laponie nordique, rayon 500 km : conserve Arjeplog (276),
+    # Kiruna (124), Rovaniemi (162), Pyhatunturi (190) et Yllas (51), tout en
+    # rejetant Helsinki, Stockholm et Oslo, tous au-dela de 800 km.
+    'LAP': {'lat': 67.5, 'lng': 23.0, 'name': 'Lapland'},
     'HALM': {'lat': 56.6745, 'lng': 12.8578, 'name': 'Halmstad'},
     'VSB': {'lat': 57.6349, 'lng': 18.2948, 'name': 'Visby'},
 }
@@ -288,6 +295,7 @@ CITY_NAMES = {
     "LJU": "Ljubljana", "IST": "Istanbul", "RAV": "Ravenne",
     # Suède
     "STK": "Stockholm", "HALM": "Halmstad", "VSB": "Visby",
+    "LAP": "Lapland",
 }
 
 
@@ -785,6 +793,13 @@ def geocode_manual_addresses(manual_addresses, verbose=False):
         'HALM': {'lat': 56.6745, 'lng': 12.8578, 'name': 'Halmstad'},
         'VSB': {'lat': 57.6349, 'lng': 18.2948, 'name': 'Visby'},
         'STK': {'lat': 59.3293, 'lng': 18.0686, 'name': 'Stockholm'},
+    # Laponie — PROVISOIRE, a resserrer quand les 35+ mosaiques seront localisees.
+    # L'invasion est a cheval sur au moins deux pays : LAP_02 pointe Rovaniemi
+    # (FI), LAP_17 le Hornavan Hotell a Arjeplog (SE), 426 km plus a l'ouest.
+    # Enveloppe de la Laponie nordique, rayon 500 km : conserve Arjeplog (276),
+    # Kiruna (124), Rovaniemi (162), Pyhatunturi (190) et Yllas (51), tout en
+    # rejetant Helsinki, Stockholm et Oslo, tous au-dela de 800 km.
+    'LAP': {'lat': 67.5, 'lng': 23.0, 'name': 'Lapland'},
         'GRU': {'lat': 43.2615, 'lng': 17.0186, 'name': 'Gruž'},
         # Africa
         'MRAK': {'lat': 31.6295, 'lng': -7.9811, 'name': 'Marrakech'},
@@ -4427,6 +4442,20 @@ async def main_async():
             'RAV': {'lat': 44.4184, 'lng': 12.2035, 'name': 'Ravenna'},
             # Suède
             'STK': {'lat': 59.3293, 'lng': 18.0686, 'name': 'Stockholm'},
+    # Laponie — PROVISOIRE, a resserrer quand les 35+ mosaiques seront localisees.
+    # L'invasion est a cheval sur au moins deux pays : LAP_02 pointe Rovaniemi
+    # (FI), LAP_17 le Hornavan Hotell a Arjeplog (SE), 426 km plus a l'ouest.
+    # Enveloppe de la Laponie nordique, rayon 500 km : conserve Arjeplog (276),
+    # Kiruna (124), Rovaniemi (162), Pyhatunturi (190) et Yllas (51), tout en
+    # rejetant Helsinki, Stockholm et Oslo, tous au-dela de 800 km.
+    'LAP': {'lat': 67.5, 'lng': 23.0, 'name': 'Lapland'},
+        # Laponie — PROVISOIRE, a resserrer quand les 35+ mosaiques seront localisees.
+        # L'invasion est a cheval sur au moins deux pays : LAP_02 pointe Rovaniemi
+        # (FI), LAP_17 le Hornavan Hotell a Arjeplog (SE), 426 km plus a l'ouest.
+        # Enveloppe de la Laponie nordique, rayon 500 km : conserve Arjeplog (276),
+        # Kiruna (124), Rovaniemi (162), Pyhatunturi (190) et Yllas (51), tout en
+        # rejetant Helsinki, Stockholm et Oslo, tous au-dela de 800 km.
+            'LAP': {'lat': 67.5, 'lng': 23.0, 'name': 'Lapland'},
             'HALM': {'lat': 56.6745, 'lng': 12.8578, 'name': 'Halmstad'},
             'VSB': {'lat': 57.6349, 'lng': 18.2948, 'name': 'Visby'},
         }

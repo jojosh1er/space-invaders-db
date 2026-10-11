@@ -159,6 +159,7 @@ CITY_NAMES = {
     'NCE': 'Nice', 'TLS': 'Toulouse', 'BRC': 'Barcelona', 'MAD': 'Madrid',
     'BRL': 'Berlin', 'AMS': 'Amsterdam', 'VEN': 'Venice', 'FLR': 'Florence',
     'STK': 'Stockholm', 'HALM': 'Halmstad', 'VSB': 'Visby',
+    'LAP': 'Lapland',
 }
 
 # Centres des villes (fallback si aucune géolocalisation trouvée)
@@ -247,6 +248,13 @@ CITY_CENTERS = {
     'HALM': {'lat': 56.6745, 'lng': 12.8578, 'name': 'Halmstad'},
     'VSB': {'lat': 57.6349, 'lng': 18.2948, 'name': 'Visby'},
     'STK': {'lat': 59.3293, 'lng': 18.0686, 'name': 'Stockholm'},
+    # Laponie — PROVISOIRE, a resserrer quand les 35+ mosaiques seront localisees.
+    # L'invasion est a cheval sur au moins deux pays : LAP_02 pointe Rovaniemi
+    # (FI), LAP_17 le Hornavan Hotell a Arjeplog (SE), 426 km plus a l'ouest.
+    # Enveloppe de la Laponie nordique, rayon 500 km : conserve Arjeplog (276),
+    # Kiruna (124), Rovaniemi (162), Pyhatunturi (190) et Yllas (51), tout en
+    # rejetant Helsinki, Stockholm et Oslo, tous au-dela de 800 km.
+    'LAP': {'lat': 67.5, 'lng': 23.0, 'name': 'Lapland'},
     'GRU': {'lat': 43.2615, 'lng': 17.0186, 'name': 'Gruž'},
     # Africa
     'MRAK': {'lat': 31.6295, 'lng': -7.9811, 'name': 'Marrakech'},
@@ -336,6 +344,7 @@ def calculate_distance(lat1, lng1, lat2, lng2):
 # Rayon max de cohérence ville (en mètres)
 # Adapté par taille de ville : grandes métropoles = rayon plus large
 CITY_MAX_RADIUS = {
+    'LAP': 500000,  # Laponie, enveloppe provisoire (cf. CITY_CENTERS)
     # Grandes métropoles (rayon 40km)
     'PA': 40000, 'LDN': 40000, 'NY': 50000, 'LA': 60000, 'TK': 50000,
     'SP': 40000, 'BRL': 40000, 'ROM': 30000, 'BCN': 25000, 'BRC': 25000,
@@ -698,6 +707,12 @@ CITY_COUNTRIES = {
     # Other Europe
     'LJU': 'si', 'PRG': 'cz', 'WAR': 'pl', 'IST': 'tr',
     'RVK': 'is', 'HALM': 'se', 'VSB': 'se', 'STK': 'se', 'GRU': 'hr',
+    # Laponie : AUCUN filtre pays, decision explicite et non un oubli. La
+    # region s'etend sur la Finlande, la Suede et la Norvege, et les deux
+    # premieres sont deja confirmees dans le lot. Un filtre monopays bloquerait
+    # silencieusement la moitie des adresses. Une cle presente fait foi meme
+    # vide — voir city_registry.country_for.
+    'LAP': '',
     # North Africa / Middle East
     'MRAK': 'ma', 'RBA': 'ma', 'TUN': 'tn', 'TN': 'tn', 'DJBA': 'tn',
     'ELT': 'il', 'MBSA': 'ke', 'GRTI': 'tz',

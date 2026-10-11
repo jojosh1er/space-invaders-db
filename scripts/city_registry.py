@@ -73,6 +73,18 @@ BACKOFF_S = (3, 10, 30)
 # Rayon plancher : meme une petite ville merite une tolerance raisonnable.
 RADIUS_FLOOR_KM = 15.0
 
+# Au-dela de ce rayon, l'entite geocodee est une region et non une ville. On
+# cesse alors d'en deriver un code pays : une region peut chevaucher des
+# frontieres. La Laponie le prouve — Nominatim la resout en Lappi (Finlande),
+# mais LAP_17 se trouve a Arjeplog, en Suede. Un filtre monopays aurait bloque
+# silencieusement cette adresse-la et toutes ses voisines.
+#
+# L'asymetrie justifie la regle : perdre un filtre ne coute presque rien,
+# puisque les adresses produites par Vision portent deja le pays en toutes
+# lettres (« Rovaniemi, Finland » se geocode tres bien sans filtre). Garder un
+# filtre faux ne renvoie rien, et sans bruit.
+REGION_RADIUS_KM = 100.0
+
 # Pas de plafond volontairement : plafonner reintroduirait le rejet silencieux
 # de coordonnees valides pour une region etendue, qui est le bug qu'on repare.
 
@@ -155,6 +167,10 @@ def parse_result(entry):
             pass
 
     country = ((entry.get("address") or {}).get("country_code") or "").lower()
+    if radius_km > REGION_RADIUS_KM:
+        # Entite de taille regionale : le pays n'est pas fiable (voir
+        # REGION_RADIUS_KM). On rend le centre et le rayon, pas le pays.
+        country = ""
     # Nominatim rend de l'ISO 3166-1 alpha-2, ce qu'attend son propre filtre
     # countrycodes. Pas de normalisation uk->gb a faire ici : l'anomalie 'uk'
     # du depot vient des dictionnaires manuels, pas de Nominatim.
@@ -168,6 +184,22 @@ def parse_result(entry):
         "osm_type": entry.get("type"),
         "source": "nominatim",
     }
+
+
+def looks_like_bare_code(name, code=None):
+    """Vrai si `name` est manifestement un code ville et non un nom.
+
+    Geocoder « LAP » renvoie n'importe quel lieu nomme Lap sur la planete, dont
+    on tire ensuite un pays et un centre faux. C'est arrive : CITY_NAMES ne
+    contenait pas la Laponie, le code a servi de nom, et tout le geocodage du
+    lot a echoue sur « Fallback quartier: Rovaniemi, LAP ».
+    """
+    if not name:
+        return True
+    n = str(name).strip()
+    if code and n.upper() == str(code).upper():
+        return True
+    return len(n) <= 5 and n.isalpha() and n.isupper()
 
 
 def resolve(name, use_cache=True, verbose=False):
@@ -220,6 +252,11 @@ def center_for(code, name, curated, verbose=False):
     hit = (curated or {}).get(code)
     if hit and hit.get("lat") is not None and hit.get("lng") is not None:
         return dict(hit, source="curated")
+    if looks_like_bare_code(name, code):
+        if verbose:
+            print(f"   [registry] « {name} » ressemble a un code, pas a un nom — "
+                  f"aucune resolution tentee")
+        return None
     meta = resolve(name or code, verbose=verbose)
     if not meta:
         return None
@@ -235,9 +272,13 @@ def country_for(code, name, curated, verbose=False):
     « pas de filtre pays », surtout PAS comme un defaut implicite a 'fr' --
     c'est ce defaut qui envoyait countrycodes=fr pour des adresses suedoises.
     """
-    hit = (curated or {}).get(code)
-    if hit:
-        return hit
+    # Une cle PRESENTE fait foi, meme vide : `'LAP': ''` est une decision
+    # explicite de ne pas filtrer, pas un oubli. Seule l'absence de cle
+    # declenche la derivation.
+    if code in (curated or {}):
+        return curated[code] or ""
+    if looks_like_bare_code(name, code):
+        return ""
     meta = resolve(name or code, verbose=verbose)
     return (meta or {}).get("country") or ""
 
