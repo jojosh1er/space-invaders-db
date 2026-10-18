@@ -1,149 +1,97 @@
 Invaders présents sur invader-spotter.art mais absents de GitHub
-Généré le 2026-10-11 13:14:16.586832
+Généré le 2026-10-18 10:36:52.175985
 ============================================================
 
-Total: 35 invaders sans géolocalisation
+Total: 22 invaders sans géolocalisation
 
 
-LAP (35 invaders)
+LAP (22 invaders)
 ----------------------------------------
-  • LAP_02
+  • LAP_01
     📅 Posé le: 29/09/2026
     📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_02-grosplan.png
-  • LAP_05
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_01-grosplan.png
+  • LAP_03
     📅 Posé le: 29/09/2026
     📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_05-grosplan.png
-  • LAP_08
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_03-grosplan.png
+  • LAP_04
     📅 Posé le: 29/09/2026
     📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_08-grosplan.png
-  • LAP_16
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_04-grosplan.png
+  • LAP_06
+    📅 Posé le: 29/09/2026
+    📆 Statut: octobre 2026 (report)
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_06-grosplan.png
+  • LAP_07
+    📅 Posé le: 29/09/2026
+    📆 Statut: octobre 2026 (report)
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_07-grosplan.png
+  • LAP_09 [damaged]
+    📅 Posé le: 29/09/2026
+    📆 Statut: octobre 2026 (report)
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_09-grosplan.png
+  • LAP_14
+    📅 Posé le: 29/09/2026
+    📆 Statut: septembre 2026
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_14-grosplan.png
+  • LAP_19
     📅 Posé le: 30/09/2026
     📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_16-grosplan.png
-  • LAP_17
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_19-grosplan.png
+  • LAP_22
     📅 Posé le: 30/09/2026
     📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_17-grosplan.png
-  • LAP_20
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_22-grosplan.png
+  • LAP_23
     📅 Posé le: 30/09/2026
     📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_20-grosplan.png
-  • LAP_21
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_23-grosplan.png
+  • LAP_24
     📅 Posé le: 30/09/2026
     📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_21-grosplan.png
-  • LAP_25
-    📅 Posé le: 30/09/2026
-    📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_25-grosplan.png
-  • LAP_26
-    📅 Posé le: 30/09/2026
-    📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_26-grosplan.png
-  • LAP_28
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_24-grosplan.png
+  • LAP_31
+    📅 Posé le: 01/10/2026
+    📆 Statut: octobre 2026 (Invader)
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_31-grosplan.png
+  • LAP_42
     📅 Posé le: 01/10/2026
     📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_28-grosplan.png
-  • LAP_29
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_42-grosplan.png
+  • LAP_43
     📅 Posé le: 01/10/2026
     📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_29-grosplan.png
-  • LAP_33
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_43-grosplan.png
+  • LAP_44
     📅 Posé le: 01/10/2026
     📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_33-grosplan.png
-  • LAP_34
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_44-grosplan.png
+  • LAP_45
     📅 Posé le: 01/10/2026
     📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_34-grosplan.png
-  • LAP_37
-    📅 Posé le: 01/10/2026
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_45-grosplan.png
+  • LAP_66
+    📅 Posé le: 03/10/2026
     📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_37-grosplan.png
-  • LAP_46
-    📅 Posé le: 01/10/2026
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_66-grosplan.png
+  • LAP_67
+    📅 Posé le: 03/10/2026
     📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_46-grosplan.png
-  • LAP_47
-    📅 Posé le: 01/10/2026
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_67-grosplan.png
+  • LAP_68
+    📅 Posé le: 03/10/2026
     📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_47-grosplan.png
-  • LAP_48
-    📅 Posé le: 01/10/2026
-    📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_48-grosplan.png
-  • LAP_49
-    📅 Posé le: 01/10/2026
-    📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_49-grosplan.png
-  • LAP_50
-    📅 Posé le: 01/10/2026
-    📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_50-grosplan.png
-  • LAP_51
-    📅 Posé le: 01/10/2026
-    📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_51-grosplan.png
-  • LAP_52
-    📅 Posé le: 01/10/2026
-    📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_52-grosplan.png
-  • LAP_53
-    📅 Posé le: 01/10/2026
-    📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_53-grosplan.png
-  • LAP_55
-    📅 Posé le: 01/10/2026
-    📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_55-grosplan.png
-  • LAP_56
-    📅 Posé le: 01/10/2026
-    📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_56-grosplan.png
-  • LAP_57
-    📅 Posé le: 01/10/2026
-    📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_57-grosplan.png
-  • LAP_58
-    📅 Posé le: 01/10/2026
-    📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_58-grosplan.png
-  • LAP_59
-    📅 Posé le: 01/10/2026
-    📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_59-grosplan.png
-  • LAP_65
-    📅 Posé le: 01/10/2026
-    📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_65-grosplan.png
-  • LAP_76
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_68-grosplan.png
+  • LAP_77
     📅 Posé le: 07/10/2026
     📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_76-grosplan.png
-  • LAP_78
-    📅 Posé le: 08/10/2026
-    📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_78-grosplan.png
-  • LAP_80
-    📅 Posé le: 08/10/2026
-    📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_80-grosplan.png
-  • LAP_81
-    📅 Posé le: 08/10/2026
-    📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_81-grosplan.png
-  • LAP_82
-    📅 Posé le: 08/10/2026
-    📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_82-grosplan.png
-  • LAP_83
-    📅 Posé le: 08/10/2026
-    📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_83-grosplan.png
-  • LAP_87
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_77-grosplan.png
+  • LAP_84
     📅 Posé le: 09/10/2026
     📆 Statut: octobre 2026 (report)
-    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_87-grosplan.png
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_84-grosplan.png
+  • LAP_86
+    📅 Posé le: 09/10/2026
+    📆 Statut: octobre 2026 (report)
+    📷 https://www.invader-spotter.art/grosplan/LAP/LAP_86-grosplan.png
